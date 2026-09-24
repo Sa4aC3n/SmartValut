@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Dark Navy Blue Deep Background -->
+    <path
+        android:fillColor="#071224"
+        android:pathData="M0,0h108v108h-108z" />
+
+    <!-- Rich Blue Gradient Center Shield -->
+    <path
+        android:fillColor="#0B1E38"
+        android:pathData="M10,10 L98,10 L98,98 L10,98 Z" />
+
+    <!-- Cyan Circuit Board Tech Traces -->
+    <path
+        android:strokeColor="#00E5FF"
+        android:strokeWidth="0.8"
+        android:fillColor="#00000000"
+        android:strokeAlpha="0.4"
+        android:pathData="M65,22 L85,22 L85,32 M70,30 L90,30 M68,38 L88,38 L88,50 M75,45 L92,45" />
+
+    <!-- Outer Golden Egyptian Vault Border Frame -->
+    <path
+        android:fillColor="#D4AF37"
+        android:pathData="M8,8h92v92h-92z M13,13v82h82v-82z" />
+
+    <!-- Inner Gold Filigree Line -->
+    <path
+        android:strokeColor="#FFD700"
+        android:strokeWidth="1"
+        android:fillColor="#00000000"
+        android:pathData="M16,16h76v76h-76z" />
+
+</vector>
+
+

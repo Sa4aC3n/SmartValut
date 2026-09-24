@@ -1,0 +1,104 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Top Gold Diamond Ornament -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M54,18 L58,22 L54,26 L50,22 Z" />
+
+    <!-- Left Hinged Vault Door Bar -->
+    <path
+        android:fillColor="#C5A059"
+        android:pathData="M24,30h5v48h-5z" />
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M23,32h2v8h-2z M23,50h2v8h-2z M23,68h2v8h-2z" />
+
+    <!-- Outer Gold Crescent Crescent Arch -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M32,28 C52,20 76,26 80,32 C60,30 38,40 38,62 C38,76 56,86 82,82 C72,88 44,90 32,80 C24,70 24,42 32,28 Z" />
+
+    <!-- Golden Steering Wheel Handle Rim -->
+    <path
+        android:fillColor="#D4AF37"
+        android:pathData="M52,54m-16,0a16,16 0 1,1 32,0a16,16 0 1,1 -32,0" />
+    <path
+        android:fillColor="#071224"
+        android:pathData="M52,54m-12,0a12,12 0 1,1 24,0a12,12 0 1,1 -24,0" />
+
+    <!-- Wheel Spokes & Handles -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M50,34h4v8h-4z M50,66h4v8h-4z M34,52h8v4h-8z M66,52h8v4h-8z M40,42l6,6l-3,3l-6,-6z M58,60l6,6l-3,3l-6,-6z M61,45l6,-6l3,3l-6,6z M43,63l6,-6l3,3l-6,6z" />
+
+    <!-- Cyan Fingerprint Core Glow -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M52,54m-8,0a8,8 0 1,1 16,0a8,8 0 1,1 -16,0" />
+
+    <!-- Fingerprint Ridge Lines -->
+    <path
+        android:strokeColor="#071224"
+        android:strokeWidth="1.2"
+        android:fillColor="#00000000"
+        android:pathData="M48,52 C50,49 54,49 56,52 M47,55 C50,52 54,52 57,55 M49,58 C51,56 53,56 55,58" />
+
+    <!-- Right Side: Cyan Financial Growth Chart & Upward Arrow -->
+    <path
+        android:fillColor="#00E5FF"
+        android:pathData="M72,56h3v14h-3z M77,52h3v18h-3z M82,46h3v24h-3z" />
+    <path
+        android:strokeColor="#FFD700"
+        android:strokeWidth="1.8"
+        android:fillColor="#00000000"
+        android:pathData="M68,58 L76,50 L86,40" />
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M83,38 L88,40 L85,45 Z" />
+
+    <!-- Bottom Row: 5 Mini Gold Circular Icons (Wallet, Cart, Doc, Home, Car) -->
+    <!-- 1. Wallet -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M26,88m-3,0a3,3 0 1,1 6,0a3,3 0 1,1 -6,0" />
+    <path
+        android:fillColor="#071224"
+        android:pathData="M25,87h2v2h-2z" />
+
+    <!-- 2. Cart -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M39,88m-3,0a3,3 0 1,1 6,0a3,3 0 1,1 -6,0" />
+    <path
+        android:fillColor="#071224"
+        android:pathData="M38,87h2v2h-2z" />
+
+    <!-- 3. Document -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M52,88m-3,0a3,3 0 1,1 6,0a3,3 0 1,1 -6,0" />
+    <path
+        android:fillColor="#071224"
+        android:pathData="M51,87h2v2h-2z" />
+
+    <!-- 4. Home -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M65,88m-3,0a3,3 0 1,1 6,0a3,3 0 1,1 -6,0" />
+    <path
+        android:fillColor="#071224"
+        android:pathData="M64,87h2v2h-2z" />
+
+    <!-- 5. Car -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M78,88m-3,0a3,3 0 1,1 6,0a3,3 0 1,1 -6,0" />
+    <path
+        android:fillColor="#071224"
+        android:pathData="M77,87h2v2h-2z" />
+
+</vector>

@@ -1,0 +1,6 @@
+{
+  "name": "الخزنة الذكية",
+  "description": "تطبيق متكامل لإدارة المصروفات، المدخرات والذهب، الالتزامات الشهرية، ودروس الأطفال مع تقارير مالية ذكية باللغة العربية.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

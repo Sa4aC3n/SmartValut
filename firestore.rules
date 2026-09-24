@@ -10,16 +10,31 @@ service cloud.firestore {
       return isAuthenticated() && request.auth.uid == userId;
     }
 
-    // Allow authenticated users full read and write access to their own user document
-    // and all subcollections recursively (vault_items, activity_log, vaults, transactions,
-    // gold_assets, cash_savings, gold_prices, outings, expenses, etc.)
+    // Account & Minimal Profile ONLY:
+    // Strictly blocks any financial fields or financial subcollections from Cloud Firestore.
+    // Single Source of Truth for Financial Data is Local Room Database.
     match /users/{userId} {
-      allow read, write: if isOwner(userId);
+      // Allow reading user profile
+      allow read: if isOwner(userId);
 
-      match /{document=**} {
-        allow read, write: if isOwner(userId);
+      // Strictly allow writing ONLY minimal account/profile fields (no financial data allowed)
+      allow create, update: if isOwner(userId) &&
+        request.resource.data.keys().hasOnly([
+          'userId', 'uid', 'displayName', 'email', 'phoneNumber', 'profileImageUrl', 'createdAt', 'updatedAt'
+        ]);
+
+      // Allow deleting user account document upon account deletion
+      allow delete: if isOwner(userId);
+
+      // Explicitly DENY all financial and other subcollections
+      match /{allSubcollections=**} {
+        allow read, write: if false;
       }
+    }
+
+    // Explicitly DENY any legacy or top-level collections
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }
-

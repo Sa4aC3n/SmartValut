@@ -13,16 +13,6 @@ import com.example.data.UserProfile
 import com.example.data.crypto.CryptoManager
 import com.example.data.firestore.CloudSyncStatus
 import com.example.data.firestore.FirestoreVaultRepository
-import com.example.data.model.CloudBudgetLimit
-import com.example.data.model.CloudCashSaving
-import com.example.data.model.CloudChildLesson
-import com.example.data.model.CloudCommitment
-import com.example.data.model.CloudGoldAsset
-import com.example.data.model.CloudGoldPrice
-import com.example.data.model.CloudOuting
-import com.example.data.model.CloudOutingExpense
-import com.example.data.model.CloudTransaction
-import com.example.data.model.CloudVault
 import com.example.data.model.CloudVaultItem
 import com.example.data.model.VaultActivityLog
 import com.example.data.entity.ActivityLogEntity
@@ -67,7 +57,6 @@ import java.util.Calendar
 import java.util.Locale
 import java.util.UUID
 import org.json.JSONArray
-import com.example.data.migration.LocalMigrationManager
 import com.example.data.backup.LocalBackupManager
 import com.example.ui.utils.PdfExporter
 
@@ -420,15 +409,6 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
             isLoggedIn = true
         )
         activeUserId.value = currentUser.uid
-
-        viewModelScope.launch(Dispatchers.IO) {
-            LocalMigrationManager.performSafeIdempotentMigration(
-                getApplication(),
-                currentUser.uid,
-                FirebaseFirestore.getInstance(),
-                db
-            )
-        }
     }
 
 
@@ -1412,9 +1392,6 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
             result.fold(
                 onSuccess = { livePrices ->
-                    if (firebaseAuth.currentUser != null) {
-                        firestoreVaultRepo.saveAllGoldPrices(livePrices.toKaratMap())
-                    }
                     repository.updateAllGoldPrices(livePrices.toKaratMap())
                     val now = System.currentTimeMillis()
                     lastGoldPriceUpdateTimestamp.value = now

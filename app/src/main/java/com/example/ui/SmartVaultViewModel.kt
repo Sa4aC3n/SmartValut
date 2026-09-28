@@ -20,13 +20,23 @@ import com.example.data.entity.BudgetLimitEntity
 import com.example.data.entity.CashSavingEntity
 import com.example.data.entity.ChildLessonEntity
 import com.example.data.entity.CommitmentEntity
+import com.example.data.entity.DebtEntity
+import com.example.data.entity.DebtPaymentEntity
 import com.example.data.entity.GoldAssetEntity
 import com.example.data.entity.GoldPriceEntity
+import com.example.data.entity.NetWorthSnapshotEntity
 import com.example.data.entity.OutingEntity
 import com.example.data.entity.OutingExpenseEntity
 import com.example.data.entity.TransactionEntity
+import com.example.data.entity.TransferEntity
 import com.example.data.entity.VaultEntity
 import com.example.data.entity.VaultItemEntity
+import com.example.data.calculator.FinancialSummaryCalculator
+import com.example.data.calculator.FinancialSummaryResult
+import com.example.data.insights.FinancialInsight
+import com.example.data.insights.FinancialInsightEngine
+import com.example.data.preferences.ModuleConfiguration
+import com.example.data.preferences.ModulePreferencesManager
 import com.example.data.api.GoldApiClient
 import com.example.data.api.LiveGoldPrices
 import com.google.firebase.Timestamp
@@ -725,6 +735,59 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     val allGoldPrices: StateFlow<List<GoldPriceEntity>> = repository.allGoldPrices
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val allTransfers: StateFlow<List<TransferEntity>> = activeUserId.flatMapLatest { uid ->
+        repository.getTransfers(uid)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val allDebts: StateFlow<List<DebtEntity>> = activeUserId.flatMapLatest { uid ->
+        repository.getDebts(uid)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val allNetWorthSnapshots: StateFlow<List<NetWorthSnapshotEntity>> = activeUserId.flatMapLatest { uid ->
+        repository.getNetWorthSnapshots(uid)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
+    val modulePreferencesManager = ModulePreferencesManager(application)
+    val moduleConfig: StateFlow<ModuleConfiguration> = modulePreferencesManager.configurationFlow
+
+    val financialSummary: StateFlow<FinancialSummaryResult> = combine(
+        allVaults,
+        allTransactions,
+        allCashSavings,
+        allGoldAssets,
+        allDebts
+    ) { vaults, txs, cash, gold, debts ->
+        val goldPrices = repository.allGoldPrices.firstOrNull() ?: emptyList()
+        val priceMap = goldPrices.associate { it.karat to it.pricePerGram }
+        FinancialSummaryCalculator.calculate(
+            vaults = vaults,
+            transactions = txs,
+            cashSavings = cash,
+            goldAssets = gold,
+            debts = debts,
+            goldPriceMap = priceMap,
+            commitments = allCommitments.value,
+            lessons = allChildLessons.value
+        )
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), FinancialSummaryResult())
+
+    val financialInsights: StateFlow<List<FinancialInsight>> = combine(
+        financialSummary,
+        allBudgetLimits,
+        allCommitments,
+        allChildLessons
+    ) { summary, budgets, commitments, lessons ->
+        FinancialInsightEngine.generateInsights(
+            summary = summary,
+            budgets = budgets,
+            commitments = commitments,
+            lessons = lessons
+        )
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+
     val outingParticipantsCount = MutableStateFlow(4)
 
     val selectedVaultName = MutableStateFlow("الخزنة الرئيسية")
@@ -1407,6 +1470,148 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
                     onError?.invoke(errorMsg)
                 }
             )
+        }
+    }
+
+    // Transfers Actions
+    fun executeTransfer(
+        fromVaultName: String,
+        toVaultName: String,
+        amount: Double,
+        notes: String = "",
+        dateMillis: Long = System.currentTimeMillis(),
+        onSuccess: () -> Unit = {},
+        onError: (String) -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            val result = repository.executeTransfer(
+                fromVaultName = fromVaultName,
+                toVaultName = toVaultName,
+                amount = amount,
+                notes = notes,
+                dateMillis = dateMillis,
+                userId = activeUserId.value
+            )
+            result.fold(
+                onSuccess = { onSuccess() },
+                onFailure = { err -> onError(err.message ?: "فشل التحويل بين الخزن") }
+            )
+        }
+    }
+
+    fun executeTransfer(
+        fromVaultId: Int,
+        toVaultId: Int,
+        amount: Double,
+        notes: String = "",
+        dateMillis: Long = System.currentTimeMillis(),
+        onSuccess: () -> Unit = {},
+        onError: (String) -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            val fromVault = allVaults.value.find { it.id == fromVaultId }
+            val toVault = allVaults.value.find { it.id == toVaultId }
+            if (fromVault == null || toVault == null) {
+                onError("الخزنة غير موجودة")
+                return@launch
+            }
+            val result = repository.executeTransfer(
+                fromVaultName = fromVault.name,
+                toVaultName = toVault.name,
+                amount = amount,
+                notes = notes,
+                dateMillis = dateMillis,
+                userId = activeUserId.value
+            )
+            result.fold(
+                onSuccess = { onSuccess() },
+                onFailure = { err -> onError(err.message ?: "فشل التحويل بين الخزن") }
+            )
+        }
+    }
+
+    fun deleteTransfer(transfer: TransferEntity) {
+        viewModelScope.launch {
+            repository.deleteTransfer(transfer.id)
+        }
+    }
+
+    // Debts Actions
+    fun addDebt(
+        personName: String,
+        type: String,
+        amount: Double,
+        notes: String = "",
+        dueDateMillis: Long? = null
+    ) {
+        viewModelScope.launch {
+            val debt = DebtEntity(
+                userId = activeUserId.value,
+                personName = personName,
+                type = type,
+                originalAmount = amount,
+                paidAmount = 0.0,
+                remainingAmount = amount,
+                startDateMillis = System.currentTimeMillis(),
+                dueDateMillis = dueDateMillis,
+                status = "ACTIVE",
+                notes = notes
+            )
+            repository.addDebt(debt)
+        }
+    }
+
+    fun recordDebtPayment(
+        debtId: Int,
+        paymentAmount: Double,
+        notes: String = "",
+        paymentDateMillis: Long = System.currentTimeMillis(),
+        onSuccess: () -> Unit = {},
+        onError: (String) -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            val result = repository.recordDebtPayment(
+                debtId = debtId,
+                paymentAmount = paymentAmount,
+                notes = notes,
+                paymentDateMillis = paymentDateMillis,
+                userId = activeUserId.value
+            )
+            result.fold(
+                onSuccess = { onSuccess() },
+                onFailure = { err -> onError(err.message ?: "فشل تسجيل السداد") }
+            )
+        }
+    }
+
+    fun deleteDebt(debtId: Int) {
+        viewModelScope.launch {
+            repository.deleteDebt(debtId)
+        }
+    }
+
+    // Module Management Actions
+    fun updateModuleConfig(config: ModuleConfiguration) {
+        modulePreferencesManager.saveConfiguration(config, activeUserId.value)
+    }
+
+    // Net Worth Snapshot
+    fun takeNetWorthSnapshot() {
+        viewModelScope.launch {
+            val summary = financialSummary.value
+            val snapshot = NetWorthSnapshotEntity(
+                userId = activeUserId.value,
+                dateMillis = System.currentTimeMillis(),
+                netWorth = summary.netWorthBreakdown.netWorth,
+                totalAssets = summary.netWorthBreakdown.totalAssets,
+                totalLiabilities = summary.netWorthBreakdown.totalLiabilities,
+                vaultsTotal = summary.netWorthBreakdown.vaultsTotal,
+                cashSavingsTotal = summary.netWorthBreakdown.cashSavingsTotal,
+                goldValueTotal = summary.netWorthBreakdown.goldEstimatedValue,
+                debtsOwedToMeTotal = summary.netWorthBreakdown.moneyOwedToMe,
+                debtsIOweTotal = summary.netWorthBreakdown.moneyIOwe
+            )
+            repository.insertNetWorthSnapshot(snapshot)
         }
     }
 

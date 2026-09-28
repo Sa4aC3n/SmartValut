@@ -20,26 +20,32 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.AutoAwesome
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.EmojiEvents
 import androidx.compose.material.icons.filled.EventNote
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.InsertDriveFile
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.PieChart
 import androidx.compose.material.icons.filled.Psychology
 import androidx.compose.material.icons.filled.ReceiptLong
-import androidx.compose.material.icons.filled.AccountBalanceWallet
+import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.TrendingDown
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -48,6 +54,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import com.example.data.calculator.FinancialSummaryResult
+import com.example.data.insights.FinancialInsight
+import com.example.data.insights.InsightPriority
+import com.example.data.preferences.ModuleConfiguration
+import com.example.ui.dialogs.AllInsightsDialog
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -107,6 +118,14 @@ fun DashboardScreen(
     onPayCommitment: (CommitmentEntity) -> Unit = {},
     onPayLesson: (ChildLessonEntity) -> Unit = {},
     onSelectVault: (String) -> Unit,
+    financialSummary: FinancialSummaryResult = FinancialSummaryResult(),
+    insights: List<FinancialInsight> = emptyList(),
+    config: ModuleConfiguration = ModuleConfiguration(),
+    onOpenNetWorth: () -> Unit = {},
+    onOpenDebts: () -> Unit = {},
+    onOpenCalendar: () -> Unit = {},
+    onOpenTransfer: () -> Unit = {},
+    onOpenManageModules: () -> Unit = {},
     onOpenAddIncome: () -> Unit,
     onOpenAddExpense: () -> Unit,
     onOpenAddVault: () -> Unit,
@@ -123,6 +142,7 @@ fun DashboardScreen(
         mutableStateOf(prefs.getBoolean("dashboard_savings_card_visible", false))
     }
     var isBalanceVisible by remember { mutableStateOf(true) }
+    var showAllInsightsDialog by remember { mutableStateOf(false) }
     var showUnpaidBillsDialog by remember { mutableStateOf(false) }
 
     if (showUnpaidBillsDialog) {
@@ -250,6 +270,63 @@ fun DashboardScreen(
                         )
                     }
                 }
+            }
+        }
+
+        // 1.5. QUICK SHORTCUTS ROW (صافي الثروة | الديون | التقويم | تحويل | تخصيص)
+        item {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 2.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                // Net Worth
+                QuickShortcutButton(
+                    title = "صافي الثروة",
+                    icon = Icons.Default.Security,
+                    tint = EmeraldGreenPrimary,
+                    modifier = Modifier.weight(1f),
+                    onClick = onOpenNetWorth
+                )
+
+                // Debts (if enabled)
+                if (config.debts) {
+                    QuickShortcutButton(
+                        title = "الديون",
+                        icon = Icons.Default.AccountBalance,
+                        tint = Color(0xFF7C4DFF),
+                        modifier = Modifier.weight(1f),
+                        onClick = onOpenDebts
+                    )
+                }
+
+                // Calendar
+                QuickShortcutButton(
+                    title = "التقويم",
+                    icon = Icons.Default.CalendarMonth,
+                    tint = Color(0xFFFF9800),
+                    modifier = Modifier.weight(1f),
+                    onClick = onOpenCalendar
+                )
+
+                // Transfer
+                QuickShortcutButton(
+                    title = "تحويل",
+                    icon = Icons.Default.SwapHoriz,
+                    tint = Color(0xFF0288D1),
+                    modifier = Modifier.weight(1f),
+                    onClick = onOpenTransfer
+                )
+
+                // Manage Modules
+                QuickShortcutButton(
+                    title = "تخصيص",
+                    icon = Icons.Default.Tune,
+                    tint = Color.Gray,
+                    modifier = Modifier.weight(1f),
+                    onClick = onOpenManageModules
+                )
             }
         }
 
@@ -449,6 +526,209 @@ fun DashboardScreen(
                                         fontWeight = FontWeight.Bold,
                                         color = Color.White
                                     )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 2.2. MY FINANCIAL SITUATION TODAY (وضعي المالي اليوم - صافي الثروة)
+        item {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onOpenNetWorth() },
+                shape = RoundedCornerShape(22.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(36.dp)
+                                    .clip(CircleShape)
+                                    .background(EmeraldGreenPrimary.copy(alpha = 0.12f)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Security,
+                                    contentDescription = "صافي الثروة",
+                                    tint = EmeraldGreenPrimary,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                            Column {
+                                Text(
+                                    text = "وضعي المالي اليوم (صافي الثروة) 🛡️",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 15.sp,
+                                    color = MaterialTheme.colorScheme.onSurface
+                                )
+                                Text(
+                                    text = "حساب محلي آمن لكافة الأصول والالتزامات",
+                                    fontSize = 11.sp,
+                                    color = Color.Gray
+                                )
+                            }
+                        }
+
+                        Text(
+                            text = "تفاصيل الأصول ←",
+                            fontSize = 11.5.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = EmeraldGreenPrimary
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column {
+                            Text(
+                                text = "صافي الثروة",
+                                fontSize = 11.sp,
+                                color = Color.Gray
+                            )
+                            Text(
+                                text = if (isBalanceVisible)
+                                    "${String.format(Locale.US, "%,d", financialSummary.netWorthBreakdown.netWorth.toLong())} ${state.currency}"
+                                else
+                                    "•••• ${state.currency}",
+                                fontWeight = FontWeight.ExtraBold,
+                                fontSize = 22.sp,
+                                color = EmeraldGreenPrimary
+                            )
+                        }
+
+                        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                            Column(horizontalAlignment = Alignment.End) {
+                                Text("إجمالي الأصول", fontSize = 10.5.sp, color = Color.Gray)
+                                Text(
+                                    text = if (isBalanceVisible) "${String.format(Locale.US, "%,d", financialSummary.netWorthBreakdown.totalAssets.toLong())}" else "••••",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 13.sp,
+                                    color = Color(0xFF22C55E)
+                                )
+                            }
+                            Column(horizontalAlignment = Alignment.End) {
+                                Text("إجمالي الالتزامات", fontSize = 10.5.sp, color = Color.Gray)
+                                Text(
+                                    text = if (isBalanceVisible) "${String.format(Locale.US, "%,d", financialSummary.netWorthBreakdown.totalLiabilities.toLong())}" else "••••",
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 13.sp,
+                                    color = Color(0xFFEF4444)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 2.3. SMART LOCAL FINANCIAL INSIGHTS (الرؤى والتحليلات الذكية المحلية)
+        if (insights.isNotEmpty()) {
+            item {
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(22.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(36.dp)
+                                        .clip(CircleShape)
+                                        .background(Color(0xFF00897B).copy(alpha = 0.12f)),
+                                    contentAlignment = Alignment.Center
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.Psychology,
+                                        contentDescription = "تحليلات ذكية",
+                                        tint = Color(0xFF00897B),
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                }
+                                Column {
+                                    Text(
+                                        text = "الرؤى والتحليلات الذكية 💡",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 15.sp,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                    Text(
+                                        text = "محرك ذكاء مالي محلي 100%",
+                                        fontSize = 11.sp,
+                                        color = Color.Gray
+                                    )
+                                }
+                            }
+
+                            Text(
+                                text = "عرض الكل (${insights.size}) ←",
+                                fontSize = 11.5.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = EmeraldGreenPrimary,
+                                modifier = Modifier.clickable { showAllInsightsDialog = true }
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        // Display top 2 insights
+                        insights.take(2).forEach { insight ->
+                            val tint = when (insight.priority) {
+                                InsightPriority.CRITICAL -> Color(0xFFEF4444)
+                                InsightPriority.WARNING -> Color(0xFFFF9800)
+                                InsightPriority.POSITIVE -> Color(0xFF22C55E)
+                                InsightPriority.INFO -> EmeraldGreenPrimary
+                            }
+                            val bg = tint.copy(alpha = 0.1f)
+                            val icon = when (insight.priority) {
+                                InsightPriority.CRITICAL, InsightPriority.WARNING -> Icons.Default.Warning
+                                InsightPriority.POSITIVE -> Icons.Default.CheckCircle
+                                InsightPriority.INFO -> Icons.Default.Info
+                            }
+
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 4.dp)
+                                    .background(bg, RoundedCornerShape(12.dp))
+                                    .padding(10.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(18.dp))
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Column {
+                                    Text(insight.title, fontWeight = FontWeight.Bold, fontSize = 12.sp, color = tint)
+                                    Text(insight.message, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurface)
                                 }
                             }
                         }
@@ -1181,6 +1461,55 @@ fun DashboardScreen(
 
         item {
             Spacer(modifier = Modifier.height(20.dp))
+        }
+    }
+
+    if (showAllInsightsDialog) {
+        AllInsightsDialog(
+            insights = insights,
+            onDismiss = { showAllInsightsDialog = false }
+        )
+    }
+}
+
+@Composable
+private fun QuickShortcutButton(
+    title: String,
+    icon: ImageVector,
+    tint: Color,
+    modifier: Modifier = Modifier,
+    onClick: () -> Unit
+) {
+    Card(
+        modifier = modifier
+            .height(64.dp)
+            .clickable { onClick() },
+        shape = RoundedCornerShape(14.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(4.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = title,
+                tint = tint,
+                modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.height(3.dp))
+            Text(
+                text = title,
+                fontSize = 10.5.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1
+            )
         }
     }
 }

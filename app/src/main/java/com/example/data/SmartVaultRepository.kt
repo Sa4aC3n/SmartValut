@@ -1,15 +1,20 @@
 package com.example.data
 
+import androidx.room.withTransaction
 import com.example.data.entity.ActivityLogEntity
 import com.example.data.entity.BudgetLimitEntity
 import com.example.data.entity.CashSavingEntity
 import com.example.data.entity.ChildLessonEntity
 import com.example.data.entity.CommitmentEntity
+import com.example.data.entity.DebtEntity
+import com.example.data.entity.DebtPaymentEntity
 import com.example.data.entity.GoldAssetEntity
 import com.example.data.entity.GoldPriceEntity
+import com.example.data.entity.NetWorthSnapshotEntity
 import com.example.data.entity.OutingEntity
 import com.example.data.entity.OutingExpenseEntity
 import com.example.data.entity.TransactionEntity
+import com.example.data.entity.TransferEntity
 import com.example.data.entity.VaultEntity
 import com.example.data.entity.VaultItemEntity
 import kotlinx.coroutines.flow.Flow
@@ -53,6 +58,21 @@ class SmartVaultRepository(private val db: AppDatabase) {
 
     fun getActivityLogs(userId: String): Flow<List<ActivityLogEntity>> =
         db.activityLogDao().getLogsForUser(userId)
+
+    fun getTransfers(userId: String): Flow<List<TransferEntity>> =
+        db.transferDao().getTransfersForUser(userId)
+
+    fun getDebts(userId: String): Flow<List<DebtEntity>> =
+        db.debtDao().getDebtsForUser(userId)
+
+    fun getDebtPayments(debtId: Int, userId: String): Flow<List<DebtPaymentEntity>> =
+        db.debtPaymentDao().getPaymentsForDebt(debtId, userId)
+
+    fun getAllDebtPayments(userId: String): Flow<List<DebtPaymentEntity>> =
+        db.debtPaymentDao().getAllPaymentsForUser(userId)
+
+    fun getNetWorthSnapshots(userId: String): Flow<List<NetWorthSnapshotEntity>> =
+        db.netWorthSnapshotDao().getSnapshotsForUser(userId)
 
     // Backward compatibility flows
     val allTransactions: Flow<List<TransactionEntity>> = db.transactionDao().getAllTransactions()
@@ -377,6 +397,154 @@ class SmartVaultRepository(private val db: AppDatabase) {
         }
     }
 
+    // 12. Transfers (Atomic execution)
+    suspend fun executeTransfer(
+        fromVaultName: String,
+        toVaultName: String,
+        amount: Double,
+        dateMillis: Long = System.currentTimeMillis(),
+        notes: String = "",
+        userId: String = ""
+    ): Result<Unit> {
+        if (amount <= 0.0) {
+            return Result.failure(IllegalArgumentException("يجب أن يكون مبلغ التحويل أكبر من صفر"))
+        }
+        if (fromVaultName == toVaultName) {
+            return Result.failure(IllegalArgumentException("لا يمكن التحويل من الخزنة إلى نفسها"))
+        }
+
+        return try {
+            db.withTransaction {
+                val fromVault = db.vaultDao().getVaultByName(fromVaultName, userId)
+                    ?: throw IllegalStateException("الخزنة المصدر غير موجودة")
+
+                if (fromVault.balance < amount) {
+                    throw IllegalStateException("رصيد الخزنة (${fromVault.balance}) لا يكفي لتحويل ($amount)")
+                }
+
+                var toVault = db.vaultDao().getVaultByName(toVaultName, userId)
+                if (toVault == null) {
+                    db.vaultDao().insertVault(VaultEntity(name = toVaultName, balance = amount, isDefault = false, userId = userId))
+                } else {
+                    db.vaultDao().updateVaultBalance(toVault.id, toVault.balance + amount)
+                }
+
+                db.vaultDao().updateVaultBalance(fromVault.id, fromVault.balance - amount)
+
+                db.transferDao().insertTransfer(
+                    TransferEntity(
+                        userId = userId,
+                        fromVaultName = fromVaultName,
+                        toVaultName = toVaultName,
+                        amount = amount,
+                        dateMillis = dateMillis,
+                        notes = notes
+                    )
+                )
+            }
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun deleteTransfer(id: Int) {
+        db.transferDao().deleteTransferById(id)
+    }
+
+    // 13. Debts (Owed to me / I owe)
+    suspend fun addDebt(debt: DebtEntity): Long {
+        return db.debtDao().insertDebt(debt)
+    }
+
+    suspend fun addDebt(
+        personName: String,
+        type: String, // "OWED_TO_ME" or "I_OWE"
+        amount: Double,
+        dueDateMillis: Long? = null,
+        notes: String = "",
+        userId: String = ""
+    ): Long {
+        val debt = DebtEntity(
+            userId = userId,
+            personName = personName,
+            type = type,
+            originalAmount = amount,
+            paidAmount = 0.0,
+            remainingAmount = amount,
+            startDateMillis = System.currentTimeMillis(),
+            dueDateMillis = dueDateMillis,
+            notes = notes,
+            status = "ACTIVE"
+        )
+        return db.debtDao().insertDebt(debt)
+    }
+
+    suspend fun recordDebtPayment(
+        debtId: Int,
+        paymentAmount: Double,
+        dateMillis: Long = System.currentTimeMillis(),
+        notes: String = "",
+        userId: String = "",
+        paymentDateMillis: Long = dateMillis
+    ): Result<Unit> {
+        if (paymentAmount <= 0.0) {
+            return Result.failure(IllegalArgumentException("يجب أن يكون مبلغ السداد أكبر من صفر"))
+        }
+        val debt = db.debtDao().getDebtById(debtId)
+            ?: return Result.failure(IllegalStateException("لم يتم العثور على سجل الدين"))
+
+        val effectivePayment = paymentAmount.coerceAtMost(debt.remainingAmount)
+        val newPaid = debt.paidAmount + effectivePayment
+        val newRemaining = (debt.remainingAmount - effectivePayment).coerceAtLeast(0.0)
+        val newStatus = if (newRemaining <= 0.001) "PAID" else "PARTIALLY_PAID"
+
+        return try {
+            db.withTransaction {
+                db.debtDao().updateDebt(
+                    debt.copy(
+                        paidAmount = newPaid,
+                        remainingAmount = newRemaining,
+                        status = newStatus,
+                        updatedAt = System.currentTimeMillis()
+                    )
+                )
+                db.debtPaymentDao().insertPayment(
+                    DebtPaymentEntity(
+                        debtId = debtId,
+                        userId = userId,
+                        amount = effectivePayment,
+                        dateMillis = paymentDateMillis,
+                        notes = notes
+                    )
+                )
+            }
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun deleteDebt(id: Int) {
+        db.withTransaction {
+            db.debtPaymentDao().deletePaymentsForDebt(id)
+            db.debtDao().deleteDebtById(id)
+        }
+    }
+
+    // 14. Net Worth Snapshots
+    suspend fun saveNetWorthSnapshot(snapshot: NetWorthSnapshotEntity): Long {
+        val existing = db.netWorthSnapshotDao().getSnapshotByDateKey(snapshot.userId, snapshot.dateKey)
+        return if (existing != null) {
+            db.netWorthSnapshotDao().insertSnapshot(snapshot.copy(id = existing.id))
+        } else {
+            db.netWorthSnapshotDao().insertSnapshot(snapshot)
+        }
+    }
+
+    suspend fun insertNetWorthSnapshot(snapshot: NetWorthSnapshotEntity): Long =
+        saveNetWorthSnapshot(snapshot)
+
     // Direct access to Room Database for Backup & Restore and Migration
     fun getRawDatabase(): AppDatabase = db
 
@@ -393,6 +561,10 @@ class SmartVaultRepository(private val db: AppDatabase) {
             db.activityLogDao().clearUserLogs(userId)
             db.outingDao().clearUserOutings(userId)
             db.outingExpenseDao().clearUserOutingExpenses(userId)
+            db.transferDao().clearUserTransfers(userId)
+            db.debtDao().clearUserDebts(userId)
+            db.debtPaymentDao().clearUserDebtPayments(userId)
+            db.netWorthSnapshotDao().clearUserSnapshots(userId)
         } catch (_: Exception) {}
     }
 

@@ -11,11 +11,15 @@ import com.example.data.dao.BudgetLimitDao
 import com.example.data.dao.CashSavingDao
 import com.example.data.dao.ChildLessonDao
 import com.example.data.dao.CommitmentDao
+import com.example.data.dao.DebtDao
+import com.example.data.dao.DebtPaymentDao
 import com.example.data.dao.GoldAssetDao
 import com.example.data.dao.GoldPriceDao
+import com.example.data.dao.NetWorthSnapshotDao
 import com.example.data.dao.OutingDao
 import com.example.data.dao.OutingExpenseDao
 import com.example.data.dao.TransactionDao
+import com.example.data.dao.TransferDao
 import com.example.data.dao.VaultDao
 import com.example.data.dao.VaultItemDao
 import com.example.data.entity.ActivityLogEntity
@@ -23,11 +27,15 @@ import com.example.data.entity.BudgetLimitEntity
 import com.example.data.entity.CashSavingEntity
 import com.example.data.entity.ChildLessonEntity
 import com.example.data.entity.CommitmentEntity
+import com.example.data.entity.DebtEntity
+import com.example.data.entity.DebtPaymentEntity
 import com.example.data.entity.GoldAssetEntity
 import com.example.data.entity.GoldPriceEntity
+import com.example.data.entity.NetWorthSnapshotEntity
 import com.example.data.entity.OutingEntity
 import com.example.data.entity.OutingExpenseEntity
 import com.example.data.entity.TransactionEntity
+import com.example.data.entity.TransferEntity
 import com.example.data.entity.VaultEntity
 import com.example.data.entity.VaultItemEntity
 
@@ -44,9 +52,13 @@ import com.example.data.entity.VaultItemEntity
         CommitmentEntity::class,
         ChildLessonEntity::class,
         VaultItemEntity::class,
-        ActivityLogEntity::class
+        ActivityLogEntity::class,
+        TransferEntity::class,
+        DebtEntity::class,
+        DebtPaymentEntity::class,
+        NetWorthSnapshotEntity::class
     ],
-    version = 6,
+    version = 7,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -62,6 +74,10 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun vaultItemDao(): VaultItemDao
     abstract fun activityLogDao(): ActivityLogDao
     abstract fun goldPriceDao(): GoldPriceDao
+    abstract fun transferDao(): TransferDao
+    abstract fun debtDao(): DebtDao
+    abstract fun debtPaymentDao(): DebtPaymentDao
+    abstract fun netWorthSnapshotDao(): NetWorthSnapshotDao
 
     companion object {
         @Volatile
@@ -201,6 +217,74 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // Create transfers table
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS transfers (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        userId TEXT NOT NULL DEFAULT '',
+                        fromVaultName TEXT NOT NULL,
+                        toVaultName TEXT NOT NULL,
+                        amount REAL NOT NULL,
+                        dateMillis INTEGER NOT NULL,
+                        notes TEXT NOT NULL DEFAULT '',
+                        createdAt INTEGER NOT NULL DEFAULT 0
+                    )
+                """.trimIndent())
+
+                // Create debts table
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS debts (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        userId TEXT NOT NULL DEFAULT '',
+                        personName TEXT NOT NULL,
+                        type TEXT NOT NULL,
+                        originalAmount REAL NOT NULL,
+                        paidAmount REAL NOT NULL DEFAULT 0.0,
+                        remainingAmount REAL NOT NULL,
+                        startDateMillis INTEGER NOT NULL,
+                        dueDateMillis INTEGER,
+                        notes TEXT NOT NULL DEFAULT '',
+                        status TEXT NOT NULL DEFAULT 'ACTIVE',
+                        createdAt INTEGER NOT NULL DEFAULT 0,
+                        updatedAt INTEGER NOT NULL DEFAULT 0
+                    )
+                """.trimIndent())
+
+                // Create debt_payments table
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS debt_payments (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        debtId INTEGER NOT NULL,
+                        userId TEXT NOT NULL DEFAULT '',
+                        amount REAL NOT NULL,
+                        dateMillis INTEGER NOT NULL,
+                        notes TEXT NOT NULL DEFAULT '',
+                        createdAt INTEGER NOT NULL DEFAULT 0
+                    )
+                """.trimIndent())
+
+                // Create net_worth_snapshots table
+                db.execSQL("""
+                    CREATE TABLE IF NOT EXISTS net_worth_snapshots (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                        userId TEXT NOT NULL DEFAULT '',
+                        dateMillis INTEGER NOT NULL,
+                        dateKey TEXT NOT NULL DEFAULT '',
+                        totalAssets REAL NOT NULL,
+                        totalLiabilities REAL NOT NULL,
+                        netWorth REAL NOT NULL,
+                        vaultsTotal REAL NOT NULL DEFAULT 0.0,
+                        cashSavingsTotal REAL NOT NULL DEFAULT 0.0,
+                        goldValueTotal REAL NOT NULL DEFAULT 0.0,
+                        debtsOwedToMeTotal REAL NOT NULL DEFAULT 0.0,
+                        debtsIOweTotal REAL NOT NULL DEFAULT 0.0
+                    )
+                """.trimIndent())
+            }
+        }
+
         fun getInstance(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -208,7 +292,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "smart_vault_db"
                 )
-                    .addMigrations(MIGRATION_5_6)
+                    .addMigrations(MIGRATION_5_6, MIGRATION_6_7)
                     .build()
                 INSTANCE = instance
                 instance

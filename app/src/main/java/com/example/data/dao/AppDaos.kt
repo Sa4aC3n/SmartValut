@@ -12,6 +12,10 @@ import com.example.data.entity.ChildLessonEntity
 import com.example.data.entity.CommitmentEntity
 import com.example.data.entity.GoldAssetEntity
 import com.example.data.entity.GoldPriceEntity
+import com.example.data.entity.TransferEntity
+import com.example.data.entity.DebtEntity
+import com.example.data.entity.DebtPaymentEntity
+import com.example.data.entity.NetWorthSnapshotEntity
 import com.example.data.entity.OutingEntity
 import com.example.data.entity.OutingExpenseEntity
 import com.example.data.entity.TransactionEntity
@@ -278,4 +282,91 @@ interface GoldPriceDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllPrices(prices: List<GoldPriceEntity>)
+}
+
+@Dao
+interface TransferDao {
+    @Query("SELECT * FROM transfers WHERE (userId = :userId) OR ((:userId = 'local_guest' OR :userId = '') AND (userId = '' OR userId = 'local_guest')) ORDER BY dateMillis DESC")
+    fun getTransfersForUser(userId: String): Flow<List<TransferEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertTransfer(transfer: TransferEntity): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllTransfers(transfers: List<TransferEntity>)
+
+    @Query("DELETE FROM transfers WHERE id = :id")
+    suspend fun deleteTransferById(id: Int)
+
+    @Query("DELETE FROM transfers WHERE userId = :userId")
+    suspend fun clearUserTransfers(userId: String)
+}
+
+@Dao
+interface DebtDao {
+    @Query("SELECT * FROM debts WHERE (userId = :userId) OR ((:userId = 'local_guest' OR :userId = '') AND (userId = '' OR userId = 'local_guest')) ORDER BY createdAt DESC")
+    fun getDebtsForUser(userId: String): Flow<List<DebtEntity>>
+
+    @Query("SELECT * FROM debts WHERE id = :id LIMIT 1")
+    suspend fun getDebtById(id: Int): DebtEntity?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertDebt(debt: DebtEntity): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllDebts(debts: List<DebtEntity>)
+
+    @Update
+    suspend fun updateDebt(debt: DebtEntity)
+
+    @Query("DELETE FROM debts WHERE id = :id")
+    suspend fun deleteDebtById(id: Int)
+
+    @Query("DELETE FROM debts WHERE userId = :userId")
+    suspend fun clearUserDebts(userId: String)
+}
+
+@Dao
+interface DebtPaymentDao {
+    @Query("SELECT * FROM debt_payments WHERE debtId = :debtId AND ((userId = :userId) OR ((:userId = 'local_guest' OR :userId = '') AND (userId = '' OR userId = 'local_guest'))) ORDER BY dateMillis DESC")
+    fun getPaymentsForDebt(debtId: Int, userId: String): Flow<List<DebtPaymentEntity>>
+
+    @Query("SELECT * FROM debt_payments WHERE (userId = :userId) OR ((:userId = 'local_guest' OR :userId = '') AND (userId = '' OR userId = 'local_guest')) ORDER BY dateMillis DESC")
+    fun getAllPaymentsForUser(userId: String): Flow<List<DebtPaymentEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPayment(payment: DebtPaymentEntity): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllPayments(payments: List<DebtPaymentEntity>)
+
+    @Query("DELETE FROM debt_payments WHERE id = :id")
+    suspend fun deletePaymentById(id: Int)
+
+    @Query("DELETE FROM debt_payments WHERE debtId = :debtId")
+    suspend fun deletePaymentsForDebt(debtId: Int)
+
+    @Query("DELETE FROM debt_payments WHERE userId = :userId")
+    suspend fun clearUserDebtPayments(userId: String)
+}
+
+@Dao
+interface NetWorthSnapshotDao {
+    @Query("SELECT * FROM net_worth_snapshots WHERE (userId = :userId) OR ((:userId = 'local_guest' OR :userId = '') AND (userId = '' OR userId = 'local_guest')) ORDER BY dateMillis ASC")
+    fun getSnapshotsForUser(userId: String): Flow<List<NetWorthSnapshotEntity>>
+
+    @Query("SELECT * FROM net_worth_snapshots WHERE ((userId = :userId) OR ((:userId = 'local_guest' OR :userId = '') AND (userId = '' OR userId = 'local_guest'))) AND dateKey = :dateKey LIMIT 1")
+    suspend fun getSnapshotByDateKey(userId: String, dateKey: String): NetWorthSnapshotEntity?
+
+    @Query("SELECT * FROM net_worth_snapshots WHERE (userId = :userId) OR ((:userId = 'local_guest' OR :userId = '') AND (userId = '' OR userId = 'local_guest')) ORDER BY dateMillis DESC LIMIT 1")
+    suspend fun getLatestSnapshot(userId: String): NetWorthSnapshotEntity?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSnapshot(snapshot: NetWorthSnapshotEntity): Long
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAllSnapshots(snapshots: List<NetWorthSnapshotEntity>)
+
+    @Query("DELETE FROM net_worth_snapshots WHERE userId = :userId")
+    suspend fun clearUserSnapshots(userId: String)
 }

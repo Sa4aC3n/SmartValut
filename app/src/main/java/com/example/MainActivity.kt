@@ -76,6 +76,17 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.ui.SmartVaultViewModel
 import com.example.data.entity.VaultEntity
+import androidx.activity.compose.BackHandler
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.rememberModalBottomSheetState
+import com.example.ui.components.QuickAddBottomSheet
+import com.example.ui.dialogs.AddDebtDialog
+import com.example.ui.dialogs.ManageModulesDialog
+import com.example.ui.dialogs.TransferDialog
+import com.example.ui.screens.DebtsScreen
+import com.example.ui.screens.FinancialCalendarScreen
+import com.example.ui.screens.NetWorthScreen
 import com.example.ui.dialogs.AddChildLessonDialog
 import com.example.ui.dialogs.AddCommitmentDialog
 import com.example.ui.dialogs.AddExpenseDialog
@@ -151,6 +162,13 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
     val outingParticipantsCount by viewModel.outingParticipantsCount.collectAsStateWithLifecycle()
     val selectedOutingId by viewModel.selectedOutingId.collectAsStateWithLifecycle()
 
+    val financialSummary by viewModel.financialSummary.collectAsStateWithLifecycle()
+    val financialInsights by viewModel.financialInsights.collectAsStateWithLifecycle()
+    val moduleConfig by viewModel.moduleConfig.collectAsStateWithLifecycle()
+    val allDebts by viewModel.allDebts.collectAsStateWithLifecycle()
+    val allTransfers by viewModel.allTransfers.collectAsStateWithLifecycle()
+    val allNetWorthSnapshots by viewModel.allNetWorthSnapshots.collectAsStateWithLifecycle()
+
     val goldApiKey by viewModel.goldApiKey.collectAsStateWithLifecycle()
     val isUpdatingLiveGoldPrice by viewModel.isUpdatingLiveGoldPrice.collectAsStateWithLifecycle()
     val lastGoldPriceUpdateTimestamp by viewModel.lastGoldPriceUpdateTimestamp.collectAsStateWithLifecycle()
@@ -175,7 +193,7 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
         }
     )
 
-    // Dialog state controllers
+    // Dialog & Screen state controllers
     var showAddIncomeDialog by remember { mutableStateOf(false) }
     var showAddExpenseDialog by remember { mutableStateOf(false) }
     var showAddCommitmentDialog by remember { mutableStateOf(false) }
@@ -184,6 +202,15 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
     var showSetBudgetDialog by remember { mutableStateOf(false) }
     var showEditProfileDialog by remember { mutableStateOf(false) }
     var vaultToEdit by remember { mutableStateOf<VaultEntity?>(null) }
+
+    var showNetWorthScreen by remember { mutableStateOf(false) }
+    var showDebtsScreen by remember { mutableStateOf(false) }
+    var showCalendarScreen by remember { mutableStateOf(false) }
+    var showTransferDialog by remember { mutableStateOf(false) }
+    var showManageModulesDialog by remember { mutableStateOf(false) }
+    var showQuickAddSheet by remember { mutableStateOf(false) }
+    val quickAddSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var showAddDebtDialog by remember { mutableStateOf(false) }
 
     var budgetTargetCategory by remember { mutableStateOf("سوبر ماركت") }
     var budgetTargetLimit by remember { mutableStateOf(3000.0) }
@@ -216,7 +243,50 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
         return
     }
 
+    if (showNetWorthScreen) {
+        BackHandler { showNetWorthScreen = false }
+        NetWorthScreen(
+            breakdown = financialSummary.netWorthBreakdown,
+            snapshots = allNetWorthSnapshots,
+            currency = dashboardState.currency,
+            onBack = { showNetWorthScreen = false }
+        )
+        return
+    }
+
+    if (showDebtsScreen) {
+        BackHandler { showDebtsScreen = false }
+        DebtsScreen(
+            debts = allDebts,
+            currency = dashboardState.currency,
+            onBack = { showDebtsScreen = false },
+            onAddDebt = { name, type, amt, notes ->
+                viewModel.addDebt(name, type, amt, notes)
+            },
+            onRecordPayment = { debtId, amt, notes ->
+                viewModel.recordDebtPayment(debtId, amt, notes)
+            },
+            onDeleteDebt = { id -> viewModel.deleteDebt(id) }
+        )
+        return
+    }
+
+    if (showCalendarScreen) {
+        BackHandler { showCalendarScreen = false }
+        FinancialCalendarScreen(
+            transactions = allTransactions,
+            transfers = allTransfers,
+            commitments = allCommitments,
+            lessons = allChildLessons,
+            debts = allDebts,
+            currency = dashboardState.currency,
+            onBack = { showCalendarScreen = false }
+        )
+        return
+    }
+
     if (showCloudVaultScreen) {
+        BackHandler { showCloudVaultScreen = false }
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -397,6 +467,15 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
                     )
                 }
             }
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { showQuickAddSheet = true },
+                containerColor = EmeraldGreenPrimary,
+                contentColor = Color.White
+            ) {
+                Icon(Icons.Default.Add, contentDescription = "إضافة سريعة")
+            }
         }
     ) { paddingValues ->
         AnimatedContent(
@@ -440,6 +519,14 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
                     onPayCommitment = { item -> viewModel.payCommitment(item) },
                     onPayLesson = { lesson -> viewModel.payChildLesson(lesson) },
                     onSelectVault = { name -> viewModel.selectedVaultName.value = name },
+                    financialSummary = financialSummary,
+                    insights = financialInsights,
+                    config = moduleConfig,
+                    onOpenNetWorth = { showNetWorthScreen = true },
+                    onOpenDebts = { showDebtsScreen = true },
+                    onOpenCalendar = { showCalendarScreen = true },
+                    onOpenTransfer = { showTransferDialog = true },
+                    onOpenManageModules = { showManageModulesDialog = true },
                     onOpenAddIncome = { showAddIncomeDialog = true },
                     onOpenAddExpense = { showAddExpenseDialog = true },
                     onOpenAddVault = { showAddVaultDialog = true },
@@ -454,6 +541,8 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
                 )
                 1 -> ExpensesAndSearchScreen(
                     transactions = allTransactions,
+                    transfers = allTransfers,
+                    vaults = allVaults,
                     searchQuery = searchQuery,
                     selectedCategory = selectedFilterCategory,
                     selectedType = selectedFilterType,
@@ -462,6 +551,7 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
                     onSelectCategory = { cat -> viewModel.selectedFilterCategory.value = cat },
                     onSelectType = { type -> viewModel.selectedFilterType.value = type },
                     onDeleteTransaction = { tx -> viewModel.deleteTransaction(tx.id, tx) },
+                    onDeleteTransfer = { tr -> viewModel.deleteTransfer(tr) },
                     onOpenAddExpense = { showAddExpenseDialog = true },
                     onOpenAddIncome = { showAddIncomeDialog = true },
                     onOpenSettings = { selectedTab = 6 },
@@ -488,6 +578,12 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
                     goldAssets = allGoldAssets,
                     cashSavings = allCashSavings,
                     goldPriceMap = goldPriceMap,
+                    financialSummary = financialSummary,
+                    insights = financialInsights,
+                    config = moduleConfig,
+                    onOpenNetWorth = { showNetWorthScreen = true },
+                    onOpenDebts = { showDebtsScreen = true },
+                    onOpenCalendar = { showCalendarScreen = true },
                     onOpenSettings = { selectedTab = 6 },
                     onToggleLanguage = { viewModel.setLanguage(if (selectedLanguage == "ar") "en" else "ar") }
                 )
@@ -667,6 +763,88 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
             },
             onDelete = { id ->
                 viewModel.deleteVault(id)
+            }
+        )
+    }
+
+    if (showTransferDialog) {
+        TransferDialog(
+            vaults = allVaults,
+            onDismiss = { showTransferDialog = false },
+            onConfirm = { from, to, amount, notes ->
+                var error: String? = null
+                viewModel.executeTransfer(
+                    fromVaultName = from,
+                    toVaultName = to,
+                    amount = amount,
+                    notes = notes,
+                    onError = { error = it }
+                )
+                error
+            }
+        )
+    }
+
+    if (showManageModulesDialog) {
+        ManageModulesDialog(
+            currentConfig = moduleConfig,
+            onDismiss = { showManageModulesDialog = false },
+            onSave = { newConfig ->
+                viewModel.updateModuleConfig(newConfig)
+            }
+        )
+    }
+
+    if (showQuickAddSheet) {
+        QuickAddBottomSheet(
+            sheetState = quickAddSheetState,
+            config = moduleConfig,
+            onDismiss = { showQuickAddSheet = false },
+            onOpenAddIncome = {
+                showQuickAddSheet = false
+                showAddIncomeDialog = true
+            },
+            onOpenAddExpense = {
+                showQuickAddSheet = false
+                showAddExpenseDialog = true
+            },
+            onOpenTransfer = {
+                showQuickAddSheet = false
+                showTransferDialog = true
+            },
+            onOpenAddCashSaving = {
+                showQuickAddSheet = false
+                selectedTab = 4
+            },
+            onOpenAddGold = {
+                showQuickAddSheet = false
+                selectedTab = 4
+            },
+            onOpenAddDebt = {
+                showQuickAddSheet = false
+                showAddDebtDialog = true
+            },
+            onOpenAddCommitment = {
+                showQuickAddSheet = false
+                showAddCommitmentDialog = true
+            },
+            onOpenAddLesson = {
+                showQuickAddSheet = false
+                showAddLessonDialog = true
+            },
+            onOpenAddOuting = {
+                showQuickAddSheet = false
+                selectedTab = 5
+            }
+        )
+    }
+
+    if (showAddDebtDialog) {
+        AddDebtDialog(
+            onDismiss = { showAddDebtDialog = false },
+            onConfirm = { name, type, amt, notes ->
+                viewModel.addDebt(name, type, amt, notes)
+                showAddDebtDialog = false
             }
         )
     }

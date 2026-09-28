@@ -7,10 +7,14 @@ import com.example.data.entity.BudgetLimitEntity
 import com.example.data.entity.CashSavingEntity
 import com.example.data.entity.ChildLessonEntity
 import com.example.data.entity.CommitmentEntity
+import com.example.data.entity.DebtEntity
+import com.example.data.entity.DebtPaymentEntity
 import com.example.data.entity.GoldAssetEntity
+import com.example.data.entity.NetWorthSnapshotEntity
 import com.example.data.entity.OutingEntity
 import com.example.data.entity.OutingExpenseEntity
 import com.example.data.entity.TransactionEntity
+import com.example.data.entity.TransferEntity
 import com.example.data.entity.VaultEntity
 import com.example.data.entity.VaultItemEntity
 import kotlinx.coroutines.Dispatchers
@@ -212,6 +216,73 @@ object LocalBackupManager {
             vItemArray.put(o)
         }
         dataObj.put("vault_items", vItemArray)
+
+        // 10. Transfers
+        val transfers = db.transferDao().getTransfersForUser(userId).first()
+        val transferArray = JSONArray()
+        for (t in transfers) {
+            val o = JSONObject()
+            o.put("fromVaultName", t.fromVaultName)
+            o.put("toVaultName", t.toVaultName)
+            o.put("amount", t.amount)
+            o.put("dateMillis", t.dateMillis)
+            o.put("notes", t.notes)
+            transferArray.put(o)
+        }
+        dataObj.put("transfers", transferArray)
+
+        // 11. Debts
+        val debts = db.debtDao().getDebtsForUser(userId).first()
+        val debtArray = JSONArray()
+        for (d in debts) {
+            val o = JSONObject()
+            o.put("id", d.id)
+            o.put("personName", d.personName)
+            o.put("type", d.type)
+            o.put("originalAmount", d.originalAmount)
+            o.put("paidAmount", d.paidAmount)
+            o.put("remainingAmount", d.remainingAmount)
+            o.put("startDateMillis", d.startDateMillis)
+            if (d.dueDateMillis != null) o.put("dueDateMillis", d.dueDateMillis)
+            o.put("notes", d.notes)
+            o.put("status", d.status)
+            o.put("createdAt", d.createdAt)
+            o.put("updatedAt", d.updatedAt)
+            debtArray.put(o)
+        }
+        dataObj.put("debts", debtArray)
+
+        // 12. Debt Payments
+        val payments = db.debtPaymentDao().getAllPaymentsForUser(userId).first()
+        val payArray = JSONArray()
+        for (p in payments) {
+            val o = JSONObject()
+            o.put("debtId", p.debtId)
+            o.put("amount", p.amount)
+            o.put("dateMillis", p.dateMillis)
+            o.put("notes", p.notes)
+            payArray.put(o)
+        }
+        dataObj.put("debt_payments", payArray)
+
+        // 13. Net Worth Snapshots
+        val snapshots = db.netWorthSnapshotDao().getSnapshotsForUser(userId).first()
+        val snapArray = JSONArray()
+        for (s in snapshots) {
+            val o = JSONObject()
+            o.put("dateMillis", s.dateMillis)
+            o.put("dateKey", s.dateKey)
+            o.put("totalAssets", s.totalAssets)
+            o.put("totalLiabilities", s.totalLiabilities)
+            o.put("netWorth", s.netWorth)
+            o.put("vaultsTotal", s.vaultsTotal)
+            o.put("cashSavingsTotal", s.cashSavingsTotal)
+            o.put("goldValueTotal", s.goldValueTotal)
+            o.put("debtsOwedToMeTotal", s.debtsOwedToMeTotal)
+            o.put("debtsIOweTotal", s.debtsIOweTotal)
+            snapArray.put(o)
+        }
+        dataObj.put("net_worth_snapshots", snapArray)
 
         // Calculate SHA-256 Checksum for Data Integrity Verification
         val dataString = dataObj.toString()
@@ -505,6 +576,96 @@ object LocalBackupManager {
                     )
                 }
                 if (list.isNotEmpty()) db.vaultItemDao().insertAllVaultItems(list)
+            }
+
+            // 10. Transfers
+            val transferArray = dataObj.optJSONArray("transfers")
+            if (transferArray != null) {
+                val list = mutableListOf<TransferEntity>()
+                for (i in 0 until transferArray.length()) {
+                    val o = transferArray.getJSONObject(i)
+                    list.add(
+                        TransferEntity(
+                            userId = userId,
+                            fromVaultName = o.optString("fromVaultName", ""),
+                            toVaultName = o.optString("toVaultName", ""),
+                            amount = o.optDouble("amount", 0.0),
+                            dateMillis = o.optLong("dateMillis", System.currentTimeMillis()),
+                            notes = o.optString("notes", "")
+                        )
+                    )
+                }
+                if (list.isNotEmpty()) db.transferDao().insertAllTransfers(list)
+            }
+
+            // 11. Debts
+            val debtArray = dataObj.optJSONArray("debts")
+            if (debtArray != null) {
+                val list = mutableListOf<DebtEntity>()
+                for (i in 0 until debtArray.length()) {
+                    val o = debtArray.getJSONObject(i)
+                    list.add(
+                        DebtEntity(
+                            userId = userId,
+                            personName = o.optString("personName", ""),
+                            type = o.optString("type", "OWED_TO_ME"),
+                            originalAmount = o.optDouble("originalAmount", 0.0),
+                            paidAmount = o.optDouble("paidAmount", 0.0),
+                            remainingAmount = o.optDouble("remainingAmount", 0.0),
+                            startDateMillis = o.optLong("startDateMillis", System.currentTimeMillis()),
+                            dueDateMillis = if (o.has("dueDateMillis")) o.getLong("dueDateMillis") else null,
+                            notes = o.optString("notes", ""),
+                            status = o.optString("status", "ACTIVE"),
+                            createdAt = o.optLong("createdAt", System.currentTimeMillis()),
+                            updatedAt = o.optLong("updatedAt", System.currentTimeMillis())
+                        )
+                    )
+                }
+                if (list.isNotEmpty()) db.debtDao().insertAllDebts(list)
+            }
+
+            // 12. Debt Payments
+            val payArray = dataObj.optJSONArray("debt_payments")
+            if (payArray != null) {
+                val list = mutableListOf<DebtPaymentEntity>()
+                for (i in 0 until payArray.length()) {
+                    val o = payArray.getJSONObject(i)
+                    list.add(
+                        DebtPaymentEntity(
+                            debtId = o.optInt("debtId", 0),
+                            userId = userId,
+                            amount = o.optDouble("amount", 0.0),
+                            dateMillis = o.optLong("dateMillis", System.currentTimeMillis()),
+                            notes = o.optString("notes", "")
+                        )
+                    )
+                }
+                if (list.isNotEmpty()) db.debtPaymentDao().insertAllPayments(list)
+            }
+
+            // 13. Net Worth Snapshots
+            val snapArray = dataObj.optJSONArray("net_worth_snapshots")
+            if (snapArray != null) {
+                val list = mutableListOf<NetWorthSnapshotEntity>()
+                for (i in 0 until snapArray.length()) {
+                    val o = snapArray.getJSONObject(i)
+                    list.add(
+                        NetWorthSnapshotEntity(
+                            userId = userId,
+                            dateMillis = o.optLong("dateMillis", System.currentTimeMillis()),
+                            dateKey = o.optString("dateKey", ""),
+                            totalAssets = o.optDouble("totalAssets", 0.0),
+                            totalLiabilities = o.optDouble("totalLiabilities", 0.0),
+                            netWorth = o.optDouble("netWorth", 0.0),
+                            vaultsTotal = o.optDouble("vaultsTotal", 0.0),
+                            cashSavingsTotal = o.optDouble("cashSavingsTotal", 0.0),
+                            goldValueTotal = o.optDouble("goldValueTotal", 0.0),
+                            debtsOwedToMeTotal = o.optDouble("debtsOwedToMeTotal", 0.0),
+                            debtsIOweTotal = o.optDouble("debtsIOweTotal", 0.0)
+                        )
+                    )
+                }
+                if (list.isNotEmpty()) db.netWorthSnapshotDao().insertAllSnapshots(list)
             }
 
             true

@@ -21,16 +21,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBalance
 import androidx.compose.material.icons.filled.Analytics
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.PieChart
 import androidx.compose.material.icons.filled.Print
 import androidx.compose.material.icons.filled.Psychology
+import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Settings
+import com.example.data.calculator.FinancialSummaryResult
+import com.example.data.insights.FinancialInsight
+import com.example.data.preferences.ModuleConfiguration
+import com.example.ui.dialogs.AllInsightsDialog
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -73,6 +80,7 @@ import com.example.data.entity.TransactionEntity
 import com.example.data.entity.VaultEntity
 import com.example.ui.components.SavingsGrowthInteractiveCard
 import com.example.ui.theme.CardBorderColor
+import com.example.ui.theme.EmeraldGreenDark
 import com.example.ui.theme.EmeraldGreenPrimary
 import com.example.ui.theme.ExpenseRed
 import com.example.ui.theme.IncomeGreen
@@ -95,12 +103,19 @@ fun ReportsAndChartsScreen(
     goldAssets: List<GoldAssetEntity> = emptyList(),
     cashSavings: List<CashSavingEntity> = emptyList(),
     goldPriceMap: Map<Int, Double> = emptyMap(),
+    financialSummary: FinancialSummaryResult = FinancialSummaryResult(),
+    insights: List<FinancialInsight> = emptyList(),
+    config: ModuleConfiguration = ModuleConfiguration(),
+    onOpenNetWorth: () -> Unit = {},
+    onOpenDebts: () -> Unit = {},
+    onOpenCalendar: () -> Unit = {},
     onOpenSettings: () -> Unit = {},
     onToggleLanguage: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val appStrings = LocalStrings.current
     val context = LocalContext.current
+    var showAllInsightsDialog by remember { mutableStateOf(false) }
 
     // Date & Month calculations
     val currentCal = remember { Calendar.getInstance() }
@@ -246,6 +261,113 @@ fun ReportsAndChartsScreen(
                             tint = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.size(20.dp)
                         )
+                    }
+                }
+            }
+        }
+
+        // 1.5. ADVANCED FINANCIAL MODULES NAVIGATION ROW
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor),
+                elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+            ) {
+                Column(modifier = Modifier.padding(14.dp)) {
+                    Text(
+                        text = "التقارير المتقدمة والتحليلات 📊",
+                        fontSize = 14.5.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        // Net Worth
+                        Card(
+                            modifier = Modifier
+                                .weight(1f)
+                                .clickable { onOpenNetWorth() },
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(containerColor = MintBackground)
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp, horizontal = 6.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(Icons.Default.Security, contentDescription = null, tint = EmeraldGreenPrimary, modifier = Modifier.size(22.dp))
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text("صافي الثروة", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = EmeraldGreenDark)
+                            }
+                        }
+
+                        // Calendar
+                        Card(
+                            modifier = Modifier
+                                .weight(1f)
+                                .clickable { onOpenCalendar() },
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFFFFF3E0))
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp, horizontal = 6.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = Color(0xFFE65100), modifier = Modifier.size(22.dp))
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text("التقويم المالي", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFFBF360C))
+                            }
+                        }
+
+                        // Debts (if enabled)
+                        if (config.debts) {
+                            Card(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .clickable { onOpenDebts() },
+                                shape = RoundedCornerShape(12.dp),
+                                colors = CardDefaults.cardColors(containerColor = Color(0xFFEDE7F6))
+                            ) {
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(vertical = 10.dp, horizontal = 6.dp),
+                                    horizontalAlignment = Alignment.CenterHorizontally
+                                ) {
+                                    Icon(Icons.Default.AccountBalance, contentDescription = null, tint = Color(0xFF5E35B1), modifier = Modifier.size(22.dp))
+                                    Spacer(modifier = Modifier.height(4.dp))
+                                    Text("سجل الديون", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFF4527A0))
+                                }
+                            }
+                        }
+
+                        // Insights
+                        Card(
+                            modifier = Modifier
+                                .weight(1f)
+                                .clickable { showAllInsightsDialog = true },
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(containerColor = Color(0xFFE0F2F1))
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(vertical = 10.dp, horizontal = 6.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Icon(Icons.Default.Psychology, contentDescription = null, tint = Color(0xFF00695C), modifier = Modifier.size(22.dp))
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text("الرؤى الذكية", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFF004D40))
+                            }
+                        }
                     }
                 }
             }
@@ -1207,6 +1329,13 @@ fun ReportsAndChartsScreen(
         item {
             Spacer(modifier = Modifier.height(20.dp))
         }
+    }
+
+    if (showAllInsightsDialog) {
+        AllInsightsDialog(
+            insights = insights,
+            onDismiss = { showAllInsightsDialog = false }
+        )
     }
 }
 

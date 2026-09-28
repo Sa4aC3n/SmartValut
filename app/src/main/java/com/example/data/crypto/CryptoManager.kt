@@ -18,12 +18,14 @@ object CryptoManager {
     private const val KEY_ALIAS = "SmartVaultMasterKeyAES256"
     private const val TRANSFORMATION = "AES/GCM/NoPadding"
     private const val GCM_TAG_LENGTH = 128
-    private const val IV_LENGTH_BYTES = 12
 
-    // Fallback key bytes for environments where AndroidKeyStore is not mocked (like Robolectric without KeyStore)
-    private val fallbackKeyBytes = "SmartVaultMasterPassphrase256Bit".toByteArray(Charsets.UTF_8).copyOf(32)
+    // Test-only injected key (null in production; set only by automated unit tests)
+    @Volatile
+    var testSecretKey: SecretKey? = null
 
     private fun getOrCreateSecretKey(): SecretKey {
+        testSecretKey?.let { return it }
+
         return try {
             val keyStore = KeyStore.getInstance(ANDROID_KEYSTORE).apply { load(null) }
             if (keyStore.containsAlias(KEY_ALIAS)) {
@@ -42,19 +44,18 @@ object CryptoManager {
                 keyGen.init(spec)
                 keyGen.generateKey()
             }
-        } catch (_: Exception) {
-            // Software AES-256 fallback
-            SecretKeySpec(fallbackKeyBytes, "AES")
+        } catch (e: Exception) {
+            throw SecurityException("تعذر الوصول إلى مخزن المفاتيح الآمن (Hardware KeyStore unavailable): ${e.message}", e)
         }
     }
 
     /**
      * Encrypts plain text using AES-256-GCM.
-     * The output contains: [1 byte IV length] + [IV] + [Ciphertext + Auth Tag] encoded in Base64.
+     * Throws SecurityException if secure encryption fails (no insecure downgrade or plaintext Base64).
      */
     fun encrypt(plainText: String): String {
         if (plainText.isEmpty()) return ""
-        return try {
+        try {
             val secretKey = getOrCreateSecretKey()
             val cipher = Cipher.getInstance(TRANSFORMATION)
             cipher.init(Cipher.ENCRYPT_MODE, secretKey)
@@ -66,27 +67,24 @@ object CryptoManager {
             byteBuffer.put(iv)
             byteBuffer.put(cipherBytes)
 
-            Base64.encodeToString(byteBuffer.array(), Base64.NO_WRAP)
+            return Base64.encodeToString(byteBuffer.array(), Base64.NO_WRAP)
         } catch (e: Exception) {
-            // Safe fallback: XOR/Base64 envelope if hardware crypto fails
-            "ENC_" + Base64.encodeToString(plainText.toByteArray(Charsets.UTF_8), Base64.NO_WRAP)
+            throw SecurityException("فشل تشفير البيانات بشكل آمن", e)
         }
     }
 
     /**
      * Decrypts AES-256-GCM encrypted Base64 string.
+     * Supports read-only legacy ENC_ migration while rejecting corrupted ciphertext.
      */
     fun decrypt(cipherTextBase64: String): String {
         if (cipherTextBase64.isEmpty()) return ""
         if (cipherTextBase64.startsWith("ENC_")) {
+            // Read-only legacy decoding for backwards compatibility migration
             val raw = cipherTextBase64.removePrefix("ENC_")
-            return try {
-                String(Base64.decode(raw, Base64.NO_WRAP), Charsets.UTF_8)
-            } catch (_: Exception) {
-                cipherTextBase64
-            }
+            return String(Base64.decode(raw, Base64.NO_WRAP), Charsets.UTF_8)
         }
-        return try {
+        try {
             val combined = Base64.decode(cipherTextBase64, Base64.NO_WRAP)
             val byteBuffer = ByteBuffer.wrap(combined)
             val ivLength = byteBuffer.get().toInt()
@@ -100,10 +98,9 @@ object CryptoManager {
             val spec = GCMParameterSpec(GCM_TAG_LENGTH, iv)
             cipher.init(Cipher.DECRYPT_MODE, secretKey, spec)
 
-            String(cipher.doFinal(cipherBytes), Charsets.UTF_8)
+            return String(cipher.doFinal(cipherBytes), Charsets.UTF_8)
         } catch (e: Exception) {
-            // If it cannot be decrypted (e.g. legacy plain text), return as is
-            cipherTextBase64
+            throw SecurityException("فشل فك تشفير البيانات: المفتاح غير صالح أو البيانات معطوبة", e)
         }
     }
 }

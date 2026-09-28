@@ -751,16 +751,16 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val modulePreferencesManager = ModulePreferencesManager(application)
-    val moduleConfig: StateFlow<ModuleConfiguration> = modulePreferencesManager.configurationFlow
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val moduleConfig: StateFlow<ModuleConfiguration> = activeUserId.flatMapLatest { uid ->
+        modulePreferencesManager.getConfigurationFlowForUser(uid)
+    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), modulePreferencesManager.getConfiguration(activeUserId.value))
 
     val financialSummary: StateFlow<FinancialSummaryResult> = combine(
-        allVaults,
-        allTransactions,
-        allCashSavings,
-        allGoldAssets,
-        allDebts
-    ) { vaults, txs, cash, gold, debts ->
-        val goldPrices = repository.allGoldPrices.firstOrNull() ?: emptyList()
+        combine(allVaults, allTransactions, allCashSavings) { v, t, c -> Triple(v, t, c) },
+        combine(allGoldAssets, allDebts, allGoldPrices) { g, d, p -> Triple(g, d, p) },
+        combine(allCommitments, allChildLessons) { comms, lessons -> Pair(comms, lessons) }
+    ) { (vaults, txs, cash), (gold, debts, goldPrices), (commitments, lessons) ->
         val priceMap = goldPrices.associate { it.karat to it.pricePerGram }
         FinancialSummaryCalculator.calculate(
             vaults = vaults,
@@ -769,8 +769,8 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
             goldAssets = gold,
             debts = debts,
             goldPriceMap = priceMap,
-            commitments = allCommitments.value,
-            lessons = allChildLessons.value
+            commitments = commitments,
+            lessons = lessons
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), FinancialSummaryResult())
 
@@ -1532,7 +1532,21 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     fun deleteTransfer(transfer: TransferEntity) {
         viewModelScope.launch {
-            repository.deleteTransfer(transfer.id)
+            repository.deleteTransfer(transfer.id, activeUserId.value)
+        }
+    }
+
+    fun reverseTransfer(
+        transferId: Int,
+        onSuccess: () -> Unit = {},
+        onError: (String) -> Unit = {}
+    ) {
+        viewModelScope.launch {
+            val result = repository.reverseTransfer(transferId, activeUserId.value)
+            result.fold(
+                onSuccess = { onSuccess() },
+                onFailure = { err -> onError(err.message ?: "فشل عكس التحويل") }
+            )
         }
     }
 
@@ -1586,7 +1600,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     fun deleteDebt(debtId: Int) {
         viewModelScope.launch {
-            repository.deleteDebt(debtId)
+            repository.deleteDebt(debtId, activeUserId.value)
         }
     }
 
@@ -1599,9 +1613,12 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     fun takeNetWorthSnapshot() {
         viewModelScope.launch {
             val summary = financialSummary.value
+            val now = System.currentTimeMillis()
+            val dateKey = SimpleDateFormat("yyyy-MM-dd", Locale.US).format(java.util.Date(now))
             val snapshot = NetWorthSnapshotEntity(
                 userId = activeUserId.value,
-                dateMillis = System.currentTimeMillis(),
+                dateMillis = now,
+                dateKey = dateKey,
                 netWorth = summary.netWorthBreakdown.netWorth,
                 totalAssets = summary.netWorthBreakdown.totalAssets,
                 totalLiabilities = summary.netWorthBreakdown.totalLiabilities,

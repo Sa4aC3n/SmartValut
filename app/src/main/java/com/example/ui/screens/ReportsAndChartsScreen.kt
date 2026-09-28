@@ -119,25 +119,24 @@ fun ReportsAndChartsScreen(
 
     // Date & Month calculations
     val currentCal = remember { Calendar.getInstance() }
-    val currentMonthName = remember { SimpleDateFormat("MMMM yyyy", Locale("ar")).format(currentCal.time) }
-    var selectedMonthName by remember { mutableStateOf(currentMonthName) }
-    var showMonthDropdown by remember { mutableStateOf(false) }
-
     val monthOptions = remember {
-        val list = mutableListOf<String>()
+        val list = mutableListOf<Pair<String, Pair<Int, Int>>>()
         val sdf = SimpleDateFormat("MMMM yyyy", Locale("ar"))
         for (i in 0..5) {
             val c = Calendar.getInstance()
             c.add(Calendar.MONTH, -i)
-            list.add(sdf.format(c.time))
+            list.add(Pair(sdf.format(c.time), Pair(c.get(Calendar.YEAR), c.get(Calendar.MONTH))))
         }
         list
     }
+    var selectedMonthOption by remember { mutableStateOf(monthOptions.first()) }
+    val selectedMonthName = selectedMonthOption.first
+    var showMonthDropdown by remember { mutableStateOf(false) }
 
-    // Filter transactions for current month
-    val currentMonthTxs = remember(transactions) {
-        val m = currentCal.get(Calendar.MONTH)
-        val y = currentCal.get(Calendar.YEAR)
+    // Filter transactions accurately for selected month
+    val currentMonthTxs = remember(transactions, selectedMonthOption) {
+        val y = selectedMonthOption.second.first
+        val m = selectedMonthOption.second.second
         transactions.filter { tx ->
             val txCal = Calendar.getInstance()
             txCal.timeInMillis = tx.dateMillis
@@ -152,19 +151,11 @@ fun ReportsAndChartsScreen(
     val unpaidCommitmentsSum = remember(commitments) { commitments.filter { !it.isPaid }.sumOf { it.amount } }
     val unpaidLessonsSum = remember(lessons) { lessons.filter { !it.isPaid }.sumOf { it.amount } }
 
-    val categoryExpenses = remember(currentMonthTxs, unpaidCommitmentsSum, unpaidLessonsSum) {
-        val map = currentMonthTxs.filter { it.type == "EXPENSE" }
+    // Keep actual recorded expenses separate from future unpaid obligations
+    val categoryExpenses = remember(currentMonthTxs) {
+        currentMonthTxs.filter { it.type == "EXPENSE" }
             .groupBy { it.category }
             .mapValues { entry -> entry.value.sumOf { it.amount } }
-            .toMutableMap()
-
-        if (unpaidCommitmentsSum > 0) {
-            map["الالتزامات"] = (map["الالتزامات"] ?: 0.0) + unpaidCommitmentsSum
-        }
-        if (unpaidLessonsSum > 0) {
-            map["دروس أطفال"] = (map["دروس أطفال"] ?: 0.0) + unpaidLessonsSum
-        }
-        map.toMap()
     }
 
     val totalExpense = remember(categoryExpenses) {
@@ -173,9 +164,19 @@ fun ReportsAndChartsScreen(
 
     val remainingBalance = (totalIncome - totalExpense).coerceAtLeast(0.0)
 
-    val dayOfMonth = currentCal.get(Calendar.DAY_OF_MONTH)
-    val totalDaysInMonth = currentCal.getActualMaximum(Calendar.DAY_OF_MONTH)
-    val daysLeft = (totalDaysInMonth - dayOfMonth).coerceAtLeast(0)
+    val isCurrentMonth = remember(selectedMonthOption) {
+        val now = Calendar.getInstance()
+        now.get(Calendar.YEAR) == selectedMonthOption.second.first && now.get(Calendar.MONTH) == selectedMonthOption.second.second
+    }
+    val calForSelected = remember(selectedMonthOption) {
+        val c = Calendar.getInstance()
+        c.set(Calendar.YEAR, selectedMonthOption.second.first)
+        c.set(Calendar.MONTH, selectedMonthOption.second.second)
+        c
+    }
+    val totalDaysInMonth = calForSelected.getActualMaximum(Calendar.DAY_OF_MONTH)
+    val dayOfMonth = if (isCurrentMonth) currentCal.get(Calendar.DAY_OF_MONTH) else totalDaysInMonth
+    val daysLeft = if (isCurrentMonth) (totalDaysInMonth - dayOfMonth).coerceAtLeast(0) else 0
 
     val avgDailySpend = if (dayOfMonth > 0) totalExpense / dayOfMonth else 0.0
     val safeDailyLimit = if (daysLeft > 0) remainingBalance / daysLeft else 0.0
@@ -433,11 +434,11 @@ fun ReportsAndChartsScreen(
                             expanded = showMonthDropdown,
                             onDismissRequest = { showMonthDropdown = false }
                         ) {
-                            monthOptions.forEach { month ->
+                            monthOptions.forEach { monthOption ->
                                 DropdownMenuItem(
-                                    text = { Text(month, fontSize = 13.sp) },
+                                    text = { Text(monthOption.first, fontSize = 13.sp) },
                                     onClick = {
-                                        selectedMonthName = month
+                                        selectedMonthOption = monthOption
                                         showMonthDropdown = false
                                     }
                                 )

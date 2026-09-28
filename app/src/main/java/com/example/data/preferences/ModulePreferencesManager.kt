@@ -26,6 +26,17 @@ class ModulePreferencesManager(context: Context) {
     private val _configurationFlow = MutableStateFlow(loadConfiguration(""))
     val configurationFlow: StateFlow<ModuleConfiguration> = _configurationFlow.asStateFlow()
 
+    private val userConfigFlows = mutableMapOf<String, MutableStateFlow<ModuleConfiguration>>()
+
+    fun getConfigurationFlowForUser(userId: String = ""): StateFlow<ModuleConfiguration> {
+        val key = userId.ifBlank { "" }
+        val flow = userConfigFlows.getOrPut(key) {
+            MutableStateFlow(loadConfiguration(key))
+        }
+        flow.value = loadConfiguration(key)
+        return flow.asStateFlow()
+    }
+
     private fun userKey(userId: String, key: String): String =
         if (userId.isBlank()) "guest_$key" else "${userId}_$key"
 
@@ -47,12 +58,14 @@ class ModulePreferencesManager(context: Context) {
     fun getConfiguration(userId: String = ""): ModuleConfiguration {
         val config = loadConfiguration(userId)
         _configurationFlow.value = config
+        userConfigFlows[userId.ifBlank { "" }]?.value = config
         return config
     }
 
     fun updateModule(userId: String = "", moduleKey: String, enabled: Boolean) {
         prefs.edit().putBoolean(userKey(userId, "mod_$moduleKey"), enabled).apply()
-        getConfiguration(userId)
+        val config = getConfiguration(userId)
+        userConfigFlows[userId.ifBlank { "" }]?.value = config
     }
 
     fun saveFullConfiguration(userId: String = "", config: ModuleConfiguration) {
@@ -68,6 +81,7 @@ class ModulePreferencesManager(context: Context) {
             .putBoolean(userKey(userId, "mod_budgets"), config.budgets)
             .apply()
         _configurationFlow.value = config
+        userConfigFlows[userId.ifBlank { "" }]?.value = config
     }
 
     fun saveConfiguration(config: ModuleConfiguration, userId: String = "") {

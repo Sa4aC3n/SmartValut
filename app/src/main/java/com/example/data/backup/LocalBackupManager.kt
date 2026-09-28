@@ -2,6 +2,7 @@ package com.example.data.backup
 
 import android.content.Context
 import android.util.Base64
+import androidx.room.withTransaction
 import com.example.data.AppDatabase
 import com.example.data.entity.BudgetLimitEntity
 import com.example.data.entity.CashSavingEntity
@@ -53,13 +54,17 @@ object LocalBackupManager {
 
     /**
      * Generates a fully encrypted, tamper-evident backup string of the user's local financial data.
+     * Requires explicit user-provided password for all newly generated backups.
      */
     suspend fun createEncryptedBackup(
         context: Context,
         db: AppDatabase,
         userId: String,
-        userPassword: String = DEFAULT_BACKUP_SECRET
+        userPassword: String
     ): String = withContext(Dispatchers.IO) {
+        if (userPassword.isBlank()) {
+            throw IllegalArgumentException("يجب تحديد كلمة مرور لحماية وتشفير النسخة الاحتياطية")
+        }
         val root = JSONObject()
         root.put("app", "SmartVault")
         root.put("backupVersion", CURRENT_BACKUP_VERSION)
@@ -303,7 +308,20 @@ object LocalBackupManager {
         userPassword: String = DEFAULT_BACKUP_SECRET
     ): BackupValidationResult {
         return try {
-            val decryptedJson = decryptData(encryptedPayload, userPassword)
+            val decryptedJson = try {
+                decryptData(encryptedPayload, userPassword)
+            } catch (e: Exception) {
+                // Backward compatibility: if user-entered password failed, try legacy default secret
+                if (userPassword != DEFAULT_BACKUP_SECRET) {
+                    try {
+                        decryptData(encryptedPayload, DEFAULT_BACKUP_SECRET)
+                    } catch (_: Exception) {
+                        throw e
+                    }
+                } else {
+                    throw e
+                }
+            }
             val root = JSONObject(decryptedJson)
 
             val app = root.optString("app")
@@ -358,7 +376,9 @@ object LocalBackupManager {
     }
 
     /**
-     * Restores data safely and idempotently into Room for the specified userId.
+     * Restores data safely, atomically, and idempotently into Room for the specified userId.
+     * Prevents duplication on repeated restores by clearing existing records in an atomic transaction.
+     * Preserves strict relational integrity by mapping old debt IDs to new auto-generated IDs.
      */
     suspend fun applyRestore(
         db: AppDatabase,
@@ -369,243 +389,261 @@ object LocalBackupManager {
             val root = JSONObject(decryptedJson)
             val dataObj = root.getJSONObject("data")
 
-            // 1. Transactions
-            val txArray = dataObj.optJSONArray("transactions")
-            if (txArray != null) {
-                val list = mutableListOf<TransactionEntity>()
-                for (i in 0 until txArray.length()) {
-                    val o = txArray.getJSONObject(i)
-                    list.add(
-                        TransactionEntity(
-                            userId = userId,
-                            type = o.optString("type", "EXPENSE"),
-                            amount = o.optDouble("amount", 0.0),
-                            category = o.optString("category", "عام"),
-                            description = o.optString("description", ""),
-                            dateMillis = o.optLong("dateMillis", System.currentTimeMillis()),
-                            vaultName = o.optString("vaultName", "الخزنة الرئيسية"),
-                            receiptImagePath = o.optString("receiptImagePath", null)
-                        )
-                    )
-                }
-                if (list.isNotEmpty()) db.transactionDao().insertAllTransactions(list)
-            }
+            db.withTransaction {
+                // Clear existing financial data for target user inside atomic transaction
+                db.transactionDao().clearUserTransactions(userId)
+                db.vaultDao().clearUserVaults(userId)
+                db.budgetLimitDao().clearUserLimits(userId)
+                db.goldAssetDao().clearUserGoldAssets(userId)
+                db.cashSavingDao().clearUserCashSavings(userId)
+                db.commitmentDao().clearUserCommitments(userId)
+                db.childLessonDao().clearUserChildLessons(userId)
+                db.vaultItemDao().clearUserVaultItems(userId)
+                db.activityLogDao().clearUserLogs(userId)
+                db.outingDao().clearUserOutings(userId)
+                db.outingExpenseDao().clearUserOutingExpenses(userId)
+                db.transferDao().clearUserTransfers(userId)
+                db.debtDao().clearUserDebts(userId)
+                db.debtPaymentDao().clearUserDebtPayments(userId)
+                db.netWorthSnapshotDao().clearUserSnapshots(userId)
 
-            // 2. Vaults
-            val vaultArray = dataObj.optJSONArray("vaults")
-            if (vaultArray != null) {
-                val list = mutableListOf<VaultEntity>()
-                for (i in 0 until vaultArray.length()) {
-                    val o = vaultArray.getJSONObject(i)
-                    list.add(
-                        VaultEntity(
-                            userId = userId,
-                            name = o.optString("name", "الخزنة الرئيسية"),
-                            balance = o.optDouble("balance", 0.0),
-                            isDefault = o.optBoolean("isDefault", false)
+                // 1. Transactions
+                val txArray = dataObj.optJSONArray("transactions")
+                if (txArray != null) {
+                    val list = mutableListOf<TransactionEntity>()
+                    for (i in 0 until txArray.length()) {
+                        val o = txArray.getJSONObject(i)
+                        list.add(
+                            TransactionEntity(
+                                userId = userId,
+                                type = o.optString("type", "EXPENSE"),
+                                amount = o.optDouble("amount", 0.0),
+                                category = o.optString("category", "عام"),
+                                description = o.optString("description", ""),
+                                dateMillis = o.optLong("dateMillis", System.currentTimeMillis()),
+                                vaultName = o.optString("vaultName", "الخزنة الرئيسية"),
+                                receiptImagePath = o.optString("receiptImagePath", null)
+                            )
                         )
-                    )
+                    }
+                    if (list.isNotEmpty()) db.transactionDao().insertAllTransactions(list)
                 }
-                if (list.isNotEmpty()) db.vaultDao().insertAllVaults(list)
-            }
 
-            // 3. Budget Limits
-            val limitArray = dataObj.optJSONArray("budget_limits")
-            if (limitArray != null) {
-                val list = mutableListOf<BudgetLimitEntity>()
-                for (i in 0 until limitArray.length()) {
-                    val o = limitArray.getJSONObject(i)
-                    list.add(
-                        BudgetLimitEntity(
-                            userId = userId,
-                            category = o.optString("category", ""),
-                            monthlyLimit = o.optDouble("monthlyLimit", 0.0)
+                // 2. Vaults
+                val vaultArray = dataObj.optJSONArray("vaults")
+                if (vaultArray != null) {
+                    val list = mutableListOf<VaultEntity>()
+                    for (i in 0 until vaultArray.length()) {
+                        val o = vaultArray.getJSONObject(i)
+                        list.add(
+                            VaultEntity(
+                                userId = userId,
+                                name = o.optString("name", "الخزنة الرئيسية"),
+                                balance = o.optDouble("balance", 0.0),
+                                isDefault = o.optBoolean("isDefault", false)
+                            )
                         )
-                    )
+                    }
+                    if (list.isNotEmpty()) db.vaultDao().insertAllVaults(list)
                 }
-                if (list.isNotEmpty()) db.budgetLimitDao().insertAllLimits(list)
-            }
 
-            // 4. Gold Assets
-            val goldArray = dataObj.optJSONArray("gold_assets")
-            if (goldArray != null) {
-                val list = mutableListOf<GoldAssetEntity>()
-                for (i in 0 until goldArray.length()) {
-                    val o = goldArray.getJSONObject(i)
-                    list.add(
-                        GoldAssetEntity(
-                            userId = userId,
-                            name = o.optString("name", ""),
-                            goldType = o.optString("goldType", "سبيكة"),
-                            karat = o.optInt("karat", 24),
-                            weight = o.optDouble("weight", 0.0),
-                            purchasePrice = o.optDouble("purchasePrice", 0.0),
-                            purchaseDateMillis = o.optLong("purchaseDateMillis", System.currentTimeMillis()),
-                            purpose = o.optString("purpose", "SAVING"),
-                            imagePath = o.optString("imagePath", null),
-                            status = o.optString("status", "ACTIVE"),
-                            salePrice = if (o.has("salePrice")) o.getDouble("salePrice") else null,
-                            saleDateMillis = if (o.has("saleDateMillis")) o.getLong("saleDateMillis") else null,
-                            saleNotes = o.optString("saleNotes", null),
-                            notes = o.optString("notes", "")
+                // 3. Budget Limits
+                val limitArray = dataObj.optJSONArray("budget_limits")
+                if (limitArray != null) {
+                    val list = mutableListOf<BudgetLimitEntity>()
+                    for (i in 0 until limitArray.length()) {
+                        val o = limitArray.getJSONObject(i)
+                        list.add(
+                            BudgetLimitEntity(
+                                userId = userId,
+                                category = o.optString("category", ""),
+                                monthlyLimit = o.optDouble("monthlyLimit", 0.0)
+                            )
                         )
-                    )
+                    }
+                    if (list.isNotEmpty()) db.budgetLimitDao().insertAllLimits(list)
                 }
-                if (list.isNotEmpty()) db.goldAssetDao().insertAllGoldAssets(list)
-            }
 
-            // 5. Cash Savings
-            val cashArray = dataObj.optJSONArray("cash_savings")
-            if (cashArray != null) {
-                val list = mutableListOf<CashSavingEntity>()
-                for (i in 0 until cashArray.length()) {
-                    val o = cashArray.getJSONObject(i)
-                    list.add(
-                        CashSavingEntity(
-                            userId = userId,
-                            amount = o.optDouble("amount", 0.0),
-                            currency = o.optString("currency", "EGP"),
-                            notes = o.optString("notes", ""),
-                            dateMillis = o.optLong("dateMillis", System.currentTimeMillis())
+                // 4. Gold Assets
+                val goldArray = dataObj.optJSONArray("gold_assets")
+                if (goldArray != null) {
+                    val list = mutableListOf<GoldAssetEntity>()
+                    for (i in 0 until goldArray.length()) {
+                        val o = goldArray.getJSONObject(i)
+                        list.add(
+                            GoldAssetEntity(
+                                userId = userId,
+                                name = o.optString("name", ""),
+                                goldType = o.optString("goldType", "سبيكة"),
+                                karat = o.optInt("karat", 24),
+                                weight = o.optDouble("weight", 0.0),
+                                purchasePrice = o.optDouble("purchasePrice", 0.0),
+                                purchaseDateMillis = o.optLong("purchaseDateMillis", System.currentTimeMillis()),
+                                purpose = o.optString("purpose", "SAVING"),
+                                imagePath = o.optString("imagePath", null),
+                                status = o.optString("status", "ACTIVE"),
+                                salePrice = if (o.has("salePrice")) o.getDouble("salePrice") else null,
+                                saleDateMillis = if (o.has("saleDateMillis")) o.getLong("saleDateMillis") else null,
+                                saleNotes = o.optString("saleNotes", null),
+                                notes = o.optString("notes", "")
+                            )
                         )
-                    )
+                    }
+                    if (list.isNotEmpty()) db.goldAssetDao().insertAllGoldAssets(list)
                 }
-                if (list.isNotEmpty()) db.cashSavingDao().insertAllCashSavings(list)
-            }
 
-            // 6. Commitments
-            val commArray = dataObj.optJSONArray("commitments")
-            if (commArray != null) {
-                val list = mutableListOf<CommitmentEntity>()
-                for (i in 0 until commArray.length()) {
-                    val o = commArray.getJSONObject(i)
-                    list.add(
-                        CommitmentEntity(
-                            userId = userId,
-                            title = o.optString("title", ""),
-                            amount = o.optDouble("amount", 0.0),
-                            dueDateMillis = o.optLong("dueDateMillis", System.currentTimeMillis()),
-                            isPaid = o.optBoolean("isPaid", false),
-                            isRecurringMonthly = o.optBoolean("isRecurringMonthly", true),
-                            notes = o.optString("notes", ""),
-                            receiptImagePath = o.optString("receiptImagePath", null)
+                // 5. Cash Savings
+                val cashArray = dataObj.optJSONArray("cash_savings")
+                if (cashArray != null) {
+                    val list = mutableListOf<CashSavingEntity>()
+                    for (i in 0 until cashArray.length()) {
+                        val o = cashArray.getJSONObject(i)
+                        list.add(
+                            CashSavingEntity(
+                                userId = userId,
+                                amount = o.optDouble("amount", 0.0),
+                                currency = o.optString("currency", "EGP"),
+                                notes = o.optString("notes", ""),
+                                dateMillis = o.optLong("dateMillis", System.currentTimeMillis())
+                            )
                         )
-                    )
+                    }
+                    if (list.isNotEmpty()) db.cashSavingDao().insertAllCashSavings(list)
                 }
-                if (list.isNotEmpty()) db.commitmentDao().insertAllCommitments(list)
-            }
 
-            // 7. Child Lessons
-            val lessonArray = dataObj.optJSONArray("child_lessons")
-            if (lessonArray != null) {
-                val list = mutableListOf<ChildLessonEntity>()
-                for (i in 0 until lessonArray.length()) {
-                    val o = lessonArray.getJSONObject(i)
-                    list.add(
-                        ChildLessonEntity(
-                            userId = userId,
-                            childName = o.optString("childName", ""),
-                            subject = o.optString("subject", ""),
-                            teacherName = o.optString("teacherName", ""),
-                            amount = o.optDouble("amount", 0.0),
-                            dueDateMillis = o.optLong("dueDateMillis", System.currentTimeMillis()),
-                            isPaid = o.optBoolean("isPaid", false),
-                            receiptImagePath = o.optString("receiptImagePath", null)
+                // 6. Commitments
+                val commArray = dataObj.optJSONArray("commitments")
+                if (commArray != null) {
+                    val list = mutableListOf<CommitmentEntity>()
+                    for (i in 0 until commArray.length()) {
+                        val o = commArray.getJSONObject(i)
+                        list.add(
+                            CommitmentEntity(
+                                userId = userId,
+                                title = o.optString("title", ""),
+                                amount = o.optDouble("amount", 0.0),
+                                dueDateMillis = o.optLong("dueDateMillis", System.currentTimeMillis()),
+                                isPaid = o.optBoolean("isPaid", false),
+                                isRecurringMonthly = o.optBoolean("isRecurringMonthly", true),
+                                notes = o.optString("notes", ""),
+                                receiptImagePath = o.optString("receiptImagePath", null)
+                            )
                         )
-                    )
+                    }
+                    if (list.isNotEmpty()) db.commitmentDao().insertAllCommitments(list)
                 }
-                if (list.isNotEmpty()) db.childLessonDao().insertAllChildLessons(list)
-            }
 
-            // 8. Outings & Outing Expenses
-            val outingArray = dataObj.optJSONArray("outings")
-            if (outingArray != null) {
-                val list = mutableListOf<OutingEntity>()
-                for (i in 0 until outingArray.length()) {
-                    val o = outingArray.getJSONObject(i)
-                    list.add(
-                        OutingEntity(
-                            id = o.optString("id", java.util.UUID.randomUUID().toString()),
-                            userId = userId,
-                            name = o.optString("name", ""),
-                            participantNamesJson = o.optString("participantNamesJson", "[]"),
-                            dateMillis = o.optLong("dateMillis", System.currentTimeMillis())
+                // 7. Child Lessons
+                val lessonArray = dataObj.optJSONArray("child_lessons")
+                if (lessonArray != null) {
+                    val list = mutableListOf<ChildLessonEntity>()
+                    for (i in 0 until lessonArray.length()) {
+                        val o = lessonArray.getJSONObject(i)
+                        list.add(
+                            ChildLessonEntity(
+                                userId = userId,
+                                childName = o.optString("childName", ""),
+                                subject = o.optString("subject", ""),
+                                teacherName = o.optString("teacherName", ""),
+                                amount = o.optDouble("amount", 0.0),
+                                dueDateMillis = o.optLong("dueDateMillis", System.currentTimeMillis()),
+                                isPaid = o.optBoolean("isPaid", false),
+                                receiptImagePath = o.optString("receiptImagePath", null)
+                            )
                         )
-                    )
+                    }
+                    if (list.isNotEmpty()) db.childLessonDao().insertAllChildLessons(list)
                 }
-                if (list.isNotEmpty()) db.outingDao().insertAllOutings(list)
-            }
 
-            val outingExpArray = dataObj.optJSONArray("outing_expenses")
-            if (outingExpArray != null) {
-                val list = mutableListOf<OutingExpenseEntity>()
-                for (i in 0 until outingExpArray.length()) {
-                    val o = outingExpArray.getJSONObject(i)
-                    list.add(
-                        OutingExpenseEntity(
-                            userId = userId,
-                            title = o.optString("title", ""),
-                            amount = o.optDouble("amount", 0.0),
-                            payerName = o.optString("payerName", ""),
-                            dateMillis = o.optLong("dateMillis", System.currentTimeMillis()),
-                            receiptImagePath = o.optString("receiptImagePath", null),
-                            outingId = o.optString("outingId", "")
+                // 8. Outings & Outing Expenses
+                val outingArray = dataObj.optJSONArray("outings")
+                if (outingArray != null) {
+                    val list = mutableListOf<OutingEntity>()
+                    for (i in 0 until outingArray.length()) {
+                        val o = outingArray.getJSONObject(i)
+                        list.add(
+                            OutingEntity(
+                                id = o.optString("id", java.util.UUID.randomUUID().toString()),
+                                userId = userId,
+                                name = o.optString("name", ""),
+                                participantNamesJson = o.optString("participantNamesJson", "[]"),
+                                dateMillis = o.optLong("dateMillis", System.currentTimeMillis())
+                            )
                         )
-                    )
+                    }
+                    if (list.isNotEmpty()) db.outingDao().insertAllOutings(list)
                 }
-                if (list.isNotEmpty()) db.outingExpenseDao().insertAllOutingExpenses(list)
-            }
 
-            // 9. Vault Items
-            val vItemArray = dataObj.optJSONArray("vault_items")
-            if (vItemArray != null) {
-                val list = mutableListOf<VaultItemEntity>()
-                for (i in 0 until vItemArray.length()) {
-                    val o = vItemArray.getJSONObject(i)
-                    list.add(
-                        VaultItemEntity(
-                            id = o.optString("id", java.util.UUID.randomUUID().toString()),
-                            userId = userId,
-                            title = o.optString("title", ""),
-                            type = o.optString("type", "password"),
-                            encryptedData = o.optString("encryptedData", ""),
-                            category = o.optString("category", "عام"),
-                            createdAt = o.optLong("createdAt", System.currentTimeMillis()),
-                            updatedAt = o.optLong("updatedAt", System.currentTimeMillis())
+                val outingExpArray = dataObj.optJSONArray("outing_expenses")
+                if (outingExpArray != null) {
+                    val list = mutableListOf<OutingExpenseEntity>()
+                    for (i in 0 until outingExpArray.length()) {
+                        val o = outingExpArray.getJSONObject(i)
+                        list.add(
+                            OutingExpenseEntity(
+                                userId = userId,
+                                title = o.optString("title", ""),
+                                amount = o.optDouble("amount", 0.0),
+                                payerName = o.optString("payerName", ""),
+                                dateMillis = o.optLong("dateMillis", System.currentTimeMillis()),
+                                receiptImagePath = o.optString("receiptImagePath", null),
+                                outingId = o.optString("outingId", "")
+                            )
                         )
-                    )
+                    }
+                    if (list.isNotEmpty()) db.outingExpenseDao().insertAllOutingExpenses(list)
                 }
-                if (list.isNotEmpty()) db.vaultItemDao().insertAllVaultItems(list)
-            }
 
-            // 10. Transfers
-            val transferArray = dataObj.optJSONArray("transfers")
-            if (transferArray != null) {
-                val list = mutableListOf<TransferEntity>()
-                for (i in 0 until transferArray.length()) {
-                    val o = transferArray.getJSONObject(i)
-                    list.add(
-                        TransferEntity(
-                            userId = userId,
-                            fromVaultName = o.optString("fromVaultName", ""),
-                            toVaultName = o.optString("toVaultName", ""),
-                            amount = o.optDouble("amount", 0.0),
-                            dateMillis = o.optLong("dateMillis", System.currentTimeMillis()),
-                            notes = o.optString("notes", "")
+                // 9. Vault Items
+                val vItemArray = dataObj.optJSONArray("vault_items")
+                if (vItemArray != null) {
+                    val list = mutableListOf<VaultItemEntity>()
+                    for (i in 0 until vItemArray.length()) {
+                        val o = vItemArray.getJSONObject(i)
+                        list.add(
+                            VaultItemEntity(
+                                id = o.optString("id", java.util.UUID.randomUUID().toString()),
+                                userId = userId,
+                                title = o.optString("title", ""),
+                                type = o.optString("type", "password"),
+                                encryptedData = o.optString("encryptedData", ""),
+                                category = o.optString("category", "عام"),
+                                createdAt = o.optLong("createdAt", System.currentTimeMillis()),
+                                updatedAt = o.optLong("updatedAt", System.currentTimeMillis())
+                            )
                         )
-                    )
+                    }
+                    if (list.isNotEmpty()) db.vaultItemDao().insertAllVaultItems(list)
                 }
-                if (list.isNotEmpty()) db.transferDao().insertAllTransfers(list)
-            }
 
-            // 11. Debts
-            val debtArray = dataObj.optJSONArray("debts")
-            if (debtArray != null) {
-                val list = mutableListOf<DebtEntity>()
-                for (i in 0 until debtArray.length()) {
-                    val o = debtArray.getJSONObject(i)
-                    list.add(
-                        DebtEntity(
+                // 10. Transfers
+                val transferArray = dataObj.optJSONArray("transfers")
+                if (transferArray != null) {
+                    val list = mutableListOf<TransferEntity>()
+                    for (i in 0 until transferArray.length()) {
+                        val o = transferArray.getJSONObject(i)
+                        list.add(
+                            TransferEntity(
+                                userId = userId,
+                                fromVaultName = o.optString("fromVaultName", ""),
+                                toVaultName = o.optString("toVaultName", ""),
+                                amount = o.optDouble("amount", 0.0),
+                                dateMillis = o.optLong("dateMillis", System.currentTimeMillis()),
+                                notes = o.optString("notes", "")
+                            )
+                        )
+                    }
+                    if (list.isNotEmpty()) db.transferDao().insertAllTransfers(list)
+                }
+
+                // 11. Debts with oldID -> newID relationship mapping
+                val oldToNewDebtId = mutableMapOf<Int, Int>()
+                val debtArray = dataObj.optJSONArray("debts")
+                if (debtArray != null) {
+                    for (i in 0 until debtArray.length()) {
+                        val o = debtArray.getJSONObject(i)
+                        val oldId = o.optInt("id", 0)
+                        val debt = DebtEntity(
                             userId = userId,
                             personName = o.optString("personName", ""),
                             type = o.optString("type", "OWED_TO_ME"),
@@ -619,54 +657,62 @@ object LocalBackupManager {
                             createdAt = o.optLong("createdAt", System.currentTimeMillis()),
                             updatedAt = o.optLong("updatedAt", System.currentTimeMillis())
                         )
-                    )
+                        val newId = db.debtDao().insertDebt(debt).toInt()
+                        if (oldId > 0) {
+                            oldToNewDebtId[oldId] = newId
+                        }
+                    }
                 }
-                if (list.isNotEmpty()) db.debtDao().insertAllDebts(list)
-            }
 
-            // 12. Debt Payments
-            val payArray = dataObj.optJSONArray("debt_payments")
-            if (payArray != null) {
-                val list = mutableListOf<DebtPaymentEntity>()
-                for (i in 0 until payArray.length()) {
-                    val o = payArray.getJSONObject(i)
-                    list.add(
-                        DebtPaymentEntity(
-                            debtId = o.optInt("debtId", 0),
-                            userId = userId,
-                            amount = o.optDouble("amount", 0.0),
-                            dateMillis = o.optLong("dateMillis", System.currentTimeMillis()),
-                            notes = o.optString("notes", "")
-                        )
-                    )
+                // 12. Debt Payments with mapped foreign key reference
+                val payArray = dataObj.optJSONArray("debt_payments")
+                if (payArray != null) {
+                    val list = mutableListOf<DebtPaymentEntity>()
+                    for (i in 0 until payArray.length()) {
+                        val o = payArray.getJSONObject(i)
+                        val oldDebtId = o.optInt("debtId", 0)
+                        val targetDebtId = oldToNewDebtId[oldDebtId]
+                        // Only attach payment if target debt was restored successfully; reject orphaned records
+                        if (targetDebtId != null && targetDebtId > 0) {
+                            list.add(
+                                DebtPaymentEntity(
+                                    debtId = targetDebtId,
+                                    userId = userId,
+                                    amount = o.optDouble("amount", 0.0),
+                                    dateMillis = o.optLong("dateMillis", System.currentTimeMillis()),
+                                    notes = o.optString("notes", "")
+                                )
+                            )
+                        }
+                    }
+                    if (list.isNotEmpty()) db.debtPaymentDao().insertAllPayments(list)
                 }
-                if (list.isNotEmpty()) db.debtPaymentDao().insertAllPayments(list)
-            }
 
-            // 13. Net Worth Snapshots
-            val snapArray = dataObj.optJSONArray("net_worth_snapshots")
-            if (snapArray != null) {
-                val list = mutableListOf<NetWorthSnapshotEntity>()
-                for (i in 0 until snapArray.length()) {
-                    val o = snapArray.getJSONObject(i)
-                    list.add(
-                        NetWorthSnapshotEntity(
-                            userId = userId,
-                            dateMillis = o.optLong("dateMillis", System.currentTimeMillis()),
-                            dateKey = o.optString("dateKey", ""),
-                            totalAssets = o.optDouble("totalAssets", 0.0),
-                            totalLiabilities = o.optDouble("totalLiabilities", 0.0),
-                            netWorth = o.optDouble("netWorth", 0.0),
-                            vaultsTotal = o.optDouble("vaultsTotal", 0.0),
-                            cashSavingsTotal = o.optDouble("cashSavingsTotal", 0.0),
-                            goldValueTotal = o.optDouble("goldValueTotal", 0.0),
-                            debtsOwedToMeTotal = o.optDouble("debtsOwedToMeTotal", 0.0),
-                            debtsIOweTotal = o.optDouble("debtsIOweTotal", 0.0)
+                // 13. Net Worth Snapshots
+                val snapArray = dataObj.optJSONArray("net_worth_snapshots")
+                if (snapArray != null) {
+                    val list = mutableListOf<NetWorthSnapshotEntity>()
+                    for (i in 0 until snapArray.length()) {
+                        val o = snapArray.getJSONObject(i)
+                        list.add(
+                            NetWorthSnapshotEntity(
+                                userId = userId,
+                                dateMillis = o.optLong("dateMillis", System.currentTimeMillis()),
+                                dateKey = o.optString("dateKey", ""),
+                                totalAssets = o.optDouble("totalAssets", 0.0),
+                                totalLiabilities = o.optDouble("totalLiabilities", 0.0),
+                                netWorth = o.optDouble("netWorth", 0.0),
+                                vaultsTotal = o.optDouble("vaultsTotal", 0.0),
+                                cashSavingsTotal = o.optDouble("cashSavingsTotal", 0.0),
+                                goldValueTotal = o.optDouble("goldValueTotal", 0.0),
+                                debtsOwedToMeTotal = o.optDouble("debtsOwedToMeTotal", 0.0),
+                                debtsIOweTotal = o.optDouble("debtsIOweTotal", 0.0)
+                            )
                         )
-                    )
+                    }
+                    if (list.isNotEmpty()) db.netWorthSnapshotDao().insertAllSnapshots(list)
                 }
-                if (list.isNotEmpty()) db.netWorthSnapshotDao().insertAllSnapshots(list)
-            }
+            } // end db.withTransaction
 
             true
         } catch (e: Exception) {

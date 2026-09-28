@@ -115,11 +115,12 @@ object FinancialSummaryCalculator {
     /**
      * Formula: (Income - Expenses) / Income * 100
      * If Income <= 0, returns null to avoid dividing by zero.
+     * Accurately reflects deep deficits without artificial -100% clamping.
      */
     fun calculateSavingsRate(income: Double, expenses: Double): Double? {
         if (income <= 0.0) return null
         val rate = ((income - expenses) / income) * 100.0
-        return rate.coerceIn(-100.0, 100.0)
+        return rate.coerceAtMost(100.0)
     }
 
     fun calculateAssets(
@@ -190,7 +191,9 @@ object FinancialSummaryCalculator {
             .sumOf { it.remainingAmount.coerceAtLeast(0.0) }
 
         val totalAssets = vaultsTotal + cashSavingsTotal + goldValue + moneyOwedToMe
-        val totalLiabilities = moneyIOwe + unpaidCommitments + unpaidLessons
+        // Financial liabilities are confirmed debts owed. Unpaid upcoming living expenses
+        // (commitments and lessons) are preserved as informational items and not treated as legal debts.
+        val totalLiabilities = moneyIOwe
         val netWorth = totalAssets - totalLiabilities
 
         val totalVolume = totalAssets + totalLiabilities

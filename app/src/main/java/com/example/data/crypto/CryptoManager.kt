@@ -20,6 +20,7 @@ object CryptoManager {
     private const val GCM_TAG_LENGTH = 128
 
     // Test-only injected key (null in production; set only by automated unit tests)
+    @androidx.annotation.VisibleForTesting(otherwise = androidx.annotation.VisibleForTesting.NONE)
     @Volatile
     var testSecretKey: SecretKey? = null
 

@@ -35,7 +35,10 @@ data class NetWorthBreakdown(
     val assetsPercentage: Double = 100.0,
     val liabilitiesPercentage: Double = 0.0,
     val unpaidCommitments: Double = 0.0,
-    val unpaidLessons: Double = 0.0
+    val unpaidLessons: Double = 0.0,
+    val reportingCurrency: String = "EGP",
+    val separateCurrencyTotals: Map<String, Double> = emptyMap(),
+    val unconvertedForeignAssets: Map<String, Double> = emptyMap()
 )
 
 data class FinancialSummaryResult(
@@ -57,7 +60,9 @@ object FinancialSummaryCalculator {
         debts: List<DebtEntity>,
         goldPriceMap: Map<Int, Double>,
         commitments: List<CommitmentEntity> = emptyList(),
-        lessons: List<ChildLessonEntity> = emptyList()
+        lessons: List<ChildLessonEntity> = emptyList(),
+        reportingCurrency: String = "EGP",
+        exchangeRates: Map<String, Double> = emptyMap()
     ): FinancialSummaryResult {
         val income = calculateIncome(transactions)
         val expenses = calculateExpenses(transactions)
@@ -73,7 +78,9 @@ object FinancialSummaryCalculator {
             goldPriceMap = goldPriceMap,
             debts = debts,
             unpaidCommitments = unpaidCommitmentsSum,
-            unpaidLessons = unpaidLessonsSum
+            unpaidLessons = unpaidLessonsSum,
+            reportingCurrency = reportingCurrency,
+            exchangeRates = exchangeRates
         )
 
         val categoryShares = calculateCategoryBreakdown(transactions)
@@ -128,10 +135,26 @@ object FinancialSummaryCalculator {
         cashSavings: List<CashSavingEntity>,
         goldAssets: List<GoldAssetEntity>,
         goldPriceMap: Map<Int, Double>,
-        debtsOwedToMe: List<DebtEntity>
+        debtsOwedToMe: List<DebtEntity>,
+        reportingCurrency: String = "EGP",
+        exchangeRates: Map<String, Double> = emptyMap()
     ): Double {
         val vaultsSum = vaults.sumOf { it.balance.coerceAtLeast(0.0) }
-        val cashSavingsSum = cashSavings.sumOf { it.amount.coerceAtLeast(0.0) }
+
+        var convertedSavings = 0.0
+        val normalizedReporting = reportingCurrency.trim().uppercase()
+        for (saving in cashSavings) {
+            val amt = saving.amount.coerceAtLeast(0.0)
+            val curr = saving.currency.trim().uppercase().ifBlank { "EGP" }
+            if (curr == normalizedReporting || (curr in listOf("EGP", "LE", "ج.م") && normalizedReporting in listOf("EGP", "LE", "ج.م"))) {
+                convertedSavings += amt
+            } else {
+                val rate = exchangeRates[curr]
+                if (rate != null && rate > 0.0 && !rate.isNaN() && !rate.isInfinite()) {
+                    convertedSavings += amt * rate
+                }
+            }
+        }
 
         val activeGold = goldAssets.filter { it.status != "SOLD" }
         val goldSum = activeGold.sumOf { asset ->
@@ -147,7 +170,7 @@ object FinancialSummaryCalculator {
             .filter { it.type == "OWED_TO_ME" && it.status != "PAID" }
             .sumOf { it.remainingAmount.coerceAtLeast(0.0) }
 
-        return vaultsSum + cashSavingsSum + goldSum + owedToMeSum
+        return vaultsSum + convertedSavings + goldSum + owedToMeSum
     }
 
     fun calculateLiabilities(debtsIOwe: List<DebtEntity>): Double {
@@ -167,10 +190,35 @@ object FinancialSummaryCalculator {
         goldPriceMap: Map<Int, Double>,
         debts: List<DebtEntity>,
         unpaidCommitments: Double = 0.0,
-        unpaidLessons: Double = 0.0
+        unpaidLessons: Double = 0.0,
+        reportingCurrency: String = "EGP",
+        exchangeRates: Map<String, Double> = emptyMap()
     ): NetWorthBreakdown {
         val vaultsTotal = vaults.sumOf { it.balance.coerceAtLeast(0.0) }
-        val cashSavingsTotal = cashSavings.sumOf { it.amount.coerceAtLeast(0.0) }
+
+        // Currency separation & transparent conversion
+        val separateTotals = mutableMapOf<String, Double>()
+        val unconvertedForeign = mutableMapOf<String, Double>()
+        var convertedSavingsTotal = 0.0
+        val normalizedReporting = reportingCurrency.trim().uppercase()
+
+        for (saving in cashSavings) {
+            val amt = saving.amount.coerceAtLeast(0.0)
+            val curr = saving.currency.trim().uppercase().ifBlank { "EGP" }
+            separateTotals[curr] = (separateTotals[curr] ?: 0.0) + amt
+
+            if (curr == normalizedReporting || (curr in listOf("EGP", "LE", "ج.م") && normalizedReporting in listOf("EGP", "LE", "ج.م"))) {
+                convertedSavingsTotal += amt
+            } else {
+                val rate = exchangeRates[curr]
+                if (rate != null && rate > 0.0 && !rate.isNaN() && !rate.isInfinite()) {
+                    convertedSavingsTotal += amt * rate
+                } else {
+                    // When valid rate is unavailable, do not invent one; track separately
+                    unconvertedForeign[curr] = (unconvertedForeign[curr] ?: 0.0) + amt
+                }
+            }
+        }
 
         val activeGold = goldAssets.filter { it.status != "SOLD" }
         val goldValue = activeGold.sumOf { asset ->
@@ -190,7 +238,7 @@ object FinancialSummaryCalculator {
             .filter { it.type == "I_OWE" && it.status != "PAID" }
             .sumOf { it.remainingAmount.coerceAtLeast(0.0) }
 
-        val totalAssets = vaultsTotal + cashSavingsTotal + goldValue + moneyOwedToMe
+        val totalAssets = vaultsTotal + convertedSavingsTotal + goldValue + moneyOwedToMe
         // Financial liabilities are confirmed debts owed. Unpaid upcoming living expenses
         // (commitments and lessons) are preserved as informational items and not treated as legal debts.
         val totalLiabilities = moneyIOwe
@@ -210,14 +258,17 @@ object FinancialSummaryCalculator {
             totalLiabilities = totalLiabilities,
             netWorth = netWorth,
             vaultsTotal = vaultsTotal,
-            cashSavingsTotal = cashSavingsTotal,
+            cashSavingsTotal = convertedSavingsTotal,
             goldEstimatedValue = goldValue,
             moneyOwedToMe = moneyOwedToMe,
             moneyIOwe = moneyIOwe,
             assetsPercentage = assetsPct,
             liabilitiesPercentage = liabilitiesPct,
             unpaidCommitments = unpaidCommitments,
-            unpaidLessons = unpaidLessons
+            unpaidLessons = unpaidLessons,
+            reportingCurrency = reportingCurrency,
+            separateCurrencyTotals = separateTotals,
+            unconvertedForeignAssets = unconvertedForeign
         )
     }
 

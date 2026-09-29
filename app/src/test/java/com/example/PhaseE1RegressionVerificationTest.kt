@@ -379,24 +379,91 @@ class PhaseE1RegressionVerificationTest {
         assertEquals(true, manager.getConfiguration(userB).gold) // User B unaffected
     }
 
-    // 13. DATABASE MIGRATION — Version 6 to 7
+    // 13. DATABASE MIGRATION — Authentic Version 6 to 7 Migration Fixture
     @Test
-    fun testDatabaseMigration_6_to_7_createsPhaseETables() {
-        val sqliteDb = db.openHelper.writableDatabase
-        AppDatabase.MIGRATION_6_7.migrate(sqliteDb)
+    fun testDatabaseMigration_6_to_7_preservesExistingDataAndCreatesPhaseETables() {
+        val dbFile = context.getDatabasePath("test_migration_v6_to_v7.db")
+        if (dbFile.exists()) dbFile.delete()
 
-        // Verify tables exist by querying them
-        val cursor = sqliteDb.query("SELECT name FROM sqlite_master WHERE type='table' AND name IN ('transfers', 'debts', 'debt_payments', 'net_worth_snapshots')")
-        val createdTables = mutableListOf<String>()
-        while (cursor.moveToNext()) {
-            createdTables.add(cursor.getString(0))
+        val helper = androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory().create(
+            androidx.sqlite.db.SupportSQLiteOpenHelper.Configuration.builder(context)
+                .name("test_migration_v6_to_v7.db")
+                .callback(object : androidx.sqlite.db.SupportSQLiteOpenHelper.Callback(6) {
+                    override fun onCreate(sDb: androidx.sqlite.db.SupportSQLiteDatabase) {
+                        sDb.execSQL("""
+                            CREATE TABLE IF NOT EXISTS transactions (
+                                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                                userId TEXT NOT NULL,
+                                type TEXT NOT NULL,
+                                amount REAL NOT NULL,
+                                category TEXT NOT NULL,
+                                description TEXT NOT NULL,
+                                dateMillis INTEGER NOT NULL,
+                                vaultName TEXT NOT NULL,
+                                receiptImagePath TEXT
+                            )
+                        """.trimIndent())
+                        sDb.execSQL("""
+                            CREATE TABLE IF NOT EXISTS vaults (
+                                id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+                                name TEXT NOT NULL,
+                                balance REAL NOT NULL,
+                                isDefault INTEGER NOT NULL,
+                                userId TEXT NOT NULL
+                            )
+                        """.trimIndent())
+                        sDb.execSQL("INSERT INTO vaults (id, name, balance, isDefault, userId) VALUES (10, 'خزنة قديمة', 4500.0, 1, 'user_v6')")
+                        sDb.execSQL("INSERT INTO transactions (id, userId, type, amount, category, description, dateMillis, vaultName) VALUES (20, 'user_v6', 'EXPENSE', 250.0, 'عام', 'مصروف قديم', 1000, 'خزنة قديمة')")
+                    }
+
+                    override fun onUpgrade(sDb: androidx.sqlite.db.SupportSQLiteDatabase, oldVersion: Int, newVersion: Int) {}
+                })
+                .build()
+        )
+
+        val v6Db = helper.writableDatabase
+        try {
+            // Execute real migration from 6 to 7
+            AppDatabase.MIGRATION_6_7.migrate(v6Db)
+
+            // 1. Verify existing V6 data survived intact
+            val vaultCursor = v6Db.query("SELECT balance, name FROM vaults WHERE id = 10")
+            assertTrue(vaultCursor.moveToFirst())
+            assertEquals(4500.0, vaultCursor.getDouble(0), 0.001)
+            assertEquals("خزنة قديمة", vaultCursor.getString(1))
+            vaultCursor.close()
+
+            val txCursor = v6Db.query("SELECT amount, description FROM transactions WHERE id = 20")
+            assertTrue(txCursor.moveToFirst())
+            assertEquals(250.0, txCursor.getDouble(0), 0.001)
+            assertEquals("مصروف قديم", txCursor.getString(1))
+            txCursor.close()
+
+            // 2. Verify all 4 Phase E tables now exist
+            val tableCursor = v6Db.query("SELECT name FROM sqlite_master WHERE type='table' AND name IN ('transfers', 'debts', 'debt_payments', 'net_worth_snapshots')")
+            val createdTables = mutableListOf<String>()
+            while (tableCursor.moveToNext()) {
+                createdTables.add(tableCursor.getString(0))
+            }
+            tableCursor.close()
+
+            assertTrue(createdTables.contains("transfers"))
+            assertTrue(createdTables.contains("debts"))
+            assertTrue(createdTables.contains("debt_payments"))
+            assertTrue(createdTables.contains("net_worth_snapshots"))
+
+            // 3. Verify insertion works on newly migrated tables
+            v6Db.execSQL("INSERT INTO debts (id, userId, personName, type, originalAmount, paidAmount, remainingAmount, startDateMillis, status, createdAt, updatedAt) VALUES (1, 'user_v6', 'سعيد', 'OWED_TO_ME', 500.0, 0.0, 500.0, 1000, 'ACTIVE', 1000, 1000)")
+            val debtCursor = v6Db.query("SELECT personName, remainingAmount FROM debts WHERE id = 1")
+            assertTrue(debtCursor.moveToFirst())
+            assertEquals("سعيد", debtCursor.getString(0))
+            assertEquals(500.0, debtCursor.getDouble(1), 0.001)
+            debtCursor.close()
+        } finally {
+            v6Db.close()
+            helper.close()
+            dbFile.delete()
         }
-        cursor.close()
-
-        assertTrue(createdTables.contains("transfers"))
-        assertTrue(createdTables.contains("debts"))
-        assertTrue(createdTables.contains("debt_payments"))
-        assertTrue(createdTables.contains("net_worth_snapshots"))
     }
 
     // 14. MULTIPLE CURRENCIES — Preserves distinct currencies without inventing conversions
@@ -418,5 +485,193 @@ class PhaseE1RegressionVerificationTest {
         assertNotNull(egpSaving)
         assertEquals(1000.0, usdSaving!!.amount, 0.001)
         assertEquals(50000.0, egpSaving!!.amount, 0.001)
+    }
+
+    // 15. BACKUP & RESTORE — Explicit Safe Merge Policy
+    @Test
+    fun testRestore_safeMergePolicy_mergesWithoutDuplicatingExistingData() = runBlocking {
+        val user = "user_safe_merge"
+
+        // Existing local data
+        db.vaultDao().insertVault(VaultEntity(name = "الخزنة المحلية", balance = 1000.0, userId = user))
+        db.transactionDao().insertTransaction(
+            TransactionEntity(userId = user, type = "EXPENSE", amount = 100.0, category = "عام", description = "معاملة سابقة", dateMillis = 5000L)
+        )
+
+        // Incoming backup has "الخزنة المحلية" plus a new "خزنة إضافية" and a new transaction
+        val sourceUser = "source_user"
+        db.vaultDao().insertVault(VaultEntity(name = "الخزنة المحلية", balance = 2000.0, userId = sourceUser))
+        db.vaultDao().insertVault(VaultEntity(name = "خزنة إضافية", balance = 3000.0, userId = sourceUser))
+        db.transactionDao().insertTransaction(
+            TransactionEntity(userId = sourceUser, type = "EXPENSE", amount = 100.0, category = "عام", description = "معاملة سابقة", dateMillis = 5000L)
+        )
+        db.transactionDao().insertTransaction(
+            TransactionEntity(userId = sourceUser, type = "INCOME", amount = 500.0, category = "راتب", description = "دخل جديد", dateMillis = 6000L)
+        )
+
+        val payload = LocalBackupManager.createEncryptedBackup(context, db, sourceUser, "MergePass123")
+        val validation = LocalBackupManager.validateBackup(payload, "MergePass123")
+        assertTrue(validation.isValid)
+
+        // Clean source user data
+        repository.clearUserData(sourceUser)
+
+        // Apply SAFE_MERGE restore
+        val mergeSuccess = LocalBackupManager.applyRestore(db, user, validation.decryptedJson!!, policy = com.example.data.backup.RestorePolicy.SAFE_MERGE)
+        assertTrue(mergeSuccess)
+
+        // Local vault balance preserved without duplicate vault creation
+        val vaults = repository.getVaults(user).first()
+        assertEquals(2, vaults.size) // "الخزنة المحلية" and "خزنة إضافية"
+        val localVault = vaults.find { it.name == "الخزنة المحلية" }
+        assertNotNull(localVault)
+        assertEquals(1000.0, localVault!!.balance, 0.001) // Preserved original
+
+        // Duplicate transaction filtered out, only new transaction added
+        val txs = repository.getTransactions(user).first()
+        assertEquals(2, txs.size) // Original + new income, not 3
+    }
+
+    // 16. ATOMIC OPERATIONS — Outing Expense Deducts from Vault Atomically
+    @Test
+    fun testAtomicOutingExpense_deductsFromVaultAtomically() = runBlocking {
+        val user = "user_outing_atomic"
+        db.vaultDao().insertVault(VaultEntity(name = "خزنة الخروجات", balance = 2000.0, userId = user))
+        repository.addOuting("out_1", "رحلة الصيف", listOf("أحمد", "محمد"), userId = user)
+
+        repository.addOutingExpense(
+            title = "غداء",
+            amount = 450.0,
+            payerName = "أحمد",
+            outingId = "out_1",
+            userId = user,
+            vaultName = "خزنة الخروجات"
+        )
+
+        val vault = db.vaultDao().getVaultByName("خزنة الخروجات", user)
+        assertNotNull(vault)
+        assertEquals(1550.0, vault!!.balance, 0.001)
+
+        val expenses = repository.getExpensesForOuting("out_1", user).first()
+        assertEquals(1, expenses.size)
+        assertEquals(450.0, expenses[0].amount, 0.001)
+    }
+
+    // 17. ATOMIC OPERATIONS — Gold Liquidation Credits Vault Atomically
+    @Test
+    fun testAtomicGoldLiquidation_creditsVaultAtomically() = runBlocking {
+        val user = "user_gold_atomic"
+        db.vaultDao().insertVault(VaultEntity(name = "الخزنة الرئيسية", balance = 10000.0, userId = user))
+        val goldId = repository.addGoldAsset(
+            GoldAssetEntity(
+                userId = user,
+                name = "سبيكة 10 جرام",
+                goldType = "سبيكة",
+                karat = 24,
+                weight = 10.0,
+                purchasePrice = 50000.0
+            )
+        ).toInt()
+
+        repository.sellGoldAsset(
+            id = goldId,
+            salePrice = 55000.0,
+            userId = user,
+            vaultName = "الخزنة الرئيسية"
+        )
+
+        val vault = db.vaultDao().getVaultByName("الخزنة الرئيسية", user)
+        assertNotNull(vault)
+        assertEquals(65000.0, vault!!.balance, 0.001)
+
+        val assets = repository.getGoldAssets(user).first()
+        val soldAsset = assets.find { it.id == goldId }
+        assertNotNull(soldAsset)
+        assertEquals("SOLD", soldAsset!!.status)
+        assertEquals(55000.0, soldAsset.salePrice ?: 0.0, 0.001)
+    }
+
+    // 18. MULTI-USER DATA ISOLATION — Direct Repository Calls Negative Security Tests
+    @Test
+    fun testNegativeSecurity_userBCannotAccessGuestOrUserARecords() = runBlocking {
+        val userA = "auth_user_a"
+        val userB = "auth_user_b"
+        val guest = "local_guest"
+
+        // Create records for User A
+        val vaultAId = db.vaultDao().insertVault(VaultEntity(name = "خزنة A", balance = 5000.0, userId = userA)).toInt()
+        val debtAId = repository.addDebt("دين A", "OWED_TO_ME", 3000.0, userId = userA).toInt()
+        val txAId = db.transactionDao().insertTransaction(
+            TransactionEntity(userId = userA, type = "EXPENSE", amount = 100.0, category = "عام", description = "A tx")
+        ).toInt()
+
+        // Create records for Guest
+        val vaultGId = db.vaultDao().insertVault(VaultEntity(name = "خزنة Guest", balance = 1000.0, userId = guest)).toInt()
+
+        // 1. User B cannot see User A or Guest records in Flow queries
+        val vaultsB = repository.getVaults(userB).first()
+        assertTrue(vaultsB.isEmpty())
+
+        val debtsB = repository.getDebts(userB).first()
+        assertTrue(debtsB.isEmpty())
+
+        // 2. User B cannot delete User A's transaction
+        repository.deleteTransaction(txAId, userId = userB)
+        val txAAfter = db.transactionDao().getTransactionById(txAId, userA)
+        assertNotNull(txAAfter)
+
+        // 3. User B cannot delete User A's vault
+        repository.deleteVault(vaultAId, userId = userB)
+        val vaultAAfter = db.vaultDao().getVaultById(vaultAId, userA)
+        assertNotNull(vaultAAfter)
+
+        // 4. User B cannot delete Guest vault
+        repository.deleteVault(vaultGId, userId = userB)
+        val vaultGAfter = db.vaultDao().getVaultById(vaultGId, guest)
+        assertNotNull(vaultGAfter)
+
+        // 5. Guest cannot delete User A's vault
+        repository.deleteVault(vaultAId, userId = guest)
+        val vaultAAfterGuest = db.vaultDao().getVaultById(vaultAId, userA)
+        assertNotNull(vaultAAfterGuest)
+
+        // 6. User B cannot record payment on User A's debt
+        val payResult = repository.recordDebtPayment(debtAId, 500.0, userId = userB)
+        assertTrue(payResult.isFailure)
+    }
+
+    // 19. MULTI-CURRENCY CALCULATIONS — Net Worth Breakdown separates foreign assets without fake conversion
+    @Test
+    fun testMultiCurrency_getFullNetWorthBreakdown_separatesUnconvertedForeignCurrency() {
+        val cashSavings = listOf(
+            CashSavingEntity(amount = 20000.0, currency = "EGP"),
+            CashSavingEntity(amount = 1000.0, currency = "USD")
+        )
+        val vaults = listOf(
+            VaultEntity(name = "الرئيسية", balance = 10000.0)
+        )
+
+        // Without exchange rate for USD
+        val breakdown = FinancialSummaryCalculator.getFullNetWorthBreakdown(
+            vaults = vaults,
+            cashSavings = cashSavings,
+            goldAssets = emptyList(),
+            goldPriceMap = emptyMap(),
+            debts = emptyList(),
+            reportingCurrency = "EGP",
+            exchangeRates = emptyMap() // No USD rate provided
+        )
+
+        // vaultsTotal = 10000, cashSavingsTotal = 20000 (only EGP), netWorth = 30000
+        assertEquals(10000.0, breakdown.vaultsTotal, 0.001)
+        assertEquals(20000.0, breakdown.cashSavingsTotal, 0.001)
+        assertEquals(30000.0, breakdown.netWorth, 0.001)
+
+        // Separate totals recorded accurately
+        assertEquals(20000.0, breakdown.separateCurrencyTotals["EGP"] ?: 0.0, 0.001)
+        assertEquals(1000.0, breakdown.separateCurrencyTotals["USD"] ?: 0.0, 0.001)
+
+        // USD is tracked in unconvertedForeignAssets
+        assertEquals(1000.0, breakdown.unconvertedForeignAssets["USD"] ?: 0.0, 0.001)
     }
 }

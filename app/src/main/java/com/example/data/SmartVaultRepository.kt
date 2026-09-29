@@ -94,9 +94,10 @@ class SmartVaultRepository(private val db: AppDatabase) {
             throw IllegalArgumentException("المبلغ غير صالح: يجب أن يكون رقمًا موجبًا")
         }
 
+        val effectiveUser = userId.ifBlank { "local_guest" }
         db.withTransaction {
             val tx = TransactionEntity(
-                userId = userId,
+                userId = effectiveUser,
                 type = "INCOME",
                 amount = amount,
                 category = category,
@@ -107,11 +108,11 @@ class SmartVaultRepository(private val db: AppDatabase) {
             db.transactionDao().insertTransaction(tx)
 
             // Add to vault balance atomically
-            val vault = db.vaultDao().getVaultByName(vaultName, userId)
+            val vault = db.vaultDao().getVaultByName(vaultName, effectiveUser)
             if (vault != null) {
-                db.vaultDao().updateVaultBalance(vault.id, vault.balance + amount)
+                db.vaultDao().updateVaultBalance(vault.id, vault.balance + amount, effectiveUser)
             } else {
-                db.vaultDao().insertVault(VaultEntity(name = vaultName, balance = amount, isDefault = true, userId = userId))
+                db.vaultDao().insertVault(VaultEntity(name = vaultName, balance = amount, isDefault = true, userId = effectiveUser))
             }
         }
     }
@@ -129,9 +130,10 @@ class SmartVaultRepository(private val db: AppDatabase) {
             throw IllegalArgumentException("المبلغ غير صالح: يجب أن يكون رقمًا موجبًا")
         }
 
+        val effectiveUser = userId.ifBlank { "local_guest" }
         db.withTransaction {
             val tx = TransactionEntity(
-                userId = userId,
+                userId = effectiveUser,
                 type = "EXPENSE",
                 amount = amount,
                 category = category,
@@ -143,60 +145,57 @@ class SmartVaultRepository(private val db: AppDatabase) {
             db.transactionDao().insertTransaction(tx)
 
             // Deduct from vault balance atomically preserving true mathematical accounting
-            val vault = db.vaultDao().getVaultByName(vaultName, userId)
+            val vault = db.vaultDao().getVaultByName(vaultName, effectiveUser)
             if (vault != null) {
-                db.vaultDao().updateVaultBalance(vault.id, vault.balance - amount)
+                db.vaultDao().updateVaultBalance(vault.id, vault.balance - amount, effectiveUser)
             }
         }
     }
 
     suspend fun deleteTransaction(id: Int, userId: String = "") {
-        if (userId.isNotBlank()) {
-            db.transactionDao().deleteTransactionByIdAndUser(id, userId)
-        } else {
-            db.transactionDao().deleteTransactionById(id)
-        }
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        db.transactionDao().deleteTransactionByIdAndUser(id, effectiveUser)
     }
 
     // 2. Vault Actions
     suspend fun addVault(name: String, initialBalance: Double, userId: String = "") {
-        db.vaultDao().insertVault(VaultEntity(name = name, balance = initialBalance, isDefault = false, userId = userId))
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        db.vaultDao().insertVault(VaultEntity(name = name, balance = initialBalance, isDefault = false, userId = effectiveUser))
     }
 
     suspend fun updateVault(id: Int, name: String, balance: Double, userId: String = "") {
-        val existing = db.vaultDao().getVaultByName(name, userId)
-        if (existing != null && existing.id != id) {
-            db.vaultDao().updateVaultBalance(id, balance)
-        } else {
-            db.vaultDao().updateVault(VaultEntity(id = id, name = name, balance = balance, userId = userId))
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        val existing = db.vaultDao().getVaultById(id, effectiveUser)
+        if (existing != null) {
+            db.vaultDao().updateVault(existing.copy(name = name, balance = balance))
         }
     }
 
     suspend fun deleteVault(id: Int, userId: String = "") {
-        if (userId.isNotBlank()) {
-            db.vaultDao().deleteVaultByIdAndUser(id, userId)
-        } else {
-            db.vaultDao().deleteVaultById(id)
-        }
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        db.vaultDao().deleteVaultByIdAndUser(id, effectiveUser)
     }
 
     // 3. Budget Limits
     suspend fun setBudgetLimit(category: String, limit: Double, userId: String = "") {
-        db.budgetLimitDao().insertOrUpdateLimit(BudgetLimitEntity(category = category, monthlyLimit = limit, userId = userId))
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        db.budgetLimitDao().insertOrUpdateLimit(BudgetLimitEntity(category = category, monthlyLimit = limit, userId = effectiveUser))
     }
 
     suspend fun deleteBudgetLimit(category: String, userId: String = "") {
-        db.budgetLimitDao().deleteLimit(category, userId)
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        db.budgetLimitDao().deleteLimit(category, effectiveUser)
     }
 
     // 4. Outings & Expenses
     suspend fun addOuting(id: String, name: String, participantNames: List<String>, userId: String = "") {
+        val effectiveUser = userId.ifBlank { "local_guest" }
         val jsonArray = JSONArray()
         participantNames.forEach { jsonArray.put(it) }
         db.outingDao().insertOuting(
             OutingEntity(
                 id = id,
-                userId = userId,
+                userId = effectiveUser,
                 name = name,
                 participantNamesJson = jsonArray.toString(),
                 dateMillis = System.currentTimeMillis()
@@ -205,11 +204,8 @@ class SmartVaultRepository(private val db: AppDatabase) {
     }
 
     suspend fun deleteOuting(id: String, userId: String = "") {
-        if (userId.isNotBlank()) {
-            db.outingDao().deleteOutingByIdAndUser(id, userId)
-        } else {
-            db.outingDao().deleteOuting(id)
-        }
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        db.outingDao().deleteOutingByIdAndUser(id, effectiveUser)
     }
 
     suspend fun addOutingExpense(
@@ -218,34 +214,41 @@ class SmartVaultRepository(private val db: AppDatabase) {
         payerName: String = "",
         receiptPath: String? = null,
         outingId: String = "",
-        userId: String = ""
+        userId: String = "",
+        vaultName: String? = null
     ) {
-        db.outingExpenseDao().insertOutingExpense(
-            OutingExpenseEntity(
-                title = title,
-                amount = amount,
-                payerName = payerName,
-                receiptImagePath = receiptPath,
-                outingId = outingId,
-                userId = userId
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        if (amount.isNaN() || amount.isInfinite() || amount < 0.0) {
+            throw IllegalArgumentException("مبلغ المصروف غير صالح")
+        }
+        db.withTransaction {
+            db.outingExpenseDao().insertOutingExpense(
+                OutingExpenseEntity(
+                    title = title,
+                    amount = amount,
+                    payerName = payerName,
+                    receiptImagePath = receiptPath,
+                    outingId = outingId,
+                    userId = effectiveUser
+                )
             )
-        )
+            if (!vaultName.isNullOrBlank() && amount > 0.0) {
+                val vault = db.vaultDao().getVaultByName(vaultName, effectiveUser)
+                if (vault != null) {
+                    db.vaultDao().updateVaultBalance(vault.id, vault.balance - amount, effectiveUser)
+                }
+            }
+        }
     }
 
     suspend fun deleteOutingExpense(id: Int, userId: String = "") {
-        if (userId.isNotBlank()) {
-            db.outingExpenseDao().deleteOutingExpenseByIdAndUser(id, userId)
-        } else {
-            db.outingExpenseDao().deleteOutingExpenseById(id)
-        }
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        db.outingExpenseDao().deleteOutingExpenseByIdAndUser(id, effectiveUser)
     }
 
     suspend fun clearAllOutingExpenses(userId: String = "") {
-        if (userId.isNotBlank()) {
-            db.outingExpenseDao().clearUserOutingExpenses(userId)
-        } else {
-            db.outingExpenseDao().clearAllOutingExpenses()
-        }
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        db.outingExpenseDao().clearUserOutingExpenses(effectiveUser)
     }
 
     // 5. Gold Assets
@@ -258,25 +261,41 @@ class SmartVaultRepository(private val db: AppDatabase) {
     }
 
     suspend fun deleteGoldAsset(id: Int, userId: String = "") {
-        if (userId.isNotBlank()) {
-            db.goldAssetDao().deleteGoldAssetByIdAndUser(id, userId)
-        } else {
-            db.goldAssetDao().deleteGoldAssetById(id)
-        }
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        db.goldAssetDao().deleteGoldAssetByIdAndUser(id, effectiveUser)
     }
 
-    suspend fun sellGoldAsset(id: Int, salePrice: Double, saleDateMillis: Long = System.currentTimeMillis(), saleNotes: String? = null, userId: String = "") {
-        val asset = if (userId.isNotBlank()) db.goldAssetDao().getGoldAssetByIdAndUser(id, userId) else db.goldAssetDao().getGoldAssetById(id)
-        if (asset != null) {
-            db.goldAssetDao().updateGoldAsset(
-                asset.copy(
-                    status = "SOLD",
-                    salePrice = salePrice,
-                    saleDateMillis = saleDateMillis,
-                    saleNotes = saleNotes,
-                    updatedAt = System.currentTimeMillis()
+    suspend fun sellGoldAsset(
+        id: Int,
+        salePrice: Double,
+        saleDateMillis: Long = System.currentTimeMillis(),
+        saleNotes: String? = null,
+        userId: String = "",
+        vaultName: String? = null
+    ) {
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        if (salePrice.isNaN() || salePrice.isInfinite() || salePrice < 0.0) {
+            throw IllegalArgumentException("سعر البيع غير صالح")
+        }
+        db.withTransaction {
+            val asset = db.goldAssetDao().getGoldAssetByIdAndUser(id, effectiveUser)
+            if (asset != null) {
+                db.goldAssetDao().updateGoldAsset(
+                    asset.copy(
+                        status = "SOLD",
+                        salePrice = salePrice,
+                        saleDateMillis = saleDateMillis,
+                        saleNotes = saleNotes,
+                        updatedAt = System.currentTimeMillis()
+                    )
                 )
-            )
+                if (!vaultName.isNullOrBlank() && salePrice > 0.0) {
+                    val vault = db.vaultDao().getVaultByName(vaultName, effectiveUser)
+                    if (vault != null) {
+                        db.vaultDao().updateVaultBalance(vault.id, vault.balance + salePrice, effectiveUser)
+                    }
+                }
+            }
         }
     }
 
@@ -288,9 +307,10 @@ class SmartVaultRepository(private val db: AppDatabase) {
         dateMillis: Long = System.currentTimeMillis(),
         userId: String = ""
     ): Long {
+        val effectiveUser = userId.ifBlank { "local_guest" }
         return db.cashSavingDao().insertCashSaving(
             CashSavingEntity(
-                userId = userId,
+                userId = effectiveUser,
                 amount = amount,
                 currency = currency,
                 notes = notes,
@@ -304,11 +324,8 @@ class SmartVaultRepository(private val db: AppDatabase) {
     }
 
     suspend fun deleteCashSaving(id: Int, userId: String = "") {
-        if (userId.isNotBlank()) {
-            db.cashSavingDao().deleteCashSavingByIdAndUser(id, userId)
-        } else {
-            db.cashSavingDao().deleteCashSavingById(id)
-        }
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        db.cashSavingDao().deleteCashSavingByIdAndUser(id, effectiveUser)
     }
 
     // 7. Commitments
@@ -322,9 +339,10 @@ class SmartVaultRepository(private val db: AppDatabase) {
         receiptPath: String? = null,
         userId: String = ""
     ): Long {
+        val effectiveUser = userId.ifBlank { "local_guest" }
         return db.commitmentDao().insertCommitment(
             CommitmentEntity(
-                userId = userId,
+                userId = effectiveUser,
                 title = title,
                 amount = amount,
                 dueDateMillis = dueDateMillis,
@@ -341,11 +359,8 @@ class SmartVaultRepository(private val db: AppDatabase) {
     }
 
     suspend fun deleteCommitment(id: Int, userId: String = "") {
-        if (userId.isNotBlank()) {
-            db.commitmentDao().deleteCommitmentByIdAndUser(id, userId)
-        } else {
-            db.commitmentDao().deleteCommitmentById(id)
-        }
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        db.commitmentDao().deleteCommitmentByIdAndUser(id, effectiveUser)
     }
 
     // 8. Child Lessons
@@ -359,9 +374,10 @@ class SmartVaultRepository(private val db: AppDatabase) {
         receiptPath: String? = null,
         userId: String = ""
     ): Long {
+        val effectiveUser = userId.ifBlank { "local_guest" }
         return db.childLessonDao().insertChildLesson(
             ChildLessonEntity(
-                userId = userId,
+                userId = effectiveUser,
                 childName = childName,
                 subject = subject,
                 teacherName = teacherName,
@@ -378,11 +394,8 @@ class SmartVaultRepository(private val db: AppDatabase) {
     }
 
     suspend fun deleteChildLesson(id: Int, userId: String = "") {
-        if (userId.isNotBlank()) {
-            db.childLessonDao().deleteChildLessonByIdAndUser(id, userId)
-        } else {
-            db.childLessonDao().deleteChildLessonById(id)
-        }
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        db.childLessonDao().deleteChildLessonByIdAndUser(id, effectiveUser)
     }
 
     // 9. Local Vault Items (Encrypted client-side)
@@ -391,11 +404,8 @@ class SmartVaultRepository(private val db: AppDatabase) {
     }
 
     suspend fun deleteVaultItem(id: String, userId: String = "") {
-        if (userId.isNotBlank()) {
-            db.vaultItemDao().deleteVaultItemByIdAndUser(id, userId)
-        } else {
-            db.vaultItemDao().deleteVaultItemById(id)
-        }
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        db.vaultItemDao().deleteVaultItemByIdAndUser(id, effectiveUser)
     }
 
     // 10. Activity Logs
@@ -461,27 +471,28 @@ class SmartVaultRepository(private val db: AppDatabase) {
             return Result.failure(IllegalArgumentException("لا يمكن التحويل من الخزنة إلى نفسها"))
         }
 
+        val effectiveUser = userId.ifBlank { "local_guest" }
         return try {
             db.withTransaction {
-                val fromVault = db.vaultDao().getVaultByName(fromVaultName, userId)
+                val fromVault = db.vaultDao().getVaultByName(fromVaultName, effectiveUser)
                     ?: throw IllegalStateException("الخزنة المصدر غير موجودة")
 
                 if (fromVault.balance < amount) {
                     throw IllegalStateException("رصيد الخزنة (${fromVault.balance}) لا يكفي لتحويل ($amount)")
                 }
 
-                var toVault = db.vaultDao().getVaultByName(toVaultName, userId)
+                var toVault = db.vaultDao().getVaultByName(toVaultName, effectiveUser)
                 if (toVault == null) {
-                    db.vaultDao().insertVault(VaultEntity(name = toVaultName, balance = amount, isDefault = false, userId = userId))
+                    db.vaultDao().insertVault(VaultEntity(name = toVaultName, balance = amount, isDefault = false, userId = effectiveUser))
                 } else {
-                    db.vaultDao().updateVaultBalance(toVault.id, toVault.balance + amount)
+                    db.vaultDao().updateVaultBalance(toVault.id, toVault.balance + amount, effectiveUser)
                 }
 
-                db.vaultDao().updateVaultBalance(fromVault.id, fromVault.balance - amount)
+                db.vaultDao().updateVaultBalance(fromVault.id, fromVault.balance - amount, effectiveUser)
 
                 db.transferDao().insertTransfer(
                     TransferEntity(
-                        userId = userId,
+                        userId = effectiveUser,
                         fromVaultName = fromVaultName,
                         toVaultName = toVaultName,
                         amount = amount,
@@ -497,28 +508,22 @@ class SmartVaultRepository(private val db: AppDatabase) {
     }
 
     suspend fun reverseTransfer(transferId: Int, userId: String = ""): Result<Unit> {
+        val effectiveUser = userId.ifBlank { "local_guest" }
         return try {
             db.withTransaction {
-                val transfer = if (userId.isNotBlank()) {
-                    db.transferDao().getTransferById(transferId, userId)
-                } else {
-                    db.transferDao().getTransfersForUser("").first().find { it.id == transferId }
-                } ?: throw IllegalStateException("لم يتم العثور على سجل التحويل")
+                val transfer = db.transferDao().getTransferById(transferId, effectiveUser)
+                    ?: throw IllegalStateException("لم يتم العثور على سجل التحويل أو ليس لديك صلاحية")
 
-                val fromVault = db.vaultDao().getVaultByName(transfer.fromVaultName, transfer.userId)
+                val fromVault = db.vaultDao().getVaultByName(transfer.fromVaultName, effectiveUser)
                     ?: throw IllegalStateException("الخزنة المصدر للتحويل غير موجودة")
-                val toVault = db.vaultDao().getVaultByName(transfer.toVaultName, transfer.userId)
+                val toVault = db.vaultDao().getVaultByName(transfer.toVaultName, effectiveUser)
                     ?: throw IllegalStateException("الخزنة المستلمة للتحويل غير موجودة")
 
                 // Return funds to source vault and deduct from target vault
-                db.vaultDao().updateVaultBalance(fromVault.id, fromVault.balance + transfer.amount)
-                db.vaultDao().updateVaultBalance(toVault.id, toVault.balance - transfer.amount)
+                db.vaultDao().updateVaultBalance(fromVault.id, fromVault.balance + transfer.amount, effectiveUser)
+                db.vaultDao().updateVaultBalance(toVault.id, toVault.balance - transfer.amount, effectiveUser)
 
-                if (userId.isNotBlank()) {
-                    db.transferDao().deleteTransferByIdAndUser(transferId, userId)
-                } else {
-                    db.transferDao().deleteTransferById(transferId)
-                }
+                db.transferDao().deleteTransferByIdAndUser(transferId, effectiveUser)
             }
             Result.success(Unit)
         } catch (e: Exception) {
@@ -527,16 +532,14 @@ class SmartVaultRepository(private val db: AppDatabase) {
     }
 
     suspend fun deleteTransfer(id: Int, userId: String = "") {
-        if (userId.isNotBlank()) {
-            db.transferDao().deleteTransferByIdAndUser(id, userId)
-        } else {
-            db.transferDao().deleteTransferById(id)
-        }
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        db.transferDao().deleteTransferByIdAndUser(id, effectiveUser)
     }
 
     // 13. Debts (Owed to me / I owe)
     suspend fun addDebt(debt: DebtEntity): Long {
-        return db.debtDao().insertDebt(debt)
+        val effectiveUser = debt.userId.ifBlank { "local_guest" }
+        return db.debtDao().insertDebt(debt.copy(userId = effectiveUser))
     }
 
     suspend fun addDebt(
@@ -550,8 +553,9 @@ class SmartVaultRepository(private val db: AppDatabase) {
         if (amount.isNaN() || amount.isInfinite() || amount <= 0.0) {
             throw IllegalArgumentException("مبلغ الدين غير صالح: يجب أن يكون أكبر من صفر")
         }
+        val effectiveUser = userId.ifBlank { "local_guest" }
         val debt = DebtEntity(
-            userId = userId,
+            userId = effectiveUser,
             personName = personName,
             type = type,
             originalAmount = amount,
@@ -573,31 +577,30 @@ class SmartVaultRepository(private val db: AppDatabase) {
         userId: String = "",
         paymentDateMillis: Long = dateMillis
     ): Result<Unit> {
+        val effectiveUser = userId.ifBlank { "local_guest" }
         if (paymentAmount.isNaN() || paymentAmount.isInfinite() || paymentAmount <= 0.0) {
             return Result.failure(IllegalArgumentException("يجب أن يكون مبلغ السداد أكبر من صفر"))
         }
-        val debt = if (userId.isNotBlank()) {
-            db.debtDao().getDebtById(debtId, userId)
-        } else {
-            db.debtDao().getDebtById(debtId)
-        } ?: return Result.failure(IllegalStateException("لم يتم العثور على سجل الدين"))
-
-        if (paymentAmount > debt.remainingAmount) {
-            return Result.failure(
-                IllegalArgumentException("مبلغ السداد ($paymentAmount) يتجاوز المبلغ المتبقي (${debt.remainingAmount})")
-            )
-        }
-
-        val newPaid = debt.paidAmount + paymentAmount
-        val newRemaining = debt.remainingAmount - paymentAmount
-        val newStatus = if (newRemaining <= 0.001) "PAID" else "PARTIALLY_PAID"
 
         return try {
             db.withTransaction {
+                val debt = db.debtDao().getDebtById(debtId, effectiveUser)
+                    ?: throw IllegalStateException("لم يتم العثور على سجل الدين أو ليس لديك صلاحية الوصول إليه")
+
+                if (paymentAmount > debt.remainingAmount + 0.0001) {
+                    throw IllegalArgumentException("مبلغ السداد ($paymentAmount) يتجاوز المبلغ المتبقي (${debt.remainingAmount})")
+                }
+
+                val rawNewPaid = debt.paidAmount + paymentAmount
+                val rawNewRemaining = debt.originalAmount - rawNewPaid
+                val roundedPaid = kotlin.math.round(rawNewPaid * 100.0) / 100.0
+                val roundedRemaining = kotlin.math.max(0.0, kotlin.math.round(rawNewRemaining * 100.0) / 100.0)
+                val newStatus = if (roundedRemaining <= 0.001) "PAID" else "PARTIALLY_PAID"
+
                 db.debtDao().updateDebt(
                     debt.copy(
-                        paidAmount = newPaid,
-                        remainingAmount = newRemaining,
+                        paidAmount = roundedPaid,
+                        remainingAmount = roundedRemaining,
                         status = newStatus,
                         updatedAt = System.currentTimeMillis()
                     )
@@ -605,7 +608,7 @@ class SmartVaultRepository(private val db: AppDatabase) {
                 db.debtPaymentDao().insertPayment(
                     DebtPaymentEntity(
                         debtId = debtId,
-                        userId = if (userId.isNotBlank()) userId else debt.userId,
+                        userId = debt.userId,
                         amount = paymentAmount,
                         dateMillis = paymentDateMillis,
                         notes = notes
@@ -619,14 +622,10 @@ class SmartVaultRepository(private val db: AppDatabase) {
     }
 
     suspend fun deleteDebt(id: Int, userId: String = "") {
+        val effectiveUser = userId.ifBlank { "local_guest" }
         db.withTransaction {
-            if (userId.isNotBlank()) {
-                db.debtPaymentDao().deletePaymentsForDebt(id, userId)
-                db.debtDao().deleteDebtByIdAndUser(id, userId)
-            } else {
-                db.debtPaymentDao().deletePaymentsForDebt(id)
-                db.debtDao().deleteDebtById(id)
-            }
+            db.debtPaymentDao().deletePaymentsForDebt(id, effectiveUser)
+            db.debtDao().deleteDebtByIdAndUser(id, effectiveUser)
         }
     }
 

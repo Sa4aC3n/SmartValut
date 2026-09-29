@@ -46,15 +46,21 @@ data class BackupValidationResult(
     val decryptedJson: String? = null
 )
 
+enum class RestorePolicy {
+    REPLACE,
+    SAFE_MERGE
+}
+
 object LocalBackupManager {
-    private const val MAGIC_HEADER = "SMARTVAULT_ENC_V1"
-    private const val CURRENT_BACKUP_VERSION = 1
-    private const val CURRENT_SCHEMA_VERSION = 6
+    const val MAGIC_HEADER_V1 = "SMARTVAULT_ENC_V1"
+    const val MAGIC_HEADER_V2 = "SMARTVAULT_ENC_V2"
+    private const val CURRENT_BACKUP_VERSION = 2
+    private const val CURRENT_SCHEMA_VERSION = 7
     private const val DEFAULT_BACKUP_SECRET = "SmartVault_Secure_Local_Key_2026"
 
     /**
      * Generates a fully encrypted, tamper-evident backup string of the user's local financial data.
-     * Requires explicit user-provided password for all newly generated backups.
+     * Uses V2 authenticated encryption envelope and requires explicit user-provided password.
      */
     suspend fun createEncryptedBackup(
         context: Context,
@@ -70,6 +76,8 @@ object LocalBackupManager {
         root.put("backupVersion", CURRENT_BACKUP_VERSION)
         root.put("schemaVersion", CURRENT_SCHEMA_VERSION)
         root.put("exportTimestamp", System.currentTimeMillis())
+        root.put("mediaIncluded", false)
+        root.put("mediaNote", "مسارات إيصالات الصور هي مراجع محلية على الجهاز ولا يتم تضمينها كملفات ثنائية محمولة")
 
         val dataObj = JSONObject()
 
@@ -308,18 +316,29 @@ object LocalBackupManager {
         userPassword: String = DEFAULT_BACKUP_SECRET
     ): BackupValidationResult {
         return try {
-            val decryptedJson = try {
-                decryptData(encryptedPayload, userPassword)
-            } catch (e: Exception) {
-                // Backward compatibility: if user-entered password failed, try legacy default secret
-                if (userPassword != DEFAULT_BACKUP_SECRET) {
-                    try {
-                        decryptData(encryptedPayload, DEFAULT_BACKUP_SECRET)
-                    } catch (_: Exception) {
+            val trimmed = encryptedPayload.trim()
+            val isV2 = trimmed.startsWith(MAGIC_HEADER_V2)
+
+            val decryptedJson = if (isV2) {
+                // V2 requires explicit user password and strictly rejects legacy default password fallback
+                if (userPassword.isBlank() || userPassword == DEFAULT_BACKUP_SECRET) {
+                    throw IllegalArgumentException("تتطلب هذه النسخة الحديثة (V2) إدخال كلمة المرور المخصصة التي تم إنشاؤها بها")
+                }
+                decryptData(trimmed, userPassword)
+            } else {
+                // V1 legacy support: try user password first, then fallback to legacy secret
+                try {
+                    decryptData(trimmed, userPassword)
+                } catch (e: Exception) {
+                    if (userPassword != DEFAULT_BACKUP_SECRET) {
+                        try {
+                            decryptData(trimmed, DEFAULT_BACKUP_SECRET)
+                        } catch (_: Exception) {
+                            throw e
+                        }
+                    } else {
                         throw e
                     }
-                } else {
-                    throw e
                 }
             }
             val root = JSONObject(decryptedJson)
@@ -346,6 +365,95 @@ object LocalBackupManager {
             val computedChecksum = sha256(dataObj.toString())
             if (storedChecksum.isNotBlank() && storedChecksum != computedChecksum) {
                 return BackupValidationResult(false, errorMessage = "فشل التحقق من سلامة الملف (Checksum Mismatch) — الملف تم التعديل عليه أو تالف")
+            }
+
+            // --- STRICT RELATIONAL INTEGRITY VALIDATION ---
+            // 1. Debt -> Payments validation: reject backups with orphaned payments
+            val debtArray = dataObj.optJSONArray("debts")
+            val debtIds = mutableSetOf<Int>()
+            if (debtArray != null) {
+                for (i in 0 until debtArray.length()) {
+                    val d = debtArray.getJSONObject(i)
+                    val id = d.optInt("id", 0)
+                    if (id > 0) debtIds.add(id)
+                    val orig = d.optDouble("originalAmount", 0.0)
+                    val rem = d.optDouble("remainingAmount", 0.0)
+                    val paid = d.optDouble("paidAmount", 0.0)
+                    if (orig.isNaN() || orig.isInfinite() || rem.isNaN() || rem.isInfinite() || paid.isNaN() || paid.isInfinite()) {
+                        return BackupValidationResult(false, errorMessage = "النسخة تحتوي على مبالغ ديون غير صالحة (NaN أو Infinity)")
+                    }
+                }
+            }
+
+            val payArray = dataObj.optJSONArray("debt_payments")
+            if (payArray != null) {
+                for (i in 0 until payArray.length()) {
+                    val p = payArray.getJSONObject(i)
+                    val debtId = p.optInt("debtId", 0)
+                    if (!debtIds.contains(debtId)) {
+                        return BackupValidationResult(
+                            false,
+                            errorMessage = "النسخة تحتوي على دفعات دين يتيمة لا ترتبط بأي دين مسجل (سجلات يتيمة: debtId = $debtId)"
+                        )
+                    }
+                    val amt = p.optDouble("amount", 0.0)
+                    if (amt.isNaN() || amt.isInfinite() || amt <= 0.0) {
+                        return BackupValidationResult(false, errorMessage = "النسخة تحتوي على مبالغ دفعات دين غير صالحة")
+                    }
+                }
+            }
+
+            // 2. Outing -> Outing Expenses validation: reject backups with orphaned outing expenses
+            val outingArray = dataObj.optJSONArray("outings")
+            val outingIds = mutableSetOf<String>()
+            if (outingArray != null) {
+                for (i in 0 until outingArray.length()) {
+                    val out = outingArray.getJSONObject(i)
+                    val id = out.optString("id", "")
+                    if (id.isNotBlank()) outingIds.add(id)
+                }
+            }
+
+            val outingExpArray = dataObj.optJSONArray("outing_expenses")
+            if (outingExpArray != null) {
+                for (i in 0 until outingExpArray.length()) {
+                    val oe = outingExpArray.getJSONObject(i)
+                    val oId = oe.optString("outingId", "")
+                    if (oId.isNotBlank() && !outingIds.contains(oId)) {
+                        return BackupValidationResult(
+                            false,
+                            errorMessage = "النسخة تحتوي على مصاريف خرجة يتيمة لا ترتبط بأي خرجة مسجلة (سجلات يتيمة: outingId = $oId)"
+                        )
+                    }
+                    val amt = oe.optDouble("amount", 0.0)
+                    if (amt.isNaN() || amt.isInfinite() || amt < 0.0) {
+                        return BackupValidationResult(false, errorMessage = "النسخة تحتوي على مبالغ مصاريف خرجة غير صالحة")
+                    }
+                }
+            }
+
+            // 3. Transactions validation
+            val txArray = dataObj.optJSONArray("transactions")
+            if (txArray != null) {
+                for (i in 0 until txArray.length()) {
+                    val tx = txArray.getJSONObject(i)
+                    val amt = tx.optDouble("amount", 0.0)
+                    if (amt.isNaN() || amt.isInfinite() || amt <= 0.0) {
+                        return BackupValidationResult(false, errorMessage = "النسخة تحتوي على معاملات مالية بمبالغ غير صالحة")
+                    }
+                }
+            }
+
+            // 4. Cash savings validation
+            val cashArray = dataObj.optJSONArray("cash_savings")
+            if (cashArray != null) {
+                for (i in 0 until cashArray.length()) {
+                    val cs = cashArray.getJSONObject(i)
+                    val amt = cs.optDouble("amount", 0.0)
+                    if (amt.isNaN() || amt.isInfinite() || amt < 0.0) {
+                        return BackupValidationResult(false, errorMessage = "النسخة تحتوي على مدخرات نقدية بمبالغ غير صالحة")
+                    }
+                }
             }
 
             val txCount = dataObj.optJSONArray("transactions")?.length() ?: 0
@@ -383,46 +491,68 @@ object LocalBackupManager {
     suspend fun applyRestore(
         db: AppDatabase,
         userId: String,
-        decryptedJson: String
+        decryptedJson: String,
+        policy: RestorePolicy = RestorePolicy.REPLACE
     ): Boolean = withContext(Dispatchers.IO) {
         try {
             val root = JSONObject(decryptedJson)
             val dataObj = root.getJSONObject("data")
 
             db.withTransaction {
-                // Clear existing financial data for target user inside atomic transaction
-                db.transactionDao().clearUserTransactions(userId)
-                db.vaultDao().clearUserVaults(userId)
-                db.budgetLimitDao().clearUserLimits(userId)
-                db.goldAssetDao().clearUserGoldAssets(userId)
-                db.cashSavingDao().clearUserCashSavings(userId)
-                db.commitmentDao().clearUserCommitments(userId)
-                db.childLessonDao().clearUserChildLessons(userId)
-                db.vaultItemDao().clearUserVaultItems(userId)
-                db.activityLogDao().clearUserLogs(userId)
-                db.outingDao().clearUserOutings(userId)
-                db.outingExpenseDao().clearUserOutingExpenses(userId)
-                db.transferDao().clearUserTransfers(userId)
-                db.debtDao().clearUserDebts(userId)
-                db.debtPaymentDao().clearUserDebtPayments(userId)
-                db.netWorthSnapshotDao().clearUserSnapshots(userId)
+                if (policy == RestorePolicy.REPLACE) {
+                    // Clear existing financial data for target user inside atomic transaction
+                    db.transactionDao().clearUserTransactions(userId)
+                    db.vaultDao().clearUserVaults(userId)
+                    db.budgetLimitDao().clearUserLimits(userId)
+                    db.goldAssetDao().clearUserGoldAssets(userId)
+                    db.cashSavingDao().clearUserCashSavings(userId)
+                    db.commitmentDao().clearUserCommitments(userId)
+                    db.childLessonDao().clearUserChildLessons(userId)
+                    db.vaultItemDao().clearUserVaultItems(userId)
+                    db.activityLogDao().clearUserLogs(userId)
+                    db.outingDao().clearUserOutings(userId)
+                    db.outingExpenseDao().clearUserOutingExpenses(userId)
+                    db.transferDao().clearUserTransfers(userId)
+                    db.debtDao().clearUserDebts(userId)
+                    db.debtPaymentDao().clearUserDebtPayments(userId)
+                    db.netWorthSnapshotDao().clearUserSnapshots(userId)
+                }
 
                 // 1. Transactions
                 val txArray = dataObj.optJSONArray("transactions")
                 if (txArray != null) {
+                    val existingTxs = if (policy == RestorePolicy.SAFE_MERGE) {
+                        db.transactionDao().getTransactionsForUser(userId).first()
+                    } else emptyList()
+
                     val list = mutableListOf<TransactionEntity>()
                     for (i in 0 until txArray.length()) {
                         val o = txArray.getJSONObject(i)
+                        val type = o.optString("type", "EXPENSE")
+                        val amount = o.optDouble("amount", 0.0)
+                        val category = o.optString("category", "عام")
+                        val description = o.optString("description", "")
+                        val dateMillis = o.optLong("dateMillis", System.currentTimeMillis())
+                        val vaultName = o.optString("vaultName", "الخزنة الرئيسية")
+                        val receiptPath = o.optString("receiptImagePath", null)
+
+                        if (policy == RestorePolicy.SAFE_MERGE) {
+                            val isDuplicate = existingTxs.any {
+                                it.amount == amount && it.dateMillis == dateMillis && it.type == type && it.description == description
+                            }
+                            if (isDuplicate) continue
+                        }
+
                         list.add(
                             TransactionEntity(
                                 userId = userId,
-                                type = o.optString("type", "EXPENSE"),
-                                amount = o.optDouble("amount", 0.0),
-                                category = o.optString("category", "عام"),
-                                description = o.optString("description", ""),
-                                dateMillis = o.optLong("dateMillis", System.currentTimeMillis()),
-                                vaultName = o.optString("vaultName", "الخزنة الرئيسية"),
-                                receiptImagePath = o.optString("receiptImagePath", null)
+                                type = type,
+                                amount = amount,
+                                category = category,
+                                description = description,
+                                dateMillis = dateMillis,
+                                vaultName = vaultName,
+                                receiptImagePath = receiptPath
                             )
                         )
                     }
@@ -432,15 +562,28 @@ object LocalBackupManager {
                 // 2. Vaults
                 val vaultArray = dataObj.optJSONArray("vaults")
                 if (vaultArray != null) {
+                    val existingVaults = if (policy == RestorePolicy.SAFE_MERGE) {
+                        db.vaultDao().getVaultsForUser(userId).first()
+                    } else emptyList()
+
                     val list = mutableListOf<VaultEntity>()
                     for (i in 0 until vaultArray.length()) {
                         val o = vaultArray.getJSONObject(i)
+                        val name = o.optString("name", "الخزنة الرئيسية")
+                        val balance = o.optDouble("balance", 0.0)
+                        val isDefault = o.optBoolean("isDefault", false)
+
+                        if (policy == RestorePolicy.SAFE_MERGE) {
+                            val exists = existingVaults.any { it.name == name }
+                            if (exists) continue
+                        }
+
                         list.add(
                             VaultEntity(
                                 userId = userId,
-                                name = o.optString("name", "الخزنة الرئيسية"),
-                                balance = o.optDouble("balance", 0.0),
-                                isDefault = o.optBoolean("isDefault", false)
+                                name = name,
+                                balance = balance,
+                                isDefault = isDefault
                             )
                         )
                     }
@@ -672,18 +815,16 @@ object LocalBackupManager {
                         val o = payArray.getJSONObject(i)
                         val oldDebtId = o.optInt("debtId", 0)
                         val targetDebtId = oldToNewDebtId[oldDebtId]
-                        // Only attach payment if target debt was restored successfully; reject orphaned records
-                        if (targetDebtId != null && targetDebtId > 0) {
-                            list.add(
-                                DebtPaymentEntity(
-                                    debtId = targetDebtId,
-                                    userId = userId,
-                                    amount = o.optDouble("amount", 0.0),
-                                    dateMillis = o.optLong("dateMillis", System.currentTimeMillis()),
-                                    notes = o.optString("notes", "")
-                                )
+                            ?: throw IllegalStateException("فشل ربط دفعة الدين: الدين الأصلي (id=$oldDebtId) غير موجود في النسخة")
+                        list.add(
+                            DebtPaymentEntity(
+                                debtId = targetDebtId,
+                                userId = userId,
+                                amount = o.optDouble("amount", 0.0),
+                                dateMillis = o.optLong("dateMillis", System.currentTimeMillis()),
+                                notes = o.optString("notes", "")
                             )
-                        }
+                        )
                     }
                     if (list.isNotEmpty()) db.debtPaymentDao().insertAllPayments(list)
                 }
@@ -737,17 +878,17 @@ object LocalBackupManager {
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, GCMParameterSpec(128, iv))
         val ciphertext = cipher.doFinal(plaintext.toByteArray(StandardCharsets.UTF_8))
 
-        // Format: MAGIC_HEADER:Base64(salt):Base64(iv):Base64(ciphertext)
+        // Format: MAGIC_HEADER_V2:Base64(salt):Base64(iv):Base64(ciphertext)
         val saltB64 = Base64.encodeToString(salt, Base64.NO_WRAP)
         val ivB64 = Base64.encodeToString(iv, Base64.NO_WRAP)
         val cipherB64 = Base64.encodeToString(ciphertext, Base64.NO_WRAP)
 
-        return "$MAGIC_HEADER:$saltB64:$ivB64:$cipherB64"
+        return "$MAGIC_HEADER_V2:$saltB64:$ivB64:$cipherB64"
     }
 
     private fun decryptData(payload: String, secret: String): String {
         val parts = payload.trim().split(":")
-        if (parts.size != 4 || parts[0] != MAGIC_HEADER) {
+        if (parts.size != 4 || (parts[0] != MAGIC_HEADER_V1 && parts[0] != MAGIC_HEADER_V2)) {
             throw IllegalArgumentException("تنسيق النسخة الاحتياطية غير مدعوم أو تالف")
         }
 

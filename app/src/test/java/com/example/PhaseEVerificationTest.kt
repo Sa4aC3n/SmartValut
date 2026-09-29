@@ -197,7 +197,7 @@ class PhaseEVerificationTest {
             userId = user
         ).toInt()
 
-        var debt = db.debtDao().getDebtById(debtId)
+        var debt = db.debtDao().getDebtById(debtId, user)
         assertNotNull(debt)
         assertEquals(10000.0, debt!!.originalAmount, 0.001)
         assertEquals(10000.0, debt.remainingAmount, 0.001)
@@ -213,7 +213,7 @@ class PhaseEVerificationTest {
         )
         assertTrue(p1Result.isSuccess)
 
-        debt = db.debtDao().getDebtById(debtId)
+        debt = db.debtDao().getDebtById(debtId, user)
         assertNotNull(debt)
         assertEquals(4000.0, debt!!.paidAmount, 0.001)
         assertEquals(6000.0, debt.remainingAmount, 0.001)
@@ -228,7 +228,7 @@ class PhaseEVerificationTest {
         )
         assertTrue(p2Result.isSuccess)
 
-        debt = db.debtDao().getDebtById(debtId)
+        debt = db.debtDao().getDebtById(debtId, user)
         assertNotNull(debt)
         assertEquals(10000.0, debt!!.paidAmount, 0.001)
         assertEquals(0.0, debt.remainingAmount, 0.001)
@@ -373,7 +373,7 @@ class PhaseEVerificationTest {
         // Create Encrypted Backup
         val backupString = LocalBackupManager.createEncryptedBackup(context, db, user, "TestSecret123")
         assertNotNull(backupString)
-        assertTrue(backupString.startsWith("SMARTVAULT_ENC_V1:"))
+        assertTrue(backupString.startsWith("SMARTVAULT_ENC_V1:") || backupString.startsWith("SMARTVAULT_ENC_V2:"))
 
         // Clear user data in database
         repository.clearUserData(user)

@@ -540,7 +540,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     ) {
         viewModelScope.launch {
             try {
-                repository.deleteVaultItem(itemId)
+                repository.deleteVaultItem(itemId, activeUserId.value)
                 repository.logActivity(
                     userId = activeUserId.value,
                     action = "deleted",
@@ -1195,13 +1195,13 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     fun deleteVault(id: Int) {
         viewModelScope.launch {
-            repository.deleteVault(id)
+            repository.deleteVault(id, activeUserId.value)
         }
     }
 
     fun deleteVault(vault: VaultEntity) {
         viewModelScope.launch {
-            repository.deleteVault(vault.id)
+            repository.deleteVault(vault.id, activeUserId.value)
         }
     }
 
@@ -1219,19 +1219,19 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     fun deleteTransaction(id: Int, tx: TransactionEntity? = null) {
         viewModelScope.launch {
-            repository.deleteTransaction(id)
+            repository.deleteTransaction(id, activeUserId.value)
         }
     }
 
     fun deleteCommitment(id: Int, item: CommitmentEntity? = null) {
         viewModelScope.launch {
-            repository.deleteCommitment(id)
+            repository.deleteCommitment(id, activeUserId.value)
         }
     }
 
     fun deleteChildLesson(id: Int, item: ChildLessonEntity? = null) {
         viewModelScope.launch {
-            repository.deleteChildLesson(id)
+            repository.deleteChildLesson(id, activeUserId.value)
         }
     }
 
@@ -1253,7 +1253,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     fun deleteOuting(outingId: String, onComplete: ((Boolean) -> Unit)? = null) {
         viewModelScope.launch {
-            repository.deleteOuting(outingId)
+            repository.deleteOuting(outingId, activeUserId.value)
             if (selectedOutingId.value == outingId) {
                 selectOuting(null)
             }
@@ -1288,7 +1288,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     ) {
         viewModelScope.launch {
             val intId = expenseId.toIntOrNull() ?: expenseId.hashCode()
-            repository.deleteOutingExpense(intId)
+            repository.deleteOutingExpense(intId, activeUserId.value)
             onComplete?.invoke(true)
         }
     }
@@ -1309,7 +1309,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     fun deleteOutingExpense(id: Int) {
         viewModelScope.launch {
-            repository.deleteOutingExpense(id)
+            repository.deleteOutingExpense(id, activeUserId.value)
         }
     }
 
@@ -1345,7 +1345,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     fun deleteCashSaving(id: Int, item: CashSavingEntity? = null) {
         viewModelScope.launch {
-            repository.deleteCashSaving(id)
+            repository.deleteCashSaving(id, activeUserId.value)
         }
     }
 
@@ -1387,13 +1387,13 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     fun deleteGoldAsset(id: Int, item: GoldAssetEntity? = null) {
         viewModelScope.launch {
-            repository.deleteGoldAsset(id)
+            repository.deleteGoldAsset(id, activeUserId.value)
         }
     }
 
     fun sellGoldAsset(id: Int, salePrice: Double, saleDateMillis: Long = System.currentTimeMillis(), saleNotes: String? = null) {
         viewModelScope.launch {
-            repository.sellGoldAsset(id, salePrice, saleDateMillis, saleNotes)
+            repository.sellGoldAsset(id, salePrice, saleDateMillis, saleNotes, activeUserId.value)
         }
     }
 

@@ -161,7 +161,7 @@ class PhaseDVerificationTest {
         val password = "SuperSecretPassword123!"
         val backupCiphertext = LocalBackupManager.createEncryptedBackup(context, db, user, password)
         assertNotNull(backupCiphertext)
-        assertTrue(backupCiphertext.startsWith("SMARTVAULT_ENC_V1:"))
+        assertTrue(backupCiphertext.startsWith("SMARTVAULT_ENC_V1:") || backupCiphertext.startsWith("SMARTVAULT_ENC_V2:"))
         assertFalse(backupCiphertext.contains("خزنة احتياطية")) // Plaintext is encrypted
 
         // Clear local database

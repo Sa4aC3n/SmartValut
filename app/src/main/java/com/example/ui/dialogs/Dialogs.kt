@@ -1,4 +1,584 @@
-       // Save Button ("حفظ")
+package com.example.ui.dialogs
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import com.example.data.entity.VaultEntity
+import com.example.data.entity.CommitmentEntity
+import com.example.data.entity.ChildLessonEntity
+import com.example.ui.theme.EmeraldGreenPrimary
+import com.example.ui.theme.IncomeGreen
+import com.example.ui.theme.ExpenseRed
+import com.example.ui.theme.MintBackground
+import com.example.ui.theme.CardBorderColor
+import com.example.ui.utils.CategoryUtils
+import com.example.ui.utils.LocalStrings
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.filled.Alarm
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.AddPhotoAlternate
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Surface
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import android.net.Uri
+import androidx.compose.ui.unit.sp
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AddIncomeDialog(
+    vaults: List<String>,
+    onDismiss: () -> Unit,
+    onConfirm: (amount: Double, category: String, description: String, vaultName: String, dateMillis: Long) -> Unit
+) {
+    var amountText by remember { mutableStateOf("") }
+    var selectedCategory by remember { mutableStateOf(CategoryUtils.incomeCategories.first()) }
+    var description by remember { mutableStateOf("") }
+    var selectedVault by remember { mutableStateOf(vaults.firstOrNull() ?: "الخزنة الرئيسية") }
+    var selectedDateText by remember {
+        mutableStateOf(SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(Date()))
+    }
+
+    var categoryExpanded by remember { mutableStateOf(false) }
+    var vaultExpanded by remember { mutableStateOf(false) }
+    var isSubmitting by remember { mutableStateOf(false) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(
+                text = "+ إضافة دخل جديد إلى الخزنة",
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = IncomeGreen
+            )
+        },
+        text = {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+            ) {
+                OutlinedTextField(
+                    value = amountText,
+                    onValueChange = { amountText = it },
+                    label = { Text("المبلغ (بالجنيه)") },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = IncomeGreen)
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Category Dropdown
+                ExposedDropdownMenuBox(
+                    expanded = categoryExpanded,
+                    onExpandedChange = { categoryExpanded = !categoryExpanded }
+                ) {
+                    OutlinedTextField(
+                        value = selectedCategory,
+                        onValueChange = {},
+                        readOnly = true,
+                        label = { Text("تصنيف الدخل") },
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = categoryExpanded) },
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(12.dp)
+                    )
+                    ExposedDropdownMenu(
+                        expanded = categoryExpanded,
+                        onDismissRequest = { categoryExpanded = false }
+                    ) {
+                        CategoryUtils.incomeCategories.forEach { category ->
+                            DropdownMenuItem(
+                                text = { Text(category) },
+                                onClick = {
+                                    selectedCategory = category
+                                    categoryExpanded = false
+                                }
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Vault Dropdown
+                if (vaults.isNotEmpty()) {
+                    ExposedDropdownMenuBox(
+                        expanded = vaultExpanded,
+                        onExpandedChange = { vaultExpanded = !vaultExpanded }
+                    ) {
+                        OutlinedTextField(
+                            value = selectedVault,
+                            onValueChange = {},
+                            readOnly = true,
+                            label = { Text("الخزنة المستهدفة") },
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = vaultExpanded) },
+                            modifier = Modifier
+                                .menuAnchor()
+                                .fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp)
+                        )
+                        ExposedDropdownMenu(
+                            expanded = vaultExpanded,
+                            onDismissRequest = { vaultExpanded = false }
+                        ) {
+                            vaults.forEach { v ->
+                                DropdownMenuItem(
+                                    text = { Text(v) },
+                                    onClick = {
+                                        selectedVault = v
+                                        vaultExpanded = false
+                                    }
+                                )
+                            }
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
+
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    label = { Text("الوصف / ملاحظة (اختياري)") },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp)
+                )
+            }
+        },
+        confirmButton = {
+            Button(
+                enabled = !isSubmitting,
+                onClick = {
+                    val amt = amountText.toDoubleOrNull() ?: 0.0
+                    if (amt > 0 && !isSubmitting) {
+                        isSubmitting = true
+                        val parsedDateMillis = try {
+                            SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(selectedDateText)?.time ?: System.currentTimeMillis()
+                        } catch (e: Exception) {
+                            System.currentTimeMillis()
+                        }
+                        onConfirm(amt, selectedCategory, description.ifBlank { selectedCategory }, selectedVault, parsedDateMillis)
+                        onDismiss()
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(containerColor = IncomeGreen),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Text("إضافة", color = Color.White)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text("إلغاء")
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AddExpenseDialog(
+    vaults: List<String>,
+    onDismiss: () -> Unit,
+    onConfirm: (amount: Double, category: String, description: String, vaultName: String, receiptPath: String?, dateMillis: Long) -> Unit
+) {
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val appStrings = LocalStrings.current
+    var amountText by remember { mutableStateOf("") }
+    var selectedCategory by remember { mutableStateOf(CategoryUtils.expenseCategories.firstOrNull() ?: "خضروات") }
+    var description by remember { mutableStateOf("") }
+    var selectedVault by remember { mutableStateOf(vaults.firstOrNull() ?: "الخزنة الرئيسية") }
+    var selectedDateText by remember {
+        mutableStateOf(SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(Date()))
+    }
+    var receiptUri by remember { mutableStateOf<Uri?>(null) }
+    var receiptName by remember { mutableStateOf<String?>(null) }
+
+    val photoPickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        receiptUri = uri
+        if (uri != null) {
+            receiptName = if (appStrings.isEn) "Receipt Attached ✓" else "تم إرفاق صورة الفاتورة ✓"
+        }
+    }
+
+    var categoryExpanded by remember { mutableStateOf(false) }
+    var vaultExpanded by remember { mutableStateOf(false) }
+    var isSubmitting by remember { mutableStateOf(false) }
+
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxWidth(0.92f)
+                .wrapContentHeight(),
+            shape = RoundedCornerShape(28.dp),
+            color = Color(0xFFF5F8F6),
+            tonalElevation = 6.dp
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                // Header: Title & Close 'X' Button
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = appStrings.addExpense,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = Color(0xFF1B241E)
+                    )
+                    IconButton(
+                        onClick = onDismiss,
+                        modifier = Modifier.size(32.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = appStrings.close,
+                            tint = Color(0xFF5A665E),
+                            modifier = Modifier.size(22.dp)
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                // Field 1: Amount (المبلغ)
+                Text(
+                    text = appStrings.amount,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color(0xFF2D3931),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 6.dp)
+                )
+                OutlinedTextField(
+                    value = amountText,
+                    onValueChange = { amountText = it },
+                    placeholder = {
+                        Text(
+                            text = "0",
+                            color = Color.Gray,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.End
+                        )
+                    },
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    singleLine = true,
+                    textStyle = androidx.compose.ui.text.TextStyle(
+                        textAlign = TextAlign.End,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color(0xFF1B241E)
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(18.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedBorderColor = Color(0xFFD4E0D7),
+                        unfocusedBorderColor = Color(0xFFE2EBE4)
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                // Field 2: Category (التصنيف)
+                Text(
+                    text = appStrings.category,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color(0xFF2D3931),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 6.dp)
+                )
+                ExposedDropdownMenuBox(
+                    expanded = categoryExpanded,
+                    onExpandedChange = { categoryExpanded = !categoryExpanded }
+                ) {
+                    OutlinedTextField(
+                        value = appStrings.translateCategory(selectedCategory),
+                        onValueChange = {},
+                        readOnly = true,
+                        trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = categoryExpanded) },
+                        modifier = Modifier
+                            .menuAnchor()
+                            .fillMaxWidth(),
+                        shape = RoundedCornerShape(18.dp),
+                        colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = Color.White,
+                            unfocusedContainerColor = Color.White,
+                            focusedBorderColor = EmeraldGreenPrimary,
+                            unfocusedBorderColor = EmeraldGreenPrimary
+                        )
+                    )
+                    ExposedDropdownMenu(
+                        expanded = categoryExpanded,
+                        onDismissRequest = { categoryExpanded = false }
+                    ) {
+                        CategoryUtils.expenseCategories.forEach { category ->
+                            DropdownMenuItem(
+                                text = { Text(appStrings.translateCategory(category)) },
+                                onClick = {
+                                    selectedCategory = category
+                                    categoryExpanded = false
+                                }
+                            )
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                // Field 3: Description (الوصف)
+                Text(
+                    text = appStrings.notes,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color(0xFF2D3931),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 6.dp)
+                )
+                OutlinedTextField(
+                    value = description,
+                    onValueChange = { description = it },
+                    placeholder = {
+                        Text(
+                            text = appStrings.optional,
+                            color = Color.Gray,
+                            modifier = Modifier.fillMaxWidth(),
+                            textAlign = TextAlign.End
+                        )
+                    },
+                    singleLine = true,
+                    textStyle = androidx.compose.ui.text.TextStyle(
+                        textAlign = TextAlign.End,
+                        fontSize = 15.sp,
+                        color = Color(0xFF1B241E)
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(18.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedBorderColor = Color(0xFFD4E0D7),
+                        unfocusedBorderColor = Color(0xFFE2EBE4)
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                // Field 4: Date (التاريخ)
+                Text(
+                    text = appStrings.date,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color(0xFF2D3931),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 6.dp)
+                )
+                OutlinedTextField(
+                    value = selectedDateText,
+                    onValueChange = { selectedDateText = it },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowDown,
+                            contentDescription = null,
+                            tint = Color.Gray
+                        )
+                    },
+                    singleLine = true,
+                    textStyle = androidx.compose.ui.text.TextStyle(
+                        textAlign = TextAlign.Center,
+                        fontSize = 15.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = Color(0xFF1B241E)
+                    ),
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(18.dp),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedContainerColor = Color.White,
+                        unfocusedContainerColor = Color.White,
+                        focusedBorderColor = Color(0xFFD4E0D7),
+                        unfocusedBorderColor = Color(0xFFE2EBE4)
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                // Field 5: Receipt Image (صورة الفاتورة)
+                Text(
+                    text = appStrings.receiptImage,
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = Color(0xFF2D3931),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 6.dp)
+                )
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(52.dp)
+                        .clip(RoundedCornerShape(18.dp))
+                        .clickable { photoPickerLauncher.launch("image/*") },
+                    shape = RoundedCornerShape(18.dp),
+                    color = Color.White,
+                    border = BorderStroke(1.dp, Color(0xFFE2EBE4))
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.AddPhotoAlternate,
+                            contentDescription = null,
+                            tint = if (receiptUri != null) EmeraldGreenPrimary else Color(0xFF2D3931),
+                            modifier = Modifier.size(22.dp)
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = receiptName ?: appStrings.attachReceipt,
+                            fontSize = 14.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = if (receiptUri != null) EmeraldGreenPrimary else Color(0xFF2D3931)
+                        )
+                    }
+                }
+
+                // Vault dropdown if multiple vaults exist
+                if (vaults.size > 1) {
+                    Spacer(modifier = Modifier.height(14.dp))
+                    Text(
+                        text = appStrings.vault,
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color(0xFF2D3931),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 6.dp)
+                    )
+                    ExposedDropdownMenuBox(
+                        expanded = vaultExpanded,
+                        onExpandedChange = { vaultExpanded = !vaultExpanded }
+                    ) {
+                        OutlinedTextField(
+                            value = selectedVault,
+                            onValueChange = {},
+                            readOnly = true,
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = vaultExpanded) },
+                            modifier = Modifier
+                                .menuAnchor()
+                                .fillMaxWidth(),
+                            shape = RoundedCornerShape(18.dp),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedContainerColor = Color.White,
+                                unfocusedContainerColor = Color.White,
+                                focusedBorderColor = Color(0xFFD4E0D7),
+                                unfocusedBorderColor = Color(0xFFE2EBE4)
+                            )
+                        )
+                        ExposedDropdownMenu(
+                            expanded = vaultExpanded,
+                            onDismissRequest = { vaultExpanded = false }
+                        ) {
+                            vaults.forEach { v ->
+                                DropdownMenuItem(
+                                    text = { Text(v) },
+                                    onClick = {
+                                        selectedVault = v
+                                        vaultExpanded = false
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(22.dp))
+
+                // Save Button ("حفظ")
                 Button(
                     enabled = !isSubmitting,
                     onClick = {

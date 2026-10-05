@@ -583,17 +583,9 @@ fun CloudVaultScreen(
 
     // 4. Encrypted JSON Backup Dialog
     if (showBackupDialog) {
-        EncryptedBackupDialog(
-            backupJson = viewModel.exportEncryptedBackupJson(),
-            onDismiss = { showBackupDialog = false },
-            onShare = { json ->
-                val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                    type = "application/json"
-                    putExtra(Intent.EXTRA_SUBJECT, "نسخة احتياطية مشفرة - الخزنة الذكية")
-                    putExtra(Intent.EXTRA_TEXT, json)
-                }
-                context.startActivity(Intent.createChooser(shareIntent, "مشاركة النسخة المشفرة"))
-            }
+        com.example.ui.dialogs.LocalBackupDialog(
+            viewModel = viewModel,
+            onDismiss = { showBackupDialog = false }
         )
     }
 }

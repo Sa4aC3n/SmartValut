@@ -142,6 +142,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainAppContent(viewModel: SmartVaultViewModel) {
     var selectedTab by remember { mutableIntStateOf(0) }
+    var showLocalBackup by remember { mutableStateOf(false) }
+
+    if (showLocalBackup) {
+        com.example.ui.dialogs.LocalBackupDialog(viewModel, onDismiss = { showLocalBackup = false })
+    }
 
     val userProfile by viewModel.userProfile.collectAsStateWithLifecycle()
     val pending2FA by viewModel.pending2FA.collectAsStateWithLifecycle()
@@ -671,7 +676,8 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
                     onOpenEditProfile = { showEditProfileDialog = true },
                     onToggleTwoFactor = { enabled -> viewModel.toggleTwoFactor(enabled) },
                     onLogout = { viewModel.logout() },
-                    onOpenCloudVault = { showCloudVaultScreen = true }
+                    onOpenCloudVault = { showCloudVaultScreen = true },
+                    onOpenBackup = { showLocalBackup = true }
                 )
             }
         }

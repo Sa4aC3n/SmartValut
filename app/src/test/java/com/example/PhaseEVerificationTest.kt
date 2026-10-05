@@ -373,7 +373,7 @@ class PhaseEVerificationTest {
         // Create Encrypted Backup
         val backupString = LocalBackupManager.createEncryptedBackup(context, db, user, "TestSecret123")
         assertNotNull(backupString)
-        assertTrue(backupString.startsWith("SMARTVAULT_ENC_V1:") || backupString.startsWith("SMARTVAULT_ENC_V2:"))
+        assertTrue(backupString.startsWith("SMARTVAULT_ENC_V3:"))
 
         // Clear user data in database
         repository.clearUserData(user)

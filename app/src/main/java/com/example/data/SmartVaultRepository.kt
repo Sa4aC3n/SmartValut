@@ -154,7 +154,19 @@ class SmartVaultRepository(private val db: AppDatabase) {
 
     suspend fun deleteTransaction(id: Int, userId: String = "") {
         val effectiveUser = userId.ifBlank { "local_guest" }
-        db.transactionDao().deleteTransactionByIdAndUser(id, effectiveUser)
+        db.withTransaction {
+            val transaction = db.transactionDao().getTransactionById(id, effectiveUser)
+                ?: return@withTransaction
+            val vault = db.vaultDao().getVaultByName(transaction.vaultName, effectiveUser)
+                ?: error("لا يمكن حذف الحركة قبل استعادة الخزنة المرتبطة بها")
+            val adjustment = when (transaction.type) {
+                "INCOME" -> -transaction.amount
+                "EXPENSE" -> transaction.amount
+                else -> error("نوع الحركة غير مدعوم")
+            }
+            db.vaultDao().updateVaultBalance(vault.id, vault.balance + adjustment, effectiveUser)
+            db.transactionDao().deleteTransactionByIdAndUser(id, effectiveUser)
+        }
     }
 
     // 2. Vault Actions

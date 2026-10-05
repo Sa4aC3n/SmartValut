@@ -43,7 +43,7 @@ interface TransactionDao {
     @Query("DELETE FROM transactions WHERE id = :id AND (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun deleteTransactionByIdAndUser(id: Int, userId: String): Int
 
-    @Query("DELETE FROM transactions WHERE userId = :userId")
+    @Query("DELETE FROM transactions WHERE (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun clearUserTransactions(userId: String)
 
     @Query("DELETE FROM transactions")
@@ -79,7 +79,7 @@ interface VaultDao {
     @Query("DELETE FROM vaults WHERE id = :id AND (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun deleteVaultByIdAndUser(id: Int, userId: String): Int
 
-    @Query("DELETE FROM vaults WHERE userId = :userId")
+    @Query("DELETE FROM vaults WHERE (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun clearUserVaults(userId: String)
 
     @Query("DELETE FROM vaults")
@@ -103,7 +103,7 @@ interface BudgetLimitDao {
     @Query("DELETE FROM budget_limits WHERE category = :category AND (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun deleteLimit(category: String, userId: String)
 
-    @Query("DELETE FROM budget_limits WHERE userId = :userId")
+    @Query("DELETE FROM budget_limits WHERE (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun clearUserLimits(userId: String)
 }
 
@@ -127,7 +127,7 @@ interface OutingExpenseDao {
     @Query("DELETE FROM outing_expenses WHERE id = :id AND (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun deleteOutingExpenseByIdAndUser(id: Int, userId: String): Int
 
-    @Query("DELETE FROM outing_expenses WHERE userId = :userId")
+    @Query("DELETE FROM outing_expenses WHERE (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun clearUserOutingExpenses(userId: String)
 
     @Query("DELETE FROM outing_expenses")
@@ -151,7 +151,7 @@ interface OutingDao {
     @Query("DELETE FROM outings WHERE id = :id AND (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun deleteOutingByIdAndUser(id: String, userId: String): Int
 
-    @Query("DELETE FROM outings WHERE userId = :userId")
+    @Query("DELETE FROM outings WHERE (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun clearUserOutings(userId: String)
 }
 
@@ -175,7 +175,7 @@ interface GoldAssetDao {
     @Query("SELECT * FROM gold_assets WHERE id = :id AND (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL))) LIMIT 1")
     suspend fun getGoldAssetByIdAndUser(id: Int, userId: String): GoldAssetEntity?
 
-    @Query("DELETE FROM gold_assets WHERE userId = :userId")
+    @Query("DELETE FROM gold_assets WHERE (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun clearUserGoldAssets(userId: String)
 }
 
@@ -199,7 +199,7 @@ interface CashSavingDao {
     @Query("SELECT * FROM cash_savings WHERE id = :id AND (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL))) LIMIT 1")
     suspend fun getCashSavingByIdAndUser(id: Int, userId: String): CashSavingEntity?
 
-    @Query("DELETE FROM cash_savings WHERE userId = :userId")
+    @Query("DELETE FROM cash_savings WHERE (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun clearUserCashSavings(userId: String)
 }
 
@@ -223,7 +223,7 @@ interface CommitmentDao {
     @Query("SELECT * FROM commitments WHERE id = :id AND (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL))) LIMIT 1")
     suspend fun getCommitmentByIdAndUser(id: Int, userId: String): CommitmentEntity?
 
-    @Query("DELETE FROM commitments WHERE userId = :userId")
+    @Query("DELETE FROM commitments WHERE (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun clearUserCommitments(userId: String)
 }
 
@@ -247,7 +247,7 @@ interface ChildLessonDao {
     @Query("SELECT * FROM child_lessons WHERE id = :id AND (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL))) LIMIT 1")
     suspend fun getChildLessonByIdAndUser(id: Int, userId: String): ChildLessonEntity?
 
-    @Query("DELETE FROM child_lessons WHERE userId = :userId")
+    @Query("DELETE FROM child_lessons WHERE (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun clearUserChildLessons(userId: String)
 }
 
@@ -265,7 +265,7 @@ interface VaultItemDao {
     @Query("DELETE FROM vault_items WHERE id = :id AND (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun deleteVaultItemByIdAndUser(id: String, userId: String): Int
 
-    @Query("DELETE FROM vault_items WHERE userId = :userId")
+    @Query("DELETE FROM vault_items WHERE (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun clearUserVaultItems(userId: String)
 }
 
@@ -280,7 +280,7 @@ interface ActivityLogDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllLogs(logs: List<ActivityLogEntity>)
 
-    @Query("DELETE FROM activity_logs WHERE userId = :userId")
+    @Query("DELETE FROM activity_logs WHERE (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun clearUserLogs(userId: String)
 }
 
@@ -316,7 +316,7 @@ interface TransferDao {
     @Query("DELETE FROM transfers WHERE id = :id AND (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun deleteTransferByIdAndUser(id: Int, userId: String): Int
 
-    @Query("DELETE FROM transfers WHERE userId = :userId")
+    @Query("DELETE FROM transfers WHERE (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun clearUserTransfers(userId: String)
 }
 
@@ -340,7 +340,7 @@ interface DebtDao {
     @Query("DELETE FROM debts WHERE id = :id AND (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun deleteDebtByIdAndUser(id: Int, userId: String): Int
 
-    @Query("DELETE FROM debts WHERE userId = :userId")
+    @Query("DELETE FROM debts WHERE (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun clearUserDebts(userId: String)
 }
 
@@ -364,7 +364,7 @@ interface DebtPaymentDao {
     @Query("DELETE FROM debt_payments WHERE debtId = :debtId AND (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun deletePaymentsForDebt(debtId: Int, userId: String): Int
 
-    @Query("DELETE FROM debt_payments WHERE userId = :userId")
+    @Query("DELETE FROM debt_payments WHERE (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun clearUserDebtPayments(userId: String)
 }
 
@@ -385,6 +385,6 @@ interface NetWorthSnapshotDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAllSnapshots(snapshots: List<NetWorthSnapshotEntity>)
 
-    @Query("DELETE FROM net_worth_snapshots WHERE userId = :userId")
+    @Query("DELETE FROM net_worth_snapshots WHERE (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun clearUserSnapshots(userId: String)
 }

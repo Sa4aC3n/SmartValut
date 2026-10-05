@@ -23,8 +23,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.foundation.clickable
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AttachMoney
@@ -39,7 +37,6 @@ import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.NotificationsNone
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PieChart
-import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material3.Button
@@ -130,6 +127,7 @@ fun SettingsAndVaultsScreen(
     onToggleTwoFactor: (Boolean) -> Unit,
     onLogout: () -> Unit,
     onOpenCloudVault: () -> Unit = {},
+    onOpenBackup: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -180,6 +178,11 @@ fun SettingsAndVaultsScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // USER PROFILE & ACCOUNT CARD
+        item {
+            OutlinedButton(onClick = onOpenBackup, modifier = Modifier.fillMaxWidth()) {
+                Text("حفظ نسخة احتياطية / استعادة البيانات")
+            }
+        }
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),

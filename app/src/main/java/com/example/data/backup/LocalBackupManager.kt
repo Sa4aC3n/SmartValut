@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Base64
 import androidx.room.withTransaction
 import com.example.data.AppDatabase
+import com.example.data.crypto.CryptoManager
 import com.example.data.entity.BudgetLimitEntity
 import com.example.data.entity.CashSavingEntity
 import com.example.data.entity.ChildLessonEntity
@@ -54,13 +55,14 @@ enum class RestorePolicy {
 object LocalBackupManager {
     const val MAGIC_HEADER_V1 = "SMARTVAULT_ENC_V1"
     const val MAGIC_HEADER_V2 = "SMARTVAULT_ENC_V2"
-    private const val CURRENT_BACKUP_VERSION = 2
+    const val MAGIC_HEADER_V3 = "SMARTVAULT_ENC_V3"
+    private const val CURRENT_BACKUP_VERSION = 3
     private const val CURRENT_SCHEMA_VERSION = 7
     private const val DEFAULT_BACKUP_SECRET = "SmartVault_Secure_Local_Key_2026"
 
     /**
      * Generates a fully encrypted, tamper-evident backup string of the user's local financial data.
-     * Uses V2 authenticated encryption envelope and requires explicit user-provided password.
+     * Uses a portable V3 envelope and requires an explicit user-provided password.
      */
     suspend fun createEncryptedBackup(
         context: Context,
@@ -68,9 +70,10 @@ object LocalBackupManager {
         userId: String,
         userPassword: String
     ): String = withContext(Dispatchers.IO) {
-        if (userPassword.isBlank()) {
+        if (userPassword.isBlank() || userPassword == DEFAULT_BACKUP_SECRET) {
             throw IllegalArgumentException("يجب تحديد كلمة مرور لحماية وتشفير النسخة الاحتياطية")
         }
+        db.withTransaction {
         val root = JSONObject()
         root.put("app", "SmartVault")
         root.put("backupVersion", CURRENT_BACKUP_VERSION)
@@ -222,7 +225,8 @@ object LocalBackupManager {
             o.put("id", vi.id)
             o.put("title", vi.title)
             o.put("type", vi.type)
-            o.put("encryptedData", vi.encryptedData)
+            // This plaintext is only serialized inside the password-encrypted envelope.
+            o.put("portableData", CryptoManager.decrypt(vi.encryptedData))
             o.put("category", vi.category)
             o.put("createdAt", vi.createdAt)
             o.put("updatedAt", vi.updatedAt)
@@ -305,6 +309,7 @@ object LocalBackupManager {
 
         val plaintextJson = root.toString()
         encryptData(plaintextJson, userPassword)
+        }
     }
 
     /**
@@ -317,12 +322,12 @@ object LocalBackupManager {
     ): BackupValidationResult {
         return try {
             val trimmed = encryptedPayload.trim()
-            val isV2 = trimmed.startsWith(MAGIC_HEADER_V2)
+            val isV2 = trimmed.startsWith(MAGIC_HEADER_V2) || trimmed.startsWith(MAGIC_HEADER_V3)
 
             val decryptedJson = if (isV2) {
                 // V2 requires explicit user password and strictly rejects legacy default password fallback
                 if (userPassword.isBlank() || userPassword == DEFAULT_BACKUP_SECRET) {
-                    throw IllegalArgumentException("تتطلب هذه النسخة الحديثة (V2) إدخال كلمة المرور المخصصة التي تم إنشاؤها بها")
+                    throw IllegalArgumentException("تتطلب هذه النسخة إدخال كلمة المرور المخصصة التي تم إنشاؤها بها")
                 }
                 decryptData(trimmed, userPassword)
             } else {
@@ -349,6 +354,7 @@ object LocalBackupManager {
             }
 
             val bVersion = root.optInt("backupVersion", 1)
+            require(bVersion in 1..CURRENT_BACKUP_VERSION) { "إصدار النسخة الاحتياطية غير مدعوم" }
             val sVersion = root.optInt("schemaVersion", 1)
             if (sVersion > CURRENT_SCHEMA_VERSION) {
                 return BackupValidationResult(
@@ -495,6 +501,9 @@ object LocalBackupManager {
         policy: RestorePolicy = RestorePolicy.REPLACE
     ): Boolean = withContext(Dispatchers.IO) {
         try {
+            // Legacy backups have no stable identities for every record. Merging them
+            // can duplicate assets and corrupt balances; fail before any database write.
+            require(policy == RestorePolicy.REPLACE) { "الدمج غير مدعوم؛ استخدم الاستبدال بعد حفظ نسخة من بياناتك" }
             val root = JSONObject(decryptedJson)
             val dataObj = root.getJSONObject("data")
 
@@ -699,14 +708,17 @@ object LocalBackupManager {
                 }
 
                 // 8. Outings & Outing Expenses
+                val restoredOutingIds = mutableMapOf<String, String>()
                 val outingArray = dataObj.optJSONArray("outings")
                 if (outingArray != null) {
                     val list = mutableListOf<OutingEntity>()
                     for (i in 0 until outingArray.length()) {
                         val o = outingArray.getJSONObject(i)
+                        val restoredId = java.util.UUID.randomUUID().toString()
+                        restoredOutingIds[o.getString("id")] = restoredId
                         list.add(
                             OutingEntity(
-                                id = o.optString("id", java.util.UUID.randomUUID().toString()),
+                                id = restoredId,
                                 userId = userId,
                                 name = o.optString("name", ""),
                                 participantNamesJson = o.optString("participantNamesJson", "[]"),
@@ -730,7 +742,10 @@ object LocalBackupManager {
                                 payerName = o.optString("payerName", ""),
                                 dateMillis = o.optLong("dateMillis", System.currentTimeMillis()),
                                 receiptImagePath = o.optString("receiptImagePath", null),
-                                outingId = o.optString("outingId", "")
+                                outingId = o.optString("outingId", "").let { oldId ->
+                                    if (oldId.isBlank()) "" else restoredOutingIds[oldId]
+                                        ?: error("تعذر ربط مصروف بالخروجة الأصلية")
+                                }
                             )
                         )
                     }
@@ -745,11 +760,17 @@ object LocalBackupManager {
                         val o = vItemArray.getJSONObject(i)
                         list.add(
                             VaultItemEntity(
-                                id = o.optString("id", java.util.UUID.randomUUID().toString()),
+                                id = java.util.UUID.randomUUID().toString(),
                                 userId = userId,
                                 title = o.optString("title", ""),
                                 type = o.optString("type", "password"),
-                                encryptedData = o.optString("encryptedData", ""),
+                                encryptedData = if (o.has("portableData")) {
+                                    CryptoManager.encrypt(o.getString("portableData"))
+                                } else {
+                                    // Old device-bound backups must still be decryptable here.
+                                    // Throwing rolls back the entire restore if the key is gone.
+                                    CryptoManager.encrypt(CryptoManager.decrypt(o.getString("encryptedData")))
+                                },
                                 category = o.optString("category", "عام"),
                                 createdAt = o.optLong("createdAt", System.currentTimeMillis()),
                                 updatedAt = o.optLong("updatedAt", System.currentTimeMillis())
@@ -856,6 +877,8 @@ object LocalBackupManager {
             } // end db.withTransaction
 
             true
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            throw e
         } catch (e: Exception) {
             false
         }
@@ -878,17 +901,17 @@ object LocalBackupManager {
         cipher.init(Cipher.ENCRYPT_MODE, secretKey, GCMParameterSpec(128, iv))
         val ciphertext = cipher.doFinal(plaintext.toByteArray(StandardCharsets.UTF_8))
 
-        // Format: MAGIC_HEADER_V2:Base64(salt):Base64(iv):Base64(ciphertext)
+        // Format: MAGIC_HEADER_V3:Base64(salt):Base64(iv):Base64(ciphertext)
         val saltB64 = Base64.encodeToString(salt, Base64.NO_WRAP)
         val ivB64 = Base64.encodeToString(iv, Base64.NO_WRAP)
         val cipherB64 = Base64.encodeToString(ciphertext, Base64.NO_WRAP)
 
-        return "$MAGIC_HEADER_V2:$saltB64:$ivB64:$cipherB64"
+        return "$MAGIC_HEADER_V3:$saltB64:$ivB64:$cipherB64"
     }
 
     private fun decryptData(payload: String, secret: String): String {
         val parts = payload.trim().split(":")
-        if (parts.size != 4 || (parts[0] != MAGIC_HEADER_V1 && parts[0] != MAGIC_HEADER_V2)) {
+        if (parts.size != 4 || parts[0] !in setOf(MAGIC_HEADER_V1, MAGIC_HEADER_V2, MAGIC_HEADER_V3)) {
             throw IllegalArgumentException("تنسيق النسخة الاحتياطية غير مدعوم أو تالف")
         }
 

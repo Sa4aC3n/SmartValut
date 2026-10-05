@@ -184,42 +184,42 @@ class AppStrings(val language: String) {
     fun translateCategory(cat: String): String {
         if (!isEn) return cat
         return when (cat) {
-            "فواتير" -> "Bills"
-            "علاج" -> "Healthcare"
-            "مصاريف عامة" -> "General expenses"
-            "عام" -> "General"
-            "خضروات" -> "Vegetables"
-            "فاكهة" -> "Fruits"
-            "طلبات منزل" -> "Groceries"
-            "سوبر ماركت" -> "Supermarket"
-            "مطاعم" -> "Restaurants"
-            "مواصلات" -> "Transport"
-            "بنزين" -> "Fuel"
-            "ملابس" -> "Clothing"
-            "صيدلية" -> "Pharmacy"
-            "أدوية" -> "Medicines"
-            "تعليم" -> "Education"
-            "دروس أطفال" -> "Children Lessons"
-            "إيجار المنزل" -> "House Rent"
-            "إيجار" -> "Rent"
-            "فاتورة الكهرباء" -> "Electricity Bill"
-            "كهرباء" -> "Electricity"
-            "فاتورة المياه" -> "Water Bill"
-            "فاتورة الغاز" -> "Gas Bill"
-            "فاتورة الإنترنت" -> "Internet Bill"
-            "فاتورة الهاتف" -> "Phone Bill"
-            "ترفيه" -> "Entertainment"
-            "هدايا" -> "Gifts"
-            "صيانة" -> "Maintenance"
-            "إصلاحات" -> "Repairs"
-            "قسط سيارة" -> "Car Installment"
-            "أخرى" -> "Other"
-            "الراتب" -> "Salary"
-            "مكافأة" -> "Bonus"
-            "أرباح" -> "Profits"
-            "تحويل مالي" -> "Transfer"
-            "الالتزامات" -> "Commitments"
-            "الخزنة الرئيسية" -> "Main Vault"
+            "فواتير" -> AppText.textFor(language, com.example.R.string.text_21da4e22df73)
+            "علاج" -> AppText.textFor(language, com.example.R.string.text_ad5a18db7678)
+            "مصاريف عامة" -> AppText.textFor(language, com.example.R.string.text_e5ee006cd669)
+            "عام" -> AppText.textFor(language, com.example.R.string.text_178594875103)
+            "خضروات" -> AppText.textFor(language, com.example.R.string.text_df20037c090f)
+            "فاكهة" -> AppText.textFor(language, com.example.R.string.text_0d7bdd125dd8)
+            "طلبات منزل" -> AppText.textFor(language, com.example.R.string.text_3ba071f84d25)
+            "سوبر ماركت" -> AppText.textFor(language, com.example.R.string.text_b5cb21d8142c)
+            "مطاعم" -> AppText.textFor(language, com.example.R.string.text_7af1c46cdde4)
+            "مواصلات" -> AppText.textFor(language, com.example.R.string.text_38fac5fcec7c)
+            "بنزين" -> AppText.textFor(language, com.example.R.string.text_bdda0c5b4a61)
+            "ملابس" -> AppText.textFor(language, com.example.R.string.text_fff2282efd27)
+            "صيدلية" -> AppText.textFor(language, com.example.R.string.text_7e0974ea54ff)
+            "أدوية" -> AppText.textFor(language, com.example.R.string.text_42e60c6b7fa5)
+            "تعليم" -> AppText.textFor(language, com.example.R.string.text_a0eee03fd261)
+            "دروس أطفال" -> AppText.textFor(language, com.example.R.string.text_ba7d226884f5)
+            "إيجار المنزل" -> AppText.textFor(language, com.example.R.string.text_b60aa4cd4f7a)
+            "إيجار" -> AppText.textFor(language, com.example.R.string.text_356f390ccc4b)
+            "فاتورة الكهرباء" -> AppText.textFor(language, com.example.R.string.text_e78fe38cd253)
+            "كهرباء" -> AppText.textFor(language, com.example.R.string.text_dc0448c7bbdb)
+            "فاتورة المياه" -> AppText.textFor(language, com.example.R.string.text_d3a60f947665)
+            "فاتورة الغاز" -> AppText.textFor(language, com.example.R.string.text_e97a914c3af4)
+            "فاتورة الإنترنت" -> AppText.textFor(language, com.example.R.string.text_7e3578ca7619)
+            "فاتورة الهاتف" -> AppText.textFor(language, com.example.R.string.text_f86302880ffa)
+            "ترفيه" -> AppText.textFor(language, com.example.R.string.text_dd1a92b70bff)
+            "هدايا" -> AppText.textFor(language, com.example.R.string.text_c01000b4ec77)
+            "صيانة" -> AppText.textFor(language, com.example.R.string.text_cf947ed2a968)
+            "إصلاحات" -> AppText.textFor(language, com.example.R.string.text_44f3aac66d39)
+            "قسط سيارة" -> AppText.textFor(language, com.example.R.string.text_0cb1a4b71327)
+            "أخرى" -> AppText.textFor(language, com.example.R.string.text_83b4b55adb2a)
+            "الراتب" -> AppText.textFor(language, com.example.R.string.text_d6f737f4c382)
+            "مكافأة" -> AppText.textFor(language, com.example.R.string.text_824b44b725ca)
+            "أرباح" -> AppText.textFor(language, com.example.R.string.text_f9a0ef07d2a6)
+            "تحويل مالي" -> AppText.textFor(language, com.example.R.string.text_5911a9c09dc9)
+            "الالتزامات" -> AppText.textFor(language, com.example.R.string.label_nav_commitments)
+            "الخزنة الرئيسية" -> AppText.textFor(language, com.example.R.string.text_6d580c750a12)
             else -> cat
         }
     }

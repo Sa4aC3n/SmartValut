@@ -52,7 +52,7 @@ object FinancialInsightEngine {
                             id = "budget_over_${budget.category}",
                             priority = InsightPriority.CRITICAL,
                             title = AppText.text(com.example.R.string.text_d171d8506d04),
-                            message = AppText.text(com.example.R.string.text_dad18188a262, budget.category, overPct, spent.toInt(), budget.monthlyLimit.toInt(), currency),
+                            message = AppText.text(com.example.R.string.text_dad18188a262, com.example.ui.utils.AppStrings(AppText.language).translateCategory(budget.category), overPct, spent.toInt(), budget.monthlyLimit.toInt(), AppText.currency(currency)),
                             iconType = "alert"
                         )
                     )
@@ -63,7 +63,7 @@ object FinancialInsightEngine {
                             id = "budget_near_${budget.category}",
                             priority = InsightPriority.WARNING,
                             title = AppText.text(com.example.R.string.text_e1ea6189fc30),
-                            message = AppText.text(com.example.R.string.text_8b88d889acb8, budget.category, remaining, currency),
+                            message = AppText.text(com.example.R.string.text_8b88d889acb8, com.example.ui.utils.AppStrings(AppText.language).translateCategory(budget.category), remaining, AppText.currency(currency)),
                             iconType = "warning"
                         )
                     )
@@ -79,7 +79,7 @@ object FinancialInsightEngine {
                     id = "commitment_due_${c.id}",
                     priority = InsightPriority.WARNING,
                     title = AppText.text(com.example.R.string.text_d91cfc1ad51c),
-                    message = AppText.text(com.example.R.string.text_ef044647ae0e, c.title, c.amount.toInt(), currency),
+                    message = AppText.text(com.example.R.string.text_ef044647ae0e, c.title, c.amount.toInt(), AppText.currency(currency)),
                     iconType = "warning"
                 )
             )
@@ -92,7 +92,7 @@ object FinancialInsightEngine {
                     id = "lesson_due_${l.id}",
                     priority = InsightPriority.WARNING,
                     title = AppText.text(com.example.R.string.text_2a20f11fd4c3),
-                    message = AppText.text(com.example.R.string.text_00a1d5002e6c, l.subject, l.childName, l.amount.toInt(), currency),
+                    message = AppText.text(com.example.R.string.text_00a1d5002e6c, l.subject, l.childName, l.amount.toInt(), AppText.currency(currency)),
                     iconType = "warning"
                 )
             )
@@ -121,7 +121,7 @@ object FinancialInsightEngine {
                     id = "top_expense_category",
                     priority = InsightPriority.INFO,
                     title = AppText.text(com.example.R.string.text_e0c6c094ba6d),
-                    message = AppText.text(com.example.R.string.text_1c91b27c2d9d, topCategory.category, topCategory.percentage.toInt()),
+                    message = AppText.text(com.example.R.string.text_1c91b27c2d9d, com.example.ui.utils.AppStrings(AppText.language).translateCategory(topCategory.category), topCategory.percentage.toInt()),
                     iconType = "info"
                 )
             )
@@ -185,7 +185,7 @@ object FinancialInsightEngine {
                             id = "budget_over_${budget.category}",
                             priority = InsightPriority.CRITICAL,
                             title = AppText.text(com.example.R.string.text_d171d8506d04),
-                            message = AppText.text(com.example.R.string.text_dad18188a262, budget.category, overPct, spent.toInt(), budget.monthlyLimit.toInt(), currency),
+                            message = AppText.text(com.example.R.string.text_dad18188a262, com.example.ui.utils.AppStrings(AppText.language).translateCategory(budget.category), overPct, spent.toInt(), budget.monthlyLimit.toInt(), AppText.currency(currency)),
                             iconType = "alert"
                         )
                     )
@@ -196,7 +196,7 @@ object FinancialInsightEngine {
                             id = "budget_near_${budget.category}",
                             priority = InsightPriority.WARNING,
                             title = AppText.text(com.example.R.string.text_e1ea6189fc30),
-                            message = AppText.text(com.example.R.string.text_8b88d889acb8, budget.category, remaining, currency),
+                            message = AppText.text(com.example.R.string.text_8b88d889acb8, com.example.ui.utils.AppStrings(AppText.language).translateCategory(budget.category), remaining, AppText.currency(currency)),
                             iconType = "warning"
                         )
                     )
@@ -213,7 +213,7 @@ object FinancialInsightEngine {
                     id = "commitment_due_${c.id}",
                     priority = InsightPriority.WARNING,
                     title = AppText.text(com.example.R.string.text_d91cfc1ad51c),
-                    message = AppText.text(com.example.R.string.text_ef044647ae0e, c.title, c.amount.toInt(), currency),
+                    message = AppText.text(com.example.R.string.text_ef044647ae0e, c.title, c.amount.toInt(), AppText.currency(currency)),
                     iconType = "warning"
                 )
             )
@@ -226,7 +226,7 @@ object FinancialInsightEngine {
                     id = "lesson_due_${l.id}",
                     priority = InsightPriority.WARNING,
                     title = AppText.text(com.example.R.string.text_2a20f11fd4c3),
-                    message = AppText.text(com.example.R.string.text_00a1d5002e6c, l.subject, l.childName, l.amount.toInt(), currency),
+                    message = AppText.text(com.example.R.string.text_00a1d5002e6c, l.subject, l.childName, l.amount.toInt(), AppText.currency(currency)),
                     iconType = "warning"
                 )
             )
@@ -239,7 +239,7 @@ object FinancialInsightEngine {
                     id = "debt_due_${d.id}",
                     priority = InsightPriority.CRITICAL,
                     title = AppText.text(com.example.R.string.text_b4a9c7335a43),
-                    message = AppText.text(com.example.R.string.text_6b3c7e411379, d.remainingAmount.toInt(), currency, d.personName),
+                    message = AppText.text(com.example.R.string.text_6b3c7e411379, d.remainingAmount.toInt(), AppText.currency(currency), d.personName),
                     iconType = "alert"
                 )
             )
@@ -298,7 +298,7 @@ object FinancialInsightEngine {
                     id = "top_expense_category",
                     priority = InsightPriority.INFO,
                     title = AppText.text(com.example.R.string.text_e0c6c094ba6d),
-                    message = AppText.text(com.example.R.string.text_f2f7325ba6e9, topCategory.key, pct),
+                    message = AppText.text(com.example.R.string.text_f2f7325ba6e9, com.example.ui.utils.AppStrings(AppText.language).translateCategory(topCategory.key), pct),
                     iconType = "info"
                 )
             )
@@ -313,7 +313,7 @@ object FinancialInsightEngine {
                     id = "daily_average_expense",
                     priority = InsightPriority.INFO,
                     title = AppText.text(com.example.R.string.text_f89b12710474),
-                    message = AppText.text(com.example.R.string.text_f1e858bfb37f, dailyAvg, currency),
+                    message = AppText.text(com.example.R.string.text_f1e858bfb37f, dailyAvg, AppText.currency(currency)),
                     iconType = "info"
                 )
             )

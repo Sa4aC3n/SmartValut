@@ -22,6 +22,13 @@ enum class VaultItemType(val rawType: String, val titleAr: String, val iconEmoji
     CARD("card", "بطاقة بنكية", "💳"),
     DOCUMENT("document", "مستند سري", "📄");
 
+    val localizedTitle: String get() = com.example.ui.utils.AppText.text(when (this) {
+        PASSWORD -> com.example.R.string.text_e6b96ce194c0
+        NOTE -> com.example.R.string.text_e4627f47b69b
+        CARD -> com.example.R.string.text_b4316420bcc3
+        DOCUMENT -> com.example.R.string.text_7822deda09a6
+    })
+
     companion object {
         fun fromRaw(raw: String): VaultItemType =
             entries.find { it.rawType.equals(raw, ignoreCase = true) } ?: PASSWORD

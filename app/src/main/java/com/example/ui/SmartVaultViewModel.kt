@@ -1,5 +1,7 @@
 package com.example.ui
 
+import com.example.ui.utils.AppText
+
 import android.app.Application
 import android.content.Context
 import android.util.Log
@@ -232,11 +234,11 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     ) {
         val trimmedEmail = email.trim()
         if (trimmedEmail.isBlank() || password.isBlank()) {
-            onError("يرجى إدخال البريد الإلكتروني وكلمة المرور / Please enter email and password")
+            onError(AppText.text(com.example.R.string.text_b649d28445e1))
             return
         }
         if (password.length < 6) {
-            onError("كلمة المرور يجب ألا تقل عن 6 أحرف / Password must be at least 6 characters")
+            onError(AppText.text(com.example.R.string.text_696deb0e591f))
             return
         }
 
@@ -262,14 +264,14 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
                         onVerificationSent(trimmedEmail)
                     }
                 } else {
-                    val rawMsg = task.exception?.localizedMessage ?: "فشل إنشاء الحساب"
+                    val rawMsg = task.exception?.localizedMessage ?: AppText.text(com.example.R.string.text_9256779cdd4a)
                     val userFriendly = when {
                         rawMsg.contains("The email address is already in use", ignoreCase = true) ->
-                            "هذا البريد الإلكتروني مسجل بالفعل. يرجى تسجيل الدخول. / This email is already registered. Please log in."
+                            AppText.text(com.example.R.string.text_53d98fb257e8)
                         rawMsg.contains("The email address is badly formatted", ignoreCase = true) ->
-                            "صيغة البريد الإلكتروني غير صحيحة / The email address is badly formatted"
+                            AppText.text(com.example.R.string.text_121320c4df9c)
                         rawMsg.contains("Password should be at least", ignoreCase = true) ->
-                            "كلمة المرور ضعيفة. يجب أن تكون 6 أحرف على الأقل / Password should be at least 6 characters"
+                            AppText.text(com.example.R.string.text_3401dab3bbb8)
                         else -> rawMsg
                     }
                     onError(userFriendly)
@@ -292,7 +294,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     ) {
         val trimmedEmail = email.trim()
         if (trimmedEmail.isBlank() || password.isBlank()) {
-            onError("يرجى إدخال البريد الإلكتروني وكلمة المرور / Please enter email and password")
+            onError(AppText.text(com.example.R.string.text_b649d28445e1))
             return
         }
 
@@ -324,19 +326,19 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
                             }
                         }
                     } else {
-                        onError("لم يتم العثور على الحساب / User not found")
+                        onError(AppText.text(com.example.R.string.text_7ff6d34faf78))
                     }
                 } else {
-                    val rawMsg = task.exception?.localizedMessage ?: "فشل تسجيل الدخول"
+                    val rawMsg = task.exception?.localizedMessage ?: AppText.text(com.example.R.string.text_9930d1b1aa6d)
                     val userFriendly = when {
                         rawMsg.contains("INVALID_LOGIN_CREDENTIALS", ignoreCase = true) ||
                         rawMsg.contains("wrong-password", ignoreCase = true) ||
                         rawMsg.contains("user-not-found", ignoreCase = true) ->
-                            "البريد الإلكتروني أو كلمة المرور غير صحيحة / Invalid email or password"
+                            AppText.text(com.example.R.string.text_1f88df1febf2)
                         rawMsg.contains("The email address is badly formatted", ignoreCase = true) ->
-                            "صيغة البريد الإلكتروني غير صحيحة / The email address is badly formatted"
+                            AppText.text(com.example.R.string.text_121320c4df9c)
                         rawMsg.contains("network error", ignoreCase = true) ->
-                            "تعذر الاتصال بالإنترنت. يرجى التحقق من الشبكة / Network error. Please check your connection."
+                            AppText.text(com.example.R.string.text_b05a627b5b30)
                         else -> rawMsg
                     }
                     onError(userFriendly)
@@ -364,15 +366,15 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
                             if (sendTask.isSuccessful) {
                                 onSuccess()
                             } else {
-                                onError(sendTask.exception?.localizedMessage ?: "تعذر إرسال رسالة التأكيد")
+                                onError(sendTask.exception?.localizedMessage ?: AppText.text(com.example.R.string.text_819cac148daf))
                             }
                         }
                     } else {
-                        onError("يرجى التأكد من كلمة المرور لإعادة إرسال رسالة التأكيد")
+                        onError(AppText.text(com.example.R.string.text_aa0d0095f903))
                     }
                 }
         } else {
-            onError("يرجى إدخال كلمة المرور لإعادة إرسال رابط التأكيد")
+            onError(AppText.text(com.example.R.string.text_c5bef9aa9b15))
         }
     }
 
@@ -386,7 +388,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     ) {
         val trimmed = email.trim()
         if (trimmed.isBlank()) {
-            onError("يرجى إدخال البريد الإلكتروني أولاً")
+            onError(AppText.text(com.example.R.string.text_83693d7ac448))
             return
         }
         firebaseAuth.sendPasswordResetEmail(trimmed)
@@ -394,10 +396,10 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
                 if (task.isSuccessful) {
                     onSuccess()
                 } else {
-                    val raw = task.exception?.localizedMessage ?: "تعذر إرسال رابط إعادة التعيين"
+                    val raw = task.exception?.localizedMessage ?: AppText.text(com.example.R.string.text_c166bcfd6593)
                     val msg = when {
-                        raw.contains("user-not-found", ignoreCase = true) -> "لا يوجد حساب مسجل بهذا البريد الإلكتروني"
-                        raw.contains("badly formatted", ignoreCase = true) -> "صيغة البريد الإلكتروني غير صحيحة"
+                        raw.contains("user-not-found", ignoreCase = true) -> AppText.text(com.example.R.string.text_11f4e1c524c6)
+                        raw.contains("badly formatted", ignoreCase = true) -> AppText.text(com.example.R.string.text_c4b9c9643782)
                         else -> raw
                     }
                     onError(msg)
@@ -524,7 +526,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
                 )
                 onSuccess()
             } catch (e: Exception) {
-                onError(e.message ?: "حدث خطأ أثناء الحفظ")
+                onError(e.message ?: AppText.text(com.example.R.string.text_fd3f055df0fc))
             }
         }
     }
@@ -549,7 +551,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
                 )
                 onSuccess()
             } catch (e: Exception) {
-                onError(e.message ?: "حدث خطأ أثناء الحذف")
+                onError(e.message ?: AppText.text(com.example.R.string.text_ee344618d7b5))
             }
         }
     }
@@ -562,12 +564,12 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     suspend fun createLocalBackup(userId: String, password: String): String {
-        check(activeUserId.value == userId) { "تغير الحساب؛ افتح النسخ الاحتياطي مجدداً" }
+        check(activeUserId.value == userId) { AppText.text(com.example.R.string.text_a024fc180e2f) }
         return LocalBackupManager.createEncryptedBackup(getApplication(), db, userId, password)
     }
 
     suspend fun restoreLocalBackup(userId: String, validatedJson: String): Boolean {
-        check(activeUserId.value == userId) { "تغير الحساب؛ افتح النسخ الاحتياطي مجدداً" }
+        check(activeUserId.value == userId) { AppText.text(com.example.R.string.text_a024fc180e2f) }
         return LocalBackupManager.applyRestore(db, userId, validatedJson)
     }
 
@@ -776,12 +778,15 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), FinancialSummaryResult())
 
+    val selectedLanguage = MutableStateFlow(prefs.getString("app_language", "ar") ?: "ar")
+
     val financialInsights: StateFlow<List<FinancialInsight>> = combine(
         financialSummary,
         allBudgetLimits,
         allCommitments,
-        allChildLessons
-    ) { summary, budgets, commitments, lessons ->
+        allChildLessons,
+        selectedLanguage
+    ) { summary, budgets, commitments, lessons, _ ->
         FinancialInsightEngine.generateInsights(
             summary = summary,
             budgets = budgets,
@@ -797,10 +802,10 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     val selectedFilterCategory = MutableStateFlow<String?>(null)
     val selectedFilterType = MutableStateFlow<String?>(null)
     val selectedCurrency = MutableStateFlow("ج.م")
-    val selectedLanguage = MutableStateFlow(prefs.getString("app_language", "ar") ?: "ar")
     val isDarkMode = MutableStateFlow(false)
 
     fun setLanguage(lang: String) {
+        com.example.ui.utils.AppText.setLanguage(lang)
         selectedLanguage.value = lang
         prefs.edit().putString("app_language", lang).apply()
     }
@@ -1133,7 +1138,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
             repository.updateChildLesson(lesson.copy(isPaid = true))
             addExpense(
                 amount = lesson.amount,
-                category = "دروس أطفال",
+                category = AppText.text(com.example.R.string.text_ba7d226884f5),
                 description = "دفع درس: ${lesson.childName} - ${lesson.subject}",
                 vaultName = selectedVaultName.value,
                 receiptPath = lesson.receiptImagePath
@@ -1156,8 +1161,8 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
                 )
                 onSuccess()
             } catch (e: Exception) {
-                Log.e("SaveDebug", "فشل الحفظ: ${e.message}", e)
-                android.widget.Toast.makeText(getApplication(), e.message ?: "فشل الحفظ", android.widget.Toast.LENGTH_LONG).show()
+                Log.e("SaveDebug", AppText.text(com.example.R.string.text_12aebb198ef9, e.message), e)
+                android.widget.Toast.makeText(getApplication(), e.message ?: AppText.text(com.example.R.string.text_5111261821f6), android.widget.Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -1177,8 +1182,8 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
                 )
                 onSuccess()
             } catch (e: Exception) {
-                Log.e("SaveDebug", "فشل الحفظ: ${e.message}", e)
-                android.widget.Toast.makeText(getApplication(), e.message ?: "فشل الحفظ", android.widget.Toast.LENGTH_LONG).show()
+                Log.e("SaveDebug", AppText.text(com.example.R.string.text_12aebb198ef9, e.message), e)
+                android.widget.Toast.makeText(getApplication(), e.message ?: AppText.text(com.example.R.string.text_5111261821f6), android.widget.Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -1227,7 +1232,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
             } catch (e: kotlinx.coroutines.CancellationException) {
                 throw e
             } catch (e: Exception) {
-                android.widget.Toast.makeText(getApplication(), e.message ?: "تعذر حذف الحركة", android.widget.Toast.LENGTH_LONG).show()
+                android.widget.Toast.makeText(getApplication(), e.message ?: AppText.text(com.example.R.string.text_1f4dfc40d5ed), android.widget.Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -1426,7 +1431,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     ) {
         val effectiveKey = (customApiKey ?: goldApiKey.value).trim().ifBlank { GoldApiClient.DEFAULT_API_KEY }
         if (effectiveKey.isBlank()) {
-            val msg = "يرجى إدخال مفتاح API الخاص بـ GoldAPI.io أولاً"
+            val msg = AppText.text(com.example.R.string.text_6aa5c6446010)
             liveGoldPriceError.value = msg
             onError?.invoke(msg)
             return
@@ -1469,12 +1474,12 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
                     lastGoldPriceUpdateTimestamp.value = now
                     prefs.edit().putLong("gold_price_last_update_ts", now).apply()
 
-                    val successMsg = "تم تحديث أسعار الذهب لحظياً بنجاح ($mappedCurrency)!"
+                    val successMsg = AppText.text(com.example.R.string.text_5083dedec527, mappedCurrency)
                     liveGoldPriceSuccessNotice.value = successMsg
                     onSuccess?.invoke(livePrices)
                 },
                 onFailure = { error ->
-                    val errorMsg = error.localizedMessage ?: "فشل في تحديث أسعار الذهب"
+                    val errorMsg = error.localizedMessage ?: AppText.text(com.example.R.string.text_6c36adfa8e9a)
                     liveGoldPriceError.value = errorMsg
                     onError?.invoke(errorMsg)
                 }
@@ -1503,7 +1508,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
             )
             result.fold(
                 onSuccess = { onSuccess() },
-                onFailure = { err -> onError(err.message ?: "فشل التحويل بين الخزن") }
+                onFailure = { err -> onError(err.message ?: AppText.text(com.example.R.string.text_9561c4855efd)) }
             )
         }
     }
@@ -1521,7 +1526,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
             val fromVault = allVaults.value.find { it.id == fromVaultId }
             val toVault = allVaults.value.find { it.id == toVaultId }
             if (fromVault == null || toVault == null) {
-                onError("الخزنة غير موجودة")
+                onError(AppText.text(com.example.R.string.text_7af13fb694d2))
                 return@launch
             }
             val result = repository.executeTransfer(
@@ -1534,7 +1539,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
             )
             result.fold(
                 onSuccess = { onSuccess() },
-                onFailure = { err -> onError(err.message ?: "فشل التحويل بين الخزن") }
+                onFailure = { err -> onError(err.message ?: AppText.text(com.example.R.string.text_9561c4855efd)) }
             )
         }
     }
@@ -1554,7 +1559,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
             val result = repository.reverseTransfer(transferId, activeUserId.value)
             result.fold(
                 onSuccess = { onSuccess() },
-                onFailure = { err -> onError(err.message ?: "فشل عكس التحويل") }
+                onFailure = { err -> onError(err.message ?: AppText.text(com.example.R.string.text_43867619cfb1)) }
             )
         }
     }
@@ -1602,7 +1607,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
             )
             result.fold(
                 onSuccess = { onSuccess() },
-                onFailure = { err -> onError(err.message ?: "فشل تسجيل السداد") }
+                onFailure = { err -> onError(err.message ?: AppText.text(com.example.R.string.text_ea44af141575)) }
             )
         }
     }

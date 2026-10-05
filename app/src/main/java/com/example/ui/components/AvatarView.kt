@@ -1,5 +1,7 @@
 package com.example.ui.components
 
+import com.example.ui.utils.AppText
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -74,7 +76,7 @@ fun UserAvatarView(
         if (!photoUrl.isNullOrBlank()) {
             SubcomposeAsyncImage(
                 model = photoUrl,
-                contentDescription = "صورة المستخدم",
+                contentDescription = AppText.text(com.example.R.string.text_5e6b2c72f16a),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .fillMaxSize()
@@ -107,7 +109,7 @@ private fun FallbackAvatarContent(
     } else {
         Icon(
             imageVector = iconVector,
-            contentDescription = "صورة المستخدم",
+            contentDescription = AppText.text(com.example.R.string.text_5e6b2c72f16a),
             tint = Color.White,
             modifier = Modifier.size(size * 0.55f)
         )

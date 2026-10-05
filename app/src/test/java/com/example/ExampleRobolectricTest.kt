@@ -13,9 +13,17 @@ import org.robolectric.annotation.Config
 class ExampleRobolectricTest {
 
   @Test
+  @Config(qualifiers = "ar")
   fun `read string from context`() {
     val context = ApplicationProvider.getApplicationContext<Context>()
     val appName = context.getString(R.string.app_name)
     assertEquals("الخزنة الذكية", appName)
+  }
+
+  @Test
+  @Config(qualifiers = "en")
+  fun `read English app name from context`() {
+    val context = ApplicationProvider.getApplicationContext<Context>()
+    assertEquals("Smart Vault", context.getString(R.string.app_name))
   }
 }

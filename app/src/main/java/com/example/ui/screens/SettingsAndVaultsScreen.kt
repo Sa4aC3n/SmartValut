@@ -1,5 +1,9 @@
 package com.example.ui.screens
 
+import com.example.ui.utils.AppStrings
+
+import com.example.ui.utils.AppText
+
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
@@ -132,7 +136,7 @@ fun SettingsAndVaultsScreen(
 ) {
     val context = LocalContext.current
     var currencyExpanded by remember { mutableStateOf(false) }
-    var lastDriveSyncTime by remember { mutableStateOf("اليوم، 04:30 م") }
+    var lastDriveSyncTime by remember { mutableStateOf(AppText.text(com.example.R.string.text_d1768f19993f)) }
     var vaultToDelete by remember { mutableStateOf<VaultEntity?>(null) }
     val currencies = listOf("ج.م", "ريال سعودي", "درهم إماراتي", "دولار أمريكي")
 
@@ -142,14 +146,14 @@ fun SettingsAndVaultsScreen(
             onDismissRequest = { vaultToDelete = null },
             title = {
                 Text(
-                    text = "تأكيد حذف الخزنة / الحساب",
+                    text = AppText.text(com.example.R.string.text_daa818587279),
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.error
                 )
             },
             text = {
                 Text(
-                    text = "هل أنت متأكد من رغبتك في حذف '${target.name}' (${String.format(Locale.US, "%,.0f", target.balance)} $currency)؟ سيتم حذفها نهائياً."
+                    text = AppText.text(com.example.R.string.text_9e5ba8f6616f, target.name, String.format(Locale.US, "%,.0f", target.balance), AppText.currency(currency))
                 )
             },
             confirmButton = {
@@ -160,12 +164,12 @@ fun SettingsAndVaultsScreen(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) {
-                    Text("نعم، حذف الحساب", color = Color.White, fontWeight = FontWeight.Bold)
+                    Text(AppText.text(com.example.R.string.text_2f1f7ddd4129), color = Color.White, fontWeight = FontWeight.Bold)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { vaultToDelete = null }) {
-                    Text("تراجع")
+                    Text(AppText.text(com.example.R.string.text_98df46fbd83b))
                 }
             }
         )
@@ -180,7 +184,7 @@ fun SettingsAndVaultsScreen(
         // USER PROFILE & ACCOUNT CARD
         item {
             OutlinedButton(onClick = onOpenBackup, modifier = Modifier.fillMaxWidth()) {
-                Text("حفظ نسخة احتياطية / استعادة البيانات")
+                Text(AppText.text(com.example.R.string.text_5662250c3ec4))
             }
         }
         item {
@@ -228,7 +232,7 @@ fun SettingsAndVaultsScreen(
                         IconButton(onClick = onOpenEditProfile) {
                             Icon(
                                 imageVector = Icons.Default.Edit,
-                                contentDescription = "تعديل الحساب",
+                                contentDescription = AppText.text(com.example.R.string.text_f55b07f1ae61),
                                 tint = GoldAccent
                             )
                         }
@@ -251,7 +255,7 @@ fun SettingsAndVaultsScreen(
                                 modifier = Modifier.size(16.dp)
                             )
                             Spacer(modifier = Modifier.width(6.dp))
-                            Text("تعديل بيانات الحساب", fontSize = 12.sp)
+                            Text(AppText.text(com.example.R.string.text_41510ce0badf), fontSize = 12.sp)
                         }
 
                         OutlinedButton(
@@ -267,7 +271,7 @@ fun SettingsAndVaultsScreen(
                                 tint = Color.Red
                             )
                             Spacer(modifier = Modifier.width(6.dp))
-                            Text("تسجيل الخروج", fontSize = 12.sp)
+                            Text(AppText.text(com.example.R.string.text_8710d64ff1ad), fontSize = 12.sp)
                         }
                     }
                 }
@@ -287,12 +291,12 @@ fun SettingsAndVaultsScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(imageVector = Icons.Default.AccountBalanceWallet, contentDescription = "الحسابات", tint = EmeraldGreenPrimary)
+                            Icon(imageVector = Icons.Default.AccountBalanceWallet, contentDescription = AppText.text(com.example.R.string.text_e0844ef2c543), tint = EmeraldGreenPrimary)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = "الخزانات والحسابات المالية", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+                            Text(text = AppText.text(com.example.R.string.text_b7ad4afa609d), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
                         }
                         IconButton(onClick = onOpenAddVault) {
-                            Icon(imageVector = Icons.Default.Add, contentDescription = "إضافة حساب", tint = EmeraldGreenPrimary)
+                            Icon(imageVector = Icons.Default.Add, contentDescription = AppText.text(com.example.R.string.text_e55a7fa423a7), tint = EmeraldGreenPrimary)
                         }
                     }
 
@@ -331,7 +335,7 @@ fun SettingsAndVaultsScreen(
                                         fontSize = 13.sp
                                     )
                                     Text(
-                                        text = "${String.format(Locale.US, "%,.0f", vault.balance)} $currency",
+                                        text = "${String.format(Locale.US, "%,.0f", vault.balance)} ${AppText.currency(currency)}",
                                         fontWeight = FontWeight.ExtraBold,
                                         color = EmeraldGreenPrimary,
                                         fontSize = 12.sp
@@ -347,7 +351,7 @@ fun SettingsAndVaultsScreen(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Edit,
-                                        contentDescription = "تعديل المبلغ/الاسم",
+                                        contentDescription = AppText.text(com.example.R.string.text_47e4c5109ec1),
                                         tint = EmeraldGreenPrimary,
                                         modifier = Modifier.size(18.dp)
                                     )
@@ -360,7 +364,7 @@ fun SettingsAndVaultsScreen(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Delete,
-                                        contentDescription = "إلغاء الخزنة/الحساب",
+                                        contentDescription = AppText.text(com.example.R.string.text_278eeef2a57d),
                                         tint = MaterialTheme.colorScheme.error,
                                         modifier = Modifier.size(18.dp)
                                     )
@@ -386,19 +390,19 @@ fun SettingsAndVaultsScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Icon(imageVector = Icons.Default.PieChart, contentDescription = "الميزانية", tint = EmeraldGreenPrimary)
+                            Icon(imageVector = Icons.Default.PieChart, contentDescription = AppText.text(com.example.R.string.text_185744848ec0), tint = EmeraldGreenPrimary)
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = "الميزانية الشهرية للتصنيفات", fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
+                            Text(text = AppText.text(com.example.R.string.text_3a2c390f55f5), fontWeight = FontWeight.Bold, style = MaterialTheme.typography.titleMedium)
                         }
                         IconButton(onClick = { onOpenSetBudget("", 0.0) }) {
-                            Icon(imageVector = Icons.Default.Add, contentDescription = "إضافة حد جديد", tint = EmeraldGreenPrimary)
+                            Icon(imageVector = Icons.Default.Add, contentDescription = AppText.text(com.example.R.string.text_c32f3d7416d3), tint = EmeraldGreenPrimary)
                         }
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
 
                     if (budgetLimits.isEmpty()) {
-                        Text(text = "لم يتم تحديد أقصى حد للميزانية لأي تصنيف.", color = Color.Gray, fontSize = 12.sp)
+                        Text(text = AppText.text(com.example.R.string.text_3372c9d2ab39), color = Color.Gray, fontSize = 12.sp)
                     } else {
                         budgetLimits.forEach { limit ->
                             val spent = transactions.filter { it.type == "EXPENSE" && it.category == limit.category }.sumOf { it.amount }
@@ -417,11 +421,11 @@ fun SettingsAndVaultsScreen(
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text(text = limit.category, fontWeight = FontWeight.Medium, fontSize = 13.sp)
+                                    Text(text = AppStrings(AppText.language).translateCategory(limit.category), fontWeight = FontWeight.Medium, fontSize = 13.sp)
 
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         Text(
-                                            text = "${String.format(Locale.US, "%.0f", spent)} / ${String.format(Locale.US, "%.0f", limit.monthlyLimit)} $currency",
+                                            text = "${String.format(Locale.US, "%.0f", spent)} / ${String.format(Locale.US, "%.0f", limit.monthlyLimit)} ${AppText.currency(currency)}",
                                             fontSize = 12.sp,
                                             fontWeight = FontWeight.Bold,
                                             color = if (spent > limit.monthlyLimit) ExpenseRed else EmeraldGreenPrimary
@@ -435,7 +439,7 @@ fun SettingsAndVaultsScreen(
                                         ) {
                                             Icon(
                                                 imageVector = Icons.Default.Edit,
-                                                contentDescription = "تعديل",
+                                                contentDescription = AppText.text(com.example.R.string.text_b4f76c3aa21e),
                                                 tint = EmeraldGreenPrimary,
                                                 modifier = Modifier.size(16.dp)
                                             )
@@ -447,7 +451,7 @@ fun SettingsAndVaultsScreen(
                                         ) {
                                             Icon(
                                                 imageVector = Icons.Default.Delete,
-                                                contentDescription = "حذف",
+                                                contentDescription = AppText.text(com.example.R.string.text_2d2bbdc2d694),
                                                 tint = ExpenseRed,
                                                 modifier = Modifier.size(16.dp)
                                             )
@@ -525,7 +529,7 @@ fun SettingsAndVaultsScreen(
                                 )
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
-                                    text = "العملة، المظهر، الأمان والتنبيهات",
+                                    text = AppText.text(com.example.R.string.text_615f47f69884),
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Normal,
                                     color = Color(0xFF6B7B70)
@@ -564,7 +568,7 @@ fun SettingsAndVaultsScreen(
                                 onExpandedChange = { currencyExpanded = !currencyExpanded }
                             ) {
                                 OutlinedTextField(
-                                    value = currency,
+                                    value = AppText.currency(currency),
                                     onValueChange = {},
                                     readOnly = true,
                                     label = { Text(appStrings.appCurrency) },
@@ -580,7 +584,7 @@ fun SettingsAndVaultsScreen(
                                 ) {
                                     currencies.forEach { cur ->
                                         DropdownMenuItem(
-                                            text = { Text(cur) },
+                                            text = { Text(AppText.currency(cur)) },
                                             onClick = {
                                                 onSelectCurrency(cur)
                                                 currencyExpanded = false
@@ -600,9 +604,9 @@ fun SettingsAndVaultsScreen(
                             ) {
                                 Switch(checked = isDarkMode, onCheckedChange = onToggleDarkMode)
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text(text = "الوضع الداكن (Dark Mode)", fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color(0xFF1B241E))
+                                    Text(text = AppText.text(com.example.R.string.text_59d33e6d1d08), fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color(0xFF1B241E))
                                     Spacer(modifier = Modifier.width(10.dp))
-                                    Icon(imageVector = Icons.Default.DarkMode, contentDescription = "الوضع الداكن", tint = EmeraldGreenPrimary)
+                                    Icon(imageVector = Icons.Default.DarkMode, contentDescription = AppText.text(com.example.R.string.text_3318a3c350a9), tint = EmeraldGreenPrimary)
                                 }
                             }
 
@@ -616,9 +620,9 @@ fun SettingsAndVaultsScreen(
                             ) {
                                 Switch(checked = isPinEnabled, onCheckedChange = onTogglePin)
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text(text = "قفل الخزنة ببصمة الإصبع / PIN", fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color(0xFF1B241E))
+                                    Text(text = AppText.text(com.example.R.string.text_b2aa3b181ef7), fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color(0xFF1B241E))
                                     Spacer(modifier = Modifier.width(10.dp))
-                                    Icon(imageVector = Icons.Default.Fingerprint, contentDescription = "بصمة الأصبع", tint = EmeraldGreenPrimary)
+                                    Icon(imageVector = Icons.Default.Fingerprint, contentDescription = AppText.text(com.example.R.string.text_2cd8f97fe205), tint = EmeraldGreenPrimary)
                                 }
                             }
 
@@ -636,9 +640,9 @@ fun SettingsAndVaultsScreen(
                                 )
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Column(horizontalAlignment = Alignment.End) {
-                                        Text(text = "التحقق بخطوتين (2FA)", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF1B241E))
+                                        Text(text = AppText.text(com.example.R.string.text_e408bd278ef3), fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF1B241E))
                                         Text(
-                                            text = if (userProfile.isTwoFactorEnabled) "مُفعل - كود أمان عند الدخول" else "غير مُفعل",
+                                            text = if (userProfile.isTwoFactorEnabled) AppText.text(com.example.R.string.text_92b90aa9b99f) else AppText.text(com.example.R.string.text_e17556ce6846),
                                             fontSize = 11.sp,
                                             color = Color.Gray
                                         )
@@ -646,7 +650,7 @@ fun SettingsAndVaultsScreen(
                                     Spacer(modifier = Modifier.width(10.dp))
                                     Icon(
                                         imageVector = Icons.Default.Security,
-                                        contentDescription = "التحقق بخطوتين",
+                                        contentDescription = AppText.text(com.example.R.string.text_ca1e582768c3),
                                         tint = if (userProfile.isTwoFactorEnabled) GoldAccent else Color.Gray
                                     )
                                 }
@@ -663,13 +667,13 @@ fun SettingsAndVaultsScreen(
                                 Switch(checked = isDailyReminderEnabled, onCheckedChange = onToggleDailyReminder)
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Column(horizontalAlignment = Alignment.End) {
-                                        Text(text = "تذكير يومي بمراجعة المصروفات", fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF1B241E))
-                                        Text(text = "إشعار تلقائي يومياً الساعة 8:00 مساءً", fontSize = 11.sp, color = Color.Gray)
+                                        Text(text = AppText.text(com.example.R.string.text_518c30ca8f7f), fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF1B241E))
+                                        Text(text = AppText.text(com.example.R.string.text_3ce2fa4d9cb9), fontSize = 11.sp, color = Color.Gray)
                                     }
                                     Spacer(modifier = Modifier.width(10.dp))
                                     Icon(
                                         imageVector = if (isDailyReminderEnabled) Icons.Default.NotificationsActive else Icons.Default.NotificationsNone,
-                                        contentDescription = "التنبيهات اليومية",
+                                        contentDescription = AppText.text(com.example.R.string.text_7274e30c25f2),
                                         tint = if (isDailyReminderEnabled) EmeraldGreenPrimary else Color.Gray
                                     )
                                 }
@@ -680,14 +684,14 @@ fun SettingsAndVaultsScreen(
                                 OutlinedButton(
                                     onClick = {
                                         onSendTestNotification()
-                                        Toast.makeText(context, "تم جدولة إشعار تجريبي يظهر فوراً", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, AppText.text(com.example.R.string.text_d32fd57d806f), Toast.LENGTH_SHORT).show()
                                     },
                                     modifier = Modifier.fillMaxWidth(),
                                     shape = RoundedCornerShape(14.dp)
                                 ) {
-                                    Icon(imageVector = Icons.Default.NotificationsActive, contentDescription = "تجربة الإشعار", modifier = Modifier.size(16.dp))
+                                    Icon(imageVector = Icons.Default.NotificationsActive, contentDescription = AppText.text(com.example.R.string.text_21011df2bcce), modifier = Modifier.size(16.dp))
                                     Spacer(modifier = Modifier.width(6.dp))
-                                    Text(text = "تجربة إشعار التذكير الآن (Test Notification)", fontSize = 12.sp)
+                                    Text(text = AppText.text(com.example.R.string.text_eba265c3744d), fontSize = 12.sp)
                                 }
                             }
                         }
@@ -727,7 +731,7 @@ fun SettingsAndVaultsScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Description,
-                                    contentDescription = "التقارير",
+                                    contentDescription = AppText.text(com.example.R.string.text_92fec7ad5c88),
                                     tint = Color(0xFF133621),
                                     modifier = Modifier.size(24.dp)
                                 )
@@ -739,14 +743,14 @@ fun SettingsAndVaultsScreen(
                                 horizontalAlignment = Alignment.Start
                             ) {
                                 Text(
-                                    text = "تصدير التقارير المالية",
+                                    text = AppText.text(com.example.R.string.text_7d11e29cfdd6),
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color(0xFF1B241E)
                                 )
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
-                                    text = "تصدير السجلات بصيغة PDF أو Excel",
+                                    text = AppText.text(com.example.R.string.text_d2a75b7bc22e),
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Normal,
                                     color = Color(0xFF6B7B70)
@@ -787,18 +791,18 @@ fun SettingsAndVaultsScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Description,
-                                contentDescription = "تصدير PDF",
+                                contentDescription = AppText.text(com.example.R.string.text_770c11e048d1),
                                 tint = Color.White,
                                 modifier = Modifier.size(18.dp)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text(text = "تصدير تقرير PDF", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            Text(text = AppText.text(com.example.R.string.text_0f7b9bca13a1), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                         }
 
                         // Excel Export Button
                         OutlinedButton(
                             onClick = {
-                                Toast.makeText(context, "تم تصدير سجل المعاملات المالية بصيغة Excel (CSV) بنجاح!", Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, AppText.text(com.example.R.string.text_99f67b516741), Toast.LENGTH_LONG).show()
                             },
                             modifier = Modifier
                                 .weight(1f)
@@ -807,11 +811,11 @@ fun SettingsAndVaultsScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Download,
-                                contentDescription = "تصدير Excel",
+                                contentDescription = AppText.text(com.example.R.string.text_692e087830e9),
                                 modifier = Modifier.size(18.dp)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text(text = "تصدير Excel", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            Text(text = AppText.text(com.example.R.string.text_692e087830e9), fontSize = 12.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -852,7 +856,7 @@ fun SettingsAndVaultsScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Info,
-                                    contentDescription = "عن التطبيق",
+                                    contentDescription = AppText.text(com.example.R.string.text_9471d17ec31e),
                                     tint = Color(0xFF133621),
                                     modifier = Modifier.size(24.dp)
                                 )
@@ -864,14 +868,14 @@ fun SettingsAndVaultsScreen(
                                 horizontalAlignment = Alignment.Start
                             ) {
                                 Text(
-                                    text = "عن التطبيق",
+                                    text = AppText.text(com.example.R.string.text_9471d17ec31e),
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color(0xFF1B241E)
                                 )
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
-                                    text = "معلومات التطبيق والإصدار",
+                                    text = AppText.text(com.example.R.string.text_2731e2bf2295),
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Normal,
                                     color = Color(0xFF6B7B70)
@@ -932,14 +936,14 @@ fun SettingsAndVaultsScreen(
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Column {
                                     Text(
-                                        text = "الخزنة الذكية",
+                                        text = AppText.text(com.example.R.string.text_cf185716b8b8),
                                         fontWeight = FontWeight.ExtraBold,
                                         fontSize = 15.sp,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Spacer(modifier = Modifier.height(2.dp))
                                     Text(
-                                        text = "الإصدار 1.0.0 • إدارة الأموال والذهب والمدخرات",
+                                        text = AppText.text(com.example.R.string.text_b0d1f789f55d, com.example.BuildConfig.VERSION_NAME),
                                         fontSize = 12.sp,
                                         color = Color.Gray
                                     )
@@ -949,7 +953,7 @@ fun SettingsAndVaultsScreen(
                             Spacer(modifier = Modifier.height(16.dp))
 
                             Text(
-                                text = "صنع بكل حـــ ❤️ــــــب فى مصر",
+                                text = AppText.text(com.example.R.string.text_5d6809ca20b5),
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Medium,
                                 color = Color.Gray,

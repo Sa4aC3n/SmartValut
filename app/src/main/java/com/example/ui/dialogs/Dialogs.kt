@@ -1,5 +1,8 @@
 package com.example.ui.dialogs
 
+import com.example.ui.utils.AppText
+import com.example.ui.utils.AppStrings
+
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -108,7 +111,7 @@ fun AddIncomeDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "+ إضافة دخل جديد إلى الخزنة",
+                text = AppText.text(com.example.R.string.text_2045dbe9ad39),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = IncomeGreen
@@ -123,7 +126,7 @@ fun AddIncomeDialog(
                 OutlinedTextField(
                     value = amountText,
                     onValueChange = { amountText = it },
-                    label = { Text("المبلغ (بالجنيه)") },
+                    label = { Text(AppText.text(com.example.R.string.text_8399a8121b07)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
@@ -138,10 +141,10 @@ fun AddIncomeDialog(
                     onExpandedChange = { categoryExpanded = !categoryExpanded }
                 ) {
                     OutlinedTextField(
-                        value = selectedCategory,
+                        value = AppStrings(AppText.language).translateCategory(selectedCategory),
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("تصنيف الدخل") },
+                        label = { Text(AppText.text(com.example.R.string.text_9daaed987022)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = categoryExpanded) },
                         modifier = Modifier
                             .menuAnchor()
@@ -154,7 +157,7 @@ fun AddIncomeDialog(
                     ) {
                         CategoryUtils.incomeCategories.forEach { category ->
                             DropdownMenuItem(
-                                text = { Text(category) },
+                                text = { Text(AppStrings(AppText.language).translateCategory(category)) },
                                 onClick = {
                                     selectedCategory = category
                                     categoryExpanded = false
@@ -176,7 +179,7 @@ fun AddIncomeDialog(
                             value = selectedVault,
                             onValueChange = {},
                             readOnly = true,
-                            label = { Text("الخزنة المستهدفة") },
+                            label = { Text(AppText.text(com.example.R.string.text_6e200a34c778)) },
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = vaultExpanded) },
                             modifier = Modifier
                                 .menuAnchor()
@@ -204,7 +207,7 @@ fun AddIncomeDialog(
                 OutlinedTextField(
                     value = description,
                     onValueChange = { description = it },
-                    label = { Text("الوصف / ملاحظة (اختياري)") },
+                    label = { Text(AppText.text(com.example.R.string.text_d554c7b27da7)) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
                 )
@@ -229,12 +232,12 @@ fun AddIncomeDialog(
                 colors = ButtonDefaults.buttonColors(containerColor = IncomeGreen),
                 shape = RoundedCornerShape(8.dp)
             ) {
-                Text("إضافة", color = Color.White)
+                Text(AppText.text(com.example.R.string.text_5e3a3fdfce20), color = Color.White)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("إلغاء")
+                Text(AppText.text(com.example.R.string.text_e776b0209b50))
             }
         }
     )
@@ -264,7 +267,7 @@ fun AddExpenseDialog(
     ) { uri: Uri? ->
         receiptUri = uri
         if (uri != null) {
-            receiptName = if (appStrings.isEn) "Receipt Attached ✓" else "تم إرفاق صورة الفاتورة ✓"
+            receiptName = if (appStrings.isEn) "Receipt Attached ✓" else AppText.text(com.example.R.string.text_5741b09082a3)
         }
     }
 
@@ -635,7 +638,7 @@ fun AddCommitmentDialog(
     ) { uri: Uri? ->
         receiptUri = uri
         if (uri != null) {
-            receiptName = if (appStrings.isEn) "Receipt Attached ✓" else "تم إرفاق صورة الفاتورة ✓"
+            receiptName = if (appStrings.isEn) "Receipt Attached ✓" else AppText.text(com.example.R.string.text_5741b09082a3)
         }
     }
 
@@ -937,9 +940,9 @@ fun AddCommitmentDialog(
                                 "$key = $value (${value?.javaClass?.simpleName ?: "null"})"
                             }
                             android.app.AlertDialog.Builder(context)
-                                .setTitle("بيانات سيتم إرسالها")
+                                .setTitle(AppText.text(com.example.R.string.text_caf3f5fa344d))
                                 .setMessage(debugText)
-                                .setPositiveButton("متابعة الحفظ") { _, _ ->
+                                .setPositiveButton(AppText.text(com.example.R.string.text_b730937d1d5e)) { _, _ ->
                                     onConfirm(title, amt, isRecurring, notes, savedPath)
                                 }
                                 .show()
@@ -982,7 +985,7 @@ fun AddChildLessonDialog(
     ) { uri: Uri? ->
         receiptUri = uri
         if (uri != null) {
-            receiptName = if (appStrings.isEn) "Receipt Attached ✓" else "تم إرفاق صورة الفاتورة ✓"
+            receiptName = if (appStrings.isEn) "Receipt Attached ✓" else AppText.text(com.example.R.string.text_5741b09082a3)
         }
     }
 
@@ -990,7 +993,7 @@ fun AddChildLessonDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "+ إضافة درس للأطفال",
+                text = AppText.text(com.example.R.string.text_a02759f37c7e),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = EmeraldGreenPrimary
@@ -1001,7 +1004,7 @@ fun AddChildLessonDialog(
                 OutlinedTextField(
                     value = childName,
                     onValueChange = { childName = it },
-                    label = { Text("اسم الطفل (مثل: محمد، سارة)") },
+                    label = { Text(AppText.text(com.example.R.string.text_c97c2377ad3c)) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
                 )
@@ -1009,7 +1012,7 @@ fun AddChildLessonDialog(
                 OutlinedTextField(
                     value = subject,
                     onValueChange = { subject = it },
-                    label = { Text("المادة (مثل: رياضيات، إنجليزي)") },
+                    label = { Text(AppText.text(com.example.R.string.text_d5681a90cfde)) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
                 )
@@ -1017,7 +1020,7 @@ fun AddChildLessonDialog(
                 OutlinedTextField(
                     value = teacherName,
                     onValueChange = { teacherName = it },
-                    label = { Text("اسم المدرس") },
+                    label = { Text(AppText.text(com.example.R.string.text_0667a9bf31ce)) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
                 )
@@ -1025,7 +1028,7 @@ fun AddChildLessonDialog(
                 OutlinedTextField(
                     value = amountText,
                     onValueChange = { amountText = it },
-                    label = { Text("المبلغ الشهري") },
+                    label = { Text(AppText.text(com.example.R.string.text_5e42a81c0bdb)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
@@ -1091,9 +1094,9 @@ fun AddChildLessonDialog(
                             "$key = $value (${value?.javaClass?.simpleName ?: "null"})"
                         }
                         android.app.AlertDialog.Builder(context)
-                            .setTitle("بيانات سيتم إرسالها")
+                            .setTitle(AppText.text(com.example.R.string.text_caf3f5fa344d))
                             .setMessage(debugText)
-                            .setPositiveButton("متابعة الحفظ") { _, _ ->
+                            .setPositiveButton(AppText.text(com.example.R.string.text_b730937d1d5e)) { _, _ ->
                                 onConfirm(childName, subject, teacherName, amt, savedPath)
                             }
                             .show()
@@ -1101,11 +1104,11 @@ fun AddChildLessonDialog(
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary)
             ) {
-                Text("حفظ الدرس")
+                Text(AppText.text(com.example.R.string.text_c82c597a6f7d))
             }
         },
         dismissButton = {
-            TextButton(onClick = onDismiss) { Text("إلغاء") }
+            TextButton(onClick = onDismiss) { Text(AppText.text(com.example.R.string.text_e776b0209b50)) }
         }
     )
 }
@@ -1121,14 +1124,14 @@ fun AddVaultDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text(text = "+ إضافة حساب / خزنة جديدة", fontWeight = FontWeight.Bold)
+            Text(text = AppText.text(com.example.R.string.text_4cdf4b9f0083), fontWeight = FontWeight.Bold)
         },
         text = {
             Column(modifier = Modifier.fillMaxWidth()) {
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("اسم الخزنة (مثل: محفظة اتصالات كاش، البنك الأهلي)") },
+                    label = { Text(AppText.text(com.example.R.string.text_02f7925bc7b6)) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
                 )
@@ -1136,7 +1139,7 @@ fun AddVaultDialog(
                 OutlinedTextField(
                     value = balanceText,
                     onValueChange = { balanceText = it },
-                    label = { Text("الرصيد الافتتاحي") },
+                    label = { Text(AppText.text(com.example.R.string.text_d85b2adf0086)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
@@ -1154,10 +1157,10 @@ fun AddVaultDialog(
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary)
             ) {
-                Text("إضافة الخزنة")
+                Text(AppText.text(com.example.R.string.text_866cb767ecfb))
             }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("إلغاء") } }
+        dismissButton = { TextButton(onClick = onDismiss) { Text(AppText.text(com.example.R.string.text_e776b0209b50)) } }
     )
 }
 
@@ -1179,8 +1182,8 @@ fun SetBudgetDialog(
     if (showDeleteConfirm) {
         AlertDialog(
             onDismissRequest = { showDeleteConfirm = false },
-            title = { Text("تأكيد حذف الميزانية", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.error) },
-            text = { Text("هل أنت تأكد من حذف حد الميزانية الشهرية لتصنيف (${categoryText.ifEmpty { category }})؟") },
+            title = { Text(AppText.text(com.example.R.string.text_b0a9803991e9), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.error) },
+            text = { Text(AppText.text(com.example.R.string.text_0a6fb171955e, categoryText.ifEmpty { category })) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -1190,11 +1193,11 @@ fun SetBudgetDialog(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) {
-                    Text("حذف")
+                    Text(AppText.text(com.example.R.string.text_2d2bbdc2d694))
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteConfirm = false }) { Text("إلغاء") }
+                TextButton(onClick = { showDeleteConfirm = false }) { Text(AppText.text(com.example.R.string.text_e776b0209b50)) }
             }
         )
     }
@@ -1203,7 +1206,7 @@ fun SetBudgetDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = if (category.isNotEmpty() && currentLimit > 0) "تعديل ميزانية ($category)" else "تحديد ميزانية شهرية لتصنيف",
+                text = if (category.isNotEmpty() && currentLimit > 0) AppText.text(com.example.R.string.text_166e9d1b4fe3, category) else AppText.text(com.example.R.string.text_32f1966a4cd5),
                 fontWeight = FontWeight.Bold
             )
         },
@@ -1212,17 +1215,17 @@ fun SetBudgetDialog(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Text(text = "سيقوم التطبيق بتنبيهك عند الاقتراب أو تجاوز الحد المسموح به لهذا البند شهرياً.")
+                Text(text = AppText.text(com.example.R.string.text_e18899dad359))
 
                 OutlinedTextField(
                     value = categoryText,
                     onValueChange = { categoryText = it },
-                    label = { Text("اسم التصنيف") },
+                    label = { Text(AppText.text(com.example.R.string.text_1a0f3b39aac5)) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
                 )
 
-                Text(text = "أو اختر تصنيفاً سريعاً:", fontSize = 12.sp, color = Color.Gray)
+                Text(text = AppText.text(com.example.R.string.text_7b4764ccb0f0), fontSize = 12.sp, color = Color.Gray)
 
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -1231,7 +1234,7 @@ fun SetBudgetDialog(
                         FilterChip(
                             selected = categoryText == cat,
                             onClick = { categoryText = cat },
-                            label = { Text(cat, fontSize = 11.sp) },
+                            label = { Text(AppStrings(AppText.language).translateCategory(cat), fontSize = 11.sp) },
                             shape = RoundedCornerShape(20.dp)
                         )
                     }
@@ -1240,7 +1243,7 @@ fun SetBudgetDialog(
                 OutlinedTextField(
                     value = limitText,
                     onValueChange = { limitText = it },
-                    label = { Text("الحد الأقصى (بالجنيه)") },
+                    label = { Text(AppText.text(com.example.R.string.text_0e2c15ffddf0)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
@@ -1258,7 +1261,7 @@ fun SetBudgetDialog(
                         colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error),
                         border = BorderStroke(1.dp, MaterialTheme.colorScheme.error)
                     ) {
-                        Text("حذف الميزانية")
+                        Text(AppText.text(com.example.R.string.text_ef1c45607fc6))
                     }
                 }
 
@@ -1273,11 +1276,11 @@ fun SetBudgetDialog(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary)
                 ) {
-                    Text("حفظ الميزانية")
+                    Text(AppText.text(com.example.R.string.text_6d5aa037cf62))
                 }
             }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("إلغاء") } }
+        dismissButton = { TextButton(onClick = onDismiss) { Text(AppText.text(com.example.R.string.text_e776b0209b50)) } }
     )
 }
 
@@ -1295,8 +1298,8 @@ fun EditVaultDialog(
     if (showDeleteConfirm) {
         AlertDialog(
             onDismissRequest = { showDeleteConfirm = false },
-            title = { Text("تأكيد إزالة الحساب", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.error) },
-            text = { Text("هل أنت تأكد من إلغاء وحذف هذا الحساب / الخزنة (${vault.name}) بالكامل؟") },
+            title = { Text(AppText.text(com.example.R.string.text_53ccaef115ec), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.error) },
+            text = { Text(AppText.text(com.example.R.string.text_97fab5f15441, vault.name)) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -1306,11 +1309,11 @@ fun EditVaultDialog(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
                 ) {
-                    Text("إلغاء / حذف الحساب", color = Color.White, fontWeight = FontWeight.Bold)
+                    Text(AppText.text(com.example.R.string.text_5ef55c0db740), color = Color.White, fontWeight = FontWeight.Bold)
                 }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteConfirm = false }) { Text("تراجع") }
+                TextButton(onClick = { showDeleteConfirm = false }) { Text(AppText.text(com.example.R.string.text_98df46fbd83b)) }
             }
         )
     }
@@ -1323,11 +1326,11 @@ fun EditVaultDialog(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "تعديل الخزنة / الحساب", fontWeight = FontWeight.Bold)
+                Text(text = AppText.text(com.example.R.string.text_f55f825ec231), fontWeight = FontWeight.Bold)
                 IconButton(onClick = { showDeleteConfirm = true }) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "إلغاء الحساب",
+                        contentDescription = AppText.text(com.example.R.string.text_7ce2b7078a8e),
                         tint = MaterialTheme.colorScheme.error
                     )
                 }
@@ -1338,7 +1341,7 @@ fun EditVaultDialog(
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("اسم الخزنة / الحساب (مثل: بنك مصر، فودافون كاش)") },
+                    label = { Text(AppText.text(com.example.R.string.text_4555e916f59f)) },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
                 )
@@ -1346,7 +1349,7 @@ fun EditVaultDialog(
                 OutlinedTextField(
                     value = balanceText,
                     onValueChange = { balanceText = it },
-                    label = { Text("تعديل مبلغ / رصيد الحساب الحالي") },
+                    label = { Text(AppText.text(com.example.R.string.text_8e6dada6dcc2)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
@@ -1364,10 +1367,10 @@ fun EditVaultDialog(
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary)
             ) {
-                Text("حفظ التغييرات")
+                Text(AppText.text(com.example.R.string.text_33081e44cb7c))
             }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("إلغاء") } }
+        dismissButton = { TextButton(onClick = onDismiss) { Text(AppText.text(com.example.R.string.text_e776b0209b50)) } }
     )
 }
 
@@ -1381,13 +1384,13 @@ fun UnpaidBillsDialog(
     onPayLesson: (ChildLessonEntity) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val unpaidCommitments = remember(commitments) { commitments.filter { !it.isPaid } }
-    val unpaidLessons = remember(lessons) { lessons.filter { !it.isPaid } }
+    val unpaidCommitments = remember(AppText.language, commitments) { commitments.filter { !it.isPaid } }
+    val unpaidLessons = remember(AppText.language, lessons) { lessons.filter { !it.isPaid } }
 
     val totalUnpaidCount = unpaidCommitments.size + unpaidLessons.size
     val totalUnpaidAmount = unpaidCommitments.sumOf { it.amount } + unpaidLessons.sumOf { it.amount }
 
-    val sdf = remember { SimpleDateFormat("dd/MM/yyyy", Locale("ar")) }
+    val sdf = remember(AppText.language) { SimpleDateFormat("dd/MM/yyyy", AppText.locale) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -1413,13 +1416,13 @@ fun UnpaidBillsDialog(
 
                 Column {
                     Text(
-                        text = "الفواتير والالتزامات المستحقة",
+                        text = AppText.text(com.example.R.string.text_a0b93eb47f97),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        text = "$totalUnpaidCount فواتير غير مسدّدة • الإجمالي: ${String.format(Locale.US, "%,.0f", totalUnpaidAmount)} $currency",
+                        text = AppText.text(com.example.R.string.text_b87ef5afd60a, totalUnpaidCount, String.format(Locale.US, "%,.0f", totalUnpaidAmount), AppText.currency(currency)),
                         fontSize = 11.5.sp,
                         color = Color.Gray
                     )
@@ -1449,13 +1452,13 @@ fun UnpaidBillsDialog(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = "🎉 جميع الفواتير والالتزامات مسدّدة!",
+                                text = AppText.text(com.example.R.string.text_1222aedee374),
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
-                                text = "لا توجد أي فواتير أو دروس معلّقة حالياً.",
+                                text = AppText.text(com.example.R.string.text_0d209f6617e0),
                                 fontSize = 12.sp,
                                 color = Color.Gray
                             )
@@ -1465,7 +1468,7 @@ fun UnpaidBillsDialog(
                     // Commitments
                     if (unpaidCommitments.isNotEmpty()) {
                         Text(
-                            text = "الالتزامات الشهرية والفواتير",
+                            text = AppText.text(com.example.R.string.text_f23d86570e8d),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.Gray,
@@ -1495,7 +1498,7 @@ fun UnpaidBillsDialog(
                                         )
                                         Spacer(modifier = Modifier.height(2.dp))
                                         Text(
-                                            text = "المبلغ: ${String.format(Locale.US, "%,.0f", item.amount)} $currency",
+                                            text = AppText.text(com.example.R.string.text_e359071b6d6c, String.format(Locale.US, "%,.0f", item.amount), AppText.currency(currency)),
                                             fontSize = 12.sp,
                                             fontWeight = FontWeight.SemiBold,
                                             color = ExpenseRed
@@ -1503,14 +1506,14 @@ fun UnpaidBillsDialog(
                                         val dateStr = try { sdf.format(Date(item.dueDateMillis)) } catch (e: Exception) { "" }
                                         if (dateStr.isNotEmpty()) {
                                             Text(
-                                                text = "تاريخ الاستحقاق: $dateStr",
+                                                text = AppText.text(com.example.R.string.text_82f89f773df0, dateStr),
                                                 fontSize = 10.5.sp,
                                                 color = Color.Gray
                                             )
                                         }
                                         if (item.notes.isNotBlank()) {
                                             Text(
-                                                text = "ملاحظات: ${item.notes}",
+                                                text = AppText.text(com.example.R.string.text_d20206869e15, item.notes),
                                                 fontSize = 10.5.sp,
                                                 color = Color.Gray
                                             )
@@ -1534,7 +1537,7 @@ fun UnpaidBillsDialog(
                                                 modifier = Modifier.size(14.dp)
                                             )
                                             Spacer(modifier = Modifier.width(4.dp))
-                                            Text("تسديد", fontSize = 11.5.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                                            Text(AppText.text(com.example.R.string.text_00892ccddcd9), fontSize = 11.5.sp, fontWeight = FontWeight.Bold, color = Color.White)
                                         }
                                     }
                                 }
@@ -1545,7 +1548,7 @@ fun UnpaidBillsDialog(
                     // Child Lessons
                     if (unpaidLessons.isNotEmpty()) {
                         Text(
-                            text = "دروس الأبناء المستحقة",
+                            text = AppText.text(com.example.R.string.text_0647a642ebee),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.Gray,
@@ -1575,12 +1578,12 @@ fun UnpaidBillsDialog(
                                         )
                                         Spacer(modifier = Modifier.height(2.dp))
                                         Text(
-                                            text = "المعلم: ${lesson.teacherName}",
+                                            text = AppText.text(com.example.R.string.text_765b68c05b0d, lesson.teacherName),
                                             fontSize = 11.5.sp,
                                             color = Color.Gray
                                         )
                                         Text(
-                                            text = "المبلغ: ${String.format(Locale.US, "%,.0f", lesson.amount)} $currency",
+                                            text = AppText.text(com.example.R.string.text_b0a5de0afd74, String.format(Locale.US, "%,.0f", lesson.amount), AppText.currency(currency)),
                                             fontSize = 12.sp,
                                             fontWeight = FontWeight.SemiBold,
                                             color = ExpenseRed
@@ -1588,7 +1591,7 @@ fun UnpaidBillsDialog(
                                         val dateStr = try { sdf.format(Date(lesson.dueDateMillis)) } catch (e: Exception) { "" }
                                         if (dateStr.isNotEmpty()) {
                                             Text(
-                                                text = "تاريخ الاستحقاق: $dateStr",
+                                                text = AppText.text(com.example.R.string.text_82f89f773df0, dateStr),
                                                 fontSize = 10.5.sp,
                                                 color = Color.Gray
                                             )
@@ -1612,7 +1615,7 @@ fun UnpaidBillsDialog(
                                                 modifier = Modifier.size(14.dp)
                                             )
                                             Spacer(modifier = Modifier.width(4.dp))
-                                            Text("تسديد", fontSize = 11.5.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                                            Text(AppText.text(com.example.R.string.text_00892ccddcd9), fontSize = 11.5.sp, fontWeight = FontWeight.Bold, color = Color.White)
                                         }
                                     }
                                 }
@@ -1628,7 +1631,7 @@ fun UnpaidBillsDialog(
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
             ) {
-                Text("إغلاق", fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(AppText.text(com.example.R.string.text_5bf826c5e57c), fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
     )

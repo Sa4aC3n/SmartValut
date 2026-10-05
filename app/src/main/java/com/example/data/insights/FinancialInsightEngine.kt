@@ -1,5 +1,7 @@
 package com.example.data.insights
 
+import com.example.ui.utils.AppText
+
 import com.example.data.calculator.FinancialSummaryCalculator
 import com.example.data.calculator.FinancialSummaryResult
 import com.example.data.entity.BudgetLimitEntity
@@ -49,8 +51,8 @@ object FinancialInsightEngine {
                         FinancialInsight(
                             id = "budget_over_${budget.category}",
                             priority = InsightPriority.CRITICAL,
-                            title = "تجاوز الميزانية",
-                            message = "تجاوزت ميزانية «${budget.category}» بنسبة $overPct% (أنفقت ${spent.toInt()} من أصل ${budget.monthlyLimit.toInt()} $currency)",
+                            title = AppText.text(com.example.R.string.text_d171d8506d04),
+                            message = AppText.text(com.example.R.string.text_dad18188a262, com.example.ui.utils.AppStrings(AppText.language).translateCategory(budget.category), overPct, spent.toInt(), budget.monthlyLimit.toInt(), AppText.currency(currency)),
                             iconType = "alert"
                         )
                     )
@@ -60,8 +62,8 @@ object FinancialInsightEngine {
                         FinancialInsight(
                             id = "budget_near_${budget.category}",
                             priority = InsightPriority.WARNING,
-                            title = "اقتراب من الحد الشهري",
-                            message = "أنت قريب من سقف ميزانية «${budget.category}»، المتبقي لك $remaining $currency فقط.",
+                            title = AppText.text(com.example.R.string.text_e1ea6189fc30),
+                            message = AppText.text(com.example.R.string.text_8b88d889acb8, com.example.ui.utils.AppStrings(AppText.language).translateCategory(budget.category), remaining, AppText.currency(currency)),
                             iconType = "warning"
                         )
                     )
@@ -76,8 +78,8 @@ object FinancialInsightEngine {
                 FinancialInsight(
                     id = "commitment_due_${c.id}",
                     priority = InsightPriority.WARNING,
-                    title = "التزام مستحق قريبًا",
-                    message = "لديك التزام «${c.title}» بقيمة ${c.amount.toInt()} $currency خلال أيام قليلة.",
+                    title = AppText.text(com.example.R.string.text_d91cfc1ad51c),
+                    message = AppText.text(com.example.R.string.text_ef044647ae0e, c.title, c.amount.toInt(), AppText.currency(currency)),
                     iconType = "warning"
                 )
             )
@@ -89,8 +91,8 @@ object FinancialInsightEngine {
                 FinancialInsight(
                     id = "lesson_due_${l.id}",
                     priority = InsightPriority.WARNING,
-                    title = "مصروف درس مستحق",
-                    message = "درس «${l.subject}» للطفل ${l.childName} بقيمة ${l.amount.toInt()} $currency مستحق قريبًا.",
+                    title = AppText.text(com.example.R.string.text_2a20f11fd4c3),
+                    message = AppText.text(com.example.R.string.text_00a1d5002e6c, l.subject, l.childName, l.amount.toInt(), AppText.currency(currency)),
                     iconType = "warning"
                 )
             )
@@ -104,8 +106,8 @@ object FinancialInsightEngine {
                 FinancialInsight(
                     id = "savings_rate_positive",
                     priority = InsightPriority.POSITIVE,
-                    title = "نسبة ادخار ممتازة",
-                    message = "وفّرت $rateInt% من دخلك هذا الشهر! أحسنت الاستمرار في إدارة مصاريفك.",
+                    title = AppText.text(com.example.R.string.text_6a90374a7a88),
+                    message = AppText.text(com.example.R.string.text_64a60e7a0bf6, rateInt),
                     iconType = "success"
                 )
             )
@@ -118,8 +120,8 @@ object FinancialInsightEngine {
                 FinancialInsight(
                     id = "top_expense_category",
                     priority = InsightPriority.INFO,
-                    title = "أعلى بند إنفاق",
-                    message = "أعلى بند إنفاق هو «${topCategory.category}» بنسبة ${topCategory.percentage.toInt()}% من إجمالي مصروفاتك.",
+                    title = AppText.text(com.example.R.string.text_e0c6c094ba6d),
+                    message = AppText.text(com.example.R.string.text_1c91b27c2d9d, com.example.ui.utils.AppStrings(AppText.language).translateCategory(topCategory.category), topCategory.percentage.toInt()),
                     iconType = "info"
                 )
             )
@@ -182,8 +184,8 @@ object FinancialInsightEngine {
                         FinancialInsight(
                             id = "budget_over_${budget.category}",
                             priority = InsightPriority.CRITICAL,
-                            title = "تجاوز الميزانية",
-                            message = "تجاوزت ميزانية «${budget.category}» بنسبة $overPct% (أنفقت ${spent.toInt()} من أصل ${budget.monthlyLimit.toInt()} $currency)",
+                            title = AppText.text(com.example.R.string.text_d171d8506d04),
+                            message = AppText.text(com.example.R.string.text_dad18188a262, com.example.ui.utils.AppStrings(AppText.language).translateCategory(budget.category), overPct, spent.toInt(), budget.monthlyLimit.toInt(), AppText.currency(currency)),
                             iconType = "alert"
                         )
                     )
@@ -193,8 +195,8 @@ object FinancialInsightEngine {
                         FinancialInsight(
                             id = "budget_near_${budget.category}",
                             priority = InsightPriority.WARNING,
-                            title = "اقتراب من الحد الشهري",
-                            message = "أنت قريب من سقف ميزانية «${budget.category}»، المتبقي لك $remaining $currency فقط.",
+                            title = AppText.text(com.example.R.string.text_e1ea6189fc30),
+                            message = AppText.text(com.example.R.string.text_8b88d889acb8, com.example.ui.utils.AppStrings(AppText.language).translateCategory(budget.category), remaining, AppText.currency(currency)),
                             iconType = "warning"
                         )
                     )
@@ -210,8 +212,8 @@ object FinancialInsightEngine {
                 FinancialInsight(
                     id = "commitment_due_${c.id}",
                     priority = InsightPriority.WARNING,
-                    title = "التزام مستحق قريبًا",
-                    message = "لديك التزام «${c.title}» بقيمة ${c.amount.toInt()} $currency خلال أيام قليلة.",
+                    title = AppText.text(com.example.R.string.text_d91cfc1ad51c),
+                    message = AppText.text(com.example.R.string.text_ef044647ae0e, c.title, c.amount.toInt(), AppText.currency(currency)),
                     iconType = "warning"
                 )
             )
@@ -223,8 +225,8 @@ object FinancialInsightEngine {
                 FinancialInsight(
                     id = "lesson_due_${l.id}",
                     priority = InsightPriority.WARNING,
-                    title = "مصروف درس مستحق",
-                    message = "درس «${l.subject}» للطفل ${l.childName} بقيمة ${l.amount.toInt()} $currency مستحق قريبًا.",
+                    title = AppText.text(com.example.R.string.text_2a20f11fd4c3),
+                    message = AppText.text(com.example.R.string.text_00a1d5002e6c, l.subject, l.childName, l.amount.toInt(), AppText.currency(currency)),
                     iconType = "warning"
                 )
             )
@@ -236,8 +238,8 @@ object FinancialInsightEngine {
                 FinancialInsight(
                     id = "debt_due_${d.id}",
                     priority = InsightPriority.CRITICAL,
-                    title = "سداد دين مستحق",
-                    message = "يجب سداد مبلغ ${d.remainingAmount.toInt()} $currency للمستحق ${d.personName} خلال 3 أيام.",
+                    title = AppText.text(com.example.R.string.text_b4a9c7335a43),
+                    message = AppText.text(com.example.R.string.text_6b3c7e411379, d.remainingAmount.toInt(), AppText.currency(currency), d.personName),
                     iconType = "alert"
                 )
             )
@@ -251,8 +253,8 @@ object FinancialInsightEngine {
                 FinancialInsight(
                     id = "savings_rate_positive",
                     priority = InsightPriority.POSITIVE,
-                    title = "نسبة ادخار ممتازة",
-                    message = "وفّرت $rateInt% من دخلك هذا الشهر! أحسنت الاستمرار في إدارة مصاريفك.",
+                    title = AppText.text(com.example.R.string.text_6a90374a7a88),
+                    message = AppText.text(com.example.R.string.text_64a60e7a0bf6, rateInt),
                     iconType = "success"
                 )
             )
@@ -268,8 +270,8 @@ object FinancialInsightEngine {
                         FinancialInsight(
                             id = "spending_trend_down",
                             priority = InsightPriority.POSITIVE,
-                            title = "تحسن في معدل الإنفاق",
-                            message = "إنفاقك هذا الشهر أقل من الشهر الماضي بنسبة $pct% حتى الآن.",
+                            title = AppText.text(com.example.R.string.text_edbc29df7299),
+                            message = AppText.text(com.example.R.string.text_ec6704a86003, pct),
                             iconType = "trend_down"
                         )
                     )
@@ -278,8 +280,8 @@ object FinancialInsightEngine {
                         FinancialInsight(
                             id = "spending_trend_up",
                             priority = InsightPriority.WARNING,
-                            title = "ارتفاع وتيرة الإنفاق",
-                            message = "أنفقت حتى الآن $pct% أكثر مقارنة بالشهر الماضي.",
+                            title = AppText.text(com.example.R.string.text_12e1baa483b8),
+                            message = AppText.text(com.example.R.string.text_2100370c5e06, pct),
                             iconType = "trend_up"
                         )
                     )
@@ -295,8 +297,8 @@ object FinancialInsightEngine {
                 FinancialInsight(
                     id = "top_expense_category",
                     priority = InsightPriority.INFO,
-                    title = "أعلى بند إنفاق",
-                    message = "أعلى بند إنفاق هذا الشهر هو «${topCategory.key}» ويمثل $pct% من إجمالي مصروفاتك.",
+                    title = AppText.text(com.example.R.string.text_e0c6c094ba6d),
+                    message = AppText.text(com.example.R.string.text_f2f7325ba6e9, com.example.ui.utils.AppStrings(AppText.language).translateCategory(topCategory.key), pct),
                     iconType = "info"
                 )
             )
@@ -310,8 +312,8 @@ object FinancialInsightEngine {
                 FinancialInsight(
                     id = "daily_average_expense",
                     priority = InsightPriority.INFO,
-                    title = "متوسط الإنفاق اليومي",
-                    message = "متوسط إنفاقك اليومي خلال هذا الشهر هو $dailyAvg $currency.",
+                    title = AppText.text(com.example.R.string.text_f89b12710474),
+                    message = AppText.text(com.example.R.string.text_f1e858bfb37f, dailyAvg, AppText.currency(currency)),
                     iconType = "info"
                 )
             )
@@ -330,8 +332,8 @@ object FinancialInsightEngine {
                 FinancialInsight(
                     id = "no_expense_today",
                     priority = InsightPriority.INFO,
-                    title = "يوم بلا مصروفات",
-                    message = "لم تسجل أي مصروفات اليوم، يوم ممتاز للادخار!",
+                    title = AppText.text(com.example.R.string.text_fba441b2afbf),
+                    message = AppText.text(com.example.R.string.text_e516a4efd7da),
                     iconType = "success"
                 )
             )

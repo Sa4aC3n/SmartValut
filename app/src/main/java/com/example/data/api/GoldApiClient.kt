@@ -1,5 +1,7 @@
 package com.example.data.api
 
+import com.example.ui.utils.AppText
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -50,7 +52,7 @@ object GoldApiClient {
         val trimmedKey = apiKey.trim().ifBlank { DEFAULT_API_KEY }
         if (trimmedKey.isBlank()) {
             return@withContext Result.failure(
-                IllegalArgumentException("يرجى إدخال مفتاح API الخاص بـ GoldAPI.io / Please enter your GoldAPI key")
+                IllegalArgumentException(AppText.text(com.example.R.string.text_5996de7ad383))
             )
         }
 
@@ -78,10 +80,10 @@ object GoldApiClient {
                     }
 
                     val message = when (statusCode) {
-                        401, 403 -> "مفتاح API غير صالح أو منتهي الصلاحية (${if (errorMsg.isNotBlank()) errorMsg else "Unauthorized"}). يرجى التأكد من المفتاح في goldapi.io"
-                        429 -> "تم تجاوز الحد المسموح من الطلبات على GoldAPI.io (Quota limit exceeded)."
-                        404 -> "لم يتم العثور على بيانات العملة $cleanCurrency أو الرمز $symbol في GoldAPI."
-                        else -> "فشل جلب الأسعار من GoldAPI.io (رمز الخطأ: $statusCode ${if (errorMsg.isNotBlank()) "- $errorMsg" else ""})"
+                        401, 403 -> AppText.text(com.example.R.string.text_2262f8c02440, if (errorMsg.isNotBlank()) errorMsg else "Unauthorized")
+                        429 -> AppText.text(com.example.R.string.text_13c20d98b615)
+                        404 -> AppText.text(com.example.R.string.text_2130a9d5ded6, cleanCurrency, symbol)
+                        else -> AppText.text(com.example.R.string.text_94b64c26d582, statusCode, if (errorMsg.isNotBlank()) "- $errorMsg" else "")
                     }
                     return@withContext Result.failure(Exception(message))
                 }
@@ -114,7 +116,7 @@ object GoldApiClient {
 
                 if (g24 <= 0.0 && priceOunce <= 0.0) {
                     return@withContext Result.failure(
-                        Exception("لم يتم استلام أسعار صحيحة من GoldAPI.io للعملة $cleanCurrency")
+                        Exception(AppText.text(com.example.R.string.text_1b66c5619eb7, cleanCurrency))
                     )
                 }
 
@@ -136,9 +138,9 @@ object GoldApiClient {
             }
         } catch (e: Exception) {
             val friendlyError = if (e.message?.contains("Unable to resolve host", ignoreCase = true) == true) {
-                "تعذر الاتصال بخادم GoldAPI.io. يرجى التحقق من اتصالك بالإنترنت."
+                AppText.text(com.example.R.string.text_6ba30f0e392f)
             } else {
-                "خطأ في الاتصال بـ GoldAPI: ${e.localizedMessage ?: "Unknown network error"}"
+                AppText.text(com.example.R.string.text_02f94b071638, e.localizedMessage ?: "Unknown network error")
             }
             Result.failure(Exception(friendlyError, e))
         }

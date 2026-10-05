@@ -1,5 +1,7 @@
 package com.example.data
 
+import com.example.ui.utils.AppText
+
 import androidx.room.withTransaction
 import com.example.data.entity.ActivityLogEntity
 import com.example.data.entity.BudgetLimitEntity
@@ -91,7 +93,7 @@ class SmartVaultRepository(private val db: AppDatabase) {
         userId: String = ""
     ) {
         if (amount.isNaN() || amount.isInfinite() || amount <= 0.0) {
-            throw IllegalArgumentException("المبلغ غير صالح: يجب أن يكون رقمًا موجبًا")
+            throw IllegalArgumentException(AppText.text(com.example.R.string.text_cd638da461ee))
         }
 
         val effectiveUser = userId.ifBlank { "local_guest" }
@@ -127,7 +129,7 @@ class SmartVaultRepository(private val db: AppDatabase) {
         userId: String = ""
     ) {
         if (amount.isNaN() || amount.isInfinite() || amount <= 0.0) {
-            throw IllegalArgumentException("المبلغ غير صالح: يجب أن يكون رقمًا موجبًا")
+            throw IllegalArgumentException(AppText.text(com.example.R.string.text_cd638da461ee))
         }
 
         val effectiveUser = userId.ifBlank { "local_guest" }
@@ -158,11 +160,11 @@ class SmartVaultRepository(private val db: AppDatabase) {
             val transaction = db.transactionDao().getTransactionById(id, effectiveUser)
                 ?: return@withTransaction
             val vault = db.vaultDao().getVaultByName(transaction.vaultName, effectiveUser)
-                ?: error("لا يمكن حذف الحركة قبل استعادة الخزنة المرتبطة بها")
+                ?: error(AppText.text(com.example.R.string.text_324813c834f1))
             val adjustment = when (transaction.type) {
                 "INCOME" -> -transaction.amount
                 "EXPENSE" -> transaction.amount
-                else -> error("نوع الحركة غير مدعوم")
+                else -> error(AppText.text(com.example.R.string.text_d375d2c8d4ee))
             }
             db.vaultDao().updateVaultBalance(vault.id, vault.balance + adjustment, effectiveUser)
             db.transactionDao().deleteTransactionByIdAndUser(id, effectiveUser)
@@ -231,7 +233,7 @@ class SmartVaultRepository(private val db: AppDatabase) {
     ) {
         val effectiveUser = userId.ifBlank { "local_guest" }
         if (amount.isNaN() || amount.isInfinite() || amount < 0.0) {
-            throw IllegalArgumentException("مبلغ المصروف غير صالح")
+            throw IllegalArgumentException(AppText.text(com.example.R.string.text_a4de2402af53))
         }
         db.withTransaction {
             db.outingExpenseDao().insertOutingExpense(
@@ -287,7 +289,7 @@ class SmartVaultRepository(private val db: AppDatabase) {
     ) {
         val effectiveUser = userId.ifBlank { "local_guest" }
         if (salePrice.isNaN() || salePrice.isInfinite() || salePrice < 0.0) {
-            throw IllegalArgumentException("سعر البيع غير صالح")
+            throw IllegalArgumentException(AppText.text(com.example.R.string.text_709b83a58038))
         }
         db.withTransaction {
             val asset = db.goldAssetDao().getGoldAssetByIdAndUser(id, effectiveUser)
@@ -477,20 +479,20 @@ class SmartVaultRepository(private val db: AppDatabase) {
         userId: String = ""
     ): Result<Unit> {
         if (amount.isNaN() || amount.isInfinite() || amount <= 0.0) {
-            return Result.failure(IllegalArgumentException("يجب أن يكون مبلغ التحويل رقمًا موجبًا أكبر من صفر"))
+            return Result.failure(IllegalArgumentException(AppText.text(com.example.R.string.text_321e7ab95b7e)))
         }
         if (fromVaultName == toVaultName) {
-            return Result.failure(IllegalArgumentException("لا يمكن التحويل من الخزنة إلى نفسها"))
+            return Result.failure(IllegalArgumentException(AppText.text(com.example.R.string.text_cb0aaf62ada7)))
         }
 
         val effectiveUser = userId.ifBlank { "local_guest" }
         return try {
             db.withTransaction {
                 val fromVault = db.vaultDao().getVaultByName(fromVaultName, effectiveUser)
-                    ?: throw IllegalStateException("الخزنة المصدر غير موجودة")
+                    ?: throw IllegalStateException(AppText.text(com.example.R.string.text_89acb7abfb61))
 
                 if (fromVault.balance < amount) {
-                    throw IllegalStateException("رصيد الخزنة (${fromVault.balance}) لا يكفي لتحويل ($amount)")
+                    throw IllegalStateException(AppText.text(com.example.R.string.text_f72448989b3c, fromVault.balance, amount))
                 }
 
                 var toVault = db.vaultDao().getVaultByName(toVaultName, effectiveUser)
@@ -524,12 +526,12 @@ class SmartVaultRepository(private val db: AppDatabase) {
         return try {
             db.withTransaction {
                 val transfer = db.transferDao().getTransferById(transferId, effectiveUser)
-                    ?: throw IllegalStateException("لم يتم العثور على سجل التحويل أو ليس لديك صلاحية")
+                    ?: throw IllegalStateException(AppText.text(com.example.R.string.text_7a962d7fe6e8))
 
                 val fromVault = db.vaultDao().getVaultByName(transfer.fromVaultName, effectiveUser)
-                    ?: throw IllegalStateException("الخزنة المصدر للتحويل غير موجودة")
+                    ?: throw IllegalStateException(AppText.text(com.example.R.string.text_5f125b7987c4))
                 val toVault = db.vaultDao().getVaultByName(transfer.toVaultName, effectiveUser)
-                    ?: throw IllegalStateException("الخزنة المستلمة للتحويل غير موجودة")
+                    ?: throw IllegalStateException(AppText.text(com.example.R.string.text_574658039b19))
 
                 // Return funds to source vault and deduct from target vault
                 db.vaultDao().updateVaultBalance(fromVault.id, fromVault.balance + transfer.amount, effectiveUser)
@@ -563,7 +565,7 @@ class SmartVaultRepository(private val db: AppDatabase) {
         userId: String = ""
     ): Long {
         if (amount.isNaN() || amount.isInfinite() || amount <= 0.0) {
-            throw IllegalArgumentException("مبلغ الدين غير صالح: يجب أن يكون أكبر من صفر")
+            throw IllegalArgumentException(AppText.text(com.example.R.string.text_24e31759427c))
         }
         val effectiveUser = userId.ifBlank { "local_guest" }
         val debt = DebtEntity(
@@ -591,16 +593,16 @@ class SmartVaultRepository(private val db: AppDatabase) {
     ): Result<Unit> {
         val effectiveUser = userId.ifBlank { "local_guest" }
         if (paymentAmount.isNaN() || paymentAmount.isInfinite() || paymentAmount <= 0.0) {
-            return Result.failure(IllegalArgumentException("يجب أن يكون مبلغ السداد أكبر من صفر"))
+            return Result.failure(IllegalArgumentException(AppText.text(com.example.R.string.text_bb0319b35c1c)))
         }
 
         return try {
             db.withTransaction {
                 val debt = db.debtDao().getDebtById(debtId, effectiveUser)
-                    ?: throw IllegalStateException("لم يتم العثور على سجل الدين أو ليس لديك صلاحية الوصول إليه")
+                    ?: throw IllegalStateException(AppText.text(com.example.R.string.text_bcdddf713495))
 
                 if (paymentAmount > debt.remainingAmount + 0.0001) {
-                    throw IllegalArgumentException("مبلغ السداد ($paymentAmount) يتجاوز المبلغ المتبقي (${debt.remainingAmount})")
+                    throw IllegalArgumentException(AppText.text(com.example.R.string.text_c3a83f2c4743, paymentAmount, debt.remainingAmount))
                 }
 
                 val rawNewPaid = debt.paidAmount + paymentAmount

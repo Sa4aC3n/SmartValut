@@ -1,5 +1,9 @@
 package com.example.ui.utils
 
+import com.example.ui.utils.AppStrings
+
+import com.example.ui.utils.AppText
+
 import android.content.Context
 import android.content.Intent
 import android.graphics.Canvas
@@ -52,7 +56,7 @@ object PdfExporter {
         paint.textSize = 22f
         paint.isFakeBoldText = true
         paint.textAlign = Paint.Align.CENTER
-        canvas.drawText("الخزنة الذكية - التقرير المالي الشامل", 297f, 48f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_f93caee4745f), 297f, 48f, paint)
 
         paint.textSize = 12f
         paint.isFakeBoldText = false
@@ -68,17 +72,17 @@ object PdfExporter {
         paint.textSize = 14f
         paint.isFakeBoldText = true
         paint.textAlign = Paint.Align.RIGHT
-        canvas.drawText("اسم المستخدم: ${userProfile.name}", 550f, y + 25f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_23ff5bd3cda6, userProfile.name), 550f, y + 25f, paint)
 
         paint.color = Color.DKGRAY
         paint.textSize = 11f
         paint.isFakeBoldText = false
-        canvas.drawText("البريد الإلكتروني: ${userProfile.email} | الهاتف: ${userProfile.phone}", 550f, y + 48f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_af62bc118661, userProfile.email, userProfile.phone), 550f, y + 48f, paint)
 
-        val sdfDate = SimpleDateFormat("yyyy/MM/dd - hh:mm a", Locale("ar"))
+        val sdfDate = SimpleDateFormat("yyyy/MM/dd - hh:mm a", AppText.locale)
         val currentDateStr = sdfDate.format(Date())
         paint.textAlign = Paint.Align.LEFT
-        canvas.drawText("تاريخ التقرير: $currentDateStr", 35f, y + 25f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_5b5d51e492a1, currentDateStr), 35f, y + 25f, paint)
 
         y += 85f
 
@@ -87,7 +91,7 @@ object PdfExporter {
         paint.textSize = 15f
         paint.isFakeBoldText = true
         paint.textAlign = Paint.Align.RIGHT
-        canvas.drawText("1. ملخص الحركة المالية الشهرية", 575f, y, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_598b3013c93a), 575f, y, paint)
 
         y += 15f
 
@@ -97,10 +101,10 @@ object PdfExporter {
         paint.color = Color.parseColor("#2E7D32")
         paint.textSize = 11f
         paint.textAlign = Paint.Align.CENTER
-        canvas.drawText("إجمالي الدخل", 107f, y + 20f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_5e75dfd7b871), 107f, y + 20f, paint)
         paint.textSize = 13f
         paint.isFakeBoldText = true
-        canvas.drawText("${String.format(Locale.US, "%,.0f", totalIncome)} $currency", 107f, y + 40f, paint)
+        canvas.drawText("${String.format(Locale.US, "%,.0f", totalIncome)} ${AppText.currency(currency)}", 107f, y + 40f, paint)
 
         // Total Expense Card (Red tint)
         paint.color = Color.parseColor("#FFEBEE")
@@ -108,10 +112,10 @@ object PdfExporter {
         paint.color = Color.parseColor("#C62828")
         paint.textSize = 11f
         paint.isFakeBoldText = false
-        canvas.drawText("إجمالي المصروفات", 297f, y + 20f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_d93aba8f3b2c), 297f, y + 20f, paint)
         paint.textSize = 13f
         paint.isFakeBoldText = true
-        canvas.drawText("${String.format(Locale.US, "%,.0f", totalExpense)} $currency", 297f, y + 40f, paint)
+        canvas.drawText("${String.format(Locale.US, "%,.0f", totalExpense)} ${AppText.currency(currency)}", 297f, y + 40f, paint)
 
         // Net Balance Card (Gold tint)
         val netBalance = (totalIncome - totalExpense).coerceAtLeast(0.0)
@@ -120,10 +124,10 @@ object PdfExporter {
         paint.color = Color.parseColor("#F57F17")
         paint.textSize = 11f
         paint.isFakeBoldText = false
-        canvas.drawText("المتبقي / صافي التوفير", 487f, y + 20f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_2df6cb78d320), 487f, y + 20f, paint)
         paint.textSize = 13f
         paint.isFakeBoldText = true
-        canvas.drawText("${String.format(Locale.US, "%,.0f", netBalance)} $currency", 487f, y + 40f, paint)
+        canvas.drawText("${String.format(Locale.US, "%,.0f", netBalance)} ${AppText.currency(currency)}", 487f, y + 40f, paint)
 
         y += 75f
 
@@ -132,7 +136,7 @@ object PdfExporter {
         paint.textSize = 15f
         paint.isFakeBoldText = true
         paint.textAlign = Paint.Align.RIGHT
-        canvas.drawText("2. أصدة الحسابات والخزانات المسجلة", 575f, y, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_a07daa050122), 575f, y, paint)
 
         y += 15f
 
@@ -142,9 +146,9 @@ object PdfExporter {
         paint.color = Color.WHITE
         paint.textSize = 11f
         paint.textAlign = Paint.Align.RIGHT
-        canvas.drawText("اسم الخزنة / الحساب", 550f, y + 17f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_292aa105e256), 550f, y + 17f, paint)
         paint.textAlign = Paint.Align.LEFT
-        canvas.drawText("الرصيد المتاح", 35f, y + 17f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_19c61065a80f), 35f, y + 17f, paint)
 
         y += 25f
 
@@ -161,7 +165,7 @@ object PdfExporter {
             paint.color = Color.parseColor("#0C3B2E")
             paint.isFakeBoldText = true
             paint.textAlign = Paint.Align.LEFT
-            canvas.drawText("${String.format(Locale.US, "%,.2f", vault.balance)} $currency", 35f, y + 16f, paint)
+            canvas.drawText("${String.format(Locale.US, "%,.2f", vault.balance)} ${AppText.currency(currency)}", 35f, y + 16f, paint)
 
             y += 24f
         }
@@ -173,7 +177,7 @@ object PdfExporter {
         paint.textSize = 15f
         paint.isFakeBoldText = true
         paint.textAlign = Paint.Align.RIGHT
-        canvas.drawText("3. سجل أحدث المعاملات المالية", 575f, y, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_06aea1a4b6cb), 575f, y, paint)
 
         y += 15f
 
@@ -183,11 +187,11 @@ object PdfExporter {
         paint.color = Color.WHITE
         paint.textSize = 11f
         paint.textAlign = Paint.Align.RIGHT
-        canvas.drawText("الوصف والمعاملة", 550f, y + 17f, paint)
-        canvas.drawText("التصنيف", 350f, y + 17f, paint)
-        canvas.drawText("الحساب", 230f, y + 17f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_70c980e32ac0), 550f, y + 17f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_7c75fec5c0f8), 350f, y + 17f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_0fd1ce3ab3e4), 230f, y + 17f, paint)
         paint.textAlign = Paint.Align.LEFT
-        canvas.drawText("المبلغ ($currency)", 35f, y + 17f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_9c3c9f280b7e, AppText.currency(currency)), 35f, y + 17f, paint)
 
         y += 25f
 
@@ -204,7 +208,7 @@ object PdfExporter {
             paint.textAlign = Paint.Align.RIGHT
             val desc = if (tx.description.length > 25) tx.description.take(23) + ".." else tx.description
             canvas.drawText(desc, 550f, y + 15f, paint)
-            canvas.drawText(tx.category, 350f, y + 15f, paint)
+            canvas.drawText(AppStrings(AppText.language).translateCategory(tx.category), 350f, y + 15f, paint)
             canvas.drawText(tx.vaultName, 230f, y + 15f, paint)
 
             val isIncome = tx.type == "INCOME"
@@ -224,7 +228,7 @@ object PdfExporter {
         paint.textSize = 10f
         paint.isFakeBoldText = false
         paint.textAlign = Paint.Align.CENTER
-        canvas.drawText("تم استخراج التقرير بواسطة تطبيق الخزنة الذكية • Smart Vault Security & AI Statement", 297f, 832f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_c2de3368a38f), 297f, 832f, paint)
 
         pdfDocument.finishPage(page)
 
@@ -239,7 +243,7 @@ object PdfExporter {
             outputStream.close()
             pdfDocument.close()
 
-            Toast.makeText(context, "تم توليد تقرير PDF بنجاح: ${pdfFile.name}", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, AppText.text(com.example.R.string.text_84ea95ad551f, pdfFile.name), Toast.LENGTH_LONG).show()
 
             // Launch View / Share Intent using FileProvider
             val fileUri = FileProvider.getUriForFile(
@@ -254,7 +258,7 @@ object PdfExporter {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
 
-            val chooser = Intent.createChooser(intent, "فتح تقرير PDF المالي").apply {
+            val chooser = Intent.createChooser(intent, AppText.text(com.example.R.string.text_6a24d4f395ba)).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
 
@@ -262,7 +266,7 @@ object PdfExporter {
 
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(context, "حدث خطأ أثناء حفظ الملف: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, AppText.text(com.example.R.string.text_b5ff5ea46c44, e.localizedMessage), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -298,7 +302,7 @@ object PdfExporter {
         paint.textSize = 22f
         paint.isFakeBoldText = true
         paint.textAlign = Paint.Align.CENTER
-        canvas.drawText("الخزنة الذكية - تقرير مصاريف الخروجة وتقسيم اللمة", 297f, 48f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_882e9abff232), 297f, 48f, paint)
 
         paint.textSize = 12f
         paint.isFakeBoldText = false
@@ -310,17 +314,17 @@ object PdfExporter {
         paint.color = Color.parseColor("#F4F6F5")
         canvas.drawRoundRect(20f, y, 575f, y + 50f, 12f, 12f, paint)
 
-        val sdfDate = SimpleDateFormat("yyyy/MM/dd - hh:mm a", Locale("ar"))
+        val sdfDate = SimpleDateFormat("yyyy/MM/dd - hh:mm a", AppText.locale)
         val currentDateStr = sdfDate.format(Date())
 
         paint.color = Color.parseColor("#0C3B2E")
         paint.textSize = 12f
         paint.isFakeBoldText = true
         paint.textAlign = Paint.Align.RIGHT
-        canvas.drawText("تاريخ التقرير: $currentDateStr", 550f, y + 30f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_5b5d51e492a1, currentDateStr), 550f, y + 30f, paint)
 
         paint.textAlign = Paint.Align.LEFT
-        canvas.drawText("عدد عناصر المصاريف: ${outingExpenses.size}", 35f, y + 30f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_835815ab36b4, outingExpenses.size), 35f, y + 30f, paint)
 
         y += 70f
 
@@ -329,7 +333,7 @@ object PdfExporter {
         paint.textSize = 15f
         paint.isFakeBoldText = true
         paint.textAlign = Paint.Align.RIGHT
-        canvas.drawText("1. ملخص حساب الخروجة والتقسيم", 575f, y, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_7a38397f0000), 575f, y, paint)
 
         y += 18f
 
@@ -340,10 +344,10 @@ object PdfExporter {
         paint.textSize = 11f
         paint.textAlign = Paint.Align.CENTER
         paint.isFakeBoldText = false
-        canvas.drawText("إجمالي المصاريف", 107f, y + 22f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_eca3d1ae0873), 107f, y + 22f, paint)
         paint.textSize = 13f
         paint.isFakeBoldText = true
-        canvas.drawText("${String.format(Locale.US, "%,.0f", totalExpenses)} $currency", 107f, y + 44f, paint)
+        canvas.drawText("${String.format(Locale.US, "%,.0f", totalExpenses)} ${AppText.currency(currency)}", 107f, y + 44f, paint)
 
         // Participants Count Card (Blue tint)
         paint.color = Color.parseColor("#E3F2FD")
@@ -351,10 +355,10 @@ object PdfExporter {
         paint.color = Color.parseColor("#1565C0")
         paint.textSize = 11f
         paint.isFakeBoldText = false
-        canvas.drawText("عدد اللمة (المشاركين)", 297f, y + 22f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_552ed370d702), 297f, y + 22f, paint)
         paint.textSize = 13f
         paint.isFakeBoldText = true
-        canvas.drawText("$validParticipants أفراد", 297f, y + 44f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_30d31f5738c7, validParticipants), 297f, y + 44f, paint)
 
         // Per-person Share Card (Green highlight tint)
         paint.color = Color.parseColor("#E8F5E9")
@@ -362,10 +366,10 @@ object PdfExporter {
         paint.color = Color.parseColor("#2E7D32")
         paint.textSize = 11f
         paint.isFakeBoldText = false
-        canvas.drawText("حساب كل واحد (نصيب الفرد)", 487f, y + 22f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_ee9024498f3d), 487f, y + 22f, paint)
         paint.textSize = 14f
         paint.isFakeBoldText = true
-        canvas.drawText("${String.format(Locale.US, "%,.1f", sharePerPerson)} $currency", 487f, y + 44f, paint)
+        canvas.drawText("${String.format(Locale.US, "%,.1f", sharePerPerson)} ${AppText.currency(currency)}", 487f, y + 44f, paint)
 
         y += 85f
 
@@ -374,7 +378,7 @@ object PdfExporter {
         paint.textSize = 15f
         paint.isFakeBoldText = true
         paint.textAlign = Paint.Align.RIGHT
-        canvas.drawText("2. كشف التفاصيل والمصاريف المسجلة", 575f, y, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_f27a59f61ba0), 575f, y, paint)
 
         y += 18f
 
@@ -384,15 +388,15 @@ object PdfExporter {
         paint.color = Color.WHITE
         paint.textSize = 11f
         paint.textAlign = Paint.Align.RIGHT
-        canvas.drawText("بيان المصروف", 550f, y + 18f, paint)
-        canvas.drawText("من دفعه؟", 320f, y + 18f, paint)
-        canvas.drawText("التاريخ والوقت", 200f, y + 18f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_b0a293b3248f), 550f, y + 18f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_6462ae41af9e), 320f, y + 18f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_a7bc8a435179), 200f, y + 18f, paint)
         paint.textAlign = Paint.Align.LEFT
-        canvas.drawText("المبلغ ($currency)", 35f, y + 18f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_9c3c9f280b7e, AppText.currency(currency)), 35f, y + 18f, paint)
 
         y += 26f
 
-        val itemSdf = SimpleDateFormat("dd/MM hh:mm a", Locale("ar"))
+        val itemSdf = SimpleDateFormat("dd/MM hh:mm a", AppText.locale)
 
         outingExpenses.forEachIndexed { idx, expense ->
             if (y > 780f) return@forEachIndexed // page bound check
@@ -428,7 +432,7 @@ object PdfExporter {
         paint.textSize = 10f
         paint.isFakeBoldText = false
         paint.textAlign = Paint.Align.CENTER
-        canvas.drawText("تم استخراج التقرير بواسطة تطبيق الخزنة الذكية • Smart Vault Outing Split Report", 297f, 832f, paint)
+        canvas.drawText(AppText.text(com.example.R.string.text_d1780ad75e2f), 297f, 832f, paint)
 
         pdfDocument.finishPage(page)
 
@@ -443,7 +447,7 @@ object PdfExporter {
             outputStream.close()
             pdfDocument.close()
 
-            Toast.makeText(context, "تم توليد تقرير PDF للخروجة بنجاح", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, AppText.text(com.example.R.string.text_a8441ff2295f), Toast.LENGTH_SHORT).show()
 
             // Launch Share Intent using FileProvider
             val fileUri = FileProvider.getUriForFile(
@@ -457,13 +461,13 @@ object PdfExporter {
                 putExtra(Intent.EXTRA_STREAM, fileUri)
                 putExtra(
                     Intent.EXTRA_TEXT,
-                    "تقرير مصاريف الخروجة - إجمالي المصاريف: ${String.format(Locale.US, "%.0f", totalExpenses)} $currency | عدد المشاركين: $validParticipants | حساب كل واحد: ${String.format(Locale.US, "%.1f", sharePerPerson)} $currency"
+                    AppText.text(com.example.R.string.text_7a1f1081fa08, String.format(Locale.US, "%.0f", totalExpenses), AppText.currency(currency), validParticipants, String.format(Locale.US, "%.1f", sharePerPerson), AppText.currency(currency))
                 )
-                putExtra(Intent.EXTRA_SUBJECT, "تقرير مصاريف الخروجة - الخزنة الذكية")
+                putExtra(Intent.EXTRA_SUBJECT, AppText.text(com.example.R.string.text_b1b890b5a0eb))
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
 
-            val chooser = Intent.createChooser(shareIntent, "مشاركة تقرير الخروجة PDF").apply {
+            val chooser = Intent.createChooser(shareIntent, AppText.text(com.example.R.string.text_c45468e5611d)).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
 
@@ -471,7 +475,7 @@ object PdfExporter {
 
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(context, "حدث خطأ أثناء مشاركة التقرير: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, AppText.text(com.example.R.string.text_952072da576d, e.localizedMessage), Toast.LENGTH_LONG).show()
         }
     }
 
@@ -494,25 +498,25 @@ object PdfExporter {
             // Write UTF-8 BOM so Microsoft Excel opens Arabic text cleanly
             outputStream.write(byteArrayOf(0xEF.toByte(), 0xBB.toByte(), 0xBF.toByte()))
 
-            val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm", Locale("ar"))
+            val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm", AppText.locale)
             val writer = outputStream.bufferedWriter(Charsets.UTF_8)
 
-            writer.write("الخزنة الذكية - سجل المعاملات المالية\n")
-            writer.write("تاريخ التصدير,${sdf.format(Date())}\n\n")
+            writer.write(AppText.text(com.example.R.string.text_9835a8feba07))
+            writer.write(AppText.text(com.example.R.string.text_9e3a72a661ba, sdf.format(Date())))
 
             // Vaults summary
-            writer.write("الخزائن,الرصيد\n")
+            writer.write(AppText.text(com.example.R.string.text_3e3c9dfb2caf))
             vaults.forEach { v ->
                 writer.write("\"${v.name.replace("\"", "\"\"")}\",${v.balance}\n")
             }
             writer.write("\n")
 
             // Column headers
-            writer.write("المعرف,النوع,المبلغ,التصنيف,الوصف,الخزنة,التاريخ والوقت\n")
+            writer.write(AppText.text(com.example.R.string.text_8a2cbefb87da))
 
             // Transactions rows
             transactions.forEach { tx ->
-                val typeAr = if (tx.type == "INCOME") "دخل (+)" else "مصروف (-)"
+                val typeAr = if (tx.type == "INCOME") AppText.text(com.example.R.string.text_6daff27f6fa5) else AppText.text(com.example.R.string.text_ffed616f0b7b)
                 val formattedDate = sdf.format(Date(tx.dateMillis))
                 val cleanDesc = tx.description.replace("\"", "\"\"")
                 val cleanCat = tx.category.replace("\"", "\"\"")
@@ -524,7 +528,7 @@ object PdfExporter {
             writer.close()
             outputStream.close()
 
-            Toast.makeText(context, "تم تصدير ملف Excel بنجاح: ${csvFile.name}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, AppText.text(com.example.R.string.text_98cf936bc34d, csvFile.name), Toast.LENGTH_SHORT).show()
 
             val fileUri = FileProvider.getUriForFile(
                 context,
@@ -535,17 +539,17 @@ object PdfExporter {
             val shareIntent = Intent(Intent.ACTION_SEND).apply {
                 type = "text/csv"
                 putExtra(Intent.EXTRA_STREAM, fileUri)
-                putExtra(Intent.EXTRA_SUBJECT, "سجل المعاملات المالية Excel - الخزنة الذكية")
+                putExtra(Intent.EXTRA_SUBJECT, AppText.text(com.example.R.string.text_7429f5a831b5))
                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             }
 
-            val chooser = Intent.createChooser(shareIntent, "فتح أو مشاركة ملف Excel").apply {
+            val chooser = Intent.createChooser(shareIntent, AppText.text(com.example.R.string.text_4d57eda7fba5)).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }
             context.startActivity(chooser)
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(context, "حدث خطأ أثناء تصدير ملف Excel: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+            Toast.makeText(context, AppText.text(com.example.R.string.text_c3f85c6d57fd, e.localizedMessage), Toast.LENGTH_LONG).show()
         }
     }
 }

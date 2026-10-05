@@ -1,5 +1,7 @@
 package com.example.data.backup
 
+import com.example.ui.utils.AppText
+
 import android.content.Context
 import android.util.Base64
 import androidx.room.withTransaction
@@ -71,7 +73,7 @@ object LocalBackupManager {
         userPassword: String
     ): String = withContext(Dispatchers.IO) {
         if (userPassword.isBlank() || userPassword == DEFAULT_BACKUP_SECRET) {
-            throw IllegalArgumentException("يجب تحديد كلمة مرور لحماية وتشفير النسخة الاحتياطية")
+            throw IllegalArgumentException(AppText.text(com.example.R.string.text_1eaf822690f6))
         }
         db.withTransaction {
         val root = JSONObject()
@@ -327,7 +329,7 @@ object LocalBackupManager {
             val decryptedJson = if (isV2) {
                 // V2 requires explicit user password and strictly rejects legacy default password fallback
                 if (userPassword.isBlank() || userPassword == DEFAULT_BACKUP_SECRET) {
-                    throw IllegalArgumentException("تتطلب هذه النسخة إدخال كلمة المرور المخصصة التي تم إنشاؤها بها")
+                    throw IllegalArgumentException(AppText.text(com.example.R.string.text_d149426b1847))
                 }
                 decryptData(trimmed, userPassword)
             } else {
@@ -350,27 +352,27 @@ object LocalBackupManager {
 
             val app = root.optString("app")
             if (app != "SmartVault") {
-                return BackupValidationResult(false, errorMessage = "الملف ليس نسخة احتياطية صالحة لتطبيق الخزنة الذكية")
+                return BackupValidationResult(false, errorMessage = AppText.text(com.example.R.string.text_df61b78ee02b))
             }
 
             val bVersion = root.optInt("backupVersion", 1)
-            require(bVersion in 1..CURRENT_BACKUP_VERSION) { "إصدار النسخة الاحتياطية غير مدعوم" }
+            require(bVersion in 1..CURRENT_BACKUP_VERSION) { AppText.text(com.example.R.string.text_da53da316ecd) }
             val sVersion = root.optInt("schemaVersion", 1)
             if (sVersion > CURRENT_SCHEMA_VERSION) {
                 return BackupValidationResult(
                     false,
-                    errorMessage = "إصدار النسخة الاحتياطية أحدث من هذا التطبيق. يرجى تحديث التطبيق أولاً."
+                    errorMessage = AppText.text(com.example.R.string.text_062b2d70edce)
                 )
             }
 
             val storedChecksum = root.optString("checksum")
             val dataObj = root.optJSONObject("data")
-                ?: return BackupValidationResult(false, errorMessage = "بيانات النسخة الاحتياطية تالفة أو فارغة")
+                ?: return BackupValidationResult(false, errorMessage = AppText.text(com.example.R.string.text_4f3fab203926))
 
             // Verify SHA-256 Checksum
             val computedChecksum = sha256(dataObj.toString())
             if (storedChecksum.isNotBlank() && storedChecksum != computedChecksum) {
-                return BackupValidationResult(false, errorMessage = "فشل التحقق من سلامة الملف (Checksum Mismatch) — الملف تم التعديل عليه أو تالف")
+                return BackupValidationResult(false, errorMessage = AppText.text(com.example.R.string.text_afceb2df3dcb))
             }
 
             // --- STRICT RELATIONAL INTEGRITY VALIDATION ---
@@ -386,7 +388,7 @@ object LocalBackupManager {
                     val rem = d.optDouble("remainingAmount", 0.0)
                     val paid = d.optDouble("paidAmount", 0.0)
                     if (orig.isNaN() || orig.isInfinite() || rem.isNaN() || rem.isInfinite() || paid.isNaN() || paid.isInfinite()) {
-                        return BackupValidationResult(false, errorMessage = "النسخة تحتوي على مبالغ ديون غير صالحة (NaN أو Infinity)")
+                        return BackupValidationResult(false, errorMessage = AppText.text(com.example.R.string.text_7b2a35c0d83a))
                     }
                 }
             }
@@ -399,12 +401,12 @@ object LocalBackupManager {
                     if (!debtIds.contains(debtId)) {
                         return BackupValidationResult(
                             false,
-                            errorMessage = "النسخة تحتوي على دفعات دين يتيمة لا ترتبط بأي دين مسجل (سجلات يتيمة: debtId = $debtId)"
+                            errorMessage = AppText.text(com.example.R.string.text_6bd03c82dd4a, debtId)
                         )
                     }
                     val amt = p.optDouble("amount", 0.0)
                     if (amt.isNaN() || amt.isInfinite() || amt <= 0.0) {
-                        return BackupValidationResult(false, errorMessage = "النسخة تحتوي على مبالغ دفعات دين غير صالحة")
+                        return BackupValidationResult(false, errorMessage = AppText.text(com.example.R.string.text_ea3b3bcf9724))
                     }
                 }
             }
@@ -428,12 +430,12 @@ object LocalBackupManager {
                     if (oId.isNotBlank() && !outingIds.contains(oId)) {
                         return BackupValidationResult(
                             false,
-                            errorMessage = "النسخة تحتوي على مصاريف خرجة يتيمة لا ترتبط بأي خرجة مسجلة (سجلات يتيمة: outingId = $oId)"
+                            errorMessage = AppText.text(com.example.R.string.text_f9bbdae65dcf, oId)
                         )
                     }
                     val amt = oe.optDouble("amount", 0.0)
                     if (amt.isNaN() || amt.isInfinite() || amt < 0.0) {
-                        return BackupValidationResult(false, errorMessage = "النسخة تحتوي على مبالغ مصاريف خرجة غير صالحة")
+                        return BackupValidationResult(false, errorMessage = AppText.text(com.example.R.string.text_bf97239d27d0))
                     }
                 }
             }
@@ -445,7 +447,7 @@ object LocalBackupManager {
                     val tx = txArray.getJSONObject(i)
                     val amt = tx.optDouble("amount", 0.0)
                     if (amt.isNaN() || amt.isInfinite() || amt <= 0.0) {
-                        return BackupValidationResult(false, errorMessage = "النسخة تحتوي على معاملات مالية بمبالغ غير صالحة")
+                        return BackupValidationResult(false, errorMessage = AppText.text(com.example.R.string.text_7c87c4d590f7))
                     }
                 }
             }
@@ -457,7 +459,7 @@ object LocalBackupManager {
                     val cs = cashArray.getJSONObject(i)
                     val amt = cs.optDouble("amount", 0.0)
                     if (amt.isNaN() || amt.isInfinite() || amt < 0.0) {
-                        return BackupValidationResult(false, errorMessage = "النسخة تحتوي على مدخرات نقدية بمبالغ غير صالحة")
+                        return BackupValidationResult(false, errorMessage = AppText.text(com.example.R.string.text_8db054edb533))
                     }
                 }
             }
@@ -484,7 +486,7 @@ object LocalBackupManager {
         } catch (e: Exception) {
             BackupValidationResult(
                 isValid = false,
-                errorMessage = "كلمة المرور غير صحيحة أو الملف تالف: ${e.localizedMessage}"
+                errorMessage = AppText.text(com.example.R.string.text_eecc440c33f0, e.localizedMessage)
             )
         }
     }
@@ -503,7 +505,7 @@ object LocalBackupManager {
         try {
             // Legacy backups have no stable identities for every record. Merging them
             // can duplicate assets and corrupt balances; fail before any database write.
-            require(policy == RestorePolicy.REPLACE) { "الدمج غير مدعوم؛ استخدم الاستبدال بعد حفظ نسخة من بياناتك" }
+            require(policy == RestorePolicy.REPLACE) { AppText.text(com.example.R.string.text_9053a7c678f2) }
             val root = JSONObject(decryptedJson)
             val dataObj = root.getJSONObject("data")
 
@@ -744,7 +746,7 @@ object LocalBackupManager {
                                 receiptImagePath = o.optString("receiptImagePath", null),
                                 outingId = o.optString("outingId", "").let { oldId ->
                                     if (oldId.isBlank()) "" else restoredOutingIds[oldId]
-                                        ?: error("تعذر ربط مصروف بالخروجة الأصلية")
+                                        ?: error(AppText.text(com.example.R.string.text_ba488a9c8812))
                                 }
                             )
                         )
@@ -836,7 +838,7 @@ object LocalBackupManager {
                         val o = payArray.getJSONObject(i)
                         val oldDebtId = o.optInt("debtId", 0)
                         val targetDebtId = oldToNewDebtId[oldDebtId]
-                            ?: throw IllegalStateException("فشل ربط دفعة الدين: الدين الأصلي (id=$oldDebtId) غير موجود في النسخة")
+                            ?: throw IllegalStateException(AppText.text(com.example.R.string.text_25f603d8df62, oldDebtId))
                         list.add(
                             DebtPaymentEntity(
                                 debtId = targetDebtId,
@@ -912,7 +914,7 @@ object LocalBackupManager {
     private fun decryptData(payload: String, secret: String): String {
         val parts = payload.trim().split(":")
         if (parts.size != 4 || parts[0] !in setOf(MAGIC_HEADER_V1, MAGIC_HEADER_V2, MAGIC_HEADER_V3)) {
-            throw IllegalArgumentException("تنسيق النسخة الاحتياطية غير مدعوم أو تالف")
+            throw IllegalArgumentException(AppText.text(com.example.R.string.text_085c13d97af5))
         }
 
         val salt = Base64.decode(parts[1], Base64.NO_WRAP)

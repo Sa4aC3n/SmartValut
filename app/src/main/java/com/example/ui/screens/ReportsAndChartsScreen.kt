@@ -1,5 +1,9 @@
 package com.example.ui.screens
 
+import com.example.ui.utils.AppStrings
+
+import com.example.ui.utils.AppText
+
 import android.widget.Toast
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -118,10 +122,10 @@ fun ReportsAndChartsScreen(
     var showAllInsightsDialog by remember { mutableStateOf(false) }
 
     // Date & Month calculations
-    val currentCal = remember { Calendar.getInstance() }
-    val monthOptions = remember {
+    val currentCal = remember(AppText.language) { Calendar.getInstance() }
+    val monthOptions = remember(AppText.language) {
         val list = mutableListOf<Pair<String, Pair<Int, Int>>>()
-        val sdf = SimpleDateFormat("MMMM yyyy", Locale("ar"))
+        val sdf = SimpleDateFormat("MMMM yyyy", AppText.locale)
         for (i in 0..5) {
             val c = Calendar.getInstance()
             c.add(Calendar.MONTH, -i)
@@ -134,7 +138,7 @@ fun ReportsAndChartsScreen(
     var showMonthDropdown by remember { mutableStateOf(false) }
 
     // Filter transactions accurately for selected month
-    val currentMonthTxs = remember(transactions, selectedMonthOption) {
+    val currentMonthTxs = remember(AppText.language, transactions, selectedMonthOption) {
         val y = selectedMonthOption.second.first
         val m = selectedMonthOption.second.second
         transactions.filter { tx ->
@@ -144,31 +148,31 @@ fun ReportsAndChartsScreen(
         }
     }
 
-    val totalIncome = remember(currentMonthTxs) {
+    val totalIncome = remember(AppText.language, currentMonthTxs) {
         currentMonthTxs.filter { it.type == "INCOME" }.sumOf { it.amount }
     }
 
-    val unpaidCommitmentsSum = remember(commitments) { commitments.filter { !it.isPaid }.sumOf { it.amount } }
-    val unpaidLessonsSum = remember(lessons) { lessons.filter { !it.isPaid }.sumOf { it.amount } }
+    val unpaidCommitmentsSum = remember(AppText.language, commitments) { commitments.filter { !it.isPaid }.sumOf { it.amount } }
+    val unpaidLessonsSum = remember(AppText.language, lessons) { lessons.filter { !it.isPaid }.sumOf { it.amount } }
 
     // Keep actual recorded expenses separate from future unpaid obligations
-    val categoryExpenses = remember(currentMonthTxs) {
+    val categoryExpenses = remember(AppText.language, currentMonthTxs) {
         currentMonthTxs.filter { it.type == "EXPENSE" }
             .groupBy { it.category }
             .mapValues { entry -> entry.value.sumOf { it.amount } }
     }
 
-    val totalExpense = remember(categoryExpenses) {
+    val totalExpense = remember(AppText.language, categoryExpenses) {
         categoryExpenses.values.sum()
     }
 
     val remainingBalance = (totalIncome - totalExpense).coerceAtLeast(0.0)
 
-    val isCurrentMonth = remember(selectedMonthOption) {
+    val isCurrentMonth = remember(AppText.language, selectedMonthOption) {
         val now = Calendar.getInstance()
         now.get(Calendar.YEAR) == selectedMonthOption.second.first && now.get(Calendar.MONTH) == selectedMonthOption.second.second
     }
-    val calForSelected = remember(selectedMonthOption) {
+    val calForSelected = remember(AppText.language, selectedMonthOption) {
         val c = Calendar.getInstance()
         c.set(Calendar.YEAR, selectedMonthOption.second.first)
         c.set(Calendar.MONTH, selectedMonthOption.second.second)
@@ -181,15 +185,15 @@ fun ReportsAndChartsScreen(
     val avgDailySpend = if (dayOfMonth > 0) totalExpense / dayOfMonth else 0.0
     val safeDailyLimit = if (daysLeft > 0) remainingBalance / daysLeft else 0.0
 
-    val topCategory = remember(categoryExpenses) {
+    val topCategory = remember(AppText.language, categoryExpenses) {
         categoryExpenses.maxByOrNull { it.value }?.key ?: "—"
     }
 
-    val leastCategory = remember(categoryExpenses) {
+    val leastCategory = remember(AppText.language, categoryExpenses) {
         categoryExpenses.minByOrNull { it.value }?.key ?: "—"
     }
 
-    val projectedEndMonthBalance = remember(remainingBalance, avgDailySpend, daysLeft) {
+    val projectedEndMonthBalance = remember(AppText.language, remainingBalance, avgDailySpend, daysLeft) {
         (remainingBalance - (avgDailySpend * daysLeft)).coerceAtLeast(0.0)
     }
 
@@ -212,7 +216,7 @@ fun ReportsAndChartsScreen(
             ) {
                 Column {
                     Text(
-                        text = "التقارير",
+                        text = AppText.text(com.example.R.string.text_92fec7ad5c88),
                         fontWeight = FontWeight.ExtraBold,
                         fontSize = 26.sp,
                         color = MaterialTheme.colorScheme.onSurface
@@ -258,7 +262,7 @@ fun ReportsAndChartsScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Settings,
-                            contentDescription = "الإعدادات",
+                            contentDescription = AppText.text(com.example.R.string.text_90b6c869a171),
                             tint = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.size(20.dp)
                         )
@@ -278,7 +282,7 @@ fun ReportsAndChartsScreen(
             ) {
                 Column(modifier = Modifier.padding(14.dp)) {
                     Text(
-                        text = "التقارير المتقدمة والتحليلات 📊",
+                        text = AppText.text(com.example.R.string.text_a7cd97e4dea8),
                         fontSize = 14.5.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
@@ -304,7 +308,7 @@ fun ReportsAndChartsScreen(
                             ) {
                                 Icon(Icons.Default.Security, contentDescription = null, tint = EmeraldGreenPrimary, modifier = Modifier.size(22.dp))
                                 Spacer(modifier = Modifier.height(4.dp))
-                                Text("صافي الثروة", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = EmeraldGreenDark)
+                                Text(AppText.text(com.example.R.string.text_0b8ff6a5604b), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = EmeraldGreenDark)
                             }
                         }
 
@@ -324,7 +328,7 @@ fun ReportsAndChartsScreen(
                             ) {
                                 Icon(Icons.Default.CalendarMonth, contentDescription = null, tint = Color(0xFFE65100), modifier = Modifier.size(22.dp))
                                 Spacer(modifier = Modifier.height(4.dp))
-                                Text("التقويم المالي", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFFBF360C))
+                                Text(AppText.text(com.example.R.string.text_3ac532621c03), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFFBF360C))
                             }
                         }
 
@@ -345,7 +349,7 @@ fun ReportsAndChartsScreen(
                                 ) {
                                     Icon(Icons.Default.AccountBalance, contentDescription = null, tint = Color(0xFF5E35B1), modifier = Modifier.size(22.dp))
                                     Spacer(modifier = Modifier.height(4.dp))
-                                    Text("سجل الديون", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFF4527A0))
+                                    Text(AppText.text(com.example.R.string.text_503d8216b8f4), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFF4527A0))
                                 }
                             }
                         }
@@ -366,7 +370,7 @@ fun ReportsAndChartsScreen(
                             ) {
                                 Icon(Icons.Default.Psychology, contentDescription = null, tint = Color(0xFF00695C), modifier = Modifier.size(22.dp))
                                 Spacer(modifier = Modifier.height(4.dp))
-                                Text("الرؤى الذكية", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFF004D40))
+                                Text(AppText.text(com.example.R.string.text_cf302286664a), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color(0xFF004D40))
                             }
                         }
                     }
@@ -389,14 +393,14 @@ fun ReportsAndChartsScreen(
                         .padding(18.dp)
                 ) {
                     Text(
-                        text = "تصدير التقرير الشهري",
+                        text = AppText.text(com.example.R.string.text_8f5445f810ec),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(modifier = Modifier.height(4.dp))
                     Text(
-                        text = "اختر الشهر ثم صَدّر ملف Excel أو احفظه PDF.",
+                        text = AppText.text(com.example.R.string.text_111dfb6319d5),
                         fontSize = 12.sp,
                         color = Color.Gray
                     )
@@ -425,7 +429,7 @@ fun ReportsAndChartsScreen(
                             )
                             Icon(
                                 imageVector = Icons.Default.ArrowDropDown,
-                                contentDescription = "اختر الشهر",
+                                contentDescription = AppText.text(com.example.R.string.text_4e1f6029deef),
                                 tint = Color.Gray
                             )
                         }
@@ -484,7 +488,7 @@ fun ReportsAndChartsScreen(
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Text(
-                                    text = "PDF / طباعة",
+                                    text = AppText.text(com.example.R.string.text_37ec3ec47c75),
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.White
@@ -495,7 +499,7 @@ fun ReportsAndChartsScreen(
                         // Outlined Excel Button (Left in RTL)
                         OutlinedButton(
                             onClick = {
-                                Toast.makeText(context, "جاري تصدير ملف Excel...", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, AppText.text(com.example.R.string.text_bd8897e19b50), Toast.LENGTH_SHORT).show()
                             },
                             modifier = Modifier
                                 .weight(1f)
@@ -556,14 +560,14 @@ fun ReportsAndChartsScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Analytics,
-                                contentDescription = "التحليل الذكي",
+                                contentDescription = AppText.text(com.example.R.string.text_7d83a31000b2),
                                 tint = EmeraldGreenPrimary,
                                 modifier = Modifier.size(20.dp)
                             )
                         }
 
                         Text(
-                            text = "التحليل الذكي",
+                            text = AppText.text(com.example.R.string.text_7d83a31000b2),
                             fontSize = 16.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -581,7 +585,7 @@ fun ReportsAndChartsScreen(
                             .padding(14.dp)
                     ) {
                         Text(
-                            text = "متوقع يتبقى لك ${String.format(Locale.US, "%,.0f", projectedEndMonthBalance)} $currency بنهاية الشهر بنفس معدل الصرف الحالي.",
+                            text = AppText.text(com.example.R.string.text_f6521530b6cc, String.format(Locale.US, "%,.0f", projectedEndMonthBalance), AppText.currency(currency)),
                             fontSize = 12.5.sp,
                             color = Color(0xFF1B5E20),
                             fontWeight = FontWeight.Medium,
@@ -597,15 +601,15 @@ fun ReportsAndChartsScreen(
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
                         SmartGridSubCard(
-                            title = "مصروفات الشهر الماضي",
-                            value = "0 $currency",
-                            subtitle = "لا مقارنة متاحة",
+                            title = AppText.text(com.example.R.string.text_2bccc4bbf0d9),
+                            value = "0 ${AppText.currency(currency)}",
+                            subtitle = AppText.text(com.example.R.string.text_a39d9e5bcc98),
                             modifier = Modifier.weight(1f)
                         )
                         SmartGridSubCard(
-                            title = "دخل الشهر الماضي",
-                            value = "0 $currency",
-                            subtitle = "لا مقارنة متاحة",
+                            title = AppText.text(com.example.R.string.text_4757b3b88509),
+                            value = "0 ${AppText.currency(currency)}",
+                            subtitle = AppText.text(com.example.R.string.text_a39d9e5bcc98),
                             modifier = Modifier.weight(1f)
                         )
                     }
@@ -617,14 +621,14 @@ fun ReportsAndChartsScreen(
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
                         SmartGridSubCard(
-                            title = "متوسط الصرف اليومي",
-                            value = "${String.format(Locale.US, "%,.0f", avgDailySpend)} $currency",
+                            title = AppText.text(com.example.R.string.text_3431c146da7c),
+                            value = "${String.format(Locale.US, "%,.0f", avgDailySpend)} ${AppText.currency(currency)}",
                             subtitle = null,
                             modifier = Modifier.weight(1f)
                         )
                         SmartGridSubCard(
-                            title = "حد الصرف الآمن يومياً",
-                            value = "${String.format(Locale.US, "%,.0f", safeDailyLimit)} $currency",
+                            title = AppText.text(com.example.R.string.text_9aa255f3885d),
+                            value = "${String.format(Locale.US, "%,.0f", safeDailyLimit)} ${AppText.currency(currency)}",
                             subtitle = null,
                             modifier = Modifier.weight(1f)
                         )
@@ -639,7 +643,7 @@ fun ReportsAndChartsScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "توقع استهلاك الدخل بنهاية الشهر",
+                            text = AppText.text(com.example.R.string.text_7cf2abd361a2),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -668,7 +672,7 @@ fun ReportsAndChartsScreen(
 
                     // Footer calendar note
                     Text(
-                        text = "📅 باقي $daysLeft يوم • التزامات غير مدفوعة 0 $currency",
+                        text = AppText.text(com.example.R.string.text_0428e544f101, daysLeft, AppText.currency(currency)),
                         fontSize = 11.5.sp,
                         color = Color.Gray,
                         fontWeight = FontWeight.Medium
@@ -686,13 +690,13 @@ fun ReportsAndChartsScreen(
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     KpiMetricCard(
-                        title = "إجمالي الدخل",
-                        value = "${String.format(Locale.US, "%,.0f", totalIncome)} $currency",
+                        title = AppText.text(com.example.R.string.text_5e75dfd7b871),
+                        value = "${String.format(Locale.US, "%,.0f", totalIncome)} ${AppText.currency(currency)}",
                         modifier = Modifier.weight(1f)
                     )
                     KpiMetricCard(
-                        title = "إجمالي المصروفات",
-                        value = "${String.format(Locale.US, "%,.0f", totalExpense)} $currency",
+                        title = AppText.text(com.example.R.string.text_d93aba8f3b2c),
+                        value = "${String.format(Locale.US, "%,.0f", totalExpense)} ${AppText.currency(currency)}",
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -703,13 +707,13 @@ fun ReportsAndChartsScreen(
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     KpiMetricCard(
-                        title = "الرصيد المتبقي",
-                        value = "${String.format(Locale.US, "%,.0f", remainingBalance)} $currency",
+                        title = AppText.text(com.example.R.string.text_c3ce011cbfc7),
+                        value = "${String.format(Locale.US, "%,.0f", remainingBalance)} ${AppText.currency(currency)}",
                         modifier = Modifier.weight(1f)
                     )
                     KpiMetricCard(
-                        title = "متوسط الصرف اليومي",
-                        value = "${String.format(Locale.US, "%,.0f", avgDailySpend)} $currency",
+                        title = AppText.text(com.example.R.string.text_3431c146da7c),
+                        value = "${String.format(Locale.US, "%,.0f", avgDailySpend)} ${AppText.currency(currency)}",
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -720,13 +724,13 @@ fun ReportsAndChartsScreen(
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     KpiMetricCard(
-                        title = "أكثر بند إنفاقاً",
-                        value = topCategory,
+                        title = AppText.text(com.example.R.string.text_ed84b21f84c6),
+                        value = AppStrings(AppText.language).translateCategory(topCategory),
                         modifier = Modifier.weight(1f)
                     )
                     KpiMetricCard(
-                        title = "أقل بند إنفاقاً",
-                        value = leastCategory,
+                        title = AppText.text(com.example.R.string.text_c04f30c9a387),
+                        value = AppStrings(AppText.language).translateCategory(leastCategory),
                         modifier = Modifier.weight(1f)
                     )
                 }
@@ -737,12 +741,12 @@ fun ReportsAndChartsScreen(
                     horizontalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
                     KpiMetricCard(
-                        title = "عدد العمليات",
+                        title = AppText.text(com.example.R.string.text_2cbbc5ba846a),
                         value = "${currentMonthTxs.size}",
                         modifier = Modifier.weight(1f)
                     )
                     KpiMetricCard(
-                        title = "فواتير مرفقة",
+                        title = AppText.text(com.example.R.string.text_53ac5b04893d),
                         value = "0",
                         modifier = Modifier.weight(1f)
                     )
@@ -754,8 +758,8 @@ fun ReportsAndChartsScreen(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     KpiMetricCard(
-                        title = "توقع نهاية الشهر",
-                        value = "${String.format(Locale.US, "%,.0f", projectedEndMonthBalance)} $currency",
+                        title = AppText.text(com.example.R.string.text_74d7c133752f),
+                        value = "${String.format(Locale.US, "%,.0f", projectedEndMonthBalance)} ${AppText.currency(currency)}",
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
                             .padding(horizontal = 2.dp)
@@ -784,7 +788,7 @@ fun ReportsAndChartsScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "نسبة ما تم صرفه من الدخل",
+                            text = AppText.text(com.example.R.string.text_3fabef14e488),
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -812,7 +816,7 @@ fun ReportsAndChartsScreen(
                     Spacer(modifier = Modifier.height(12.dp))
 
                     Text(
-                        text = "مقارنة بالشهر الماضي: 0 $currency مصروفات",
+                        text = AppText.text(com.example.R.string.text_26f31242494d, AppText.currency(currency)),
                         fontSize = 12.sp,
                         color = Color.Gray
                     )
@@ -849,14 +853,14 @@ fun ReportsAndChartsScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.BarChart,
-                                contentDescription = "تقرير الشهر",
+                                contentDescription = AppText.text(com.example.R.string.text_31fe2016cd80),
                                 tint = EmeraldGreenPrimary,
                                 modifier = Modifier.size(22.dp)
                             )
                         }
 
                         Text(
-                            text = "تقرير الشهر الحالي المالي",
+                            text = AppText.text(com.example.R.string.text_492381ce41a9),
                             fontSize = 17.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -873,7 +877,7 @@ fun ReportsAndChartsScreen(
                     ) {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                text = "عدد العمليات",
+                                text = AppText.text(com.example.R.string.text_2cbbc5ba846a),
                                 fontSize = 12.sp,
                                 color = Color.Gray,
                                 fontWeight = FontWeight.Medium
@@ -889,14 +893,14 @@ fun ReportsAndChartsScreen(
 
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                text = "أكثر بند تم الإنفاق عليه",
+                                text = AppText.text(com.example.R.string.text_e8e2b8828ad0),
                                 fontSize = 12.sp,
                                 color = Color.Gray,
                                 fontWeight = FontWeight.Medium
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = if (topCategory != "—") topCategory else "إيجار",
+                                text = AppStrings(AppText.language).translateCategory(if (topCategory != "—") topCategory else "إيجار"),
                                 fontSize = 16.sp,
                                 fontWeight = FontWeight.ExtraBold,
                                 color = ExpenseRed
@@ -905,14 +909,14 @@ fun ReportsAndChartsScreen(
 
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                text = "متوسط الصرف اليومي",
+                                text = AppText.text(com.example.R.string.text_3431c146da7c),
                                 fontSize = 12.sp,
                                 color = Color.Gray,
                                 fontWeight = FontWeight.Medium
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = "${String.format(Locale.US, "%,.0f", if (avgDailySpend > 0) avgDailySpend else 521.0)} $currency",
+                                text = "${String.format(Locale.US, "%,.0f", if (avgDailySpend > 0) avgDailySpend else 521.0)} ${AppText.currency(currency)}",
                                 fontSize = 15.sp,
                                 fontWeight = FontWeight.ExtraBold,
                                 color = MaterialTheme.colorScheme.onSurface
@@ -939,7 +943,7 @@ fun ReportsAndChartsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "توزيع الإنفاق حسب التصنيف (Pie Chart)",
+                        text = AppText.text(com.example.R.string.text_7a747c6bf88a),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface,
@@ -997,7 +1001,7 @@ fun ReportsAndChartsScreen(
 
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text(
-                                    text = "الإجمالي",
+                                    text = AppText.text(com.example.R.string.text_413c51af19b5),
                                     fontSize = 11.5.sp,
                                     color = Color.Gray,
                                     fontWeight = FontWeight.Medium
@@ -1050,7 +1054,7 @@ fun ReportsAndChartsScreen(
                                             .background(item.color)
                                     )
                                     Text(
-                                        text = item.name,
+                                        text = AppStrings(AppText.language).translateCategory(item.name),
                                         fontSize = 13.sp,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
@@ -1084,7 +1088,7 @@ fun ReportsAndChartsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "الإنفاق لكل شهر (Bar Chart)",
+                        text = AppText.text(com.example.R.string.text_8c69562811f0),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
@@ -1094,11 +1098,11 @@ fun ReportsAndChartsScreen(
 
                     val displayAmount = if (totalExpense > 0) totalExpense else 4165.0
                     val monthsData = listOf(
-                        "أبريل" to 0.0,
-                        "مايو" to 0.0,
-                        "يونيو" to 0.0,
-                        "يوليو" to 0.0,
-                        "أغسطس" to displayAmount
+                        AppText.text(com.example.R.string.text_aa57db81e7d4) to 0.0,
+                        AppText.text(com.example.R.string.text_391eb76ab061) to 0.0,
+                        AppText.text(com.example.R.string.text_3131fb252b85) to 0.0,
+                        AppText.text(com.example.R.string.text_cf519ecce6c0) to 0.0,
+                        AppText.text(com.example.R.string.text_70667b3fc365) to displayAmount
                     )
 
                     val maxVal = (monthsData.maxOf { it.second }).coerceAtLeast(100.0)
@@ -1167,7 +1171,7 @@ fun ReportsAndChartsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "تطور الرصيد مع الوقت (Line Chart)",
+                        text = AppText.text(com.example.R.string.text_6eea66fc03a3),
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onSurface
@@ -1248,7 +1252,7 @@ fun ReportsAndChartsScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                listOf("أبريل", "مايو", "يونيو", "يوليو", "أغسطس").forEach { monthName ->
+                                listOf(AppText.text(com.example.R.string.text_aa57db81e7d4), AppText.text(com.example.R.string.text_391eb76ab061), AppText.text(com.example.R.string.text_3131fb252b85), AppText.text(com.example.R.string.text_cf519ecce6c0), AppText.text(com.example.R.string.text_70667b3fc365)).forEach { monthName ->
                                     Text(
                                         text = monthName,
                                         fontSize = 11.sp,
@@ -1298,7 +1302,7 @@ fun ReportsAndChartsScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.AutoAwesome,
-                            contentDescription = "توقع الرصيد",
+                            contentDescription = AppText.text(com.example.R.string.text_d7859e38f801),
                             tint = Color.Black,
                             modifier = Modifier.size(26.dp)
                         )
@@ -1309,14 +1313,14 @@ fun ReportsAndChartsScreen(
                         horizontalAlignment = Alignment.Start
                     ) {
                         Text(
-                            text = "توقع الرصيد المتبقي بنهاية الشهر",
+                            text = AppText.text(com.example.R.string.text_f2ffa599e922),
                             fontSize = 15.5.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color(0xFFE5C158)
                         )
                         Spacer(modifier = Modifier.height(6.dp))
                         Text(
-                            text = "بناءً على معدل صرفك اليومي الحالي، يتوقع أن يتبقى معك بحلول نهاية الشهر: ${String.format(Locale.US, "%,.0f", projectedEndMonthBalance)} $currency",
+                            text = AppText.text(com.example.R.string.text_f12ebdf1be6f, String.format(Locale.US, "%,.0f", projectedEndMonthBalance), AppText.currency(currency)),
                             fontSize = 12.5.sp,
                             color = Color.White,
                             lineHeight = 18.sp,
@@ -1423,7 +1427,7 @@ private fun KpiMetricCard(
 
 @Composable
 private fun MonthlyChartCanvas() {
-    val months = listOf("أغسطس", "يوليو", "يونيو", "مايو", "أبريل", "مارس")
+    val months = listOf(AppText.text(com.example.R.string.text_70667b3fc365), AppText.text(com.example.R.string.text_cf519ecce6c0), AppText.text(com.example.R.string.text_3131fb252b85), AppText.text(com.example.R.string.text_391eb76ab061), AppText.text(com.example.R.string.text_aa57db81e7d4), AppText.text(com.example.R.string.text_452ec922a214))
     val ySteps = listOf("4", "3", "2", "1", "0")
 
     Column(modifier = Modifier.fillMaxWidth()) {
@@ -1474,7 +1478,7 @@ private fun MonthlyChartCanvas() {
 
 @Composable
 private fun BalanceChartCanvas() {
-    val months = listOf("أغسطس", "يوليو", "يونيو", "مايو", "أبريل", "مارس")
+    val months = listOf(AppText.text(com.example.R.string.text_70667b3fc365), AppText.text(com.example.R.string.text_cf519ecce6c0), AppText.text(com.example.R.string.text_3131fb252b85), AppText.text(com.example.R.string.text_391eb76ab061), AppText.text(com.example.R.string.text_aa57db81e7d4), AppText.text(com.example.R.string.text_452ec922a214))
     val ySteps = listOf("4", "3", "2", "1", "0")
 
     Column(modifier = Modifier.fillMaxWidth()) {

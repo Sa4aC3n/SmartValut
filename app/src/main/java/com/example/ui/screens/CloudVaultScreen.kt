@@ -1,5 +1,7 @@
 package com.example.ui.screens
 
+import com.example.ui.utils.AppText
+
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -242,7 +244,7 @@ fun CloudVaultScreen(
                             }
                             Spacer(modifier = Modifier.height(2.dp))
                             Text(
-                                text = "تشفير محلي AES-256 قبل الرفع • Cloud Firestore",
+                                text = AppText.text(com.example.R.string.text_3306a9374e57),
                                 fontSize = 11.sp,
                                 color = Color.Gray
                             )
@@ -261,7 +263,7 @@ fun CloudVaultScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Lock,
-                            contentDescription = "قفل الخزنة",
+                            contentDescription = AppText.text(com.example.R.string.text_fd14703a0a80),
                             tint = Color.Red,
                             modifier = Modifier.size(18.dp)
                         )
@@ -293,7 +295,7 @@ fun CloudVaultScreen(
                         tint = EmeraldGreenPrimary
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "توليد كلمة سر", fontSize = 11.sp, maxLines = 1)
+                    Text(text = AppText.text(com.example.R.string.text_da6e6d26cdc6), fontSize = 11.sp, maxLines = 1)
                 }
 
                 // Activity Log Button
@@ -313,7 +315,7 @@ fun CloudVaultScreen(
                         tint = GoldAccent
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "سجل النشاط", fontSize = 11.sp, maxLines = 1)
+                    Text(text = AppText.text(com.example.R.string.text_c3e160350e30), fontSize = 11.sp, maxLines = 1)
                 }
 
                 // Encrypted Backup Button
@@ -333,7 +335,7 @@ fun CloudVaultScreen(
                         tint = EmeraldGreenDark
                     )
                     Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "نسخة مشفرة", fontSize = 11.sp, maxLines = 1)
+                    Text(text = AppText.text(com.example.R.string.text_811cabca45ae), fontSize = 11.sp, maxLines = 1)
                 }
             }
 
@@ -346,12 +348,12 @@ fun CloudVaultScreen(
                     searchQuery = it
                     onTouchActivity()
                 },
-                placeholder = { Text("بحث في عناصر الخزنة أو التصنيف...", fontSize = 12.sp) },
+                placeholder = { Text(AppText.text(com.example.R.string.text_3e2d41206804), fontSize = 12.sp) },
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = EmeraldGreenPrimary) },
                 trailingIcon = {
                     if (searchQuery.isNotEmpty()) {
                         IconButton(onClick = { searchQuery = "" }) {
-                            Icon(Icons.Default.Clear, contentDescription = "مسح", modifier = Modifier.size(16.dp))
+                            Icon(Icons.Default.Clear, contentDescription = AppText.text(com.example.R.string.text_0d97fd6e069e), modifier = Modifier.size(16.dp))
                         }
                     }
                 },
@@ -374,7 +376,7 @@ fun CloudVaultScreen(
                             selectedFilterType = null
                             onTouchActivity()
                         },
-                        label = { Text("الكل (${items.size})", fontSize = 11.sp) },
+                        label = { Text(AppText.text(com.example.R.string.text_904779de8074, items.size), fontSize = 11.sp) },
                         colors = FilterChipDefaults.filterChipColors(
                             selectedContainerColor = EmeraldGreenPrimary.copy(alpha = 0.15f),
                             selectedLabelColor = EmeraldGreenPrimary
@@ -389,7 +391,7 @@ fun CloudVaultScreen(
                             selectedFilterType = if (selectedFilterType == type.rawType) null else type.rawType
                             onTouchActivity()
                         },
-                        label = { Text("${type.iconEmoji} ${type.titleAr} ($count)", fontSize = 11.sp) },
+                        label = { Text("${type.iconEmoji} ${type.localizedTitle} ($count)", fontSize = 11.sp) },
                         colors = FilterChipDefaults.filterChipColors(
                             selectedContainerColor = EmeraldGreenPrimary.copy(alpha = 0.15f),
                             selectedLabelColor = EmeraldGreenPrimary
@@ -437,16 +439,16 @@ fun CloudVaultScreen(
                         Spacer(modifier = Modifier.height(16.dp))
                         Text(
                             text = if (searchQuery.isNotBlank() || selectedFilterType != null)
-                                "لا توجد عناصر مطابقة لخيارات البحث"
+                                AppText.text(com.example.R.string.text_f0d6b532fd55)
                             else
-                                "الخزنة السحابية فارغة حالياً",
+                                AppText.text(com.example.R.string.text_31dd7827ba4f),
                             fontWeight = FontWeight.Bold,
                             fontSize = 15.sp,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Spacer(modifier = Modifier.height(6.dp))
                         Text(
-                            text = "اضغط على زر (+) بالأسفل لإضافة كلمات المرور أو الملاحظات السرية لتشفيرها ومزامنتها لحظياً مع Firestore.",
+                            text = AppText.text(com.example.R.string.text_e39fb1c44b15),
                             fontSize = 12.sp,
                             color = Color.Gray,
                             textAlign = TextAlign.Center,
@@ -484,7 +486,7 @@ fun CloudVaultScreen(
                                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                                 val clip = ClipData.newPlainText("VaultData", text)
                                 clipboard.setPrimaryClip(clip)
-                                Toast.makeText(context, "تم النسخ بأمان إلى الحافظة", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, AppText.text(com.example.R.string.text_1f7d44005382), Toast.LENGTH_SHORT).show()
                             },
                             onEdit = {
                                 onTouchActivity()
@@ -497,7 +499,7 @@ fun CloudVaultScreen(
                                     itemId = item.id,
                                     itemTitle = item.title,
                                     onSuccess = {
-                                        Toast.makeText(context, "تم حذف العنصر بنجاح", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, AppText.text(com.example.R.string.text_271dc1c1ef0a), Toast.LENGTH_SHORT).show()
                                     },
                                     onError = { err ->
                                         Toast.makeText(context, err, Toast.LENGTH_LONG).show()
@@ -523,7 +525,7 @@ fun CloudVaultScreen(
             containerColor = EmeraldGreenPrimary,
             contentColor = Color.White
         ) {
-            Icon(Icons.Default.Add, contentDescription = "إضافة عنصر جديد")
+            Icon(Icons.Default.Add, contentDescription = AppText.text(com.example.R.string.text_0be31b74e082))
         }
     }
 
@@ -547,7 +549,7 @@ fun CloudVaultScreen(
                     onSuccess = {
                         showAddEditDialog = false
                         editingItem = null
-                        Toast.makeText(context, "تم التشفير والحفظ السحابي بنجاح", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, AppText.text(com.example.R.string.text_7c5f51aaf731), Toast.LENGTH_SHORT).show()
                     },
                     onError = { err ->
                         Toast.makeText(context, err, Toast.LENGTH_LONG).show()
@@ -568,7 +570,7 @@ fun CloudVaultScreen(
                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                 val clip = ClipData.newPlainText("GeneratedPassword", pwd)
                 clipboard.setPrimaryClip(clip)
-                Toast.makeText(context, "تم نسخ كلمة المرور القوية إلى الحافظة", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, AppText.text(com.example.R.string.text_e532d79c9402), Toast.LENGTH_SHORT).show()
             }
         )
     }
@@ -602,7 +604,7 @@ fun VaultItemCard(
 ) {
     var showDeleteConfirm by remember { mutableStateOf(false) }
     val typeEnum = VaultItemType.fromRaw(item.type)
-    val dateFormat = remember { SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault()) }
+    val dateFormat = remember(AppText.language) { SimpleDateFormat("yyyy/MM/dd HH:mm", AppText.locale) }
 
     Card(
         modifier = Modifier
@@ -663,10 +665,10 @@ fun VaultItemCard(
                 // Action buttons (Edit & Delete)
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     IconButton(onClick = onEdit, modifier = Modifier.size(32.dp)) {
-                        Icon(Icons.Default.Edit, contentDescription = "تعديل", tint = Color.Gray, modifier = Modifier.size(16.dp))
+                        Icon(Icons.Default.Edit, contentDescription = AppText.text(com.example.R.string.text_b4f76c3aa21e), tint = Color.Gray, modifier = Modifier.size(16.dp))
                     }
                     IconButton(onClick = { showDeleteConfirm = true }, modifier = Modifier.size(32.dp)) {
-                        Icon(Icons.Default.Delete, contentDescription = "حذف", tint = Color.Red.copy(alpha = 0.7f), modifier = Modifier.size(16.dp))
+                        Icon(Icons.Default.Delete, contentDescription = AppText.text(com.example.R.string.text_2d2bbdc2d694), tint = Color.Red.copy(alpha = 0.7f), modifier = Modifier.size(16.dp))
                     }
                 }
             }
@@ -698,10 +700,10 @@ fun VaultItemCard(
 
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             IconButton(onClick = { onCopy(decryptedText) }, modifier = Modifier.size(32.dp)) {
-                                Icon(Icons.Default.ContentCopy, contentDescription = "نسخ", tint = EmeraldGreenPrimary, modifier = Modifier.size(16.dp))
+                                Icon(Icons.Default.ContentCopy, contentDescription = AppText.text(com.example.R.string.text_46e6841e2136), tint = EmeraldGreenPrimary, modifier = Modifier.size(16.dp))
                             }
                             IconButton(onClick = onToggleReveal, modifier = Modifier.size(32.dp)) {
-                                Icon(Icons.Default.VisibilityOff, contentDescription = "إخفاء", tint = Color.Gray, modifier = Modifier.size(16.dp))
+                                Icon(Icons.Default.VisibilityOff, contentDescription = AppText.text(com.example.R.string.text_0804220142f6), tint = Color.Gray, modifier = Modifier.size(16.dp))
                             }
                         }
                     } else {
@@ -722,7 +724,7 @@ fun VaultItemCard(
                         ) {
                             Icon(Icons.Default.Visibility, contentDescription = null, modifier = Modifier.size(14.dp))
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text(text = "فك التشفير وعرض", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                            Text(text = AppText.text(com.example.R.string.text_4bde76230633), fontSize = 11.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -733,8 +735,8 @@ fun VaultItemCard(
     if (showDeleteConfirm) {
         AlertDialog(
             onDismissRequest = { showDeleteConfirm = false },
-            title = { Text("تأكيد الحذف من الخزنة السحابية") },
-            text = { Text("هل أنت متأكد من حذف \"${item.title}\"؟ سيتم حذف العنصر من Cloud Firestore نهائياً وتسجيل العملية في سجل النشاط.") },
+            title = { Text(AppText.text(com.example.R.string.text_e17b604a24c6)) },
+            text = { Text(AppText.text(com.example.R.string.text_5d7a567d8dca, item.title)) },
             confirmButton = {
                 Button(
                     onClick = {
@@ -743,12 +745,12 @@ fun VaultItemCard(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
                 ) {
-                    Text("نعم، احذف")
+                    Text(AppText.text(com.example.R.string.text_494feab789bf))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteConfirm = false }) {
-                    Text("إلغاء")
+                    Text(AppText.text(com.example.R.string.text_e776b0209b50))
                 }
             }
         )
@@ -776,7 +778,7 @@ fun AddEditVaultItemDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = if (item == null) "إضافة عنصر مشفر جديد" else "تعديل عنصر الخزنة",
+                text = if (item == null) AppText.text(com.example.R.string.text_03d4f49a9f53) else AppText.text(com.example.R.string.text_2758eaf60da4),
                 fontWeight = FontWeight.Bold,
                 fontSize = 17.sp
             )
@@ -787,7 +789,7 @@ fun AddEditVaultItemDialog(
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState())
             ) {
-                Text(text = "نوع العنصر:", fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
+                Text(text = AppText.text(com.example.R.string.text_931f42b60f68), fontSize = 12.sp, fontWeight = FontWeight.SemiBold)
                 Spacer(modifier = Modifier.height(6.dp))
 
                 // Type selector
@@ -800,7 +802,7 @@ fun AddEditVaultItemDialog(
                         FilterChip(
                             selected = isSelected,
                             onClick = { selectedType = type.rawType },
-                            label = { Text("${type.iconEmoji} ${type.titleAr}", fontSize = 10.5.sp) },
+                            label = { Text("${type.iconEmoji} ${type.localizedTitle}", fontSize = 10.5.sp) },
                             modifier = Modifier.weight(1f),
                             colors = FilterChipDefaults.filterChipColors(
                                 selectedContainerColor = EmeraldGreenPrimary.copy(alpha = 0.15f),
@@ -819,7 +821,7 @@ fun AddEditVaultItemDialog(
                         title = it
                         errorMessage = null
                     },
-                    label = { Text("عنوان العنصر (مثلاً: حساب البنك، بريد العمل)") },
+                    label = { Text(AppText.text(com.example.R.string.text_245ea7c50a6b)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
@@ -831,7 +833,7 @@ fun AddEditVaultItemDialog(
                 OutlinedTextField(
                     value = category,
                     onValueChange = { category = it },
-                    label = { Text("التصنيف (مثلاً: شخصي، بنوك، عمل)") },
+                    label = { Text(AppText.text(com.example.R.string.text_f746871b441d)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
@@ -849,10 +851,10 @@ fun AddEditVaultItemDialog(
                     label = {
                         Text(
                             when (selectedType) {
-                                "password" -> "كلمة المرور السرية"
-                                "card" -> "رقم البطاقة والبيانات الحساسة"
-                                "note" -> "الملاحظة السرية"
-                                else -> "محتوى المستند أو النص السري"
+                                "password" -> AppText.text(com.example.R.string.text_7f112b75b4d6)
+                                "card" -> AppText.text(com.example.R.string.text_0b410d0448e6)
+                                "note" -> AppText.text(com.example.R.string.text_cd86b470984d)
+                                else -> AppText.text(com.example.R.string.text_a7c4e82d7f6c)
                             }
                         )
                     },
@@ -860,7 +862,7 @@ fun AddEditVaultItemDialog(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             if (selectedType == "password") {
                                 IconButton(onClick = { showPasswordGenInside = true }) {
-                                    Icon(Icons.Default.AutoFixHigh, contentDescription = "توليد كلمة سر", tint = GoldAccent)
+                                    Icon(Icons.Default.AutoFixHigh, contentDescription = AppText.text(com.example.R.string.text_da6e6d26cdc6), tint = GoldAccent)
                                 }
                             }
                             IconButton(onClick = { showSecret = !showSecret }) {
@@ -895,7 +897,7 @@ fun AddEditVaultItemDialog(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "التشفير يتم على هاتفك محلياً بـ AES-256 قبل رفعه إلى Firestore.",
+                        text = AppText.text(com.example.R.string.text_54cdc9f60a75),
                         fontSize = 11.sp,
                         color = MaterialTheme.colorScheme.onSurface,
                         lineHeight = 15.sp
@@ -912,23 +914,23 @@ fun AddEditVaultItemDialog(
             Button(
                 onClick = {
                     if (title.isBlank()) {
-                        errorMessage = "يرجى إدخال عنوان العنصر"
+                        errorMessage = AppText.text(com.example.R.string.text_ae865794266f)
                         return@Button
                     }
                     if (payload.isBlank()) {
-                        errorMessage = "يرجى إدخال البيانات السرية أو كلمة المرور"
+                        errorMessage = AppText.text(com.example.R.string.text_19d3d5df6a5e)
                         return@Button
                     }
                     onSave(title.trim(), selectedType, payload.trim(), category.trim().ifBlank { "عام" })
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary)
             ) {
-                Text("تشفير وحفظ")
+                Text(AppText.text(com.example.R.string.text_a3a29271cc23))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("إلغاء")
+                Text(AppText.text(com.example.R.string.text_e776b0209b50))
             }
         }
     )
@@ -974,7 +976,7 @@ fun PasswordGeneratorDialog(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Key, contentDescription = null, tint = EmeraldGreenPrimary)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("مولّد كلمات المرور القوية", fontWeight = FontWeight.Bold, fontSize = 17.sp)
+                Text(AppText.text(com.example.R.string.text_50b8de962ea0), fontWeight = FontWeight.Bold, fontSize = 17.sp)
             }
         },
         text = {
@@ -1011,7 +1013,7 @@ fun PasswordGeneratorDialog(
                             },
                             modifier = Modifier.size(32.dp)
                         ) {
-                            Icon(Icons.Default.Sync, contentDescription = "توليد جديد", tint = Color.Gray, modifier = Modifier.size(18.dp))
+                            Icon(Icons.Default.Sync, contentDescription = AppText.text(com.example.R.string.text_194a8a3e1619), tint = Color.Gray, modifier = Modifier.size(18.dp))
                         }
                     }
                 }
@@ -1020,7 +1022,7 @@ fun PasswordGeneratorDialog(
 
                 // Strength Badge
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = "قوة كلمة المرور: ", fontSize = 12.sp, color = Color.Gray)
+                    Text(text = AppText.text(com.example.R.string.text_9579eae2b253), fontSize = 12.sp, color = Color.Gray)
                     Text(
                         text = strength.labelAr,
                         fontSize = 12.sp,
@@ -1042,8 +1044,8 @@ fun PasswordGeneratorDialog(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "طول كلمة المرور:", fontSize = 12.sp)
-                    Text(text = "${length.toInt()} حرف", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = EmeraldGreenPrimary)
+                    Text(text = AppText.text(com.example.R.string.text_0d4da760f02f), fontSize = 12.sp)
+                    Text(text = AppText.text(com.example.R.string.text_f1a168373935, length.toInt()), fontWeight = FontWeight.Bold, fontSize = 13.sp, color = EmeraldGreenPrimary)
                 }
 
                 Slider(
@@ -1082,7 +1084,7 @@ fun PasswordGeneratorDialog(
                         },
                         colors = CheckboxDefaults.colors(checkedColor = EmeraldGreenPrimary)
                     )
-                    Text(text = "أحرف كبيرة (A-Z)", fontSize = 12.sp)
+                    Text(text = AppText.text(com.example.R.string.text_a34b6b4ce659), fontSize = 12.sp)
                 }
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1099,7 +1101,7 @@ fun PasswordGeneratorDialog(
                         },
                         colors = CheckboxDefaults.colors(checkedColor = EmeraldGreenPrimary)
                     )
-                    Text(text = "أرقام (0-9)", fontSize = 12.sp)
+                    Text(text = AppText.text(com.example.R.string.text_b3b0acd2e3dc), fontSize = 12.sp)
                 }
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1116,7 +1118,7 @@ fun PasswordGeneratorDialog(
                         },
                         colors = CheckboxDefaults.colors(checkedColor = EmeraldGreenPrimary)
                     )
-                    Text(text = "رموز خاصة (!@#$)", fontSize = 12.sp)
+                    Text(text = AppText.text(com.example.R.string.text_d2e4d9585aa6), fontSize = 12.sp)
                 }
             }
         },
@@ -1130,12 +1132,12 @@ fun PasswordGeneratorDialog(
             ) {
                 Icon(Icons.Default.ContentCopy, contentDescription = null, modifier = Modifier.size(16.dp))
                 Spacer(modifier = Modifier.width(6.dp))
-                Text("نسخ واستخدام")
+                Text(AppText.text(com.example.R.string.text_1b3717f1298b))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("إغلاق")
+                Text(AppText.text(com.example.R.string.text_5bf826c5e57c))
             }
         }
     )
@@ -1146,7 +1148,7 @@ fun ActivityLogDialog(
     logs: List<VaultActivityLog>,
     onDismiss: () -> Unit
 ) {
-    val dateFormat = remember { SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault()) }
+    val dateFormat = remember(AppText.language) { SimpleDateFormat("yyyy/MM/dd HH:mm:ss", AppText.locale) }
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -1154,7 +1156,7 @@ fun ActivityLogDialog(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.History, contentDescription = null, tint = GoldAccent)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("سجل نشاطات الخزنة (Firestore)", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text(AppText.text(com.example.R.string.text_e20fd67d44a3), fontWeight = FontWeight.Bold, fontSize = 16.sp)
             }
         },
         text = {
@@ -1165,7 +1167,7 @@ fun ActivityLogDialog(
                         .height(150.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "لا توجد نشاطات مسجلة بعد في activity_log", color = Color.Gray, fontSize = 13.sp)
+                    Text(text = AppText.text(com.example.R.string.text_9c607d6922dd), color = Color.Gray, fontSize = 13.sp)
                 }
             } else {
                 LazyColumn(
@@ -1216,9 +1218,9 @@ fun ActivityLogDialog(
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(
                                         text = when (log.action) {
-                                            "created" -> "إضافة: ${log.itemTitle}"
-                                            "updated" -> "تعديل: ${log.itemTitle}"
-                                            "deleted" -> "حذف: ${log.itemTitle}"
+                                            "created" -> AppText.text(com.example.R.string.text_bf83e7501261, log.itemTitle)
+                                            "updated" -> AppText.text(com.example.R.string.text_f8b496281864, log.itemTitle)
+                                            "deleted" -> AppText.text(com.example.R.string.text_75791690d672, log.itemTitle)
                                             else -> log.itemTitle
                                         },
                                         fontWeight = FontWeight.Bold,
@@ -1240,7 +1242,7 @@ fun ActivityLogDialog(
         },
         confirmButton = {
             Button(onClick = onDismiss, colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary)) {
-                Text("إغلاق")
+                Text(AppText.text(com.example.R.string.text_5bf826c5e57c))
             }
         }
     )
@@ -1258,13 +1260,13 @@ fun EncryptedBackupDialog(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Icon(Icons.Default.Share, contentDescription = null, tint = EmeraldGreenPrimary)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("تصدير نسخة احتياطية مشفرة (JSON)", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                Text(AppText.text(com.example.R.string.text_8d8199888617), fontWeight = FontWeight.Bold, fontSize = 16.sp)
             }
         },
         text = {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "تحتوي هذه النسخة على جميع عناصر الخزنة مشفرة بتقنية AES-256، ولا يمكن قراءة محتواها إلا من خلال هذا التطبيق.",
+                    text = AppText.text(com.example.R.string.text_777ff5690379),
                     fontSize = 12.sp,
                     color = Color.Gray,
                     lineHeight = 16.sp
@@ -1296,12 +1298,12 @@ fun EncryptedBackupDialog(
             ) {
                 Icon(Icons.Default.Share, contentDescription = null, modifier = Modifier.size(16.dp))
                 Spacer(modifier = Modifier.width(6.dp))
-                Text("مشاركة / تصدير")
+                Text(AppText.text(com.example.R.string.text_2c4618769704))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("إغلاق")
+                Text(AppText.text(com.example.R.string.text_5bf826c5e57c))
             }
         }
     )
@@ -1346,7 +1348,7 @@ fun VaultLockScreen(
             Spacer(modifier = Modifier.height(18.dp))
 
             Text(
-                text = "الخزنة السحابية مقفلة بأمان",
+                text = AppText.text(com.example.R.string.text_8a7c72902813),
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 20.sp,
                 color = Color.White
@@ -1355,7 +1357,7 @@ fun VaultLockScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "تم قفل الخزنة تلقائياً لحماية بياناتك المشفرة. اضغط على الزر أدناه لإلغاء القفل بالبصمة أو رمز المرور.",
+                text = AppText.text(com.example.R.string.text_f9fab4694b1f),
                 fontSize = 13.sp,
                 color = Color(0xFFA0B5AA),
                 textAlign = TextAlign.Center,
@@ -1375,7 +1377,7 @@ fun VaultLockScreen(
                 Icon(Icons.Default.Fingerprint, contentDescription = null, modifier = Modifier.size(24.dp))
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
-                    text = "إلغاء القفل (البصمة / الرمز)",
+                    text = AppText.text(com.example.R.string.text_e2326a8899ce),
                     fontSize = 15.sp,
                     fontWeight = FontWeight.Bold
                 )

@@ -1,5 +1,7 @@
 package com.example
 
+import com.example.ui.utils.AppText
+
 import android.Manifest
 import android.os.Build
 import android.os.Bundle
@@ -124,10 +126,17 @@ class MainActivity : ComponentActivity() {
 
             val layoutDirection = if (selectedLanguage == "en") LayoutDirection.Ltr else LayoutDirection.Rtl
             val appStrings = remember(selectedLanguage) { AppStrings(selectedLanguage) }
+            val localizedContext = remember(selectedLanguage) {
+                createConfigurationContext(android.content.res.Configuration(resources.configuration).apply {
+                    setLocale(java.util.Locale.forLanguageTag(selectedLanguage))
+                })
+            }
 
             SmartVaultTheme(darkTheme = isDarkMode) {
                 CompositionLocalProvider(
                     LocalLayoutDirection provides layoutDirection,
+                    androidx.compose.ui.platform.LocalContext provides localizedContext,
+                    androidx.compose.ui.platform.LocalConfiguration provides localizedContext.resources.configuration,
                     LocalAppLanguage provides selectedLanguage,
                     LocalStrings provides appStrings
                 ) {
@@ -297,14 +306,14 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
                 TopAppBar(
                     title = {
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text("الخزنة السحابية المشفرة", fontWeight = FontWeight.Bold, fontSize = 17.sp)
+                            Text(AppText.text(com.example.R.string.text_7272df92ca36), fontWeight = FontWeight.Bold, fontSize = 17.sp)
                             Spacer(modifier = Modifier.width(6.dp))
                             Text("🛡️☁️", fontSize = 14.sp)
                         }
                     },
                     navigationIcon = {
                         IconButton(onClick = { showCloudVaultScreen = false }) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "رجوع")
+                            Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = AppText.text(com.example.R.string.text_328ddce5bbca))
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
@@ -388,7 +397,7 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Security,
-                                    contentDescription = "الخزنة السحابية",
+                                    contentDescription = AppText.text(com.example.R.string.text_cd0cf75e27fe),
                                     tint = EmeraldGreenPrimary,
                                     modifier = Modifier.size(20.dp)
                                 )
@@ -479,7 +488,7 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
                 containerColor = EmeraldGreenPrimary,
                 contentColor = Color.White
             ) {
-                Icon(Icons.Default.Add, contentDescription = "إضافة سريعة")
+                Icon(Icons.Default.Add, contentDescription = AppText.text(com.example.R.string.text_b48ae0941d3d))
             }
         }
     ) { paddingValues ->

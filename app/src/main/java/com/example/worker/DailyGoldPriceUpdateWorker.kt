@@ -1,5 +1,7 @@
 package com.example.worker
 
+import com.example.ui.utils.AppText
+
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -77,10 +79,10 @@ class DailyGoldPriceUpdateWorker(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
-                "أسعار الذهب اليومية",
+                AppText.text(com.example.R.string.text_879a8b902ae5),
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
-                description = "تنبيهات التحديث اليومي لأسعار الذهب (12:00 ظهراً)"
+                description = AppText.text(com.example.R.string.text_3deed56eb82a)
             }
             notificationManager.createNotificationChannel(channel)
         }
@@ -101,11 +103,11 @@ class DailyGoldPriceUpdateWorker(
 
         val notification = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle("تحديث أسعار الذهب (12:00 ظهراً) 🪙")
-            .setContentText("عيار 21: $p21Formatted $currency | عيار 24: $p24Formatted $currency")
+            .setContentTitle(AppText.text(com.example.R.string.text_3c1e403d55c3))
+            .setContentText(AppText.text(com.example.R.string.text_eb62eeef21fe, p21Formatted, currency, p24Formatted, currency))
             .setStyle(
                 NotificationCompat.BigTextStyle()
-                    .bigText("تم تحديث أسعار الذهب لحظياً من GoldAPI.io بنجاح:\n• عيار 21: $p21Formatted $currency\n• عيار 24: $p24Formatted $currency\nتمت إعادة تقييم محفظة الذهب وسبائكك تلقائياً.")
+                    .bigText(AppText.text(com.example.R.string.text_1d15a727c672, p21Formatted, currency, p24Formatted, currency))
             )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)

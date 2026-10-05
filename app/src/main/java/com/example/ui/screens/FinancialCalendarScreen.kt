@@ -1,5 +1,9 @@
 package com.example.ui.screens
 
+import com.example.ui.utils.AppStrings
+
+import com.example.ui.utils.AppText
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -116,7 +120,7 @@ fun FinancialCalendarScreen(
     val monthExpense = monthTransactions.filter { it.type == "EXPENSE" }.sumOf { it.amount }
     val monthNet = monthIncome - monthExpense
 
-    val monthNameFormat = SimpleDateFormat("MMMM yyyy", Locale("ar"))
+    val monthNameFormat = SimpleDateFormat("MMMM yyyy", AppText.locale)
     cal.set(Calendar.DAY_OF_MONTH, 1)
     val monthTitle = monthNameFormat.format(cal.time)
 
@@ -162,10 +166,10 @@ fun FinancialCalendarScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("التقويم المالي", fontWeight = FontWeight.Bold, fontSize = 18.sp) },
+                title = { Text(AppText.text(com.example.R.string.text_3ac532621c03), fontWeight = FontWeight.Bold, fontSize = 18.sp) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "رجوع")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = AppText.text(com.example.R.string.text_328ddce5bbca))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
@@ -194,7 +198,7 @@ fun FinancialCalendarScreen(
                         calendarMonth -= 1
                     }
                 }) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = "الشهر السابق")
+                    Icon(Icons.AutoMirrored.Filled.ArrowForward, contentDescription = AppText.text(com.example.R.string.text_1c63af81805c))
                 }
 
                 Text(
@@ -212,7 +216,7 @@ fun FinancialCalendarScreen(
                         calendarMonth += 1
                     }
                 }) {
-                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "الشهر القادم")
+                    Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = AppText.text(com.example.R.string.text_f948600173e7))
                 }
             }
 
@@ -229,27 +233,27 @@ fun FinancialCalendarScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Column {
-                        Text("الدخل", fontSize = 11.sp, color = Color.Gray)
+                        Text(AppText.text(com.example.R.string.text_e8c6dbaeeb61), fontSize = 11.sp, color = Color.Gray)
                         Text(
-                            "+${String.format("%,d", monthIncome.toInt())} $currency",
+                            "+${String.format("%,d", monthIncome.toInt())} ${AppText.currency(currency)}",
                             fontWeight = FontWeight.Bold,
                             fontSize = 13.sp,
                             color = IncomeGreen
                         )
                     }
                     Column {
-                        Text("المصروف", fontSize = 11.sp, color = Color.Gray)
+                        Text(AppText.text(com.example.R.string.text_8b9fbc5898c7), fontSize = 11.sp, color = Color.Gray)
                         Text(
-                            "-${String.format("%,d", monthExpense.toInt())} $currency",
+                            "-${String.format("%,d", monthExpense.toInt())} ${AppText.currency(currency)}",
                             fontWeight = FontWeight.Bold,
                             fontSize = 13.sp,
                             color = ExpenseRed
                         )
                     }
                     Column(horizontalAlignment = Alignment.End) {
-                        Text("الصافي", fontSize = 11.sp, color = Color.Gray)
+                        Text(AppText.text(com.example.R.string.text_d72beaf029a2), fontSize = 11.sp, color = Color.Gray)
                         Text(
-                            "${String.format("%,d", monthNet.toInt())} $currency",
+                            "${String.format("%,d", monthNet.toInt())} ${AppText.currency(currency)}",
                             fontWeight = FontWeight.Bold,
                             fontSize = 14.sp,
                             color = if (monthNet >= 0) IncomeGreen else ExpenseRed
@@ -261,7 +265,7 @@ fun FinancialCalendarScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             // Days of week header (Sat to Fri)
-            val weekDayNames = listOf("سبت", "أحد", "اثنين", "ثلاثاء", "أربعاء", "خميس", "جمعة")
+            val weekDayNames = listOf(AppText.text(com.example.R.string.text_a478daf22935), AppText.text(com.example.R.string.text_29c2a914d745), AppText.text(com.example.R.string.text_a46d7f58ba2c), AppText.text(com.example.R.string.text_81a8732d2ed7), AppText.text(com.example.R.string.text_67e1e0bf90b1), AppText.text(com.example.R.string.text_af0a56c556f2), AppText.text(com.example.R.string.text_5a03133f974d))
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
                 weekDayNames.forEach { dayName ->
                     Text(
@@ -311,7 +315,7 @@ fun FinancialCalendarScreen(
     // Day Details Dialog / Sheet
     if (selectedDaySummary != null) {
         val s = selectedDaySummary!!
-        val dayFormat = SimpleDateFormat("EEEE، d MMMM yyyy", Locale("ar"))
+        val dayFormat = SimpleDateFormat(AppText.text(com.example.R.string.text_35ca74820a1f), AppText.locale)
         val dateTitle = dayFormat.format(Date(s.dateMillis))
 
         AlertDialog(
@@ -325,15 +329,15 @@ fun FinancialCalendarScreen(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text("الدخل: +${s.incomeTotal.toInt()} $currency", color = IncomeGreen, fontWeight = FontWeight.Bold, fontSize = 12.sp)
-                        Text("المصروف: -${s.expenseTotal.toInt()} $currency", color = ExpenseRed, fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                        Text(AppText.text(com.example.R.string.text_937bce15faae, s.incomeTotal.toInt(), AppText.currency(currency)), color = IncomeGreen, fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                        Text(AppText.text(com.example.R.string.text_140ac31d42be, s.expenseTotal.toInt(), AppText.currency(currency)), color = ExpenseRed, fontWeight = FontWeight.Bold, fontSize = 12.sp)
                     }
 
                     Spacer(modifier = Modifier.height(12.dp))
 
                     val allItemsCount = s.transactions.size + s.transfers.size + s.commitments.size + s.lessons.size + s.debts.size
                     if (allItemsCount == 0) {
-                        Text("لا توجد حركات مالية أو التزامات مسجلة في هذا اليوم.", color = Color.Gray, fontSize = 13.sp)
+                        Text(AppText.text(com.example.R.string.text_6f5935f75864), color = Color.Gray, fontSize = 13.sp)
                     } else {
                         LazyColumn(modifier = Modifier.fillMaxWidth().height(260.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                             // Transactions
@@ -347,11 +351,11 @@ fun FinancialCalendarScreen(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Column {
-                                        Text(tx.description.ifBlank { tx.category }, fontWeight = FontWeight.Medium, fontSize = 13.sp)
-                                        Text("${tx.category} • ${tx.vaultName}", fontSize = 11.sp, color = Color.Gray)
+                                        Text(tx.description.ifBlank { AppStrings(AppText.language).translateCategory(tx.category) }, fontWeight = FontWeight.Medium, fontSize = 13.sp)
+                                        Text("${AppStrings(AppText.language).translateCategory(tx.category)} • ${tx.vaultName}", fontSize = 11.sp, color = Color.Gray)
                                     }
                                     Text(
-                                        "${if (tx.type == "INCOME") "+" else "-"}${tx.amount.toInt()} $currency",
+                                        "${if (tx.type == "INCOME") "+" else "-"}${tx.amount.toInt()} ${AppText.currency(currency)}",
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 13.sp,
                                         color = if (tx.type == "INCOME") IncomeGreen else ExpenseRed
@@ -370,10 +374,10 @@ fun FinancialCalendarScreen(
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Column {
-                                        Text("تحويل: ${tr.fromVaultName} ← ${tr.toVaultName}", fontWeight = FontWeight.Medium, fontSize = 12.sp)
+                                        Text(AppText.text(com.example.R.string.text_61e3af204ba7, tr.fromVaultName, tr.toVaultName), fontWeight = FontWeight.Medium, fontSize = 12.sp)
                                         if (tr.notes.isNotBlank()) Text(tr.notes, fontSize = 10.sp, color = Color.Gray)
                                     }
-                                    Text("${tr.amount.toInt()} $currency", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = EmeraldGreenPrimary)
+                                    Text("${tr.amount.toInt()} ${AppText.currency(currency)}", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = EmeraldGreenPrimary)
                                 }
                             }
 
@@ -387,8 +391,8 @@ fun FinancialCalendarScreen(
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text("التزام: ${c.title}", fontWeight = FontWeight.Medium, fontSize = 12.sp)
-                                    Text("${c.amount.toInt()} $currency", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Color(0xFFE91E63))
+                                    Text(AppText.text(com.example.R.string.text_ce2e34b7a188, c.title), fontWeight = FontWeight.Medium, fontSize = 12.sp)
+                                    Text("${c.amount.toInt()} ${AppText.currency(currency)}", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Color(0xFFE91E63))
                                 }
                             }
 
@@ -402,8 +406,8 @@ fun FinancialCalendarScreen(
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text("درس: ${l.childName} - ${l.subject}", fontWeight = FontWeight.Medium, fontSize = 12.sp)
-                                    Text("${l.amount.toInt()} $currency", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Color(0xFF3F51B5))
+                                    Text(AppText.text(com.example.R.string.text_0ac49977fcf1, l.childName, l.subject), fontWeight = FontWeight.Medium, fontSize = 12.sp)
+                                    Text("${l.amount.toInt()} ${AppText.currency(currency)}", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Color(0xFF3F51B5))
                                 }
                             }
 
@@ -417,8 +421,8 @@ fun FinancialCalendarScreen(
                                     horizontalArrangement = Arrangement.SpaceBetween,
                                     verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Text("دين: ${d.personName} (${if (d.type == "OWED_TO_ME") "لي" else "عليّ"})", fontWeight = FontWeight.Medium, fontSize = 12.sp)
-                                    Text("${d.remainingAmount.toInt()} $currency", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Color(0xFF7C4DFF))
+                                    Text(AppText.text(com.example.R.string.text_56ea571722e0, d.personName, if (d.type == "OWED_TO_ME") AppText.text(com.example.R.string.text_a79f76c2ab19) else AppText.text(com.example.R.string.text_36b11439ed12)), fontWeight = FontWeight.Medium, fontSize = 12.sp)
+                                    Text("${d.remainingAmount.toInt()} ${AppText.currency(currency)}", fontWeight = FontWeight.Bold, fontSize = 13.sp, color = Color(0xFF7C4DFF))
                                 }
                             }
                         }
@@ -430,7 +434,7 @@ fun FinancialCalendarScreen(
                     onClick = { selectedDaySummary = null },
                     colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary)
                 ) {
-                    Text("إغلاق")
+                    Text(AppText.text(com.example.R.string.text_5bf826c5e57c))
                 }
             }
         )

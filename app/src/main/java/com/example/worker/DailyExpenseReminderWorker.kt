@@ -1,5 +1,7 @@
 package com.example.worker
 
+import com.example.ui.utils.AppText
+
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -31,10 +33,10 @@ class DailyExpenseReminderWorker(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
-                "تذكيرات الخزنة الذكية",
+                AppText.text(com.example.R.string.text_a2f20438512f),
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
-                description = "تنبيهات يومية لتسجيل وتفقد المصروفات والحسابات"
+                description = AppText.text(com.example.R.string.text_49b966335c09)
             }
             notificationManager.createNotificationChannel(channel)
         }
@@ -52,11 +54,11 @@ class DailyExpenseReminderWorker(
 
         val notification = NotificationCompat.Builder(context, channelId)
             .setSmallIcon(android.R.drawable.ic_dialog_info)
-            .setContentTitle("تذكير الخزنة الذكية 💰")
-            .setContentText("لا تنسَ تسجيل مصروفات اليوم ومراجعة حركة الخزنة لضمان دقة ميزانيتك!")
+            .setContentTitle(AppText.text(com.example.R.string.text_5339f0151e8b))
+            .setContentText(AppText.text(com.example.R.string.text_0b94ea568e83))
             .setStyle(
                 NotificationCompat.BigTextStyle()
-                    .bigText("لا تنسَ تسجيل مصروفات اليوم ومراجعة حركة الخزنة لضمان دقة ميزانيتك المتبقية لهذا الشهر.")
+                    .bigText(AppText.text(com.example.R.string.text_909099b10379))
             )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setContentIntent(pendingIntent)

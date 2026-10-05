@@ -1,5 +1,7 @@
 package com.example.ui.utils
 
+import com.example.ui.utils.AppText
+
 import android.content.Context
 import android.net.Uri
 import androidx.compose.foundation.background
@@ -68,7 +70,7 @@ object ImageUtils {
 @Composable
 fun ReceiptImageViewerDialog(
     imagePathOrUri: String,
-    title: String = "صورة الفاتورة / الإيصال",
+    title: String = AppText.text(com.example.R.string.text_7efb620b2f46),
     onDismiss: () -> Unit
 ) {
     Dialog(
@@ -115,7 +117,7 @@ fun ReceiptImageViewerDialog(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = "إغلاق",
+                            contentDescription = AppText.text(com.example.R.string.text_5bf826c5e57c),
                             tint = Color.Gray,
                             modifier = Modifier.size(20.dp)
                         )
@@ -133,7 +135,7 @@ fun ReceiptImageViewerDialog(
                 ) {
                     AsyncImage(
                         model = if (imagePathOrUri.startsWith("/")) File(imagePathOrUri) else imagePathOrUri,
-                        contentDescription = "صورة الفاتورة المرفقة",
+                        contentDescription = AppText.text(com.example.R.string.text_8e4a12b8e0fb),
                         contentScale = ContentScale.Fit,
                         modifier = Modifier.fillMaxSize()
                     )
@@ -161,13 +163,13 @@ fun ReceiptBadgeButton(
         ) {
             Icon(
                 imageVector = Icons.Default.Receipt,
-                contentDescription = "عرض الفاتورة",
+                contentDescription = AppText.text(com.example.R.string.text_02ecf19774a4),
                 tint = EmeraldGreenPrimary,
                 modifier = Modifier.size(15.dp)
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = "الفاتورة",
+                text = AppText.text(com.example.R.string.text_26abf901180a),
                 fontSize = 11.sp,
                 fontWeight = FontWeight.Bold,
                 color = EmeraldGreenPrimary

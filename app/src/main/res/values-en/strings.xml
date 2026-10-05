@@ -1,0 +1,1072 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">"Smart Vault"</string>
+    <string name="text_5996de7ad383" formatted="false">"Please enter your GoldAPI.io API key"</string>
+    <string name="text_2262f8c02440" formatted="false">"Invalid or expired API key ({0}). Check your key at goldapi.io."</string>
+    <string name="text_13c20d98b615" formatted="false">"GoldAPI.io request quota exceeded."</string>
+    <string name="text_2130a9d5ded6" formatted="false">"No data found for currency {0} or symbol {1} in GoldAPI."</string>
+    <string name="text_94b64c26d582" formatted="false">"Could not fetch prices from GoldAPI.io (error: {0} {1})"</string>
+    <string name="text_1b66c5619eb7" formatted="false">"GoldAPI.io returned no valid prices for {0}"</string>
+    <string name="text_6ba30f0e392f" formatted="false">"Could not connect to GoldAPI.io. Check your internet connection."</string>
+    <string name="text_02f94b071638" formatted="false">"GoldAPI connection error: {0}"</string>
+    <string name="text_1eaf822690f6" formatted="false">"Enter a password to encrypt and protect the backup"</string>
+    <string name="text_b68c4167a739" formatted="false">"Receipt image paths refer to files on this device; the files are not included in the backup"</string>
+    <string name="text_d149426b1847" formatted="false">"Enter the password used to create this backup"</string>
+    <string name="text_df61b78ee02b" formatted="false">"This is not a valid Smart Vault backup"</string>
+    <string name="text_da53da316ecd" formatted="false">"Unsupported backup version"</string>
+    <string name="text_062b2d70edce" formatted="false">"This backup was created by a newer app version. Update the app first."</string>
+    <string name="text_4f3fab203926" formatted="false">"The backup is corrupt or empty"</string>
+    <string name="text_afceb2df3dcb" formatted="false">"File integrity check failed (checksum mismatch). The file was modified or is corrupt."</string>
+    <string name="text_7b2a35c0d83a" formatted="false">"The backup contains invalid debt amounts (NaN or Infinity)"</string>
+    <string name="text_6bd03c82dd4a" formatted="false">"The backup contains payments with no matching debt (debtId = {0})"</string>
+    <string name="text_ea3b3bcf9724" formatted="false">"The backup contains invalid debt payment amounts"</string>
+    <string name="text_f9bbdae65dcf" formatted="false">"The backup contains expenses with no matching outing (outingId = {0})"</string>
+    <string name="text_bf97239d27d0" formatted="false">"The backup contains invalid outing expense amounts"</string>
+    <string name="text_7c87c4d590f7" formatted="false">"The backup contains invalid transaction amounts"</string>
+    <string name="text_8db054edb533" formatted="false">"The backup contains invalid cash savings amounts"</string>
+    <string name="text_eecc440c33f0" formatted="false">"Incorrect password or corrupt file: {0}"</string>
+    <string name="text_9053a7c678f2" formatted="false">"Merging is not supported. Save a backup of your data, then use replacement."</string>
+    <string name="text_178594875103" formatted="false">"General"</string>
+    <string name="text_6d580c750a12" formatted="false">"Main Vault"</string>
+    <string name="text_c15fe79b40d5" formatted="false">"Bullion"</string>
+    <string name="text_ba488a9c8812" formatted="false">"Could not link an expense to its original outing"</string>
+    <string name="text_25f603d8df62" formatted="false">"Could not link the payment: original debt (id={0}) is missing from the backup"</string>
+    <string name="text_085c13d97af5" formatted="false">"Unsupported or corrupt backup format"</string>
+    <string name="text_5c54bb48fcff" formatted="false">"EGP"</string>
+    <string name="text_6dbafe4740d0" formatted="false">"Secure key storage is unavailable: {0}"</string>
+    <string name="text_56a3db5d1b36" formatted="false">"Could not securely encrypt the data"</string>
+    <string name="text_98426460a495" formatted="false">"Could not decrypt the data: invalid key or corrupt data"</string>
+    <string name="text_d69dfb852af8" formatted="false">"Connected to cloud"</string>
+    <string name="text_c0d85c5fe38a" formatted="false">"Syncing..."</string>
+    <string name="text_4384dc18a516" formatted="false">"Offline (stored locally)"</string>
+    <string name="text_22a67ceb72fd" formatted="false">"Could not connect to cloud"</string>
+    <string name="text_750a633cf01e" formatted="false">"Smart Vault - Smart Safe"</string>
+    <string name="text_d171d8506d04" formatted="false">"Budget exceeded"</string>
+    <string name="text_dad18188a262" formatted="false">"You exceeded the budget for “{0}” by {1}% (spent {2} of {3} {4})"</string>
+    <string name="text_e1ea6189fc30" formatted="false">"Approaching monthly limit"</string>
+    <string name="text_8b88d889acb8" formatted="false">"You are close to the budget limit for “{0}”. Only {1} {2} remains."</string>
+    <string name="text_d91cfc1ad51c" formatted="false">"Upcoming commitment"</string>
+    <string name="text_ef044647ae0e" formatted="false">"“{0}”, totaling {1} {2}, is due in a few days."</string>
+    <string name="text_2a20f11fd4c3" formatted="false">"Lesson payment due"</string>
+    <string name="text_00a1d5002e6c" formatted="false">"“{0}” for {1}, totaling {2} {3}, is due soon."</string>
+    <string name="text_6a90374a7a88" formatted="false">"Excellent savings rate"</string>
+    <string name="text_64a60e7a0bf6" formatted="false">"You saved {0}% of your income this month! Keep managing your expenses."</string>
+    <string name="text_e0c6c094ba6d" formatted="false">"Top spending category"</string>
+    <string name="text_1c91b27c2d9d" formatted="false">"“{0}” is your top spending category at {1}% of total expenses."</string>
+    <string name="text_b4a9c7335a43" formatted="false">"Debt payment due"</string>
+    <string name="text_6b3c7e411379" formatted="false">"A payment of {0} {1} to {2} is due within 3 days."</string>
+    <string name="text_edbc29df7299" formatted="false">"Spending has improved"</string>
+    <string name="text_ec6704a86003" formatted="false">"Your spending this month is {0}% lower than last month so far."</string>
+    <string name="text_12e1baa483b8" formatted="false">"Spending is increasing"</string>
+    <string name="text_2100370c5e06" formatted="false">"You have spent {0}% more than last month so far."</string>
+    <string name="text_f2f7325ba6e9" formatted="false">"“{0}” is your top spending category this month at {1}% of total expenses."</string>
+    <string name="text_f89b12710474" formatted="false">"Average daily spending"</string>
+    <string name="text_f1e858bfb37f" formatted="false">"Your average daily spending this month is {0} {1}."</string>
+    <string name="text_fba441b2afbf" formatted="false">"No-spend day"</string>
+    <string name="text_e516a4efd7da" formatted="false">"You have not recorded any expenses today. A great day for saving!"</string>
+    <string name="text_e6b96ce194c0" formatted="false">"Password"</string>
+    <string name="text_e4627f47b69b" formatted="false">"Secret note"</string>
+    <string name="text_b4316420bcc3" formatted="false">"Bank card"</string>
+    <string name="text_7822deda09a6" formatted="false">"Private document"</string>
+    <string name="text_cd638da461ee" formatted="false">"Invalid amount: enter a positive number"</string>
+    <string name="text_324813c834f1" formatted="false">"Restore the linked vault before deleting this transaction"</string>
+    <string name="text_d375d2c8d4ee" formatted="false">"Unsupported transaction type"</string>
+    <string name="text_a4de2402af53" formatted="false">"Invalid expense amount"</string>
+    <string name="text_709b83a58038" formatted="false">"Invalid sale price"</string>
+    <string name="text_321e7ab95b7e" formatted="false">"The transfer amount must be greater than zero"</string>
+    <string name="text_cb0aaf62ada7" formatted="false">"Cannot transfer to the same vault"</string>
+    <string name="text_89acb7abfb61" formatted="false">"Source vault not found"</string>
+    <string name="text_f72448989b3c" formatted="false">"Vault balance ({0}) is insufficient for the transfer ({1})"</string>
+    <string name="text_7a962d7fe6e8" formatted="false">"Transfer not found or access denied"</string>
+    <string name="text_5f125b7987c4" formatted="false">"Transfer source vault not found"</string>
+    <string name="text_574658039b19" formatted="false">"Transfer destination vault not found"</string>
+    <string name="text_24e31759427c" formatted="false">"Invalid debt amount: must be greater than zero"</string>
+    <string name="text_bb0319b35c1c" formatted="false">"The payment amount must be greater than zero"</string>
+    <string name="text_bcdddf713495" formatted="false">"Debt not found or access denied"</string>
+    <string name="text_c3a83f2c4743" formatted="false">"Payment ({0}) exceeds the remaining balance ({1})"</string>
+    <string name="text_b5cb21d8142c" formatted="false">"Supermarket"</string>
+    <string name="text_7272df92ca36" formatted="false">"Encrypted Cloud Vault"</string>
+    <string name="text_328ddce5bbca" formatted="false">"Back"</string>
+    <string name="text_cd0cf75e27fe" formatted="false">"Cloud Vault"</string>
+    <string name="text_b48ae0941d3d" formatted="false">"Quick add"</string>
+    <string name="text_5e6b2c72f16a" formatted="false">"Profile picture"</string>
+    <string name="text_7a747c6bf88a" formatted="false">"Spending by category (pie chart)"</string>
+    <string name="text_eb859d766281" formatted="false">"No expenses recorded this month yet"</string>
+    <string name="text_413c51af19b5" formatted="false">"Total"</string>
+    <string name="text_8c69562811f0" formatted="false">"Monthly spending (bar chart)"</string>
+    <string name="text_6eea66fc03a3" formatted="false">"Balance over time (line chart)"</string>
+    <string name="text_aee9e778a590" formatted="false">"The chart will appear as you record more transactions"</string>
+    <string name="text_9aa663951be0" formatted="false">"Quick add"</string>
+    <string name="text_90cf34f71fc5" formatted="false">"New income"</string>
+    <string name="text_70c7a31530f9" formatted="false">"New expense"</string>
+    <string name="text_dc66f1ed7b0c" formatted="false">"Vault transfer"</string>
+    <string name="text_011d3adc2108" formatted="false">"Record debt"</string>
+    <string name="text_b7b0b20f899d" formatted="false">"Cash savings"</string>
+    <string name="text_bbc92ccaafd4" formatted="false">"Buy gold"</string>
+    <string name="text_a20482d75799" formatted="false">"Commitment / Bill"</string>
+    <string name="text_b6bc98a0e74b" formatted="false">"Child\'s lesson"</string>
+    <string name="text_1a7c58a55bb7" formatted="false">"Group outing"</string>
+    <string name="text_959e6920e1ce" formatted="false">"Growth"</string>
+    <string name="text_f5107f3d6f0d" formatted="false">"Savings and asset growth"</string>
+    <string name="text_d4f5338e88bb" formatted="false">"Interactive gold and cash analysis"</string>
+    <string name="text_33df7769cfd5" formatted="false">"Drag to explore"</string>
+    <string name="text_165afb7ab809" formatted="false">"Cumulative"</string>
+    <string name="text_564ef2249a86" formatted="false">"Monthly"</string>
+    <string name="text_5e67cfd23385" formatted="false">"Total accumulated balance"</string>
+    <string name="text_adc0ff0e37cb" formatted="false">"Total monthly additions"</string>
+    <string name="text_c851efa80cad" formatted="false">"Gold"</string>
+    <string name="text_8e6f51524318" formatted="false">"Cash"</string>
+    <string name="text_6d7a99b071cc" formatted="false">"Gold and bullion savings"</string>
+    <string name="text_0ec0549f1122" formatted="false">"Cash savings and liquidity"</string>
+    <string name="text_0b61348b434f" formatted="false">"Growth over this period"</string>
+    <string name="text_114c955de7c4" formatted="false">"Continued positive growth"</string>
+    <string name="text_a60a8f0e5530" formatted="false">"Stable rate"</string>
+    <string name="text_f9dc5d61b247" formatted="false">"Average monthly savings"</string>
+    <string name="text_97297cf83728" formatted="false">"Highest savings month"</string>
+    <string name="text_fec5262bafc9" formatted="false">"Local financial insights"</string>
+    <string name="text_891924a91014" formatted="false">"No important financial insights at the moment."</string>
+    <string name="text_5bf826c5e57c" formatted="false">"Close"</string>
+    <string name="text_bf8d7bd53353" formatted="false">"Record money owed to me"</string>
+    <string name="text_a37cd3567d4d" formatted="false">"Record money I owe"</string>
+    <string name="text_7612847d2233" formatted="false">"Money owed to me"</string>
+    <string name="text_dd169bf23200" formatted="false">"Money I owe"</string>
+    <string name="text_7201473b2591" formatted="false">"Debtor\'s name"</string>
+    <string name="text_63feb3bb804e" formatted="false">"Creditor\'s name"</string>
+    <string name="text_bc44a773ac92" formatted="false">"Debt amount"</string>
+    <string name="text_c8a0cdd5189a" formatted="false">"Notes / Expected payment date"</string>
+    <string name="text_19af7a0f2ad8" formatted="false">"Enter the person\'s name"</string>
+    <string name="text_268c5b73a9b0" formatted="false">"Enter a valid amount greater than zero"</string>
+    <string name="text_56ee6e0d206b" formatted="false">"Save"</string>
+    <string name="text_e776b0209b50" formatted="false">"Cancel"</string>
+    <string name="text_b1635a0b10cd" formatted="false">"Receive payment from {0}"</string>
+    <string name="text_56d7f604af7f" formatted="false">"Pay debt to {0}"</string>
+    <string name="text_082322fac562" formatted="false">"Remaining: {0} {1} (of {2} {3})"</string>
+    <string name="text_f88f6cb033cb" formatted="false">"Amount paid / Received"</string>
+    <string name="text_d40d75caab23" formatted="false">"Payment note (optional)"</string>
+    <string name="text_c77f84848501" formatted="false">"Enter a valid payment amount"</string>
+    <string name="text_9ec43fbe481b" formatted="false">"Payment exceeds the remaining balance ({0} {1})"</string>
+    <string name="text_11b0cc7ecdb7" formatted="false">"Confirm payment"</string>
+    <string name="text_2045dbe9ad39" formatted="false">"+ Add income to vault"</string>
+    <string name="text_8399a8121b07" formatted="false">"Amount (EGP)"</string>
+    <string name="text_9daaed987022" formatted="false">"Income category"</string>
+    <string name="text_6e200a34c778" formatted="false">"Destination vault"</string>
+    <string name="text_d554c7b27da7" formatted="false">"Description / Note (optional)"</string>
+    <string name="text_5e3a3fdfce20" formatted="false">"Add"</string>
+    <string name="text_df20037c090f" formatted="false">"Vegetables"</string>
+    <string name="text_5741b09082a3" formatted="false">"Receipt image attached ✓"</string>
+    <string name="text_caf3f5fa344d" formatted="false">"Data to be sent"</string>
+    <string name="text_b730937d1d5e" formatted="false">"Continue saving"</string>
+    <string name="text_a02759f37c7e" formatted="false">"+ Add a child\'s lesson"</string>
+    <string name="text_c97c2377ad3c" formatted="false">"Child\'s name (e.g. Mohamed, Sarah)"</string>
+    <string name="text_d5681a90cfde" formatted="false">"Subject (e.g. Maths, English)"</string>
+    <string name="text_0667a9bf31ce" formatted="false">"Teacher\'s name"</string>
+    <string name="text_5e42a81c0bdb" formatted="false">"Monthly amount"</string>
+    <string name="text_c82c597a6f7d" formatted="false">"Save lesson"</string>
+    <string name="text_4cdf4b9f0083" formatted="false">"+ Add an account / Vault"</string>
+    <string name="text_02f7925bc7b6" formatted="false">"Vault name (e.g. mobile wallet, bank account)"</string>
+    <string name="text_d85b2adf0086" formatted="false">"Opening balance"</string>
+    <string name="text_866cb767ecfb" formatted="false">"Add vault"</string>
+    <string name="text_7af1c46cdde4" formatted="false">"Restaurants"</string>
+    <string name="text_bdda0c5b4a61" formatted="false">"Fuel"</string>
+    <string name="text_dc0448c7bbdb" formatted="false">"Electricity"</string>
+    <string name="text_356f390ccc4b" formatted="false">"Rent"</string>
+    <string name="text_38fac5fcec7c" formatted="false">"Transport"</string>
+    <string name="text_21da4e22df73" formatted="false">"Bills"</string>
+    <string name="text_ad5a18db7678" formatted="false">"Healthcare"</string>
+    <string name="text_e5ee006cd669" formatted="false">"General expenses"</string>
+    <string name="text_b0a9803991e9" formatted="false">"Confirm budget deletion"</string>
+    <string name="text_0a6fb171955e" formatted="false">"Delete the monthly budget limit for ({0})?"</string>
+    <string name="text_2d2bbdc2d694" formatted="false">"Delete"</string>
+    <string name="text_166e9d1b4fe3" formatted="false">"Edit budget ({0})"</string>
+    <string name="text_32f1966a4cd5" formatted="false">"Set a monthly category budget"</string>
+    <string name="text_e18899dad359" formatted="false">"The app will notify you when you approach or exceed this category\'s monthly limit."</string>
+    <string name="text_1a0f3b39aac5" formatted="false">"Category name"</string>
+    <string name="text_7b4764ccb0f0" formatted="false">"Or select a category:"</string>
+    <string name="text_0e2c15ffddf0" formatted="false">"Maximum amount (EGP)"</string>
+    <string name="text_ef1c45607fc6" formatted="false">"Delete budget"</string>
+    <string name="text_6d5aa037cf62" formatted="false">"Save budget"</string>
+    <string name="text_53ccaef115ec" formatted="false">"Confirm account removal"</string>
+    <string name="text_97fab5f15441" formatted="false">"Permanently remove this account / vault ({0})?"</string>
+    <string name="text_5ef55c0db740" formatted="false">"Remove / Delete account"</string>
+    <string name="text_98df46fbd83b" formatted="false">"Back"</string>
+    <string name="text_f55f825ec231" formatted="false">"Edit vault / Account"</string>
+    <string name="text_7ce2b7078a8e" formatted="false">"Remove account"</string>
+    <string name="text_4555e916f59f" formatted="false">"Vault / Account name (e.g. bank account, mobile wallet)"</string>
+    <string name="text_8e6dada6dcc2" formatted="false">"Edit current account balance"</string>
+    <string name="text_33081e44cb7c" formatted="false">"Save changes"</string>
+    <string name="text_a0b93eb47f97" formatted="false">"Outstanding bills and commitments"</string>
+    <string name="text_b87ef5afd60a" formatted="false">"{0} unpaid bills • Total: {1} {2}"</string>
+    <string name="text_1222aedee374" formatted="false">"🎉 All bills and commitments are paid!"</string>
+    <string name="text_0d209f6617e0" formatted="false">"No outstanding bills or lessons."</string>
+    <string name="text_f23d86570e8d" formatted="false">"Monthly commitments and bills"</string>
+    <string name="text_e359071b6d6c" formatted="false">"Amount: {0} {1}"</string>
+    <string name="text_82f89f773df0" formatted="false">"Due date: {0}"</string>
+    <string name="text_d20206869e15" formatted="false">"Notes: {0}"</string>
+    <string name="text_00892ccddcd9" formatted="false">"Pay"</string>
+    <string name="text_0647a642ebee" formatted="false">"Outstanding lesson payments"</string>
+    <string name="text_765b68c05b0d" formatted="false">"Teacher: {0}"</string>
+    <string name="text_b0a5de0afd74" formatted="false">"Amount: {0} {1}"</string>
+    <string name="text_aee0d2b605de" formatted="false">"Edit account details and profile picture"</string>
+    <string name="text_6d7077bedfa5" formatted="false">"Choose a profile picture / Icon:"</string>
+    <string name="text_e19b16bdb71a" formatted="false">"Full name"</string>
+    <string name="text_794f68a24741" formatted="false">"Username"</string>
+    <string name="text_0915ef8ea533" formatted="false">"Email address"</string>
+    <string name="text_8e70d27f84ec" formatted="false">"Email"</string>
+    <string name="text_211cce4ca4ef" formatted="false">"Phone number"</string>
+    <string name="text_760c65a1fab6" formatted="false">"Phone"</string>
+    <string name="text_c12100c61b18" formatted="false">"Save canceled. You can try again."</string>
+    <string name="text_1eb9aa242624" formatted="false">"The account changed. Open this dialog again."</string>
+    <string name="text_a8793266c256" formatted="false">"Could not open the file for saving"</string>
+    <string name="text_06f26e015e2c" formatted="false">"Encrypted backup saved successfully"</string>
+    <string name="text_414e1e6dc40e" formatted="false">"Could not save backup"</string>
+    <string name="text_a929b754604e" formatted="false">"Could not open file"</string>
+    <string name="text_e6804597584a" formatted="false">"Backup exceeds 20 MB"</string>
+    <string name="text_d384371c7d76" formatted="false">"Invalid backup"</string>
+    <string name="text_a9bd5dc954ba" formatted="false">"Could not read backup"</string>
+    <string name="text_694abc983ec7" formatted="false">"Replace current account data?"</string>
+    <string name="text_722dca4d5e9b" formatted="false">"All current account data will be replaced. Save a backup first.\n"</string>
+    <string name="text_4df94446f435" formatted="false">"Transactions: {0}, gold assets: {1}, cash savings: {2}.\n"</string>
+    <string name="text_f82f083ba1cf" formatted="false">"Receipt images and attachments are not included. Other accounts will not be changed."</string>
+    <string name="text_7f40355588ef" formatted="false">"Restored successfully"</string>
+    <string name="text_82e454e3065d" formatted="false">"Restore failed; your data was not changed. Older secret backups require the original device key."</string>
+    <string name="text_b07a7cb3a1af" formatted="false">"Could not restore backup"</string>
+    <string name="text_5fc5f97d822a" formatted="false">"Replace and restore"</string>
+    <string name="text_949fece4e9b3" formatted="false">"Encrypted backup"</string>
+    <string name="text_8a0a96f7a552" formatted="false">"Protect your financial data and vault secrets with a password. Keep it to restore on another device. Images and attachments are not included."</string>
+    <string name="text_5aa636210f67" formatted="false">"Backup password"</string>
+    <string name="text_f29136956db6" formatted="false">"Could not create backup"</string>
+    <string name="text_1019d9dd0ede" formatted="false">"Save backup"</string>
+    <string name="text_0ba062d0f757" formatted="false">"Could not open file picker"</string>
+    <string name="text_90bab6e8c99d" formatted="false">"Open backup to restore"</string>
+    <string name="text_d0e559035070" formatted="false">"Manage app sections"</string>
+    <string name="text_241c729c5948" formatted="false">"Show or hide app sections to suit your needs. Hiding a section does not delete its data."</string>
+    <string name="text_ac5f8981223b" formatted="false">"Income and expenses"</string>
+    <string name="text_9eabacadf3bd" formatted="false">"Core section (always enabled)"</string>
+    <string name="text_0b8ff6a5604b" formatted="false">"Net worth"</string>
+    <string name="text_5053d7bf195f" formatted="false">"Assets and liabilities"</string>
+    <string name="text_3c7023c98558" formatted="false">"Debts (owed to me / I owe)"</string>
+    <string name="text_630aff3fd3d6" formatted="false">"Manage debts and money owed"</string>
+    <string name="text_3ac532621c03" formatted="false">"Financial calendar"</string>
+    <string name="text_4fc432f8f7b5" formatted="false">"Transactions and commitments throughout the month"</string>
+    <string name="text_0911e2b39ae7" formatted="false">"Cash savings"</string>
+    <string name="text_8203c5a07039" formatted="false">"Savings funds and currencies"</string>
+    <string name="text_270cfe7362c3" formatted="false">"Gold and bullion"</string>
+    <string name="text_78bca3b4e55d" formatted="false">"Jewelry, bullion, and their current value"</string>
+    <string name="text_bb5f9ffd9b6d" formatted="false">"Commitments and bills"</string>
+    <string name="text_9e754462d4ab" formatted="false">"Rent, bills, and monthly installments"</string>
+    <string name="text_6831249d5a13" formatted="false">"Children\'s lessons"</string>
+    <string name="text_25b22a8dc6ba" formatted="false">"Teacher payments and lesson expenses"</string>
+    <string name="text_1e293181f8da" formatted="false">"Group outings"</string>
+    <string name="text_6eee8a54550a" formatted="false">"Track outings and split expenses"</string>
+    <string name="text_73227b4300b7" formatted="false">"Budgets and spending limits"</string>
+    <string name="text_b3e90b0100ae" formatted="false">"Set a budget for each category"</string>
+    <string name="text_25e01e43fe84" formatted="false">"Jewelry"</string>
+    <string name="text_acf535a08f2a" formatted="false">"Gold coin"</string>
+    <string name="text_add83a5f7f2d" formatted="false">"Gold pound"</string>
+    <string name="text_83b4b55adb2a" formatted="false">"Other"</string>
+    <string name="text_7bf909688837" formatted="false">"Edit gold asset"</string>
+    <string name="text_30d402720db8" formatted="false">"Example: 10 g bullion bar or gold bracelets"</string>
+    <string name="text_2c3d2ad75181" formatted="false">"{0} karat"</string>
+    <string name="text_9595409f46b5" formatted="false">"{0} karat"</string>
+    <string name="text_0651503e203d" formatted="false">"Example: 10.0, 8.0, or 31.1"</string>
+    <string name="text_ae71934c1102" formatted="false">"g"</string>
+    <string name="text_09355e9347df" formatted="false">"8 g (gold pound)"</string>
+    <string name="text_73e9421c8325" formatted="false">"31.1 g (ounce)"</string>
+    <string name="text_7bb800f48f49" formatted="false">"Example: 50000"</string>
+    <string name="text_af339c9bb6d8" formatted="false">"Current vault value:"</string>
+    <string name="text_fb74677123fd" formatted="false">"{0} EGP"</string>
+    <string name="text_02d2dfdd5f2b" formatted="false">"Price per gram ({0} karat):"</string>
+    <string name="text_938d3e255411" formatted="false">"{0} EGP/g"</string>
+    <string name="text_5736e8751e12" formatted="false">"Estimated profit / Return:"</string>
+    <string name="text_542bbcfa90cb" formatted="false">"{0}{1} EGP ({2}%)"</string>
+    <string name="text_940eb631311c" formatted="false">"Notes (karat, certificate number, packaging...)"</string>
+    <string name="text_f12384b96e33" formatted="false">"Change photo"</string>
+    <string name="text_5fa7c4ce5839" formatted="false">"{0} karat"</string>
+    <string name="text_953e21c4f2c5" formatted="false">"{0} g"</string>
+    <string name="text_fff19b8abb41" formatted="false">"Purchase price: {0} EGP"</string>
+    <string name="text_92291ba269c7" formatted="false">"Actual amount received in EGP"</string>
+    <string name="text_3459448d9802" formatted="false">"Realized sale profit:"</string>
+    <string name="text_bb392991a17f" formatted="false">"Realized sale loss:"</string>
+    <string name="text_ae55a78e16f4" formatted="false">"{0}{1} EGP"</string>
+    <string name="text_8c2840bd04e1" formatted="false">"Sale notes (shop, price per gram, etc.)"</string>
+    <string name="text_bd5b1d4d50d9" formatted="false">"Confirm sale"</string>
+    <string name="text_8f3cc63d292c" formatted="false">"Sold • {0}"</string>
+    <string name="text_0619e9cfa1ee" formatted="false">"In vault • {0} karat"</string>
+    <string name="text_2a5f152b8551" formatted="false">"Asset type"</string>
+    <string name="text_6e31d9bdf7b4" formatted="false">"Karat"</string>
+    <string name="text_20218fd4bf04" formatted="false">"Weight in grams"</string>
+    <string name="text_fc4d767fab55" formatted="false">"Purpose"</string>
+    <string name="text_f4bce26fcbd7" formatted="false">"Savings and investment"</string>
+    <string name="text_0694745f849b" formatted="false">"Jewelry and personal use"</string>
+    <string name="text_21fc46ec23cd" formatted="false">"Purchase date"</string>
+    <string name="text_6d3b8a57de85" formatted="false">"Purchase price"</string>
+    <string name="text_d03ed058b768" formatted="false">"{0} EGP"</string>
+    <string name="text_574c4d101909" formatted="false">"Current price per gram"</string>
+    <string name="text_e9af10cebbd5" formatted="false">"{0} EGP"</string>
+    <string name="text_29f8a247485e" formatted="false">"Current market value"</string>
+    <string name="text_97c39d12f919" formatted="false">"{0} EGP"</string>
+    <string name="text_ec746491fb2e" formatted="false">"Profit / Return"</string>
+    <string name="text_6f6b054fcaf6" formatted="false">"{0}{1} EGP ({2}%)"</string>
+    <string name="text_37e9486a6817" formatted="false">"Actual sale price"</string>
+    <string name="text_044936796b55" formatted="false">"{0} EGP"</string>
+    <string name="text_6045f88b80a0" formatted="false">"Sale date"</string>
+    <string name="text_378584de934b" formatted="false">"Realized profit"</string>
+    <string name="text_267dda293317" formatted="false">"Sale notes"</string>
+    <string name="text_f05125201dc0" formatted="false">"Additional notes"</string>
+    <string name="text_40ca4ab3b62c" formatted="false">"🤝 Sell asset"</string>
+    <string name="text_b4f76c3aa21e" formatted="false">"Edit"</string>
+    <string name="text_32ef45f6c4dd" formatted="false">"Enter the price per gram in EGP for each karat to update gold asset values automatically."</string>
+    <string name="text_c733eb2d663a" formatted="false">"Live update via GoldAPI.io"</string>
+    <string name="text_f6141002d56d" formatted="false">"Fetch prices directly from goldapi.io"</string>
+    <string name="text_e06f61ff041d" formatted="false">"24 karat (pure bullion 99.9)"</string>
+    <string name="text_33c43892b786" formatted="false">"22 karat"</string>
+    <string name="text_bf390a0524ba" formatted="false">"21 karat (common / Gold pounds)"</string>
+    <string name="text_af3b35eeda19" formatted="false">"18 karat (modern jewelry)"</string>
+    <string name="text_e69a15a0a8d1" formatted="false">"14 karat"</string>
+    <string name="text_a49055f064e4" formatted="false">"12 karat"</string>
+    <string name="text_29dc89ac3e1d" formatted="false">"Restore default market prices"</string>
+    <string name="text_0b97ec532c0e" formatted="false">"Save and update"</string>
+    <string name="text_0272fe37ecfa" formatted="false">"SAR"</string>
+    <string name="text_258bc29b7ae5" formatted="false">"AED"</string>
+    <string name="text_0cb303cf3d30" formatted="false">"Update live gold prices"</string>
+    <string name="text_d9e689d6c7ee" formatted="false">"Provided by GoldAPI.io"</string>
+    <string name="text_64667411274d" formatted="false">"An API key is configured. Gold prices for all karats are fetched using the selected currency."</string>
+    <string name="text_62aa66740379" formatted="false">"Automatic daily update (12:00 PM)"</string>
+    <string name="text_d0b12b2cc73d" formatted="false">"Scheduled background updates with price notifications"</string>
+    <string name="text_c5f5d253fe51" formatted="false">"Your API key (access token)"</string>
+    <string name="text_753686b7d08a" formatted="false">"Example: goldapi-xxxxxxxxxxxxxxxx-drv"</string>
+    <string name="text_05f0a0d376f8" formatted="false">"⚡ The current key is configured and ready"</string>
+    <string name="text_e3629ac272ce" formatted="false">"Restore default"</string>
+    <string name="text_5136d2baf9c5" formatted="false">"Pricing currency:"</string>
+    <string name="text_a70ee3c6a8cd" formatted="false">"Egyptian pound (EGP)"</string>
+    <string name="text_98ca59bfadc9" formatted="false">"US dollar (USD)"</string>
+    <string name="text_1d09a9c7dfb6" formatted="false">"Saudi riyal (SAR)"</string>
+    <string name="text_1288bee92f4e" formatted="false">"UAE dirham (AED)"</string>
+    <string name="text_51ccc930475c" formatted="false">"Fetching..."</string>
+    <string name="text_aa669a2ec51f" formatted="false">"Fetch and update now"</string>
+    <string name="text_342321732127" formatted="false">"Edit cash savings"</string>
+    <string name="text_a6a99774a971" formatted="false">"Saved amount"</string>
+    <string name="text_dd178e8508b9" formatted="false">"Example: 25000"</string>
+    <string name="text_a7cc4e694ddc" formatted="false">"Description / Savings goal"</string>
+    <string name="text_ebab6415c56f" formatted="false">"Example: emergency fund, investment cash..."</string>
+    <string name="text_2621b907b936" formatted="false">"Transfer between vaults"</string>
+    <string name="text_e9258a5036f8" formatted="false">"You need at least two vaults to make a transfer."</string>
+    <string name="text_d4c6598d6ffa" formatted="false">"OK"</string>
+    <string name="text_8ab3355c9b8e" formatted="false">"{0} (balance: {1})"</string>
+    <string name="text_e4b742a3d7dd" formatted="false">"From vault"</string>
+    <string name="text_b22041755a8d" formatted="false">"{0} (balance: {1})"</string>
+    <string name="text_54536665883b" formatted="false">"To vault"</string>
+    <string name="text_6d657f28024a" formatted="false">"Transfer amount"</string>
+    <string name="text_e85b74a3d0e3" formatted="false">"Note (optional)"</string>
+    <string name="text_fca3bacd6fd9" formatted="false">"Enter a valid transfer amount"</string>
+    <string name="text_5af8cd372f42" formatted="false">"Vault balance ({0}) is insufficient for this transfer"</string>
+    <string name="text_0728ae910ae8" formatted="false">"Transfer"</string>
+    <string name="text_cf185716b8b8" formatted="false">"Smart Vault"</string>
+    <string name="text_ab638fff0e70" formatted="false">"Smart Vault 🔐"</string>
+    <string name="text_225183350e62" formatted="false">"Manage your budget and assets securely"</string>
+    <string name="text_7af517281485" formatted="false">"Verify email address"</string>
+    <string name="text_70a45a2ea39f" formatted="false">"“We sent a verification email to {0}. Verify your email, then sign in.”"</string>
+    <string name="text_417be3fdb6ec" formatted="false">"After opening the link in your email, select Sign in below to continue."</string>
+    <string name="text_5f4d515e99b3" formatted="false">"Sign in"</string>
+    <string name="text_750d50487cef" formatted="false">"Verification email resent successfully!"</string>
+    <string name="text_c67db272bcec" formatted="false">"Resend verification email"</string>
+    <string name="text_f6f2f35c8ae0" formatted="false">"Change email"</string>
+    <string name="text_151ff0110e44" formatted="false">"Sign in to your account"</string>
+    <string name="text_f4e3d0a3436a" formatted="false">"Email"</string>
+    <string name="text_af8756f4d1af" formatted="false">"Password"</string>
+    <string name="text_491a8e0b00c1" formatted="false">"Forgot password?"</string>
+    <string name="text_a81fe1ccd11a" formatted="false">"Enter your email and password"</string>
+    <string name="text_d05c14280302" formatted="false">"Signed in successfully! Welcome"</string>
+    <string name="text_c6c409f93604" formatted="false">"Sign in"</string>
+    <string name="text_f37cc9c94b5a" formatted="false">"Don\'t have an account?"</string>
+    <string name="text_bb6cc0f4362b" formatted="false">"Create account"</string>
+    <string name="text_556ff56ab3e7" formatted="false">"Full name"</string>
+    <string name="text_00e10734fb09" formatted="false">"Password (at least 6 characters)"</string>
+    <string name="text_2f9171d15f58" formatted="false">"Confirm password"</string>
+    <string name="text_aa496dc24580" formatted="false">"Fill in all required fields"</string>
+    <string name="text_f3e5984d2c87" formatted="false">"Passwords do not match"</string>
+    <string name="text_792bd0e35f6c" formatted="false">"Password must be at least 6 characters"</string>
+    <string name="text_46e64ce1d547" formatted="false">"Create account"</string>
+    <string name="text_9e6712c97481" formatted="false">"Already have an account?"</string>
+    <string name="text_8c6117b67c8b" formatted="false">"Sign in"</string>
+    <string name="text_728bd4323f59" formatted="false">"Resend verification email"</string>
+    <string name="text_39859f44ad6e" formatted="false">"Enter your account password to resend the verification link to:\n{0}"</string>
+    <string name="text_7ba22cf7e99d" formatted="false">"Password"</string>
+    <string name="text_07e0622de969" formatted="false">"Verification email sent again!"</string>
+    <string name="text_ed2999d5230c" formatted="false">"Send now"</string>
+    <string name="text_ca1e582768c3" formatted="false">"Two-step verification"</string>
+    <string name="text_e408bd278ef3" formatted="false">"Two-factor authentication (2FA)"</string>
+    <string name="text_6b2387213f6b" formatted="false">"Two-step protection is enabled. Enter the 6-digit security code to verify and sign in:"</string>
+    <string name="text_79a84ac793d2" formatted="false">"Verification code (e.g. 123456)"</string>
+    <string name="text_5988003cc37a" formatted="false">"Verified successfully! Welcome"</string>
+    <string name="text_123680f2a1b8" formatted="false">"Incorrect verification code"</string>
+    <string name="text_c07631980d85" formatted="false">"Verify and sign in"</string>
+    <string name="text_ea4ec56dde86" formatted="false">"Cancel / Sign in directly"</string>
+    <string name="text_f779e19d8133" formatted="false">"Reset password"</string>
+    <string name="text_5d097bf37a95" formatted="false">"Enter your email to receive a secure password reset link through Firebase Authentication:"</string>
+    <string name="text_ba1d3e0fbc7b" formatted="false">"Enter your email address"</string>
+    <string name="text_973044e8aa85" formatted="false">"Password reset link sent successfully!"</string>
+    <string name="text_61a0b44d7e5d" formatted="false">"Send link"</string>
+    <string name="text_3306a9374e57" formatted="false">"Local AES-256 encryption before upload • Cloud Firestore"</string>
+    <string name="text_fd14703a0a80" formatted="false">"Lock vault"</string>
+    <string name="text_da6e6d26cdc6" formatted="false">"Generate password"</string>
+    <string name="text_c3e160350e30" formatted="false">"Activity log"</string>
+    <string name="text_811cabca45ae" formatted="false">"Encrypted backup"</string>
+    <string name="text_3e2d41206804" formatted="false">"Search vault items or categories..."</string>
+    <string name="text_0d97fd6e069e" formatted="false">"Clear"</string>
+    <string name="text_904779de8074" formatted="false">"All ({0})"</string>
+    <string name="text_f0d6b532fd55" formatted="false">"No items match your search"</string>
+    <string name="text_31dd7827ba4f" formatted="false">"Your cloud vault is empty"</string>
+    <string name="text_e39fb1c44b15" formatted="false">"Select (+) below to add passwords or private notes for encryption and syncing with Firestore."</string>
+    <string name="text_1f7d44005382" formatted="false">"Copied to clipboard"</string>
+    <string name="text_271dc1c1ef0a" formatted="false">"Item deleted successfully"</string>
+    <string name="text_0be31b74e082" formatted="false">"Add item"</string>
+    <string name="text_7c5f51aaf731" formatted="false">"Encrypted and saved to the cloud successfully"</string>
+    <string name="text_e532d79c9402" formatted="false">"Strong password copied to clipboard"</string>
+    <string name="text_46e6841e2136" formatted="false">"Copy"</string>
+    <string name="text_0804220142f6" formatted="false">"Hide"</string>
+    <string name="text_4bde76230633" formatted="false">"Decrypt and show"</string>
+    <string name="text_e17b604a24c6" formatted="false">"Confirm cloud vault deletion"</string>
+    <string name="text_5d7a567d8dca" formatted="false">"Delete “{0}”? This permanently removes the item from Cloud Firestore and records the action in the activity log."</string>
+    <string name="text_494feab789bf" formatted="false">"Yes, delete"</string>
+    <string name="text_03d4f49a9f53" formatted="false">"Add encrypted item"</string>
+    <string name="text_2758eaf60da4" formatted="false">"Edit vault item"</string>
+    <string name="text_931f42b60f68" formatted="false">"Item type:"</string>
+    <string name="text_245ea7c50a6b" formatted="false">"Item title (e.g. bank account, work email)"</string>
+    <string name="text_f746871b441d" formatted="false">"Category (e.g. personal, banking, work)"</string>
+    <string name="text_7f112b75b4d6" formatted="false">"Secret password"</string>
+    <string name="text_0b410d0448e6" formatted="false">"Card number and sensitive details"</string>
+    <string name="text_cd86b470984d" formatted="false">"Private note"</string>
+    <string name="text_a7c4e82d7f6c" formatted="false">"Document content or private text"</string>
+    <string name="text_54cdc9f60a75" formatted="false">"Data is encrypted locally on your phone with AES-256 before upload to Firestore."</string>
+    <string name="text_ae865794266f" formatted="false">"Enter an item title"</string>
+    <string name="text_19d3d5df6a5e" formatted="false">"Enter the private data or password"</string>
+    <string name="text_a3a29271cc23" formatted="false">"Encrypt and save"</string>
+    <string name="text_50b8de962ea0" formatted="false">"Strong password generator"</string>
+    <string name="text_194a8a3e1619" formatted="false">"Generate again"</string>
+    <string name="text_9579eae2b253" formatted="false">"Password strength: "</string>
+    <string name="text_0d4da760f02f" formatted="false">"Password length:"</string>
+    <string name="text_f1a168373935" formatted="false">"{0} characters"</string>
+    <string name="text_a34b6b4ce659" formatted="false">"Uppercase letters (A-Z)"</string>
+    <string name="text_b3b0acd2e3dc" formatted="false">"Numbers (0-9)"</string>
+    <string name="text_d2e4d9585aa6" formatted="false">"Special characters (!@#$)"</string>
+    <string name="text_1b3717f1298b" formatted="false">"Copy and use"</string>
+    <string name="text_e20fd67d44a3" formatted="false">"Vault activity log (Firestore)"</string>
+    <string name="text_9c607d6922dd" formatted="false">"No activity recorded yet"</string>
+    <string name="text_bf83e7501261" formatted="false">"Added: {0}"</string>
+    <string name="text_f8b496281864" formatted="false">"Edited: {0}"</string>
+    <string name="text_75791690d672" formatted="false">"Deleted: {0}"</string>
+    <string name="text_8d8199888617" formatted="false">"Export encrypted backup (JSON)"</string>
+    <string name="text_777ff5690379" formatted="false">"This backup contains AES-256-encrypted vault items and can only be read using this app."</string>
+    <string name="text_2c4618769704" formatted="false">"Share / Export"</string>
+    <string name="text_8a7c72902813" formatted="false">"Cloud vault is locked"</string>
+    <string name="text_f9fab4694b1f" formatted="false">"The vault was locked automatically to protect your encrypted data. Unlock it with your fingerprint or passcode."</string>
+    <string name="text_e2326a8899ce" formatted="false">"Unlock (fingerprint / Passcode)"</string>
+    <string name="text_5d344c201747" formatted="false">"Add new"</string>
+    <string name="text_693a3a889d03" formatted="false">"Total commitments"</string>
+    <string name="text_3c9fcaf97c72" formatted="false">"Paid"</string>
+    <string name="text_557f737dff23" formatted="false">"Remaining"</string>
+    <string name="text_a7b009ea9d81" formatted="false">"No monthly commitments recorded. Select + to add rent or bills."</string>
+    <string name="text_776204e9062e" formatted="false">"Total lessons"</string>
+    <string name="text_610c9fe690b4" formatted="false">"Remaining lesson payments"</string>
+    <string name="text_89bb34afddb6" formatted="false">"No children\'s lessons recorded. Select + to add a lesson."</string>
+    <string name="text_cf950597f86b" formatted="false">"Due date: {0}"</string>
+    <string name="text_a49bd76b1c26" formatted="false">"Paid"</string>
+    <string name="text_a30287e12410" formatted="false">"Unpaid"</string>
+    <string name="text_edc05b12eab0" formatted="false">"Lesson"</string>
+    <string name="text_0b892ba3c6ad" formatted="false">"Teacher: {0} | {1}"</string>
+    <string name="text_423c46d500b6" formatted="false">"Better than last month"</string>
+    <string name="text_07573c6f7bf2" formatted="false">"Your expenses are lower than last month"</string>
+    <string name="text_b1941eb051e1" formatted="false">"Saver"</string>
+    <string name="text_ff701fdfe751" formatted="false">"Save 20% or more of this month\'s income"</string>
+    <string name="text_b0bbbdfb65cd" formatted="false">"Daily tracker"</string>
+    <string name="text_caf13cd7cfae" formatted="false">"Record transactions on at least 15 days this month"</string>
+    <string name="text_bb695066ad60" formatted="false">"Commitment organizer"</string>
+    <string name="text_4cd4daac5f7a" formatted="false">"Pay all commitments and lessons this month"</string>
+    <string name="text_e0b6c7065e6a" formatted="false">"Under control"</string>
+    <string name="text_9c27d696138c" formatted="false">"Your projected month-end balance is in the safe range"</string>
+    <string name="text_3196303021cd" formatted="false">"Receipt archive"</string>
+    <string name="text_6316da350959" formatted="false">"Attach receipts to at least half of this month\'s expenses"</string>
+    <string name="text_e74cf8f88064" formatted="false">"Hide savings card"</string>
+    <string name="text_c8b0cd8eb4b8" formatted="false">"Show savings card"</string>
+    <string name="text_3beed403483e" formatted="false">"Debts"</string>
+    <string name="text_9555082e8961" formatted="false">"Calendar"</string>
+    <string name="text_0326e4ed17db" formatted="false">"Transfer"</string>
+    <string name="text_f6968545d1d8" formatted="false">"Customize"</string>
+    <string name="text_cec0e67fc3a9" formatted="false">"Payments due"</string>
+    <string name="text_b5ddb3447714" formatted="false">"{0} due"</string>
+    <string name="text_877e2ea5f33a" formatted="false">"Show / Hide balance"</string>
+    <string name="text_4654875cd068" formatted="false">"Up arrow - Income"</string>
+    <string name="text_3e1877e91a6f" formatted="false">"Down arrow - Expenses"</string>
+    <string name="text_1b7441ca41de" formatted="false">"My finances today (net worth) 🛡️"</string>
+    <string name="text_a738ad2e9389" formatted="false">"Local calculation of assets and liabilities"</string>
+    <string name="text_e11353146505" formatted="false">"Asset details →"</string>
+    <string name="text_3765938331a5" formatted="false">"Total assets"</string>
+    <string name="text_24d53def2103" formatted="false">"Smart analytics"</string>
+    <string name="text_d383c633feff" formatted="false">"Financial insights 💡"</string>
+    <string name="text_0d4fdbffe901" formatted="false">"100% local financial insights engine"</string>
+    <string name="text_6e8c46e9d70b" formatted="false">"View all ({0}) →"</string>
+    <string name="text_76258e00f832" formatted="false">"Savings"</string>
+    <string name="text_74885d00713f" formatted="false">"Savings and financial assets 💰"</string>
+    <string name="text_5814373b6d2e" formatted="false">"Gold, bullion, and cash assets"</string>
+    <string name="text_f7d9ae166049" formatted="false">"View all →"</string>
+    <string name="text_f3ac2e6da42a" formatted="false">"Total savings (cash + Gold)"</string>
+    <string name="text_a35683da616b" formatted="false">"Financial asset"</string>
+    <string name="text_a468321f66f1" formatted="false">"💛 Gold value"</string>
+    <string name="text_c4321b7e4fed" formatted="false">"💵 Cash"</string>
+    <string name="text_35dc88643736" formatted="false">"⚖️ Gold weight"</string>
+    <string name="text_23e643d03dde" formatted="false">"📦 Assets"</string>
+    <string name="text_fd835aa43312" formatted="false">"{0} items"</string>
+    <string name="text_7d83a31000b2" formatted="false">"Smart analysis"</string>
+    <string name="text_28dae43e8dcf" formatted="false">"At your current spending rate, your projected month-end balance is {0} {1}."</string>
+    <string name="text_2bccc4bbf0d9" formatted="false">"Last month\'s expenses"</string>
+    <string name="text_a39d9e5bcc98" formatted="false">"No comparison available"</string>
+    <string name="text_4757b3b88509" formatted="false">"Last month\'s income"</string>
+    <string name="text_3431c146da7c" formatted="false">"Average daily spending"</string>
+    <string name="text_9aa255f3885d" formatted="false">"Safe daily spending limit"</string>
+    <string name="text_f9aaa00729de" formatted="false">"Add income"</string>
+    <string name="text_150293b7792d" formatted="false">"Percentage of salary spent"</string>
+    <string name="text_be1e41cbff16" formatted="false">"Remaining: {0} {1}"</string>
+    <string name="text_501aabb98ee5" formatted="false">"Spent: {0} {1}"</string>
+    <string name="text_2e3575a463d9" formatted="false">"Salary analysis"</string>
+    <string name="text_4f7580d78f5f" formatted="false">"Where did my salary go this month?"</string>
+    <string name="text_d7e36702a621" formatted="false">"You have used {0}% of your salary. See Reports for a detailed breakdown."</string>
+    <string name="text_ba828efad7d2" formatted="false">"Your badges"</string>
+    <string name="text_d6ed50d80f68" formatted="false">"Your badges this month"</string>
+    <string name="text_f8518fa27a4a" formatted="false">"Keep recording transactions and paying commitments on time to earn more badges."</string>
+    <string name="text_e50acc511afa" formatted="false">"Recent transactions"</string>
+    <string name="text_d36294e5abb3" formatted="false">"View all"</string>
+    <string name="text_c302118eabab" formatted="false">"No transactions yet"</string>
+    <string name="text_cecfe96db0ad" formatted="false">"Monthly commitments"</string>
+    <string name="text_2dffd674f9b7" formatted="false">"Where did my salary go?"</string>
+    <string name="text_886b0c458f0a" formatted="false">"Debt management (owed to me / I owe)"</string>
+    <string name="text_d561097988e6" formatted="false">"Add debt"</string>
+    <string name="text_b25109f466b5" formatted="false">"Owed to me"</string>
+    <string name="text_f032f8eb25a3" formatted="false">"I owe"</string>
+    <string name="text_d72beaf029a2" formatted="false">"Net"</string>
+    <string name="text_a8ff844b8378" formatted="false">"Owed to me ({0})"</string>
+    <string name="text_5873877f1bb9" formatted="false">"I owe ({0})"</string>
+    <string name="text_11fdef2dc5f8" formatted="false">"All"</string>
+    <string name="text_8fb4e938d831" formatted="false">"Active / Unpaid"</string>
+    <string name="text_82a270439354" formatted="false">"Fully paid"</string>
+    <string name="text_273bde324028" formatted="false">"No money owed to you is currently recorded"</string>
+    <string name="text_ad6cff15df96" formatted="false">"No money you owe is currently recorded"</string>
+    <string name="text_8dd0bd35db83" formatted="false">"Record new debt"</string>
+    <string name="text_3bdc0e233e92" formatted="false">"Fully paid"</string>
+    <string name="text_e69117cdd5fc" formatted="false">"Partially paid"</string>
+    <string name="text_41b054617ef6" formatted="false">"Active"</string>
+    <string name="text_17a1e9ba641c" formatted="false">"Total amount"</string>
+    <string name="text_5c793e037689" formatted="false">"Amount paid"</string>
+    <string name="text_e8348cb43f1e" formatted="false">"Record payment"</string>
+    <string name="text_18e5596bb836" formatted="false">"Transactions and search"</string>
+    <string name="text_d4bd10df9899" formatted="false">"Advanced financial transaction history"</string>
+    <string name="text_90b6c869a171" formatted="false">"Settings"</string>
+    <string name="text_dfee1ee1b524" formatted="false">"Expenses"</string>
+    <string name="text_b321cd775e8e" formatted="false">"Income"</string>
+    <string name="text_b2a8da21fa0d" formatted="false">"Transfers"</string>
+    <string name="text_d076b6b87278" formatted="false">"Search description, vault, category, or amount..."</string>
+    <string name="text_fb8387b2d570" formatted="false">"Advanced filters"</string>
+    <string name="text_8d23c3965527" formatted="false">"Date range"</string>
+    <string name="text_d38aa97bb96e" formatted="false">"All time"</string>
+    <string name="text_b7523863599a" formatted="false">"This month"</string>
+    <string name="text_349de9cf3c2d" formatted="false">"Last 7 days"</string>
+    <string name="text_c94c6c1e0911" formatted="false">"Last 30 days"</string>
+    <string name="text_cc23678b3cbc" formatted="false">"Sort by"</string>
+    <string name="text_36299595d69c" formatted="false">"Newest"</string>
+    <string name="text_e69ddb8fafca" formatted="false">"Oldest"</string>
+    <string name="text_42b76568a25e" formatted="false">"Highest amount"</string>
+    <string name="text_81ae1f96d293" formatted="false">"Lowest amount"</string>
+    <string name="text_9650779e9a22" formatted="false">"Vault"</string>
+    <string name="text_5db167239353" formatted="false">"All vaults"</string>
+    <string name="text_93fe23db91f1" formatted="false">"No results match your search or filters"</string>
+    <string name="text_1c63af81805c" formatted="false">"Previous month"</string>
+    <string name="text_f948600173e7" formatted="false">"Next month"</string>
+    <string name="text_e8c6dbaeeb61" formatted="false">"Income"</string>
+    <string name="text_8b9fbc5898c7" formatted="false">"Expense"</string>
+    <string name="text_a478daf22935" formatted="false">"Sat"</string>
+    <string name="text_29c2a914d745" formatted="false">"Sun"</string>
+    <string name="text_a46d7f58ba2c" formatted="false">"Mon"</string>
+    <string name="text_81a8732d2ed7" formatted="false">"Tue"</string>
+    <string name="text_67e1e0bf90b1" formatted="false">"Wed"</string>
+    <string name="text_af0a56c556f2" formatted="false">"Thu"</string>
+    <string name="text_5a03133f974d" formatted="false">"Fri"</string>
+    <string name="text_35ca74820a1f" formatted="false">"EEEE, d MMMM yyyy"</string>
+    <string name="text_937bce15faae" formatted="false">"Income: +{0} {1}"</string>
+    <string name="text_140ac31d42be" formatted="false">"Expense: -{0} {1}"</string>
+    <string name="text_6f5935f75864" formatted="false">"No transactions or commitments recorded for this day."</string>
+    <string name="text_61e3af204ba7" formatted="false">"Transfer: {0} → {1}"</string>
+    <string name="text_ce2e34b7a188" formatted="false">"Commitment: {0}"</string>
+    <string name="text_0ac49977fcf1" formatted="false">"Lesson: {0} - {1}"</string>
+    <string name="text_56ea571722e0" formatted="false">"Debt: {0} ({1})"</string>
+    <string name="text_a79f76c2ab19" formatted="false">"Owed to me"</string>
+    <string name="text_36b11439ed12" formatted="false">"I owe"</string>
+    <string name="text_d0e88faf7ac5" formatted="false">"Your net worth"</string>
+    <string name="text_3e62f9aa2335" formatted="false">"Everything you own minus everything you owe"</string>
+    <string name="text_f5b0b65c4672" formatted="false">"Assets: {0}%"</string>
+    <string name="text_2ca01d14a9cd" formatted="false">"Liabilities: {0}%"</string>
+    <string name="text_a5cab93ddaa9" formatted="false">"Where is your money? (asset allocation)"</string>
+    <string name="text_6df2c1412f00" formatted="false">"Cash vaults"</string>
+    <string name="text_f805f891c45a" formatted="false">"Money owed to you"</string>
+    <string name="text_75f44963519a" formatted="false">"Net worth over time"</string>
+    <string name="text_17eb7e3e00d7" formatted="false">"7 days"</string>
+    <string name="text_843bcefe4002" formatted="false">"30 days"</string>
+    <string name="text_7e25a36b91db" formatted="false">"90 days"</string>
+    <string name="text_f91a7c9817c8" formatted="false">"Year"</string>
+    <string name="text_a07a7191ef8a" formatted="false">"Periodic net worth snapshots track your asset growth over time."</string>
+    <string name="text_ea8176c4a653" formatted="false">"{0}% of total assets"</string>
+    <string name="text_336c34278460" formatted="false">"Start a new outing?"</string>
+    <string name="text_c050a00c7360" formatted="false">"This clears all expenses for the current outing and resets the total. Continue?"</string>
+    <string name="text_38d709195016" formatted="false">"Yes, clear and start again"</string>
+    <string name="text_3141e1c6517c" formatted="false">"Delete this expense?"</string>
+    <string name="text_572753d189df" formatted="false">"Delete “{0}”, totaling {1} {2}?"</string>
+    <string name="text_45fb4b937312" formatted="false">"Add expense"</string>
+    <string name="text_a6afe34102b0" formatted="false">"Outing expense summary"</string>
+    <string name="text_eca3d1ae0873" formatted="false">"Total expenses"</string>
+    <string name="text_6e916c175a10" formatted="false">"Number of participants"</string>
+    <string name="text_ea26c1bf9441" formatted="false">"Increase"</string>
+    <string name="text_30d31f5738c7" formatted="false">"{0} people"</string>
+    <string name="text_dfd7b77607be" formatted="false">"Decrease"</string>
+    <string name="text_ee9024498f3d" formatted="false">"Each person\'s share"</string>
+    <string name="text_559f0d9909a5" formatted="false">"({0} {1} ÷ {2} participants)"</string>
+    <string name="text_114c075183e5" formatted="false">"Export and share outing PDF report"</string>
+    <string name="text_b754b228e048" formatted="false">"Outing expenses ({0})"</string>
+    <string name="text_ca2624f4fe65" formatted="false">"New outing"</string>
+    <string name="text_d45aaab246f4" formatted="false">"No expenses recorded for this outing yet"</string>
+    <string name="text_ec85d13b5b34" formatted="false">"Record restaurant, cafe, transport, or other expenses to split the total automatically!"</string>
+    <string name="text_16bb72948518" formatted="false">"Add the first outing expense"</string>
+    <string name="text_3da768e11e40" formatted="false">"Outing expense"</string>
+    <string name="text_fd1ca7d5d2d0" formatted="false">"Restaurant / Dinner"</string>
+    <string name="text_ab4ebd37e271" formatted="false">"Cafe / Drinks"</string>
+    <string name="text_2ca551bb7508" formatted="false">"Transport / Fuel"</string>
+    <string name="text_03b7571dc33e" formatted="false">"Cinema tickets"</string>
+    <string name="text_2a5edfcc4a0c" formatted="false">"Dessert / Snacks"</string>
+    <string name="text_8680b323aade" formatted="false">"Add outing expense"</string>
+    <string name="text_5056a21deb50" formatted="false">"Quick suggestions:"</string>
+    <string name="text_5eaf512b3988" formatted="false">"Expense description (restaurant, cafe, transport...)"</string>
+    <string name="text_9c3c9f280b7e" formatted="false">"Amount ({0})"</string>
+    <string name="text_ef2d8a859c1f" formatted="false">"Payer\'s name (optional)"</string>
+    <string name="text_c7291590417a" formatted="false">"Enter an expense description"</string>
+    <string name="text_f0e0c629edec" formatted="false">"Enter a valid amount greater than zero"</string>
+    <string name="text_5b644797aa91" formatted="false">"Add expense"</string>
+    <string name="text_92fec7ad5c88" formatted="false">"Reports"</string>
+    <string name="text_a7cd97e4dea8" formatted="false">"Advanced reports and analytics 📊"</string>
+    <string name="text_503d8216b8f4" formatted="false">"Debt history"</string>
+    <string name="text_cf302286664a" formatted="false">"Smart insights"</string>
+    <string name="text_8f5445f810ec" formatted="false">"Export monthly report"</string>
+    <string name="text_111dfb6319d5" formatted="false">"Choose a month, then export to Excel or save as PDF."</string>
+    <string name="text_4e1f6029deef" formatted="false">"Choose month"</string>
+    <string name="text_37ec3ec47c75" formatted="false">"PDF / Print"</string>
+    <string name="text_bd8897e19b50" formatted="false">"Exporting Excel file..."</string>
+    <string name="text_f6521530b6cc" formatted="false">"At your current spending rate, your projected month-end balance is {0} {1}."</string>
+    <string name="text_7cf2abd361a2" formatted="false">"Projected income usage by month-end"</string>
+    <string name="text_0428e544f101" formatted="false">"📅 {0} days left • Unpaid commitments 0 {1}"</string>
+    <string name="text_5e75dfd7b871" formatted="false">"Total income"</string>
+    <string name="text_d93aba8f3b2c" formatted="false">"Total expenses"</string>
+    <string name="text_c3ce011cbfc7" formatted="false">"Remaining balance"</string>
+    <string name="text_ed84b21f84c6" formatted="false">"Highest spending category"</string>
+    <string name="text_c04f30c9a387" formatted="false">"Lowest spending category"</string>
+    <string name="text_2cbbc5ba846a" formatted="false">"Transaction count"</string>
+    <string name="text_53ac5b04893d" formatted="false">"Attached receipts"</string>
+    <string name="text_74d7c133752f" formatted="false">"Month-end forecast"</string>
+    <string name="text_3fabef14e488" formatted="false">"Percentage of income spent"</string>
+    <string name="text_26f31242494d" formatted="false">"Compared with last month: 0 {0} expenses"</string>
+    <string name="text_31fe2016cd80" formatted="false">"Monthly report"</string>
+    <string name="text_492381ce41a9" formatted="false">"This month\'s financial report"</string>
+    <string name="text_e8e2b8828ad0" formatted="false">"Top spending category"</string>
+    <string name="text_aa57db81e7d4" formatted="false">"April"</string>
+    <string name="text_391eb76ab061" formatted="false">"May"</string>
+    <string name="text_3131fb252b85" formatted="false">"June"</string>
+    <string name="text_cf519ecce6c0" formatted="false">"July"</string>
+    <string name="text_70667b3fc365" formatted="false">"August"</string>
+    <string name="text_d7859e38f801" formatted="false">"Balance forecast"</string>
+    <string name="text_f2ffa599e922" formatted="false">"Projected month-end balance"</string>
+    <string name="text_f12ebdf1be6f" formatted="false">"Based on your current daily spending, your projected month-end balance is {0} {1}"</string>
+    <string name="text_452ec922a214" formatted="false">"March"</string>
+    <string name="text_5135047b6a76" formatted="false">"Gold and cash savings portfolio"</string>
+    <string name="text_5ddcc07d9261" formatted="false">"Live gold prices (GoldAPI.io)"</string>
+    <string name="text_e217243cfbbe" formatted="false">"Updating..."</string>
+    <string name="text_e91d3fd3a4fb" formatted="false">"Updated: {0}"</string>
+    <string name="text_da854123b7f7" formatted="false">"Daily update at 12:00 PM ⏰"</string>
+    <string name="text_cee64bdacca4" formatted="false">"Tap for a live update ⚡"</string>
+    <string name="text_2dc8f9843e1d" formatted="false">"{0} karat:"</string>
+    <string name="text_2d933cb9406f" formatted="false">"GoldAPI settings"</string>
+    <string name="text_a7630d594814" formatted="false">"Manual update"</string>
+    <string name="text_97e232087e83" formatted="false">"Item"</string>
+    <string name="text_1dea7c9eb0a7" formatted="false">"Add gold / Bullion"</string>
+    <string name="text_a71cfacf7e17" formatted="false">"Add cash"</string>
+    <string name="text_2975d499b10d" formatted="false">"Search name, brand, or notes..."</string>
+    <string name="text_45b5db7f16d2" formatted="false">"24 karat"</string>
+    <string name="text_b8c5bc7c6ec1" formatted="false">"21 karat"</string>
+    <string name="text_ad3707ff7947" formatted="false">"18 karat"</string>
+    <string name="text_c71b3f4b0b35" formatted="false">"Bullion"</string>
+    <string name="text_fa00e620f1f1" formatted="false">"Gold pounds"</string>
+    <string name="text_cf067ab1d883" formatted="false">"For savings"</string>
+    <string name="text_996dd7d54174" formatted="false">"Select “Add gold / Bullion” to record your first asset and track its value."</string>
+    <string name="text_352a4e34c03b" formatted="false">"Add bullion or gold asset"</string>
+    <string name="text_07f1aabba20f" formatted="false">"Record cash savings and emergency funds to track your wealth in one place."</string>
+    <string name="text_6fc4b9ab4c80" formatted="false">"Add cash savings"</string>
+    <string name="text_bb944309b74d" formatted="false">"When you sell a gold asset, its sale details, realized profit, and date appear here."</string>
+    <string name="text_dff77eec3f8f" formatted="false">"Current vault value"</string>
+    <string name="text_c8480ab06f6d" formatted="false">"Net profit"</string>
+    <string name="text_4b50574269e7" formatted="false">"Purchased: {0}"</string>
+    <string name="text_314a88e340e3" formatted="false">"🤝 Sell"</string>
+    <string name="text_d9aad4bb6bfb" formatted="false">"Cash savings in vault"</string>
+    <string name="text_df6ebe251845" formatted="false">"Sale date: {0}"</string>
+    <string name="text_28988bc62a1d" formatted="false">"Profit: {0}{1} {2}"</string>
+    <string name="text_8d7760163026" formatted="false">"Purchase price: {0} {1}"</string>
+    <string name="text_0b4d734ed267" formatted="false">"Sale price: {0} {1}"</string>
+    <string name="text_c3bcb0096479" formatted="false">"Asset and savings allocation"</string>
+    <string name="text_7a96970769a2" formatted="false">"Gold and bullion: {0}%"</string>
+    <string name="text_cf682f5d91ab" formatted="false">"Cash: {0}%"</string>
+    <string name="text_f27f52730d77" formatted="false">"Gold breakdown by karat"</string>
+    <string name="text_d90fde7647eb" formatted="false">"{0} karat:"</string>
+    <string name="text_c7cc152a38e2" formatted="false">"({0} items)"</string>
+    <string name="text_fdde5110e883" formatted="false">"{0} g"</string>
+    <string name="text_e60659537352" formatted="false">"Smart Vault savings guidance"</string>
+    <string name="text_2a20ad043671" formatted="false">"Saving in bullion and gold pounds reduces fabrication losses on resale, with the possibility of cashback."</string>
+    <string name="text_0564400ee997" formatted="false">"Keeping 30% to 50% of savings in gold protects the long-term purchasing power of your money against inflation."</string>
+    <string name="text_9c6c3f2d63a2" formatted="false">"Avoid selling gold unless necessary or to move into an investment with a higher return."</string>
+    <string name="text_d1768f19993f" formatted="false">"Today, 04:30 PM"</string>
+    <string name="text_22847c503bbf" formatted="false">"Saudi riyal"</string>
+    <string name="text_3e3938408415" formatted="false">"UAE dirham"</string>
+    <string name="text_9baef1f747f9" formatted="false">"US dollar"</string>
+    <string name="text_daa818587279" formatted="false">"Confirm vault / Account deletion"</string>
+    <string name="text_9e5ba8f6616f" formatted="false">"Permanently delete \'{0}\' ({1} {2})?"</string>
+    <string name="text_2f1f7ddd4129" formatted="false">"Yes, delete account"</string>
+    <string name="text_5662250c3ec4" formatted="false">"Back up / Restore data"</string>
+    <string name="text_f55b07f1ae61" formatted="false">"Edit account"</string>
+    <string name="text_41510ce0badf" formatted="false">"Edit profile"</string>
+    <string name="text_8710d64ff1ad" formatted="false">"Sign out"</string>
+    <string name="text_e0844ef2c543" formatted="false">"Accounts"</string>
+    <string name="text_b7ad4afa609d" formatted="false">"Financial vaults and accounts"</string>
+    <string name="text_e55a7fa423a7" formatted="false">"Add account"</string>
+    <string name="text_47e4c5109ec1" formatted="false">"Edit amount / Name"</string>
+    <string name="text_278eeef2a57d" formatted="false">"Remove vault / Account"</string>
+    <string name="text_185744848ec0" formatted="false">"Budget"</string>
+    <string name="text_3a2c390f55f5" formatted="false">"Monthly category budgets"</string>
+    <string name="text_c32f3d7416d3" formatted="false">"Add limit"</string>
+    <string name="text_3372c9d2ab39" formatted="false">"No category budget limits have been set."</string>
+    <string name="text_615f47f69884" formatted="false">"Currency, appearance, security, and notifications"</string>
+    <string name="text_59d33e6d1d08" formatted="false">"Dark mode"</string>
+    <string name="text_3318a3c350a9" formatted="false">"Dark mode"</string>
+    <string name="text_b2aa3b181ef7" formatted="false">"Fingerprint / PIN lock"</string>
+    <string name="text_2cd8f97fe205" formatted="false">"Fingerprint"</string>
+    <string name="text_92b90aa9b99f" formatted="false">"Enabled - Security code required at sign-in"</string>
+    <string name="text_e17556ce6846" formatted="false">"Disabled"</string>
+    <string name="text_518c30ca8f7f" formatted="false">"Daily expense reminder"</string>
+    <string name="text_3ce2fa4d9cb9" formatted="false">"Automatic daily notification at 8:00 PM"</string>
+    <string name="text_7274e30c25f2" formatted="false">"Daily notifications"</string>
+    <string name="text_d32fd57d806f" formatted="false">"An immediate test notification has been scheduled"</string>
+    <string name="text_21011df2bcce" formatted="false">"Test notification"</string>
+    <string name="text_eba265c3744d" formatted="false">"Test reminder notification now"</string>
+    <string name="text_7d11e29cfdd6" formatted="false">"Export financial reports"</string>
+    <string name="text_d2a75b7bc22e" formatted="false">"Export records as PDF or Excel"</string>
+    <string name="text_770c11e048d1" formatted="false">"Export PDF"</string>
+    <string name="text_0f7b9bca13a1" formatted="false">"Export PDF report"</string>
+    <string name="text_99f67b516741" formatted="false">"Financial transactions exported to Excel (CSV) successfully!"</string>
+    <string name="text_692e087830e9" formatted="false">"Export Excel"</string>
+    <string name="text_9471d17ec31e" formatted="false">"About"</string>
+    <string name="text_2731e2bf2295" formatted="false">"App information and version"</string>
+    <string name="text_b0d1f789f55d" formatted="false">"Version {0} • Money, gold, and savings management"</string>
+    <string name="text_5d6809ca20b5" formatted="false">"Made with ❤️ in Egypt"</string>
+    <string name="text_b649d28445e1" formatted="false">"Enter your email and password"</string>
+    <string name="text_696deb0e591f" formatted="false">"Password must be at least 6 characters"</string>
+    <string name="text_9256779cdd4a" formatted="false">"Could not create account"</string>
+    <string name="text_53d98fb257e8" formatted="false">"This email is already registered. Please sign in."</string>
+    <string name="text_121320c4df9c" formatted="false">"Invalid email address format"</string>
+    <string name="text_3401dab3bbb8" formatted="false">"Weak password. Use at least 6 characters."</string>
+    <string name="text_7ff6d34faf78" formatted="false">"Account not found"</string>
+    <string name="text_9930d1b1aa6d" formatted="false">"Could not sign in"</string>
+    <string name="text_1f88df1febf2" formatted="false">"Incorrect email or password"</string>
+    <string name="text_b05a627b5b30" formatted="false">"Network error. Check your internet connection."</string>
+    <string name="text_819cac148daf" formatted="false">"Could not send verification email"</string>
+    <string name="text_aa0d0095f903" formatted="false">"Check your password to resend the verification email"</string>
+    <string name="text_c5bef9aa9b15" formatted="false">"Enter your password to resend the verification link"</string>
+    <string name="text_83693d7ac448" formatted="false">"Enter your email first"</string>
+    <string name="text_c166bcfd6593" formatted="false">"Could not send password reset link"</string>
+    <string name="text_11f4e1c524c6" formatted="false">"No account is registered with this email"</string>
+    <string name="text_c4b9c9643782" formatted="false">"Invalid email address format"</string>
+    <string name="text_fd3f055df0fc" formatted="false">"An error occurred while saving"</string>
+    <string name="text_ee344618d7b5" formatted="false">"An error occurred while deleting"</string>
+    <string name="text_a024fc180e2f" formatted="false">"The account changed. Open backup again."</string>
+    <string name="text_7f76a273e765" formatted="false">"Commitment payment: {0}"</string>
+    <string name="text_ba7d226884f5" formatted="false">"Children\'s lessons"</string>
+    <string name="text_1b7729a095fd" formatted="false">"Lesson payment: {0} - {1}"</string>
+    <string name="text_12aebb198ef9" formatted="false">"Save failed: {0}"</string>
+    <string name="text_5111261821f6" formatted="false">"Save failed"</string>
+    <string name="text_1f4dfc40d5ed" formatted="false">"Could not delete transaction"</string>
+    <string name="text_6aa5c6446010" formatted="false">"Enter your GoldAPI.io API key first"</string>
+    <string name="text_69369f94e61a" formatted="false">"Pound"</string>
+    <string name="text_23163ab28da5" formatted="false">"Dollar"</string>
+    <string name="text_a2623ac83783" formatted="false">"Riyal"</string>
+    <string name="text_983cb0a018ee" formatted="false">"Dirham"</string>
+    <string name="text_41503f399d29" formatted="false">"Euro"</string>
+    <string name="text_d2a7d3bf31da" formatted="false">"KWD"</string>
+    <string name="text_54fa9db3fa4f" formatted="false">"BHD"</string>
+    <string name="text_440a2a37ae6e" formatted="false">"OMR"</string>
+    <string name="text_e4981e5d5f10" formatted="false">"QAR"</string>
+    <string name="text_5083dedec527" formatted="false">"Live gold prices updated successfully ({0})!"</string>
+    <string name="text_6c36adfa8e9a" formatted="false">"Could not update gold prices"</string>
+    <string name="text_9561c4855efd" formatted="false">"Could not transfer between vaults"</string>
+    <string name="text_7af13fb694d2" formatted="false">"Vault not found"</string>
+    <string name="text_43867619cfb1" formatted="false">"Could not reverse transfer"</string>
+    <string name="text_ea44af141575" formatted="false">"Could not record payment"</string>
+    <string name="text_0d7bdd125dd8" formatted="false">"Fruits"</string>
+    <string name="text_3ba071f84d25" formatted="false">"Groceries"</string>
+    <string name="text_fff2282efd27" formatted="false">"Clothing"</string>
+    <string name="text_7e0974ea54ff" formatted="false">"Pharmacy"</string>
+    <string name="text_42e60c6b7fa5" formatted="false">"Medicines"</string>
+    <string name="text_a0eee03fd261" formatted="false">"Education"</string>
+    <string name="text_b60aa4cd4f7a" formatted="false">"House rent"</string>
+    <string name="text_e78fe38cd253" formatted="false">"Electricity bill"</string>
+    <string name="text_d3a60f947665" formatted="false">"Water bill"</string>
+    <string name="text_e97a914c3af4" formatted="false">"Gas bill"</string>
+    <string name="text_7e3578ca7619" formatted="false">"Internet bill"</string>
+    <string name="text_f86302880ffa" formatted="false">"Phone bill"</string>
+    <string name="text_dd1a92b70bff" formatted="false">"Entertainment"</string>
+    <string name="text_c01000b4ec77" formatted="false">"Gifts"</string>
+    <string name="text_cf947ed2a968" formatted="false">"Maintenance"</string>
+    <string name="text_44f3aac66d39" formatted="false">"Repairs"</string>
+    <string name="text_0cb1a4b71327" formatted="false">"Car installment"</string>
+    <string name="text_d6f737f4c382" formatted="false">"Salary"</string>
+    <string name="text_824b44b725ca" formatted="false">"Bonus"</string>
+    <string name="text_f9a0ef07d2a6" formatted="false">"Profits"</string>
+    <string name="text_5911a9c09dc9" formatted="false">"Money transfer"</string>
+    <string name="text_60c0278a8811" formatted="false">"Groceries"</string>
+    <string name="text_c2e6b4458fdf" formatted="false">"Food"</string>
+    <string name="text_b77857871225" formatted="false">"Car"</string>
+    <string name="text_185f7e8de18f" formatted="false">"Lessons"</string>
+    <string name="text_893768c6b42b" formatted="false">"Home"</string>
+    <string name="text_7831ea58944a" formatted="false">"Water"</string>
+    <string name="text_0daf322cd307" formatted="false">"Internet"</string>
+    <string name="text_b9e9459cfa63" formatted="false">"Phone"</string>
+    <string name="text_0f6651f43504" formatted="false">"Telephone"</string>
+    <string name="text_f9c2d3602b36" formatted="false">"Plan"</string>
+    <string name="text_f879f70ca625" formatted="false">"Bank"</string>
+    <string name="text_5fcef4c6d878" formatted="false">"Gas"</string>
+    <string name="text_38826a3d0488" formatted="false">"Backup uploaded to Google Drive!\nAccount: {0}\nDate: {1}"</string>
+    <string name="text_86461526253e" formatted="false">"Google Drive connection error: {0}"</string>
+    <string name="text_d18ace7a5c04" formatted="false">"Connecting to Google Drive...\nThe latest backup for ({0}) was found and restored!"</string>
+    <string name="text_7a87c217fea6" formatted="false">"Data and accounts restored from Google Drive successfully!"</string>
+    <string name="text_7efb620b2f46" formatted="false">"Invoice / Receipt image"</string>
+    <string name="text_8e4a12b8e0fb" formatted="false">"Attached receipt image"</string>
+    <string name="text_02ecf19774a4" formatted="false">"View receipt"</string>
+    <string name="text_26abf901180a" formatted="false">"Receipt"</string>
+    <string name="text_de83fe0e773f" formatted="false">"Very weak"</string>
+    <string name="text_19ac077a66fc" formatted="false">"Weak"</string>
+    <string name="text_4167c04a5bc0" formatted="false">"Moderate"</string>
+    <string name="text_f23522a73d5e" formatted="false">"Strong"</string>
+    <string name="text_15c81a353e6d" formatted="false">"Very strong"</string>
+    <string name="text_f93caee4745f" formatted="false">"Smart Vault - Financial report"</string>
+    <string name="text_23ff5bd3cda6" formatted="false">"Name: {0}"</string>
+    <string name="text_af62bc118661" formatted="false">"Email: {0} | Phone: {1}"</string>
+    <string name="text_5b5d51e492a1" formatted="false">"Report date: {0}"</string>
+    <string name="text_598b3013c93a" formatted="false">"1. Monthly financial summary"</string>
+    <string name="text_2df6cb78d320" formatted="false">"Remaining / Net savings"</string>
+    <string name="text_a07daa050122" formatted="false">"2. Registered vaults and accounts"</string>
+    <string name="text_292aa105e256" formatted="false">"Vault / Account name"</string>
+    <string name="text_19c61065a80f" formatted="false">"Available balance"</string>
+    <string name="text_06aea1a4b6cb" formatted="false">"3. Recent financial transactions"</string>
+    <string name="text_70c980e32ac0" formatted="false">"Description and transaction"</string>
+    <string name="text_7c75fec5c0f8" formatted="false">"Category"</string>
+    <string name="text_0fd1ce3ab3e4" formatted="false">"Account"</string>
+    <string name="text_c2de3368a38f" formatted="false">"Generated by Smart Vault • Financial Statement"</string>
+    <string name="text_84ea95ad551f" formatted="false">"PDF report generated: {0}"</string>
+    <string name="text_6a24d4f395ba" formatted="false">"Open financial PDF report"</string>
+    <string name="text_b5ff5ea46c44" formatted="false">"Could not save file: {0}"</string>
+    <string name="text_882e9abff232" formatted="false">"Smart Vault - Outing expense split report"</string>
+    <string name="text_835815ab36b4" formatted="false">"Expense items: {0}"</string>
+    <string name="text_7a38397f0000" formatted="false">"1. Outing and split summary"</string>
+    <string name="text_552ed370d702" formatted="false">"Number of participants"</string>
+    <string name="text_f27a59f61ba0" formatted="false">"2. Recorded expense details"</string>
+    <string name="text_b0a293b3248f" formatted="false">"Expense description"</string>
+    <string name="text_6462ae41af9e" formatted="false">"Paid by"</string>
+    <string name="text_a7bc8a435179" formatted="false">"Date and time"</string>
+    <string name="text_d1780ad75e2f" formatted="false">"Generated by Smart Vault • Outing Split Report"</string>
+    <string name="text_a8441ff2295f" formatted="false">"Outing PDF report generated successfully"</string>
+    <string name="text_7a1f1081fa08" formatted="false">"Outing report - Total: {0} {1} | Participants: {2} | Share per person: {3} {4}"</string>
+    <string name="text_b1b890b5a0eb" formatted="false">"Outing expense report - Smart Vault"</string>
+    <string name="text_c45468e5611d" formatted="false">"Share outing PDF report"</string>
+    <string name="text_952072da576d" formatted="false">"Could not share report: {0}"</string>
+    <string name="text_9835a8feba07" formatted="false">"Smart Vault - Financial transaction history\n"</string>
+    <string name="text_9e3a72a661ba" formatted="false">"Export date,{0}\n\n"</string>
+    <string name="text_3e3c9dfb2caf" formatted="false">"Vaults,Balance\n"</string>
+    <string name="text_8a2cbefb87da" formatted="false">"ID,Type,Amount,Category,Description,Vault,Date and time\n"</string>
+    <string name="text_6daff27f6fa5" formatted="false">"Income (+)"</string>
+    <string name="text_ffed616f0b7b" formatted="false">"Expense (-)"</string>
+    <string name="text_98cf936bc34d" formatted="false">"Excel file exported: {0}"</string>
+    <string name="text_7429f5a831b5" formatted="false">"Financial transactions Excel - Smart Vault"</string>
+    <string name="text_4d57eda7fba5" formatted="false">"Open or share Excel file"</string>
+    <string name="text_c3f85c6d57fd" formatted="false">"Could not export Excel file: {0}"</string>
+    <string name="text_a2f20438512f" formatted="false">"Smart Vault reminders"</string>
+    <string name="text_49b966335c09" formatted="false">"Daily reminders to record and review expenses and accounts"</string>
+    <string name="text_5339f0151e8b" formatted="false">"Smart Vault reminder 💰"</string>
+    <string name="text_0b94ea568e83" formatted="false">"Remember to record today\'s expenses and review your vault activity to keep your budget accurate!"</string>
+    <string name="text_909099b10379" formatted="false">"Remember to record today\'s expenses and review your vault activity to keep this month\'s remaining budget accurate."</string>
+    <string name="text_879a8b902ae5" formatted="false">"Daily gold prices"</string>
+    <string name="text_3deed56eb82a" formatted="false">"Daily gold price update notifications (12:00 PM)"</string>
+    <string name="text_3c1e403d55c3" formatted="false">"Gold price update (12:00 PM) 🪙"</string>
+    <string name="text_eb62eeef21fe" formatted="false">"21 karat: {0} {1} | 24 karat: {2} {3}"</string>
+    <string name="text_1d15a727c672" formatted="false">"Gold prices updated from GoldAPI.io:\n• 21 karat: {0} {1}\n• 24 karat: {2} {3}\nYour gold portfolio was revalued automatically."</string>
+    <string name="label_app_title" formatted="false">"Smart Vault"</string>
+    <string name="label_nav_home" formatted="false">"Home"</string>
+    <string name="label_nav_savings" formatted="false">"Savings"</string>
+    <string name="label_nav_transactions" formatted="false">"Transactions"</string>
+    <string name="label_nav_commitments" formatted="false">"Commitments"</string>
+    <string name="label_nav_outings" formatted="false">"Outings"</string>
+    <string name="label_nav_reports" formatted="false">"Reports"</string>
+    <string name="label_nav_settings" formatted="false">"Settings"</string>
+    <string name="label_title_home" formatted="false">"Smart Vault"</string>
+    <string name="label_title_savings" formatted="false">"Savings &amp; Gold Vault"</string>
+    <string name="label_title_commitments" formatted="false">"Commitments &amp; Lessons"</string>
+    <string name="label_title_outings" formatted="false">"Outing Expenses &amp; Split"</string>
+    <string name="label_title_transactions" formatted="false">"Transactions"</string>
+    <string name="label_title_reports" formatted="false">"Reports &amp; Budget"</string>
+    <string name="label_title_settings" formatted="false">"Settings &amp; Vaults"</string>
+    <string name="label_total_savings" formatted="false">"Total Savings"</string>
+    <string name="label_total_cash_savings" formatted="false">"Cash Savings"</string>
+    <string name="label_current_gold_value" formatted="false">"Current Gold Value"</string>
+    <string name="label_total_gold_weight" formatted="false">"Total Gold Weight"</string>
+    <string name="label_gold_pieces_count" formatted="false">"Gold Pieces"</string>
+    <string name="label_gold_profits" formatted="false">"Gold Profits / Return"</string>
+    <string name="label_update_gold_prices" formatted="false">"Update Gold Prices"</string>
+    <string name="label_gold_prices_today" formatted="false">"Today\'s Gold Prices (per gram)"</string>
+    <string name="label_tab_gold" formatted="false">"Gold &amp; Bullions"</string>
+    <string name="label_tab_cash" formatted="false">"Cash Savings"</string>
+    <string name="label_tab_analytics" formatted="false">"Analytics &amp; Growth"</string>
+    <string name="label_tab_sold_history" formatted="false">"Sold Gold History"</string>
+    <string name="label_add_gold_piece" formatted="false">"Add Gold Piece"</string>
+    <string name="label_add_cash_saving" formatted="false">"Add Cash Saving"</string>
+    <string name="label_gold_piece_name" formatted="false">"Piece Name / Brand"</string>
+    <string name="label_gold_type" formatted="false">"Gold Type"</string>
+    <string name="label_bullion" formatted="false">"Bullion / Bar"</string>
+    <string name="label_jewelry" formatted="false">"Jewelry"</string>
+    <string name="label_gold_coin" formatted="false">"Gold Coin"</string>
+    <string name="label_gold_pound" formatted="false">"Gold Pound (8g)"</string>
+    <string name="label_other_gold" formatted="false">"Other"</string>
+    <string name="label_karat" formatted="false">"Karat"</string>
+    <string name="label_karat24" formatted="false">"24 Karat (999.9)"</string>
+    <string name="label_karat22" formatted="false">"22 Karat"</string>
+    <string name="label_karat21" formatted="false">"21 Karat (Standard)"</string>
+    <string name="label_karat18" formatted="false">"18 Karat"</string>
+    <string name="label_karat14" formatted="false">"14 Karat"</string>
+    <string name="label_karat12" formatted="false">"12 Karat"</string>
+    <string name="label_weight_in_grams" formatted="false">"Weight in Grams (g)"</string>
+    <string name="label_purchase_price" formatted="false">"Purchase Price (Total Paid)"</string>
+    <string name="label_purchase_date" formatted="false">"Purchase Date"</string>
+    <string name="label_purpose" formatted="false">"Purpose"</string>
+    <string name="label_purpose_saving" formatted="false">"For Savings / Investment"</string>
+    <string name="label_purpose_adornment" formatted="false">"For Adornment &amp; Use"</string>
+    <string name="label_piece_photo" formatted="false">"Piece Photo / Invoice"</string>
+    <string name="label_sell_gold" formatted="false">"Sell Gold Piece"</string>
+    <string name="label_sale_price" formatted="false">"Sale Price"</string>
+    <string name="label_sale_date" formatted="false">"Sale Date"</string>
+    <string name="label_sale_notes" formatted="false">"Sale Notes"</string>
+    <string name="label_realized_profit" formatted="false">"Realized Profit"</string>
+    <string name="label_profit_percentage" formatted="false">"Profit %"</string>
+    <string name="label_loss_percentage" formatted="false">"Loss %"</string>
+    <string name="label_in_vault" formatted="false">"In Vault (Active)"</string>
+    <string name="label_sold" formatted="false">"Sold"</string>
+    <string name="label_piece_details" formatted="false">"Gold Piece Details"</string>
+    <string name="label_current_gram_price" formatted="false">"Current Gram Price"</string>
+    <string name="label_no_gold_yet" formatted="false">"No gold assets recorded yet"</string>
+    <string name="label_no_cash_savings_yet" formatted="false">"No cash savings recorded yet"</string>
+    <string name="label_no_sold_gold_yet" formatted="false">"No sold gold history recorded"</string>
+    <string name="label_asset_allocation" formatted="false">"Asset Allocation (Gold vs Cash)"</string>
+    <string name="label_savings_advise" formatted="false">"Savings &amp; Wealth Insights"</string>
+    <string name="label_welcome_user" formatted="false">"Welcome,"</string>
+    <string name="label_current_balance" formatted="false">"Current Vault Balance"</string>
+    <string name="label_monthly_income" formatted="false">"Monthly Income"</string>
+    <string name="label_monthly_expenses" formatted="false">"Monthly Expenses"</string>
+    <string name="label_smart_analytics" formatted="false">"Smart Analytics"</string>
+    <string name="label_total_available_balance" formatted="false">"Total Available Balance"</string>
+    <string name="label_this_month_income" formatted="false">"This Month\'s Income"</string>
+    <string name="label_this_month_expense" formatted="false">"This Month\'s Expense"</string>
+    <string name="label_add_income" formatted="false">"Add Income"</string>
+    <string name="label_add_expense" formatted="false">"Add Expense"</string>
+    <string name="label_financial_vaults" formatted="false">"Financial Vaults &amp; Accounts"</string>
+    <string name="label_recent_transactions" formatted="false">"Recent Transactions"</string>
+    <string name="label_view_all" formatted="false">"View All"</string>
+    <string name="label_no_transactions_yet" formatted="false">"No transactions recorded yet"</string>
+    <string name="label_monthly_category_budget" formatted="false">"Monthly Category Budgets"</string>
+    <string name="label_add_budget_limit" formatted="false">"Add New Limit"</string>
+    <string name="label_set_budget" formatted="false">"Set Budget"</string>
+    <string name="label_no_budget_set" formatted="false">"No budget limits set yet."</string>
+    <string name="label_upcoming_commitments" formatted="false">"Upcoming Commitments"</string>
+    <string name="label_child_lessons" formatted="false">"Children Lessons"</string>
+    <string name="label_paid" formatted="false">"Paid"</string>
+    <string name="label_unpaid" formatted="false">"Unpaid"</string>
+    <string name="label_intelligent_advisor" formatted="false">"Smart Financial Advisor"</string>
+    <string name="label_achievements_and_badges" formatted="false">"Achievements &amp; Badges"</string>
+    <string name="label_filter_all" formatted="false">"All"</string>
+    <string name="label_filter_expenses" formatted="false">"Expenses"</string>
+    <string name="label_filter_income" formatted="false">"Income"</string>
+    <string name="label_search_placeholder" formatted="false">"Search transactions..."</string>
+    <string name="label_no_matching_transactions" formatted="false">"No transactions match your search"</string>
+    <string name="label_transaction_details" formatted="false">"Transaction Details"</string>
+    <string name="label_delete_transaction" formatted="false">"Delete Transaction"</string>
+    <string name="label_amount" formatted="false">"Amount"</string>
+    <string name="label_date" formatted="false">"Date"</string>
+    <string name="label_category" formatted="false">"Category"</string>
+    <string name="label_vault" formatted="false">"Vault / Account"</string>
+    <string name="label_notes" formatted="false">"Notes"</string>
+    <string name="label_name" formatted="false">"Name"</string>
+    <string name="label_due_day" formatted="false">"Due Day"</string>
+    <string name="label_repeat_monthly" formatted="false">"Repeats Monthly"</string>
+    <string name="label_commitment_example" formatted="false">"e.g. Electricity Bill"</string>
+    <string name="label_commitments_tab" formatted="false">"Monthly Commitments"</string>
+    <string name="label_lessons_tab" formatted="false">"Children Lessons"</string>
+    <string name="label_monthly_commitments" formatted="false">"Monthly Commitments"</string>
+    <string name="label_add_commitment" formatted="false">"Add Commitment"</string>
+    <string name="label_add_lesson" formatted="false">"Add Lesson"</string>
+    <string name="label_teacher_name" formatted="false">"Teacher / Subject"</string>
+    <string name="label_child_name" formatted="false">"Child Name"</string>
+    <string name="label_due_date" formatted="false">"Due Date"</string>
+    <string name="label_pay_from_vault" formatted="false">"Pay from Vault"</string>
+    <string name="label_no_commitments" formatted="false">"No commitments recorded"</string>
+    <string name="label_no_lessons" formatted="false">"No lessons recorded"</string>
+    <string name="label_current_month_summary" formatted="false">"Current Month Summary"</string>
+    <string name="label_remaining_balance" formatted="false">"Remaining Balance"</string>
+    <string name="label_avg_daily_spend" formatted="false">"Avg Daily Spend"</string>
+    <string name="label_safe_daily_limit" formatted="false">"Safe Daily Limit"</string>
+    <string name="label_expense_distribution" formatted="false">"Expense Distribution by Category"</string>
+    <string name="label_export_pdf" formatted="false">"Export PDF Report"</string>
+    <string name="label_export_excel" formatted="false">"Export Excel / CSV"</string>
+    <string name="label_top_expense_category" formatted="false">"Top Expense Category"</string>
+    <string name="label_income_vs_expense" formatted="false">"Income vs Expenses Comparison"</string>
+    <string name="label_app_preferences" formatted="false">"App Preferences &amp; Settings"</string>
+    <string name="label_app_language" formatted="false">"App Language"</string>
+    <string name="label_arabic" formatted="false">"العربية (Arabic)"</string>
+    <string name="label_english" formatted="false">"English"</string>
+    <string name="label_app_currency" formatted="false">"App Currency"</string>
+    <string name="label_dark_mode" formatted="false">"Dark Mode"</string>
+    <string name="label_fingerprint_pin" formatted="false">"Fingerprint / PIN Lock"</string>
+    <string name="label_two_factor_auth" formatted="false">"Two-Factor Auth (2FA)"</string>
+    <string name="label_enabled2_f_a" formatted="false">"Enabled - Code required on login"</string>
+    <string name="label_disabled2_f_a" formatted="false">"Disabled"</string>
+    <string name="label_daily_reminder" formatted="false">"Daily Expense Reminder"</string>
+    <string name="label_reminder_sub" formatted="false">"Auto notification daily at 8:00 PM"</string>
+    <string name="label_backup_restore" formatted="false">"Backup &amp; Restore Data"</string>
+    <string name="label_drive_backup" formatted="false">"Google Drive Backup"</string>
+    <string name="label_restore_backup" formatted="false">"Restore Backup"</string>
+    <string name="label_edit_profile" formatted="false">"Edit Profile"</string>
+    <string name="label_logout" formatted="false">"Logout"</string>
+    <string name="label_add_account_vault" formatted="false">"Add Account / Vault"</string>
+    <string name="label_attach_receipt" formatted="false">"Attach Receipt Image"</string>
+    <string name="label_receipt_image" formatted="false">"Receipt Image"</string>
+    <string name="label_optional" formatted="false">"Optional"</string>
+    <string name="label_save" formatted="false">"Save"</string>
+    <string name="label_cancel" formatted="false">"Cancel"</string>
+    <string name="label_delete" formatted="false">"Delete"</string>
+    <string name="label_edit" formatted="false">"Edit"</string>
+    <string name="label_confirm" formatted="false">"Confirm"</string>
+    <string name="label_close" formatted="false">"Close"</string>
+    <string name="label_live_gold_price_update" formatted="false">"Live Gold Prices (GoldAPI.io)"</string>
+    <string name="label_fetch_live_gold_prices" formatted="false">"Live Update"</string>
+    <string name="label_gold_api_key_label" formatted="false">"GoldAPI.io Access Token"</string>
+    <string name="label_gold_api_key_hint" formatted="false">"Enter your token from goldapi.io"</string>
+    <string name="label_gold_api_key_explanation" formatted="false">"Get your free API key from https://www.goldapi.io/ to enable instant real-time gold market rates."</string>
+    <string name="label_updating_prices" formatted="false">"Fetching live rates..."</string>
+    <string name="label_prices_updated_success" formatted="false">"Gold prices updated successfully from GoldAPI.io!"</string>
+    <string name="label_last_updated" formatted="false">"Last updated: "</string>
+</resources>

@@ -1,5 +1,7 @@
 package com.example.ui.dialogs
 
+import com.example.ui.utils.AppText
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -43,7 +45,7 @@ fun AddDebtDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                if (type == "OWED_TO_ME") "تسجيل أموال لي عند الآخرين" else "تسجيل دين عليّ للآخرين",
+                if (type == "OWED_TO_ME") AppText.text(com.example.R.string.text_bf8d7bd53353) else AppText.text(com.example.R.string.text_a37cd3567d4d),
                 fontWeight = FontWeight.Bold
             )
         },
@@ -53,13 +55,13 @@ fun AddDebtDialog(
                     FilterChip(
                         selected = type == "OWED_TO_ME",
                         onClick = { type = "OWED_TO_ME" },
-                        label = { Text("أموال لي عند الغير") },
+                        label = { Text(AppText.text(com.example.R.string.text_7612847d2233)) },
                         modifier = Modifier.padding(end = 8.dp)
                     )
                     FilterChip(
                         selected = type == "I_OWE",
                         onClick = { type = "I_OWE" },
-                        label = { Text("دين عليّ للغير") }
+                        label = { Text(AppText.text(com.example.R.string.text_dd169bf23200)) }
                     )
                 }
 
@@ -71,7 +73,7 @@ fun AddDebtDialog(
                         personName = it
                         errorText = null
                     },
-                    label = { Text(if (type == "OWED_TO_ME") "اسم الشخص المدين" else "اسم الشخص الدائن") },
+                    label = { Text(if (type == "OWED_TO_ME") AppText.text(com.example.R.string.text_7201473b2591) else AppText.text(com.example.R.string.text_63feb3bb804e)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
@@ -84,7 +86,7 @@ fun AddDebtDialog(
                         amountText = it
                         errorText = null
                     },
-                    label = { Text("مبلغ الدين") },
+                    label = { Text(AppText.text(com.example.R.string.text_bc44a773ac92)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
@@ -95,7 +97,7 @@ fun AddDebtDialog(
                 OutlinedTextField(
                     value = notes,
                     onValueChange = { notes = it },
-                    label = { Text("ملاحظات / موعد السداد المتوقع") },
+                    label = { Text(AppText.text(com.example.R.string.text_c8a0cdd5189a)) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -109,12 +111,12 @@ fun AddDebtDialog(
             Button(
                 onClick = {
                     if (personName.isBlank()) {
-                        errorText = "يرجى إدخال اسم الشخص"
+                        errorText = AppText.text(com.example.R.string.text_19af7a0f2ad8)
                         return@Button
                     }
                     val amount = amountText.toDoubleOrNull()
                     if (amount == null || amount <= 0) {
-                        errorText = "يرجى إدخال مبلغ صحيح أكبر من صفر"
+                        errorText = AppText.text(com.example.R.string.text_268c5b73a9b0)
                         return@Button
                     }
                     onConfirm(personName.trim(), type, amount, notes.trim())
@@ -122,12 +124,12 @@ fun AddDebtDialog(
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary)
             ) {
-                Text("حفظ")
+                Text(AppText.text(com.example.R.string.text_56ee6e0d206b))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("إلغاء")
+                Text(AppText.text(com.example.R.string.text_e776b0209b50))
             }
         }
     )
@@ -148,14 +150,14 @@ fun RecordDebtPaymentDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                if (debt.type == "OWED_TO_ME") "تحصيل سداد من ${debt.personName}" else "سداد دين لـ ${debt.personName}",
+                if (debt.type == "OWED_TO_ME") AppText.text(com.example.R.string.text_b1635a0b10cd, debt.personName) else AppText.text(com.example.R.string.text_56d7f604af7f, debt.personName),
                 fontWeight = FontWeight.Bold
             )
         },
         text = {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "المبلغ المتبقي: ${debt.remainingAmount.toInt()} $currency (من أصل ${debt.originalAmount.toInt()} $currency)",
+                    text = AppText.text(com.example.R.string.text_082322fac562, debt.remainingAmount.toInt(), AppText.currency(currency), debt.originalAmount.toInt(), AppText.currency(currency)),
                     fontWeight = FontWeight.Medium
                 )
 
@@ -167,7 +169,7 @@ fun RecordDebtPaymentDialog(
                         paymentAmountText = it
                         errorText = null
                     },
-                    label = { Text("المبلغ المدفوع / المحصل") },
+                    label = { Text(AppText.text(com.example.R.string.text_f88f6cb033cb)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
@@ -178,7 +180,7 @@ fun RecordDebtPaymentDialog(
                 OutlinedTextField(
                     value = notes,
                     onValueChange = { notes = it },
-                    label = { Text("ملاحظة على الدفعة (اختياري)") },
+                    label = { Text(AppText.text(com.example.R.string.text_d40d75caab23)) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -193,11 +195,11 @@ fun RecordDebtPaymentDialog(
                 onClick = {
                     val amount = paymentAmountText.toDoubleOrNull()
                     if (amount == null || amount <= 0) {
-                        errorText = "يرجى إدخال مبلغ سداد صحيح"
+                        errorText = AppText.text(com.example.R.string.text_c77f84848501)
                         return@Button
                     }
                     if (amount > debt.remainingAmount) {
-                        errorText = "مبلغ السداد أكبر من المتبقي (${debt.remainingAmount.toInt()} $currency)"
+                        errorText = AppText.text(com.example.R.string.text_9ec43fbe481b, debt.remainingAmount.toInt(), AppText.currency(currency))
                         return@Button
                     }
                     onConfirm(amount, notes.trim())
@@ -205,12 +207,12 @@ fun RecordDebtPaymentDialog(
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary)
             ) {
-                Text("تأكيد السداد")
+                Text(AppText.text(com.example.R.string.text_11b0cc7ecdb7))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("إلغاء")
+                Text(AppText.text(com.example.R.string.text_e776b0209b50))
             }
         }
     )

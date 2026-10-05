@@ -1,0 +1,6249 @@
+[
+  {
+    "id": "text_5996de7ad383",
+    "ar": "يرجى إدخال مفتاح API الخاص بـ GoldAPI.io / Please enter your GoldAPI key",
+    "en": "Please enter your GoldAPI.io API key",
+    "index": 0
+  },
+  {
+    "id": "text_2262f8c02440",
+    "ar": "مفتاح API غير صالح أو منتهي الصلاحية ({0}). يرجى التأكد من المفتاح في goldapi.io",
+    "en": "Invalid or expired API key ({0}). Check your key at goldapi.io.",
+    "index": 1
+  },
+  {
+    "id": "text_13c20d98b615",
+    "ar": "تم تجاوز الحد المسموح من الطلبات على GoldAPI.io (Quota limit exceeded).",
+    "en": "GoldAPI.io request quota exceeded.",
+    "index": 2
+  },
+  {
+    "id": "text_2130a9d5ded6",
+    "ar": "لم يتم العثور على بيانات العملة {0} أو الرمز {1} في GoldAPI.",
+    "en": "No data found for currency {0} or symbol {1} in GoldAPI.",
+    "index": 3
+  },
+  {
+    "id": "text_94b64c26d582",
+    "ar": "فشل جلب الأسعار من GoldAPI.io (رمز الخطأ: {0} {1})",
+    "en": "Could not fetch prices from GoldAPI.io (error: {0} {1})",
+    "index": 4
+  },
+  {
+    "id": "text_1b66c5619eb7",
+    "ar": "لم يتم استلام أسعار صحيحة من GoldAPI.io للعملة {0}",
+    "en": "GoldAPI.io returned no valid prices for {0}",
+    "index": 5
+  },
+  {
+    "id": "text_6ba30f0e392f",
+    "ar": "تعذر الاتصال بخادم GoldAPI.io. يرجى التحقق من اتصالك بالإنترنت.",
+    "en": "Could not connect to GoldAPI.io. Check your internet connection.",
+    "index": 6
+  },
+  {
+    "id": "text_02f94b071638",
+    "ar": "خطأ في الاتصال بـ GoldAPI: {0}",
+    "en": "GoldAPI connection error: {0}",
+    "index": 7
+  },
+  {
+    "id": "text_1eaf822690f6",
+    "ar": "يجب تحديد كلمة مرور لحماية وتشفير النسخة الاحتياطية",
+    "en": "Enter a password to encrypt and protect the backup",
+    "index": 8
+  },
+  {
+    "id": "text_b68c4167a739",
+    "ar": "مسارات إيصالات الصور هي مراجع محلية على الجهاز ولا يتم تضمينها كملفات ثنائية محمولة",
+    "en": "Receipt image paths refer to files on this device; the files are not included in the backup",
+    "index": 9
+  },
+  {
+    "id": "text_d149426b1847",
+    "ar": "تتطلب هذه النسخة إدخال كلمة المرور المخصصة التي تم إنشاؤها بها",
+    "en": "Enter the password used to create this backup",
+    "index": 10
+  },
+  {
+    "id": "text_df61b78ee02b",
+    "ar": "الملف ليس نسخة احتياطية صالحة لتطبيق الخزنة الذكية",
+    "en": "This is not a valid Smart Vault backup",
+    "index": 11
+  },
+  {
+    "id": "text_da53da316ecd",
+    "ar": "إصدار النسخة الاحتياطية غير مدعوم",
+    "en": "Unsupported backup version",
+    "index": 12
+  },
+  {
+    "id": "text_062b2d70edce",
+    "ar": "إصدار النسخة الاحتياطية أحدث من هذا التطبيق. يرجى تحديث التطبيق أولاً.",
+    "en": "This backup was created by a newer app version. Update the app first.",
+    "index": 13
+  },
+  {
+    "id": "text_4f3fab203926",
+    "ar": "بيانات النسخة الاحتياطية تالفة أو فارغة",
+    "en": "The backup is corrupt or empty",
+    "index": 14
+  },
+  {
+    "id": "text_afceb2df3dcb",
+    "ar": "فشل التحقق من سلامة الملف (Checksum Mismatch) — الملف تم التعديل عليه أو تالف",
+    "en": "File integrity check failed (checksum mismatch). The file was modified or is corrupt.",
+    "index": 15
+  },
+  {
+    "id": "text_7b2a35c0d83a",
+    "ar": "النسخة تحتوي على مبالغ ديون غير صالحة (NaN أو Infinity)",
+    "en": "The backup contains invalid debt amounts (NaN or Infinity)",
+    "index": 16
+  },
+  {
+    "id": "text_6bd03c82dd4a",
+    "ar": "النسخة تحتوي على دفعات دين يتيمة لا ترتبط بأي دين مسجل (سجلات يتيمة: debtId = {0})",
+    "en": "The backup contains payments with no matching debt (debtId = {0})",
+    "index": 17
+  },
+  {
+    "id": "text_ea3b3bcf9724",
+    "ar": "النسخة تحتوي على مبالغ دفعات دين غير صالحة",
+    "en": "The backup contains invalid debt payment amounts",
+    "index": 18
+  },
+  {
+    "id": "text_f9bbdae65dcf",
+    "ar": "النسخة تحتوي على مصاريف خرجة يتيمة لا ترتبط بأي خرجة مسجلة (سجلات يتيمة: outingId = {0})",
+    "en": "The backup contains expenses with no matching outing (outingId = {0})",
+    "index": 19
+  },
+  {
+    "id": "text_bf97239d27d0",
+    "ar": "النسخة تحتوي على مبالغ مصاريف خرجة غير صالحة",
+    "en": "The backup contains invalid outing expense amounts",
+    "index": 20
+  },
+  {
+    "id": "text_7c87c4d590f7",
+    "ar": "النسخة تحتوي على معاملات مالية بمبالغ غير صالحة",
+    "en": "The backup contains invalid transaction amounts",
+    "index": 21
+  },
+  {
+    "id": "text_8db054edb533",
+    "ar": "النسخة تحتوي على مدخرات نقدية بمبالغ غير صالحة",
+    "en": "The backup contains invalid cash savings amounts",
+    "index": 22
+  },
+  {
+    "id": "text_eecc440c33f0",
+    "ar": "كلمة المرور غير صحيحة أو الملف تالف: {0}",
+    "en": "Incorrect password or corrupt file: {0}",
+    "index": 23
+  },
+  {
+    "id": "text_9053a7c678f2",
+    "ar": "الدمج غير مدعوم؛ استخدم الاستبدال بعد حفظ نسخة من بياناتك",
+    "en": "Merging is not supported. Save a backup of your data, then use replacement.",
+    "index": 24
+  },
+  {
+    "id": "text_178594875103",
+    "ar": "عام",
+    "en": "General",
+    "index": 25
+  },
+  {
+    "id": "text_6d580c750a12",
+    "ar": "الخزنة الرئيسية",
+    "en": "Main Vault",
+    "index": 26
+  },
+  {
+    "id": "text_c15fe79b40d5",
+    "ar": "سبيكة",
+    "en": "Bullion",
+    "index": 27
+  },
+  {
+    "id": "text_ba488a9c8812",
+    "ar": "تعذر ربط مصروف بالخروجة الأصلية",
+    "en": "Could not link an expense to its original outing",
+    "index": 28
+  },
+  {
+    "id": "text_25f603d8df62",
+    "ar": "فشل ربط دفعة الدين: الدين الأصلي (id={0}) غير موجود في النسخة",
+    "en": "Could not link the payment: original debt (id={0}) is missing from the backup",
+    "index": 29
+  },
+  {
+    "id": "text_085c13d97af5",
+    "ar": "تنسيق النسخة الاحتياطية غير مدعوم أو تالف",
+    "en": "Unsupported or corrupt backup format",
+    "index": 30
+  },
+  {
+    "id": "text_5c54bb48fcff",
+    "ar": "ج.م",
+    "en": "EGP",
+    "index": 31
+  },
+  {
+    "id": "text_6dbafe4740d0",
+    "ar": "تعذر الوصول إلى مخزن المفاتيح الآمن (Hardware KeyStore unavailable): {0}",
+    "en": "Secure key storage is unavailable: {0}",
+    "index": 32
+  },
+  {
+    "id": "text_56a3db5d1b36",
+    "ar": "فشل تشفير البيانات بشكل آمن",
+    "en": "Could not securely encrypt the data",
+    "index": 33
+  },
+  {
+    "id": "text_98426460a495",
+    "ar": "فشل فك تشفير البيانات: المفتاح غير صالح أو البيانات معطوبة",
+    "en": "Could not decrypt the data: invalid key or corrupt data",
+    "index": 34
+  },
+  {
+    "id": "text_d69dfb852af8",
+    "ar": "متصل بالسحابة",
+    "en": "Connected to cloud",
+    "index": 35
+  },
+  {
+    "id": "text_c0d85c5fe38a",
+    "ar": "جارِ المزامنة...",
+    "en": "Syncing...",
+    "index": 36
+  },
+  {
+    "id": "text_4384dc18a516",
+    "ar": "وضع دون اتصال (مخزن محلياً)",
+    "en": "Offline (stored locally)",
+    "index": 37
+  },
+  {
+    "id": "text_22a67ceb72fd",
+    "ar": "تعذر الاتصال بالسحابة",
+    "en": "Could not connect to cloud",
+    "index": 38
+  },
+  {
+    "id": "text_750a633cf01e",
+    "ar": "الخزنة الذكية - Smart Safe",
+    "en": "Smart Vault - Smart Safe",
+    "index": 39
+  },
+  {
+    "id": "text_d171d8506d04",
+    "ar": "تجاوز الميزانية",
+    "en": "Budget exceeded",
+    "index": 40
+  },
+  {
+    "id": "text_dad18188a262",
+    "ar": "تجاوزت ميزانية «{0}» بنسبة {1}% (أنفقت {2} من أصل {3} {4})",
+    "en": "You exceeded the budget for “{0}” by {1}% (spent {2} of {3} {4})",
+    "index": 41
+  },
+  {
+    "id": "text_e1ea6189fc30",
+    "ar": "اقتراب من الحد الشهري",
+    "en": "Approaching monthly limit",
+    "index": 42
+  },
+  {
+    "id": "text_8b88d889acb8",
+    "ar": "أنت قريب من سقف ميزانية «{0}»، المتبقي لك {1} {2} فقط.",
+    "en": "You are close to the budget limit for “{0}”. Only {1} {2} remains.",
+    "index": 43
+  },
+  {
+    "id": "text_d91cfc1ad51c",
+    "ar": "التزام مستحق قريبًا",
+    "en": "Upcoming commitment",
+    "index": 44
+  },
+  {
+    "id": "text_ef044647ae0e",
+    "ar": "لديك التزام «{0}» بقيمة {1} {2} خلال أيام قليلة.",
+    "en": "“{0}”, totaling {1} {2}, is due in a few days.",
+    "index": 45
+  },
+  {
+    "id": "text_2a20f11fd4c3",
+    "ar": "مصروف درس مستحق",
+    "en": "Lesson payment due",
+    "index": 46
+  },
+  {
+    "id": "text_00a1d5002e6c",
+    "ar": "درس «{0}» للطفل {1} بقيمة {2} {3} مستحق قريبًا.",
+    "en": "“{0}” for {1}, totaling {2} {3}, is due soon.",
+    "index": 47
+  },
+  {
+    "id": "text_6a90374a7a88",
+    "ar": "نسبة ادخار ممتازة",
+    "en": "Excellent savings rate",
+    "index": 48
+  },
+  {
+    "id": "text_64a60e7a0bf6",
+    "ar": "وفّرت {0}% من دخلك هذا الشهر! أحسنت الاستمرار في إدارة مصاريفك.",
+    "en": "You saved {0}% of your income this month! Keep managing your expenses.",
+    "index": 49
+  },
+  {
+    "id": "text_e0c6c094ba6d",
+    "ar": "أعلى بند إنفاق",
+    "en": "Top spending category",
+    "index": 50
+  },
+  {
+    "id": "text_1c91b27c2d9d",
+    "ar": "أعلى بند إنفاق هو «{0}» بنسبة {1}% من إجمالي مصروفاتك.",
+    "en": "“{0}” is your top spending category at {1}% of total expenses.",
+    "index": 51
+  },
+  {
+    "id": "text_b4a9c7335a43",
+    "ar": "سداد دين مستحق",
+    "en": "Debt payment due",
+    "index": 52
+  },
+  {
+    "id": "text_6b3c7e411379",
+    "ar": "يجب سداد مبلغ {0} {1} للمستحق {2} خلال 3 أيام.",
+    "en": "A payment of {0} {1} to {2} is due within 3 days.",
+    "index": 53
+  },
+  {
+    "id": "text_edbc29df7299",
+    "ar": "تحسن في معدل الإنفاق",
+    "en": "Spending has improved",
+    "index": 54
+  },
+  {
+    "id": "text_ec6704a86003",
+    "ar": "إنفاقك هذا الشهر أقل من الشهر الماضي بنسبة {0}% حتى الآن.",
+    "en": "Your spending this month is {0}% lower than last month so far.",
+    "index": 55
+  },
+  {
+    "id": "text_12e1baa483b8",
+    "ar": "ارتفاع وتيرة الإنفاق",
+    "en": "Spending is increasing",
+    "index": 56
+  },
+  {
+    "id": "text_2100370c5e06",
+    "ar": "أنفقت حتى الآن {0}% أكثر مقارنة بالشهر الماضي.",
+    "en": "You have spent {0}% more than last month so far.",
+    "index": 57
+  },
+  {
+    "id": "text_f2f7325ba6e9",
+    "ar": "أعلى بند إنفاق هذا الشهر هو «{0}» ويمثل {1}% من إجمالي مصروفاتك.",
+    "en": "“{0}” is your top spending category this month at {1}% of total expenses.",
+    "index": 58
+  },
+  {
+    "id": "text_f89b12710474",
+    "ar": "متوسط الإنفاق اليومي",
+    "en": "Average daily spending",
+    "index": 59
+  },
+  {
+    "id": "text_f1e858bfb37f",
+    "ar": "متوسط إنفاقك اليومي خلال هذا الشهر هو {0} {1}.",
+    "en": "Your average daily spending this month is {0} {1}.",
+    "index": 60
+  },
+  {
+    "id": "text_fba441b2afbf",
+    "ar": "يوم بلا مصروفات",
+    "en": "No-spend day",
+    "index": 61
+  },
+  {
+    "id": "text_e516a4efd7da",
+    "ar": "لم تسجل أي مصروفات اليوم، يوم ممتاز للادخار!",
+    "en": "You have not recorded any expenses today. A great day for saving!",
+    "index": 62
+  },
+  {
+    "id": "text_e6b96ce194c0",
+    "ar": "كلمة مرور",
+    "en": "Password",
+    "index": 63
+  },
+  {
+    "id": "text_e4627f47b69b",
+    "ar": "ملاحظة سرية",
+    "en": "Secret note",
+    "index": 64
+  },
+  {
+    "id": "text_b4316420bcc3",
+    "ar": "بطاقة بنكية",
+    "en": "Bank card",
+    "index": 65
+  },
+  {
+    "id": "text_7822deda09a6",
+    "ar": "مستند سري",
+    "en": "Private document",
+    "index": 66
+  },
+  {
+    "id": "text_cd638da461ee",
+    "ar": "المبلغ غير صالح: يجب أن يكون رقمًا موجبًا",
+    "en": "Invalid amount: enter a positive number",
+    "index": 67
+  },
+  {
+    "id": "text_324813c834f1",
+    "ar": "لا يمكن حذف الحركة قبل استعادة الخزنة المرتبطة بها",
+    "en": "Restore the linked vault before deleting this transaction",
+    "index": 68
+  },
+  {
+    "id": "text_d375d2c8d4ee",
+    "ar": "نوع الحركة غير مدعوم",
+    "en": "Unsupported transaction type",
+    "index": 69
+  },
+  {
+    "id": "text_a4de2402af53",
+    "ar": "مبلغ المصروف غير صالح",
+    "en": "Invalid expense amount",
+    "index": 70
+  },
+  {
+    "id": "text_709b83a58038",
+    "ar": "سعر البيع غير صالح",
+    "en": "Invalid sale price",
+    "index": 71
+  },
+  {
+    "id": "text_321e7ab95b7e",
+    "ar": "يجب أن يكون مبلغ التحويل رقمًا موجبًا أكبر من صفر",
+    "en": "The transfer amount must be greater than zero",
+    "index": 72
+  },
+  {
+    "id": "text_cb0aaf62ada7",
+    "ar": "لا يمكن التحويل من الخزنة إلى نفسها",
+    "en": "Cannot transfer to the same vault",
+    "index": 73
+  },
+  {
+    "id": "text_89acb7abfb61",
+    "ar": "الخزنة المصدر غير موجودة",
+    "en": "Source vault not found",
+    "index": 74
+  },
+  {
+    "id": "text_f72448989b3c",
+    "ar": "رصيد الخزنة ({0}) لا يكفي لتحويل ({1})",
+    "en": "Vault balance ({0}) is insufficient for the transfer ({1})",
+    "index": 75
+  },
+  {
+    "id": "text_7a962d7fe6e8",
+    "ar": "لم يتم العثور على سجل التحويل أو ليس لديك صلاحية",
+    "en": "Transfer not found or access denied",
+    "index": 76
+  },
+  {
+    "id": "text_5f125b7987c4",
+    "ar": "الخزنة المصدر للتحويل غير موجودة",
+    "en": "Transfer source vault not found",
+    "index": 77
+  },
+  {
+    "id": "text_574658039b19",
+    "ar": "الخزنة المستلمة للتحويل غير موجودة",
+    "en": "Transfer destination vault not found",
+    "index": 78
+  },
+  {
+    "id": "text_24e31759427c",
+    "ar": "مبلغ الدين غير صالح: يجب أن يكون أكبر من صفر",
+    "en": "Invalid debt amount: must be greater than zero",
+    "index": 79
+  },
+  {
+    "id": "text_bb0319b35c1c",
+    "ar": "يجب أن يكون مبلغ السداد أكبر من صفر",
+    "en": "The payment amount must be greater than zero",
+    "index": 80
+  },
+  {
+    "id": "text_bcdddf713495",
+    "ar": "لم يتم العثور على سجل الدين أو ليس لديك صلاحية الوصول إليه",
+    "en": "Debt not found or access denied",
+    "index": 81
+  },
+  {
+    "id": "text_c3a83f2c4743",
+    "ar": "مبلغ السداد ({0}) يتجاوز المبلغ المتبقي ({1})",
+    "en": "Payment ({0}) exceeds the remaining balance ({1})",
+    "index": 82
+  },
+  {
+    "id": "text_b5cb21d8142c",
+    "ar": "سوبر ماركت",
+    "en": "Supermarket",
+    "index": 83
+  },
+  {
+    "id": "text_7272df92ca36",
+    "ar": "الخزنة السحابية المشفرة",
+    "en": "Encrypted Cloud Vault",
+    "index": 84
+  },
+  {
+    "id": "text_328ddce5bbca",
+    "ar": "رجوع",
+    "en": "Back",
+    "index": 85
+  },
+  {
+    "id": "text_cd0cf75e27fe",
+    "ar": "الخزنة السحابية",
+    "en": "Cloud Vault",
+    "index": 86
+  },
+  {
+    "id": "text_b48ae0941d3d",
+    "ar": "إضافة سريعة",
+    "en": "Quick add",
+    "index": 87
+  },
+  {
+    "id": "text_5e6b2c72f16a",
+    "ar": "صورة المستخدم",
+    "en": "Profile picture",
+    "index": 88
+  },
+  {
+    "id": "text_7a747c6bf88a",
+    "ar": "توزيع الإنفاق حسب التصنيف (Pie Chart)",
+    "en": "Spending by category (pie chart)",
+    "index": 89
+  },
+  {
+    "id": "text_eb859d766281",
+    "ar": "لا توجد مصروفات مسجلة هذا الشهر حتى الآن",
+    "en": "No expenses recorded this month yet",
+    "index": 90
+  },
+  {
+    "id": "text_413c51af19b5",
+    "ar": "الإجمالي",
+    "en": "Total",
+    "index": 91
+  },
+  {
+    "id": "text_8c69562811f0",
+    "ar": "الإنفاق لكل شهر (Bar Chart)",
+    "en": "Monthly spending (bar chart)",
+    "index": 92
+  },
+  {
+    "id": "text_6eea66fc03a3",
+    "ar": "تطور الرصيد مع الوقت (Line Chart)",
+    "en": "Balance over time (line chart)",
+    "index": 93
+  },
+  {
+    "id": "text_aee9e778a590",
+    "ar": "سيظهر منحنى التطور مع زيادة العمليات",
+    "en": "The chart will appear as you record more transactions",
+    "index": 94
+  },
+  {
+    "id": "text_9aa663951be0",
+    "ar": "مركز الإضافة السريعة",
+    "en": "Quick add",
+    "index": 95
+  },
+  {
+    "id": "text_90cf34f71fc5",
+    "ar": "دخل جديد",
+    "en": "New income",
+    "index": 96
+  },
+  {
+    "id": "text_70c7a31530f9",
+    "ar": "مصروف جديد",
+    "en": "New expense",
+    "index": 97
+  },
+  {
+    "id": "text_dc66f1ed7b0c",
+    "ar": "تحويل خزن",
+    "en": "Vault transfer",
+    "index": 98
+  },
+  {
+    "id": "text_011d3adc2108",
+    "ar": "تسجيل دين",
+    "en": "Record debt",
+    "index": 99
+  },
+  {
+    "id": "text_b7b0b20f899d",
+    "ar": "ادخار نقدي",
+    "en": "Cash savings",
+    "index": 100
+  },
+  {
+    "id": "text_bbc92ccaafd4",
+    "ar": "شراء ذهب",
+    "en": "Buy gold",
+    "index": 101
+  },
+  {
+    "id": "text_a20482d75799",
+    "ar": "التزام / فاتورة",
+    "en": "Commitment / Bill",
+    "index": 102
+  },
+  {
+    "id": "text_b6bc98a0e74b",
+    "ar": "درس طفل",
+    "en": "Child's lesson",
+    "index": 103
+  },
+  {
+    "id": "text_1a7c58a55bb7",
+    "ar": "خروجة جماعية",
+    "en": "Group outing",
+    "index": 104
+  },
+  {
+    "id": "text_959e6920e1ce",
+    "ar": "النمو",
+    "en": "Growth",
+    "index": 105
+  },
+  {
+    "id": "text_f5107f3d6f0d",
+    "ar": "تطور نمو المدخرات والأصول",
+    "en": "Savings and asset growth",
+    "index": 106
+  },
+  {
+    "id": "text_d4f5338e88bb",
+    "ar": "تحليل بياني تفاعلي للذهب والنقدية",
+    "en": "Interactive gold and cash analysis",
+    "index": 107
+  },
+  {
+    "id": "text_33df7769cfd5",
+    "ar": "اسحب للمعاينة",
+    "en": "Drag to explore",
+    "index": 108
+  },
+  {
+    "id": "text_165afb7ab809",
+    "ar": "تراكمي",
+    "en": "Cumulative",
+    "index": 109
+  },
+  {
+    "id": "text_564ef2249a86",
+    "ar": "شهري",
+    "en": "Monthly",
+    "index": 110
+  },
+  {
+    "id": "text_5e67cfd23385",
+    "ar": "إجمالي الرصيد التراكمي",
+    "en": "Total accumulated balance",
+    "index": 111
+  },
+  {
+    "id": "text_adc0ff0e37cb",
+    "ar": "إجمالي إضافات الشهر",
+    "en": "Total monthly additions",
+    "index": 112
+  },
+  {
+    "id": "text_c851efa80cad",
+    "ar": "الذهب",
+    "en": "Gold",
+    "index": 113
+  },
+  {
+    "id": "text_8e6f51524318",
+    "ar": "النقدية",
+    "en": "Cash",
+    "index": 114
+  },
+  {
+    "id": "text_6d7a99b071cc",
+    "ar": "مدخرات الذهب والسبائك",
+    "en": "Gold and bullion savings",
+    "index": 115
+  },
+  {
+    "id": "text_0ec0549f1122",
+    "ar": "المدخرات والسيولة النقدية",
+    "en": "Cash savings and liquidity",
+    "index": 116
+  },
+  {
+    "id": "text_0b61348b434f",
+    "ar": "معدل النمو للفترة",
+    "en": "Growth over this period",
+    "index": 117
+  },
+  {
+    "id": "text_114c955de7c4",
+    "ar": "نمو إيجابي مستمر",
+    "en": "Continued positive growth",
+    "index": 118
+  },
+  {
+    "id": "text_a60a8f0e5530",
+    "ar": "معدل مستقر",
+    "en": "Stable rate",
+    "index": 119
+  },
+  {
+    "id": "text_f9dc5d61b247",
+    "ar": "متوسط الادخار الشهري",
+    "en": "Average monthly savings",
+    "index": 120
+  },
+  {
+    "id": "text_97297cf83728",
+    "ar": "الشهر الأعلى ادخاراً",
+    "en": "Highest savings month",
+    "index": 121
+  },
+  {
+    "id": "text_fec5262bafc9",
+    "ar": "الرؤى والتحليلات الذكية المحلية",
+    "en": "Local financial insights",
+    "index": 122
+  },
+  {
+    "id": "text_891924a91014",
+    "ar": "لا توجد ملاحظات مالية مهمة حاليًا.",
+    "en": "No important financial insights at the moment.",
+    "index": 123
+  },
+  {
+    "id": "text_5bf826c5e57c",
+    "ar": "إغلاق",
+    "en": "Close",
+    "index": 124
+  },
+  {
+    "id": "text_bf8d7bd53353",
+    "ar": "تسجيل أموال لي عند الآخرين",
+    "en": "Record money owed to me",
+    "index": 125
+  },
+  {
+    "id": "text_a37cd3567d4d",
+    "ar": "تسجيل دين عليّ للآخرين",
+    "en": "Record money I owe",
+    "index": 126
+  },
+  {
+    "id": "text_7612847d2233",
+    "ar": "أموال لي عند الغير",
+    "en": "Money owed to me",
+    "index": 127
+  },
+  {
+    "id": "text_dd169bf23200",
+    "ar": "دين عليّ للغير",
+    "en": "Money I owe",
+    "index": 128
+  },
+  {
+    "id": "text_7201473b2591",
+    "ar": "اسم الشخص المدين",
+    "en": "Debtor's name",
+    "index": 129
+  },
+  {
+    "id": "text_63feb3bb804e",
+    "ar": "اسم الشخص الدائن",
+    "en": "Creditor's name",
+    "index": 130
+  },
+  {
+    "id": "text_bc44a773ac92",
+    "ar": "مبلغ الدين",
+    "en": "Debt amount",
+    "index": 131
+  },
+  {
+    "id": "text_c8a0cdd5189a",
+    "ar": "ملاحظات / موعد السداد المتوقع",
+    "en": "Notes / Expected payment date",
+    "index": 132
+  },
+  {
+    "id": "text_19af7a0f2ad8",
+    "ar": "يرجى إدخال اسم الشخص",
+    "en": "Enter the person's name",
+    "index": 133
+  },
+  {
+    "id": "text_268c5b73a9b0",
+    "ar": "يرجى إدخال مبلغ صحيح أكبر من صفر",
+    "en": "Enter a valid amount greater than zero",
+    "index": 134
+  },
+  {
+    "id": "text_56ee6e0d206b",
+    "ar": "حفظ",
+    "en": "Save",
+    "index": 135
+  },
+  {
+    "id": "text_e776b0209b50",
+    "ar": "إلغاء",
+    "en": "Cancel",
+    "index": 136
+  },
+  {
+    "id": "text_b1635a0b10cd",
+    "ar": "تحصيل سداد من {0}",
+    "en": "Receive payment from {0}",
+    "index": 137
+  },
+  {
+    "id": "text_56d7f604af7f",
+    "ar": "سداد دين لـ {0}",
+    "en": "Pay debt to {0}",
+    "index": 138
+  },
+  {
+    "id": "text_082322fac562",
+    "ar": "المبلغ المتبقي: {0} {1} (من أصل {2} {3})",
+    "en": "Remaining: {0} {1} (of {2} {3})",
+    "index": 139
+  },
+  {
+    "id": "text_f88f6cb033cb",
+    "ar": "المبلغ المدفوع / المحصل",
+    "en": "Amount paid / Received",
+    "index": 140
+  },
+  {
+    "id": "text_d40d75caab23",
+    "ar": "ملاحظة على الدفعة (اختياري)",
+    "en": "Payment note (optional)",
+    "index": 141
+  },
+  {
+    "id": "text_c77f84848501",
+    "ar": "يرجى إدخال مبلغ سداد صحيح",
+    "en": "Enter a valid payment amount",
+    "index": 142
+  },
+  {
+    "id": "text_9ec43fbe481b",
+    "ar": "مبلغ السداد أكبر من المتبقي ({0} {1})",
+    "en": "Payment exceeds the remaining balance ({0} {1})",
+    "index": 143
+  },
+  {
+    "id": "text_11b0cc7ecdb7",
+    "ar": "تأكيد السداد",
+    "en": "Confirm payment",
+    "index": 144
+  },
+  {
+    "id": "text_2045dbe9ad39",
+    "ar": "+ إضافة دخل جديد إلى الخزنة",
+    "en": "+ Add income to vault",
+    "index": 145
+  },
+  {
+    "id": "text_8399a8121b07",
+    "ar": "المبلغ (بالجنيه)",
+    "en": "Amount (EGP)",
+    "index": 146
+  },
+  {
+    "id": "text_9daaed987022",
+    "ar": "تصنيف الدخل",
+    "en": "Income category",
+    "index": 147
+  },
+  {
+    "id": "text_6e200a34c778",
+    "ar": "الخزنة المستهدفة",
+    "en": "Destination vault",
+    "index": 148
+  },
+  {
+    "id": "text_d554c7b27da7",
+    "ar": "الوصف / ملاحظة (اختياري)",
+    "en": "Description / Note (optional)",
+    "index": 149
+  },
+  {
+    "id": "text_5e3a3fdfce20",
+    "ar": "إضافة",
+    "en": "Add",
+    "index": 150
+  },
+  {
+    "id": "text_df20037c090f",
+    "ar": "خضروات",
+    "en": "Vegetables",
+    "index": 151
+  },
+  {
+    "id": "text_5741b09082a3",
+    "ar": "تم إرفاق صورة الفاتورة ✓",
+    "en": "Receipt image attached ✓",
+    "index": 152
+  },
+  {
+    "id": "text_caf3f5fa344d",
+    "ar": "بيانات سيتم إرسالها",
+    "en": "Data to be sent",
+    "index": 153
+  },
+  {
+    "id": "text_b730937d1d5e",
+    "ar": "متابعة الحفظ",
+    "en": "Continue saving",
+    "index": 154
+  },
+  {
+    "id": "text_a02759f37c7e",
+    "ar": "+ إضافة درس للأطفال",
+    "en": "+ Add a child's lesson",
+    "index": 155
+  },
+  {
+    "id": "text_c97c2377ad3c",
+    "ar": "اسم الطفل (مثل: محمد، سارة)",
+    "en": "Child's name (e.g. Mohamed, Sarah)",
+    "index": 156
+  },
+  {
+    "id": "text_d5681a90cfde",
+    "ar": "المادة (مثل: رياضيات، إنجليزي)",
+    "en": "Subject (e.g. Maths, English)",
+    "index": 157
+  },
+  {
+    "id": "text_0667a9bf31ce",
+    "ar": "اسم المدرس",
+    "en": "Teacher's name",
+    "index": 158
+  },
+  {
+    "id": "text_5e42a81c0bdb",
+    "ar": "المبلغ الشهري",
+    "en": "Monthly amount",
+    "index": 159
+  },
+  {
+    "id": "text_c82c597a6f7d",
+    "ar": "حفظ الدرس",
+    "en": "Save lesson",
+    "index": 160
+  },
+  {
+    "id": "text_4cdf4b9f0083",
+    "ar": "+ إضافة حساب / خزنة جديدة",
+    "en": "+ Add an account / Vault",
+    "index": 161
+  },
+  {
+    "id": "text_02f7925bc7b6",
+    "ar": "اسم الخزنة (مثل: محفظة اتصالات كاش، البنك الأهلي)",
+    "en": "Vault name (e.g. mobile wallet, bank account)",
+    "index": 162
+  },
+  {
+    "id": "text_d85b2adf0086",
+    "ar": "الرصيد الافتتاحي",
+    "en": "Opening balance",
+    "index": 163
+  },
+  {
+    "id": "text_866cb767ecfb",
+    "ar": "إضافة الخزنة",
+    "en": "Add vault",
+    "index": 164
+  },
+  {
+    "id": "text_7af1c46cdde4",
+    "ar": "مطاعم",
+    "en": "Restaurants",
+    "index": 165
+  },
+  {
+    "id": "text_bdda0c5b4a61",
+    "ar": "بنزين",
+    "en": "Fuel",
+    "index": 166
+  },
+  {
+    "id": "text_dc0448c7bbdb",
+    "ar": "كهرباء",
+    "en": "Electricity",
+    "index": 167
+  },
+  {
+    "id": "text_356f390ccc4b",
+    "ar": "إيجار",
+    "en": "Rent",
+    "index": 168
+  },
+  {
+    "id": "text_38fac5fcec7c",
+    "ar": "مواصلات",
+    "en": "Transport",
+    "index": 169
+  },
+  {
+    "id": "text_21da4e22df73",
+    "ar": "فواتير",
+    "en": "Bills",
+    "index": 170
+  },
+  {
+    "id": "text_ad5a18db7678",
+    "ar": "علاج",
+    "en": "Healthcare",
+    "index": 171
+  },
+  {
+    "id": "text_e5ee006cd669",
+    "ar": "مصاريف عامة",
+    "en": "General expenses",
+    "index": 172
+  },
+  {
+    "id": "text_b0a9803991e9",
+    "ar": "تأكيد حذف الميزانية",
+    "en": "Confirm budget deletion",
+    "index": 173
+  },
+  {
+    "id": "text_0a6fb171955e",
+    "ar": "هل أنت تأكد من حذف حد الميزانية الشهرية لتصنيف ({0})؟",
+    "en": "Delete the monthly budget limit for ({0})?",
+    "index": 174
+  },
+  {
+    "id": "text_2d2bbdc2d694",
+    "ar": "حذف",
+    "en": "Delete",
+    "index": 175
+  },
+  {
+    "id": "text_166e9d1b4fe3",
+    "ar": "تعديل ميزانية ({0})",
+    "en": "Edit budget ({0})",
+    "index": 176
+  },
+  {
+    "id": "text_32f1966a4cd5",
+    "ar": "تحديد ميزانية شهرية لتصنيف",
+    "en": "Set a monthly category budget",
+    "index": 177
+  },
+  {
+    "id": "text_e18899dad359",
+    "ar": "سيقوم التطبيق بتنبيهك عند الاقتراب أو تجاوز الحد المسموح به لهذا البند شهرياً.",
+    "en": "The app will notify you when you approach or exceed this category's monthly limit.",
+    "index": 178
+  },
+  {
+    "id": "text_1a0f3b39aac5",
+    "ar": "اسم التصنيف",
+    "en": "Category name",
+    "index": 179
+  },
+  {
+    "id": "text_7b4764ccb0f0",
+    "ar": "أو اختر تصنيفاً سريعاً:",
+    "en": "Or select a category:",
+    "index": 180
+  },
+  {
+    "id": "text_0e2c15ffddf0",
+    "ar": "الحد الأقصى (بالجنيه)",
+    "en": "Maximum amount (EGP)",
+    "index": 181
+  },
+  {
+    "id": "text_ef1c45607fc6",
+    "ar": "حذف الميزانية",
+    "en": "Delete budget",
+    "index": 182
+  },
+  {
+    "id": "text_6d5aa037cf62",
+    "ar": "حفظ الميزانية",
+    "en": "Save budget",
+    "index": 183
+  },
+  {
+    "id": "text_53ccaef115ec",
+    "ar": "تأكيد إزالة الحساب",
+    "en": "Confirm account removal",
+    "index": 184
+  },
+  {
+    "id": "text_97fab5f15441",
+    "ar": "هل أنت تأكد من إلغاء وحذف هذا الحساب / الخزنة ({0}) بالكامل؟",
+    "en": "Permanently remove this account / vault ({0})?",
+    "index": 185
+  },
+  {
+    "id": "text_5ef55c0db740",
+    "ar": "إلغاء / حذف الحساب",
+    "en": "Remove / Delete account",
+    "index": 186
+  },
+  {
+    "id": "text_98df46fbd83b",
+    "ar": "تراجع",
+    "en": "Back",
+    "index": 187
+  },
+  {
+    "id": "text_f55f825ec231",
+    "ar": "تعديل الخزنة / الحساب",
+    "en": "Edit vault / Account",
+    "index": 188
+  },
+  {
+    "id": "text_7ce2b7078a8e",
+    "ar": "إلغاء الحساب",
+    "en": "Remove account",
+    "index": 189
+  },
+  {
+    "id": "text_4555e916f59f",
+    "ar": "اسم الخزنة / الحساب (مثل: بنك مصر، فودافون كاش)",
+    "en": "Vault / Account name (e.g. bank account, mobile wallet)",
+    "index": 190
+  },
+  {
+    "id": "text_8e6dada6dcc2",
+    "ar": "تعديل مبلغ / رصيد الحساب الحالي",
+    "en": "Edit current account balance",
+    "index": 191
+  },
+  {
+    "id": "text_33081e44cb7c",
+    "ar": "حفظ التغييرات",
+    "en": "Save changes",
+    "index": 192
+  },
+  {
+    "id": "text_a0b93eb47f97",
+    "ar": "الفواتير والالتزامات المستحقة",
+    "en": "Outstanding bills and commitments",
+    "index": 193
+  },
+  {
+    "id": "text_b87ef5afd60a",
+    "ar": "{0} فواتير غير مسدّدة • الإجمالي: {1} {2}",
+    "en": "{0} unpaid bills • Total: {1} {2}",
+    "index": 194
+  },
+  {
+    "id": "text_1222aedee374",
+    "ar": "🎉 جميع الفواتير والالتزامات مسدّدة!",
+    "en": "🎉 All bills and commitments are paid!",
+    "index": 195
+  },
+  {
+    "id": "text_0d209f6617e0",
+    "ar": "لا توجد أي فواتير أو دروس معلّقة حالياً.",
+    "en": "No outstanding bills or lessons.",
+    "index": 196
+  },
+  {
+    "id": "text_f23d86570e8d",
+    "ar": "الالتزامات الشهرية والفواتير",
+    "en": "Monthly commitments and bills",
+    "index": 197
+  },
+  {
+    "id": "text_e359071b6d6c",
+    "ar": "المبلغ: {0} {1}",
+    "en": "Amount: {0} {1}",
+    "index": 198
+  },
+  {
+    "id": "text_82f89f773df0",
+    "ar": "تاريخ الاستحقاق: {0}",
+    "en": "Due date: {0}",
+    "index": 199
+  },
+  {
+    "id": "text_d20206869e15",
+    "ar": "ملاحظات: {0}",
+    "en": "Notes: {0}",
+    "index": 200
+  },
+  {
+    "id": "text_00892ccddcd9",
+    "ar": "تسديد",
+    "en": "Pay",
+    "index": 201
+  },
+  {
+    "id": "text_0647a642ebee",
+    "ar": "دروس الأبناء المستحقة",
+    "en": "Outstanding lesson payments",
+    "index": 202
+  },
+  {
+    "id": "text_765b68c05b0d",
+    "ar": "المعلم: {0}",
+    "en": "Teacher: {0}",
+    "index": 203
+  },
+  {
+    "id": "text_b0a5de0afd74",
+    "ar": "المبلغ: {0} {1}",
+    "en": "Amount: {0} {1}",
+    "index": 204
+  },
+  {
+    "id": "text_aee0d2b605de",
+    "ar": "تعديل بيانات الحساب وصورة الملف الشخصي",
+    "en": "Edit account details and profile picture",
+    "index": 205
+  },
+  {
+    "id": "text_6d7077bedfa5",
+    "ar": "اختر صورة الحساب / الأيقونة المفضلة:",
+    "en": "Choose a profile picture / Icon:",
+    "index": 206
+  },
+  {
+    "id": "text_e19b16bdb71a",
+    "ar": "الاسم الكامل",
+    "en": "Full name",
+    "index": 207
+  },
+  {
+    "id": "text_794f68a24741",
+    "ar": "اسم المستخدم",
+    "en": "Username",
+    "index": 208
+  },
+  {
+    "id": "text_0915ef8ea533",
+    "ar": "البريد الإلكتروني",
+    "en": "Email address",
+    "index": 209
+  },
+  {
+    "id": "text_8e70d27f84ec",
+    "ar": "البريد",
+    "en": "Email",
+    "index": 210
+  },
+  {
+    "id": "text_211cce4ca4ef",
+    "ar": "رقم الهاتف",
+    "en": "Phone number",
+    "index": 211
+  },
+  {
+    "id": "text_760c65a1fab6",
+    "ar": "الهاتف",
+    "en": "Phone",
+    "index": 212
+  },
+  {
+    "id": "text_c12100c61b18",
+    "ar": "تم إلغاء الحفظ؛ يمكنك المحاولة مجدداً",
+    "en": "Save canceled. You can try again.",
+    "index": 213
+  },
+  {
+    "id": "text_1eb9aa242624",
+    "ar": "تغير الحساب؛ افتح النافذة مجدداً",
+    "en": "The account changed. Open this dialog again.",
+    "index": 214
+  },
+  {
+    "id": "text_a8793266c256",
+    "ar": "تعذر فتح الملف للحفظ",
+    "en": "Could not open the file for saving",
+    "index": 215
+  },
+  {
+    "id": "text_06f26e015e2c",
+    "ar": "تم حفظ النسخة المشفرة بنجاح",
+    "en": "Encrypted backup saved successfully",
+    "index": 216
+  },
+  {
+    "id": "text_414e1e6dc40e",
+    "ar": "تعذر حفظ النسخة",
+    "en": "Could not save backup",
+    "index": 217
+  },
+  {
+    "id": "text_a929b754604e",
+    "ar": "تعذر فتح الملف",
+    "en": "Could not open file",
+    "index": 218
+  },
+  {
+    "id": "text_e6804597584a",
+    "ar": "حجم النسخة يتجاوز 20 ميجابايت",
+    "en": "Backup exceeds 20 MB",
+    "index": 219
+  },
+  {
+    "id": "text_d384371c7d76",
+    "ar": "النسخة غير صالحة",
+    "en": "Invalid backup",
+    "index": 220
+  },
+  {
+    "id": "text_a9bd5dc954ba",
+    "ar": "تعذر قراءة النسخة",
+    "en": "Could not read backup",
+    "index": 221
+  },
+  {
+    "id": "text_694abc983ec7",
+    "ar": "استبدال بيانات الحساب الحالي؟",
+    "en": "Replace current account data?",
+    "index": 222
+  },
+  {
+    "id": "text_722dca4d5e9b",
+    "ar": "سيتم استبدال بيانات الحساب الحالي بالكامل. احفظ نسخة منها أولاً.\n",
+    "en": "All current account data will be replaced. Save a backup first.\n",
+    "index": 223
+  },
+  {
+    "id": "text_4df94446f435",
+    "ar": "الحركات: {0}، الذهب: {1}، المدخرات: {2}.\n",
+    "en": "Transactions: {0}, gold assets: {1}, cash savings: {2}.\n",
+    "index": 224
+  },
+  {
+    "id": "text_f82f083ba1cf",
+    "ar": "صور الإيصالات والمرفقات غير مضمنة. لن تتغير بيانات الحسابات الأخرى.",
+    "en": "Receipt images and attachments are not included. Other accounts will not be changed.",
+    "index": 225
+  },
+  {
+    "id": "text_7f40355588ef",
+    "ar": "تمت الاستعادة بنجاح",
+    "en": "Restored successfully",
+    "index": 226
+  },
+  {
+    "id": "text_82e454e3065d",
+    "ar": "فشلت الاستعادة ولم تتغير بياناتك. النسخ القديمة للأسرار تتطلب مفتاح الجهاز الأصلي.",
+    "en": "Restore failed; your data was not changed. Older secret backups require the original device key.",
+    "index": 227
+  },
+  {
+    "id": "text_b07a7cb3a1af",
+    "ar": "تعذرت الاستعادة",
+    "en": "Could not restore backup",
+    "index": 228
+  },
+  {
+    "id": "text_5fc5f97d822a",
+    "ar": "استبدال واستعادة",
+    "en": "Replace and restore",
+    "index": 229
+  },
+  {
+    "id": "text_949fece4e9b3",
+    "ar": "النسخ الاحتياطي المشفر",
+    "en": "Encrypted backup",
+    "index": 230
+  },
+  {
+    "id": "text_8a0a96f7a552",
+    "ar": "احفظ بياناتك المالية وأسرار الخزنة بكلمة مرور. احتفظ بالكلمة لاستعادة النسخة على أي جهاز. الصور والمرفقات غير مضمنة.",
+    "en": "Protect your financial data and vault secrets with a password. Keep it to restore on another device. Images and attachments are not included.",
+    "index": 231
+  },
+  {
+    "id": "text_5aa636210f67",
+    "ar": "كلمة مرور النسخة",
+    "en": "Backup password",
+    "index": 232
+  },
+  {
+    "id": "text_f29136956db6",
+    "ar": "تعذر إنشاء النسخة",
+    "en": "Could not create backup",
+    "index": 233
+  },
+  {
+    "id": "text_1019d9dd0ede",
+    "ar": "حفظ نسخة",
+    "en": "Save backup",
+    "index": 234
+  },
+  {
+    "id": "text_0ba062d0f757",
+    "ar": "تعذر فتح مستعرض الملفات",
+    "en": "Could not open file picker",
+    "index": 235
+  },
+  {
+    "id": "text_90bab6e8c99d",
+    "ar": "فتح نسخة للاستعادة",
+    "en": "Open backup to restore",
+    "index": 236
+  },
+  {
+    "id": "text_d0e559035070",
+    "ar": "إدارة وتخصيص الأقسام",
+    "en": "Manage app sections",
+    "index": 237
+  },
+  {
+    "id": "text_241c729c5948",
+    "ar": "يمكنك إخفاء أو إظهار أقسام التطبيق حسب احتياجاتك اليومية. لن يتم حذف أي بيانات مسجلة عند إخفاء القسم.",
+    "en": "Show or hide app sections to suit your needs. Hiding a section does not delete its data.",
+    "index": 238
+  },
+  {
+    "id": "text_ac5f8981223b",
+    "ar": "الدخل والمصروفات",
+    "en": "Income and expenses",
+    "index": 239
+  },
+  {
+    "id": "text_9eabacadf3bd",
+    "ar": "القسم الأساسي (مفعّل دائمًا)",
+    "en": "Core section (always enabled)",
+    "index": 240
+  },
+  {
+    "id": "text_0b8ff6a5604b",
+    "ar": "صافي الثروة",
+    "en": "Net worth",
+    "index": 241
+  },
+  {
+    "id": "text_5053d7bf195f",
+    "ar": "حساب الأصول والالتزامات",
+    "en": "Assets and liabilities",
+    "index": 242
+  },
+  {
+    "id": "text_3c7023c98558",
+    "ar": "الديون (لي / عليّ)",
+    "en": "Debts (owed to me / I owe)",
+    "index": 243
+  },
+  {
+    "id": "text_630aff3fd3d6",
+    "ar": "إدارة الديون والأموال المستحقة",
+    "en": "Manage debts and money owed",
+    "index": 244
+  },
+  {
+    "id": "text_3ac532621c03",
+    "ar": "التقويم المالي",
+    "en": "Financial calendar",
+    "index": 245
+  },
+  {
+    "id": "text_4fc432f8f7b5",
+    "ar": "عرض العمليات والالتزامات على مدار الشهر",
+    "en": "Transactions and commitments throughout the month",
+    "index": 246
+  },
+  {
+    "id": "text_0911e2b39ae7",
+    "ar": "المدخرات النقدية",
+    "en": "Cash savings",
+    "index": 247
+  },
+  {
+    "id": "text_8203c5a07039",
+    "ar": "صناديق الادخار والعملات",
+    "en": "Savings funds and currencies",
+    "index": 248
+  },
+  {
+    "id": "text_270cfe7362c3",
+    "ar": "الذهب والسبائك",
+    "en": "Gold and bullion",
+    "index": 249
+  },
+  {
+    "id": "text_78bca3b4e55d",
+    "ar": "المشغولات، السبائك، وقيمتها الحالية",
+    "en": "Jewelry, bullion, and their current value",
+    "index": 250
+  },
+  {
+    "id": "text_bb5f9ffd9b6d",
+    "ar": "الالتزامات والفواتير",
+    "en": "Commitments and bills",
+    "index": 251
+  },
+  {
+    "id": "text_9e754462d4ab",
+    "ar": "الإيجار، الفواتير، والأقساط الشهرية",
+    "en": "Rent, bills, and monthly installments",
+    "index": 252
+  },
+  {
+    "id": "text_6831249d5a13",
+    "ar": "دروس الأطفال",
+    "en": "Children's lessons",
+    "index": 253
+  },
+  {
+    "id": "text_25b22a8dc6ba",
+    "ar": "حسابات المدرسين ومصروفات المواد",
+    "en": "Teacher payments and lesson expenses",
+    "index": 254
+  },
+  {
+    "id": "text_1e293181f8da",
+    "ar": "الخروجات الجماعية",
+    "en": "Group outings",
+    "index": 255
+  },
+  {
+    "id": "text_6eee8a54550a",
+    "ar": "حساب النزهات وتقسيم المصاريف",
+    "en": "Track outings and split expenses",
+    "index": 256
+  },
+  {
+    "id": "text_73227b4300b7",
+    "ar": "الميزانيات وسقف الإنفاق",
+    "en": "Budgets and spending limits",
+    "index": 257
+  },
+  {
+    "id": "text_b3e90b0100ae",
+    "ar": "تحديد ميزانية لكل تصنيف",
+    "en": "Set a budget for each category",
+    "index": 258
+  },
+  {
+    "id": "text_25e01e43fe84",
+    "ar": "مشغولات",
+    "en": "Jewelry",
+    "index": 259
+  },
+  {
+    "id": "text_acf535a08f2a",
+    "ar": "عملة ذهبية",
+    "en": "Gold coin",
+    "index": 260
+  },
+  {
+    "id": "text_add83a5f7f2d",
+    "ar": "جنيه ذهب",
+    "en": "Gold pound",
+    "index": 261
+  },
+  {
+    "id": "text_83b4b55adb2a",
+    "ar": "أخرى",
+    "en": "Other",
+    "index": 262
+  },
+  {
+    "id": "text_7bf909688837",
+    "ar": "تعديل قطعة الذهب",
+    "en": "Edit gold asset",
+    "index": 263
+  },
+  {
+    "id": "text_30d402720db8",
+    "ar": "مثال: سبيكة 10 جرام BTC أو غوايش لازوردي",
+    "en": "Example: 10 g bullion bar or gold bracelets",
+    "index": 264
+  },
+  {
+    "id": "text_2c3d2ad75181",
+    "ar": "عيار {0}",
+    "en": "{0} karat",
+    "index": 265
+  },
+  {
+    "id": "text_9595409f46b5",
+    "ar": "عيار {0}",
+    "en": "{0} karat",
+    "index": 266
+  },
+  {
+    "id": "text_0651503e203d",
+    "ar": "مثال: 10.0 أو 8.0 أو 31.1",
+    "en": "Example: 10.0, 8.0, or 31.1",
+    "index": 267
+  },
+  {
+    "id": "text_ae71934c1102",
+    "ar": "جرام",
+    "en": "g",
+    "index": 268
+  },
+  {
+    "id": "text_09355e9347df",
+    "ar": "8g (جنيه)",
+    "en": "8 g (gold pound)",
+    "index": 269
+  },
+  {
+    "id": "text_73e9421c8325",
+    "ar": "31.1g (أونصة)",
+    "en": "31.1 g (ounce)",
+    "index": 270
+  },
+  {
+    "id": "text_7bb800f48f49",
+    "ar": "مثال: 50000",
+    "en": "Example: 50000",
+    "index": 271
+  },
+  {
+    "id": "text_af339c9bb6d8",
+    "ar": "القيمة الحالية بالخزنة:",
+    "en": "Current vault value:",
+    "index": 272
+  },
+  {
+    "id": "text_fb74677123fd",
+    "ar": "{0} ج.م",
+    "en": "{0} EGP",
+    "index": 273
+  },
+  {
+    "id": "text_02d2dfdd5f2b",
+    "ar": "سعر الجرام عيار {0}:",
+    "en": "Price per gram ({0} karat):",
+    "index": 274
+  },
+  {
+    "id": "text_938d3e255411",
+    "ar": "{0} ج.م/جرام",
+    "en": "{0} EGP/g",
+    "index": 275
+  },
+  {
+    "id": "text_5736e8751e12",
+    "ar": "الربح / العائد التقديري:",
+    "en": "Estimated profit / Return:",
+    "index": 276
+  },
+  {
+    "id": "text_542bbcfa90cb",
+    "ar": "{0}{1} ج.م ({2}%)",
+    "en": "{0}{1} EGP ({2}%)",
+    "index": 277
+  },
+  {
+    "id": "text_940eb631311c",
+    "ar": "ملاحظات (العيار، رقم الكشف، التغليف...)",
+    "en": "Notes (karat, certificate number, packaging...)",
+    "index": 278
+  },
+  {
+    "id": "text_f12384b96e33",
+    "ar": "تغيير الصورة",
+    "en": "Change photo",
+    "index": 279
+  },
+  {
+    "id": "text_5fa7c4ce5839",
+    "ar": "عيار {0}",
+    "en": "{0} karat",
+    "index": 280
+  },
+  {
+    "id": "text_953e21c4f2c5",
+    "ar": "{0} جرام",
+    "en": "{0} g",
+    "index": 281
+  },
+  {
+    "id": "text_fff19b8abb41",
+    "ar": "سعر الشراء: {0} ج.م",
+    "en": "Purchase price: {0} EGP",
+    "index": 282
+  },
+  {
+    "id": "text_92291ba269c7",
+    "ar": "المبلغ الفعلي المستلم بالجنيه",
+    "en": "Actual amount received in EGP",
+    "index": 283
+  },
+  {
+    "id": "text_3459448d9802",
+    "ar": "الربح المحقق من البيع:",
+    "en": "Realized sale profit:",
+    "index": 284
+  },
+  {
+    "id": "text_bb392991a17f",
+    "ar": "الخسارة المحققة من البيع:",
+    "en": "Realized sale loss:",
+    "index": 285
+  },
+  {
+    "id": "text_ae55a78e16f4",
+    "ar": "{0}{1} ج.م",
+    "en": "{0}{1} EGP",
+    "index": 286
+  },
+  {
+    "id": "text_8c2840bd04e1",
+    "ar": "ملاحظات البيع (اسم المحل، السعر للجرام، إلخ)",
+    "en": "Sale notes (shop, price per gram, etc.)",
+    "index": 287
+  },
+  {
+    "id": "text_bd5b1d4d50d9",
+    "ar": "تأكيد البيع",
+    "en": "Confirm sale",
+    "index": 288
+  },
+  {
+    "id": "text_8f3cc63d292c",
+    "ar": "تم البيع • {0}",
+    "en": "Sold • {0}",
+    "index": 289
+  },
+  {
+    "id": "text_0619e9cfa1ee",
+    "ar": "في الخزنة • عيار {0}",
+    "en": "In vault • {0} karat",
+    "index": 290
+  },
+  {
+    "id": "text_2a5f152b8551",
+    "ar": "نوع القطعة",
+    "en": "Asset type",
+    "index": 291
+  },
+  {
+    "id": "text_6e31d9bdf7b4",
+    "ar": "العيار",
+    "en": "Karat",
+    "index": 292
+  },
+  {
+    "id": "text_20218fd4bf04",
+    "ar": "الوزن بالجرام",
+    "en": "Weight in grams",
+    "index": 293
+  },
+  {
+    "id": "text_fc4d767fab55",
+    "ar": "الغرض",
+    "en": "Purpose",
+    "index": 294
+  },
+  {
+    "id": "text_f4bce26fcbd7",
+    "ar": "للادخار والاستثمار",
+    "en": "Savings and investment",
+    "index": 295
+  },
+  {
+    "id": "text_0694745f849b",
+    "ar": "للزينة والاستخدام",
+    "en": "Jewelry and personal use",
+    "index": 296
+  },
+  {
+    "id": "text_21fc46ec23cd",
+    "ar": "تاريخ الشراء",
+    "en": "Purchase date",
+    "index": 297
+  },
+  {
+    "id": "text_6d3b8a57de85",
+    "ar": "سعر الشراء",
+    "en": "Purchase price",
+    "index": 298
+  },
+  {
+    "id": "text_d03ed058b768",
+    "ar": "{0} ج.م",
+    "en": "{0} EGP",
+    "index": 299
+  },
+  {
+    "id": "text_574c4d101909",
+    "ar": "سعر الجرام الحالي",
+    "en": "Current price per gram",
+    "index": 300
+  },
+  {
+    "id": "text_e9af10cebbd5",
+    "ar": "{0} ج.م",
+    "en": "{0} EGP",
+    "index": 301
+  },
+  {
+    "id": "text_29f8a247485e",
+    "ar": "القيمة السوقية الحالية",
+    "en": "Current market value",
+    "index": 302
+  },
+  {
+    "id": "text_97c39d12f919",
+    "ar": "{0} ج.م",
+    "en": "{0} EGP",
+    "index": 303
+  },
+  {
+    "id": "text_ec746491fb2e",
+    "ar": "الربح / العائد",
+    "en": "Profit / Return",
+    "index": 304
+  },
+  {
+    "id": "text_6f6b054fcaf6",
+    "ar": "{0}{1} ج.م ({2}%)",
+    "en": "{0}{1} EGP ({2}%)",
+    "index": 305
+  },
+  {
+    "id": "text_37e9486a6817",
+    "ar": "سعر البيع الفعلي",
+    "en": "Actual sale price",
+    "index": 306
+  },
+  {
+    "id": "text_044936796b55",
+    "ar": "{0} ج.م",
+    "en": "{0} EGP",
+    "index": 307
+  },
+  {
+    "id": "text_6045f88b80a0",
+    "ar": "تاريخ البيع",
+    "en": "Sale date",
+    "index": 308
+  },
+  {
+    "id": "text_378584de934b",
+    "ar": "الربح المحقق",
+    "en": "Realized profit",
+    "index": 309
+  },
+  {
+    "id": "text_267dda293317",
+    "ar": "ملاحظات البيع",
+    "en": "Sale notes",
+    "index": 310
+  },
+  {
+    "id": "text_f05125201dc0",
+    "ar": "ملاحظات إضافية",
+    "en": "Additional notes",
+    "index": 311
+  },
+  {
+    "id": "text_40ca4ab3b62c",
+    "ar": "🤝 بيع القطعة",
+    "en": "🤝 Sell asset",
+    "index": 312
+  },
+  {
+    "id": "text_b4f76c3aa21e",
+    "ar": "تعديل",
+    "en": "Edit",
+    "index": 313
+  },
+  {
+    "id": "text_32ef45f6c4dd",
+    "ar": "أدخل سعر الجرام بالجنيه لكل عيار لتحديث قيمة سبائك وقطع الذهب تلقائيًا.",
+    "en": "Enter the price per gram in EGP for each karat to update gold asset values automatically.",
+    "index": 314
+  },
+  {
+    "id": "text_c733eb2d663a",
+    "ar": "تحديث لحظي عبر GoldAPI.io",
+    "en": "Live update via GoldAPI.io",
+    "index": 315
+  },
+  {
+    "id": "text_f6141002d56d",
+    "ar": "جلب الأسعار مباشرة من خادم goldapi.io",
+    "en": "Fetch prices directly from goldapi.io",
+    "index": 316
+  },
+  {
+    "id": "text_e06f61ff041d",
+    "ar": "عيار 24 (السبائك النقية 99.9)",
+    "en": "24 karat (pure bullion 99.9)",
+    "index": 317
+  },
+  {
+    "id": "text_33c43892b786",
+    "ar": "عيار 22",
+    "en": "22 karat",
+    "index": 318
+  },
+  {
+    "id": "text_bf390a0524ba",
+    "ar": "عيار 21 (الأكثر تداولاً / الجنيهات)",
+    "en": "21 karat (common / Gold pounds)",
+    "index": 319
+  },
+  {
+    "id": "text_af3b35eeda19",
+    "ar": "عيار 18 (المشغولات الحديثة)",
+    "en": "18 karat (modern jewelry)",
+    "index": 320
+  },
+  {
+    "id": "text_e69a15a0a8d1",
+    "ar": "عيار 14",
+    "en": "14 karat",
+    "index": 321
+  },
+  {
+    "id": "text_a49055f064e4",
+    "ar": "عيار 12",
+    "en": "12 karat",
+    "index": 322
+  },
+  {
+    "id": "text_29dc89ac3e1d",
+    "ar": "استعادة أسعار السوق الافتراضية",
+    "en": "Restore default market prices",
+    "index": 323
+  },
+  {
+    "id": "text_0b97ec532c0e",
+    "ar": "حفظ وتحديث",
+    "en": "Save and update",
+    "index": 324
+  },
+  {
+    "id": "text_0272fe37ecfa",
+    "ar": "ر.س",
+    "en": "SAR",
+    "index": 325
+  },
+  {
+    "id": "text_258bc29b7ae5",
+    "ar": "د.إ",
+    "en": "AED",
+    "index": 326
+  },
+  {
+    "id": "text_0cb303cf3d30",
+    "ar": "تحديث أسعار الذهب لحظياً",
+    "en": "Update live gold prices",
+    "index": 327
+  },
+  {
+    "id": "text_d9e689d6c7ee",
+    "ar": "عبر مزود الخدمة GoldAPI.io",
+    "en": "Provided by GoldAPI.io",
+    "index": 328
+  },
+  {
+    "id": "text_64667411274d",
+    "ar": "مفتاح API مدمج ومفعل بنجاح. يتم جلب أسعار جرام الذهب لجميع الأعيرة عالمياً ومحلياً وفقاً للعملة المحددة.",
+    "en": "An API key is configured. Gold prices for all karats are fetched using the selected currency.",
+    "index": 329
+  },
+  {
+    "id": "text_62aa66740379",
+    "ar": "تحديث تلقائي كل يوم (12:00 ظهراً)",
+    "en": "Automatic daily update (12:00 PM)",
+    "index": 330
+  },
+  {
+    "id": "text_d0b12b2cc73d",
+    "ar": "تحديث لحظي مجدول في الخلفية وإشعارك بالأسعار الجديدة",
+    "en": "Scheduled background updates with price notifications",
+    "index": 331
+  },
+  {
+    "id": "text_c5f5d253fe51",
+    "ar": "مفتاح API الخاص بك (Access Token)",
+    "en": "Your API key (access token)",
+    "index": 332
+  },
+  {
+    "id": "text_753686b7d08a",
+    "ar": "مثال: goldapi-xxxxxxxxxxxxxxxx-drv",
+    "en": "Example: goldapi-xxxxxxxxxxxxxxxx-drv",
+    "index": 333
+  },
+  {
+    "id": "text_05f0a0d376f8",
+    "ar": "⚡ المفتاح الحالي مدمج وجاهز للاستخدام",
+    "en": "⚡ The current key is configured and ready",
+    "index": 334
+  },
+  {
+    "id": "text_e3629ac272ce",
+    "ar": "استعادة الافتراضي",
+    "en": "Restore default",
+    "index": 335
+  },
+  {
+    "id": "text_5136d2baf9c5",
+    "ar": "عملة التسعير:",
+    "en": "Pricing currency:",
+    "index": 336
+  },
+  {
+    "id": "text_a70ee3c6a8cd",
+    "ar": "جنيه مصري (EGP)",
+    "en": "Egyptian pound (EGP)",
+    "index": 337
+  },
+  {
+    "id": "text_98ca59bfadc9",
+    "ar": "دولار أمريكي (USD)",
+    "en": "US dollar (USD)",
+    "index": 338
+  },
+  {
+    "id": "text_1d09a9c7dfb6",
+    "ar": "ريال سعودي (SAR)",
+    "en": "Saudi riyal (SAR)",
+    "index": 339
+  },
+  {
+    "id": "text_1288bee92f4e",
+    "ar": "درهم إماراتي (AED)",
+    "en": "UAE dirham (AED)",
+    "index": 340
+  },
+  {
+    "id": "text_51ccc930475c",
+    "ar": "جاري الجلب...",
+    "en": "Fetching...",
+    "index": 341
+  },
+  {
+    "id": "text_aa669a2ec51f",
+    "ar": "جلب وتحديث الآن",
+    "en": "Fetch and update now",
+    "index": 342
+  },
+  {
+    "id": "text_342321732127",
+    "ar": "تعديل المدخرات النقدية",
+    "en": "Edit cash savings",
+    "index": 343
+  },
+  {
+    "id": "text_a6a99774a971",
+    "ar": "المبلغ المدخر",
+    "en": "Saved amount",
+    "index": 344
+  },
+  {
+    "id": "text_dd178e8508b9",
+    "ar": "مثال: 25000",
+    "en": "Example: 25000",
+    "index": 345
+  },
+  {
+    "id": "text_a7cc4e694ddc",
+    "ar": "وصف / هدف الادخار",
+    "en": "Description / Savings goal",
+    "index": 346
+  },
+  {
+    "id": "text_ebab6415c56f",
+    "ar": "مثال: مدخرات صندوق الطوارئ، سيولة استثمارية...",
+    "en": "Example: emergency fund, investment cash...",
+    "index": 347
+  },
+  {
+    "id": "text_2621b907b936",
+    "ar": "تحويل بين الخزن",
+    "en": "Transfer between vaults",
+    "index": 348
+  },
+  {
+    "id": "text_e9258a5036f8",
+    "ar": "تحتاج إلى وجود خزنتين على الأقل لتتمكن من إجراء التحويل.",
+    "en": "You need at least two vaults to make a transfer.",
+    "index": 349
+  },
+  {
+    "id": "text_d4c6598d6ffa",
+    "ar": "حسناً",
+    "en": "OK",
+    "index": 350
+  },
+  {
+    "id": "text_8ab3355c9b8e",
+    "ar": "{0} (الرصيد: {1})",
+    "en": "{0} (balance: {1})",
+    "index": 351
+  },
+  {
+    "id": "text_e4b742a3d7dd",
+    "ar": "من خزنة",
+    "en": "From vault",
+    "index": 352
+  },
+  {
+    "id": "text_b22041755a8d",
+    "ar": "{0} (رصيد: {1})",
+    "en": "{0} (balance: {1})",
+    "index": 353
+  },
+  {
+    "id": "text_54536665883b",
+    "ar": "إلى خزنة",
+    "en": "To vault",
+    "index": 354
+  },
+  {
+    "id": "text_6d657f28024a",
+    "ar": "المبلغ المحول",
+    "en": "Transfer amount",
+    "index": 355
+  },
+  {
+    "id": "text_e85b74a3d0e3",
+    "ar": "ملاحظة (اختياري)",
+    "en": "Note (optional)",
+    "index": 356
+  },
+  {
+    "id": "text_fca3bacd6fd9",
+    "ar": "يرجى إدخال مبلغ تحويل صحيح",
+    "en": "Enter a valid transfer amount",
+    "index": 357
+  },
+  {
+    "id": "text_5af8cd372f42",
+    "ar": "رصيد الخزنة ({0}) لا يكفي للتحويل",
+    "en": "Vault balance ({0}) is insufficient for this transfer",
+    "index": 358
+  },
+  {
+    "id": "text_0728ae910ae8",
+    "ar": "تنفيذ التحويل",
+    "en": "Transfer",
+    "index": 359
+  },
+  {
+    "id": "text_cf185716b8b8",
+    "ar": "الخزنة الذكية",
+    "en": "Smart Vault",
+    "index": 360
+  },
+  {
+    "id": "text_ab638fff0e70",
+    "ar": "الخزنة الذكية 🔐",
+    "en": "Smart Vault 🔐",
+    "index": 361
+  },
+  {
+    "id": "text_225183350e62",
+    "ar": "إدارة ميزانيتك وأصولك بأمان وموثوقية",
+    "en": "Manage your budget and assets securely",
+    "index": 362
+  },
+  {
+    "id": "text_7af517281485",
+    "ar": "تأكيد البريد الإلكتروني",
+    "en": "Verify email address",
+    "index": 363
+  },
+  {
+    "id": "text_70a45a2ea39f",
+    "ar": "“لقد أرسلنا رسالة تأكيد إلى {0}. يرجى تأكيد بريدك الإلكتروني ثم تسجيل الدخول.”",
+    "en": "“We sent a verification email to {0}. Verify your email, then sign in.”",
+    "index": 364
+  },
+  {
+    "id": "text_417be3fdb6ec",
+    "ar": "بعد فتح الرابط في بريدك، اضغط زر تسجيل الدخول أدناه للمتابعة.",
+    "en": "After opening the link in your email, select Sign in below to continue.",
+    "index": 365
+  },
+  {
+    "id": "text_5f4d515e99b3",
+    "ar": "تسجيل الدخول / Login",
+    "en": "Sign in",
+    "index": 366
+  },
+  {
+    "id": "text_750d50487cef",
+    "ar": "تمت إعادة إرسال رسالة التأكيد بنجاح! / Verification email resent!",
+    "en": "Verification email resent successfully!",
+    "index": 367
+  },
+  {
+    "id": "text_c67db272bcec",
+    "ar": "إعادة إرسال رسالة التأكيد / Resend Email",
+    "en": "Resend verification email",
+    "index": 368
+  },
+  {
+    "id": "text_f6f2f35c8ae0",
+    "ar": "تغيير البريد الإلكتروني / Change Email",
+    "en": "Change email",
+    "index": 369
+  },
+  {
+    "id": "text_151ff0110e44",
+    "ar": "تسجيل الدخول إلى حسابك",
+    "en": "Sign in to your account",
+    "index": 370
+  },
+  {
+    "id": "text_f4e3d0a3436a",
+    "ar": "البريد الإلكتروني / Email",
+    "en": "Email",
+    "index": 371
+  },
+  {
+    "id": "text_af8756f4d1af",
+    "ar": "كلمة المرور / Password",
+    "en": "Password",
+    "index": 372
+  },
+  {
+    "id": "text_491a8e0b00c1",
+    "ar": "نسيت كلمة المرور؟ / Forgot Password?",
+    "en": "Forgot password?",
+    "index": 373
+  },
+  {
+    "id": "text_a81fe1ccd11a",
+    "ar": "يرجى إدخال البريد الإلكتروني وكلمة المرور",
+    "en": "Enter your email and password",
+    "index": 374
+  },
+  {
+    "id": "text_d05c14280302",
+    "ar": "تم تسجيل الدخول بنجاح! مرحباً بك",
+    "en": "Signed in successfully! Welcome",
+    "index": 375
+  },
+  {
+    "id": "text_c6c409f93604",
+    "ar": "تسجيل الدخول / Log In",
+    "en": "Sign in",
+    "index": 376
+  },
+  {
+    "id": "text_f37cc9c94b5a",
+    "ar": "ليس لديك حساب؟",
+    "en": "Don't have an account?",
+    "index": 377
+  },
+  {
+    "id": "text_bb6cc0f4362b",
+    "ar": "إنشاء حساب جديد",
+    "en": "Create account",
+    "index": 378
+  },
+  {
+    "id": "text_556ff56ab3e7",
+    "ar": "الاسم الكامل / Full Name",
+    "en": "Full name",
+    "index": 379
+  },
+  {
+    "id": "text_00e10734fb09",
+    "ar": "كلمة المرور (6 أحرف على الأقل)",
+    "en": "Password (at least 6 characters)",
+    "index": 380
+  },
+  {
+    "id": "text_2f9171d15f58",
+    "ar": "تأكيد كلمة المرور / Confirm Password",
+    "en": "Confirm password",
+    "index": 381
+  },
+  {
+    "id": "text_aa496dc24580",
+    "ar": "يرجى ملء جميع الحقول المطلوبة / Please fill all required fields",
+    "en": "Fill in all required fields",
+    "index": 382
+  },
+  {
+    "id": "text_f3e5984d2c87",
+    "ar": "كلمتا المرور غير متطابقتين / Passwords do not match",
+    "en": "Passwords do not match",
+    "index": 383
+  },
+  {
+    "id": "text_792bd0e35f6c",
+    "ar": "كلمة المرور يجب أن تكون 6 أحرف على الأقل / Password must be at least 6 characters",
+    "en": "Password must be at least 6 characters",
+    "index": 384
+  },
+  {
+    "id": "text_46e64ce1d547",
+    "ar": "إنشاء حساب / Register",
+    "en": "Create account",
+    "index": 385
+  },
+  {
+    "id": "text_9e6712c97481",
+    "ar": "لديك حساب بالفعل؟",
+    "en": "Already have an account?",
+    "index": 386
+  },
+  {
+    "id": "text_8c6117b67c8b",
+    "ar": "تسجيل الدخول",
+    "en": "Sign in",
+    "index": 387
+  },
+  {
+    "id": "text_728bd4323f59",
+    "ar": "إعادة إرسال رسالة التأكيد",
+    "en": "Resend verification email",
+    "index": 388
+  },
+  {
+    "id": "text_39859f44ad6e",
+    "ar": "أدخل كلمة المرور الخاصة بحسابك لإعادة إرسال رابط التحقق إلى:\n{0}",
+    "en": "Enter your account password to resend the verification link to:\n{0}",
+    "index": 389
+  },
+  {
+    "id": "text_7ba22cf7e99d",
+    "ar": "كلمة المرور",
+    "en": "Password",
+    "index": 390
+  },
+  {
+    "id": "text_07e0622de969",
+    "ar": "تم إرسال رسالة التأكيد مرة أخرى إلى بريدك الإلكتروني!",
+    "en": "Verification email sent again!",
+    "index": 391
+  },
+  {
+    "id": "text_ed2999d5230c",
+    "ar": "إرسال الآن",
+    "en": "Send now",
+    "index": 392
+  },
+  {
+    "id": "text_ca1e582768c3",
+    "ar": "التحقق بخطوتين",
+    "en": "Two-step verification",
+    "index": 393
+  },
+  {
+    "id": "text_e408bd278ef3",
+    "ar": "التحقق بخطوتين (2FA)",
+    "en": "Two-factor authentication (2FA)",
+    "index": 394
+  },
+  {
+    "id": "text_6b2387213f6b",
+    "ar": "تم تفعيل حماية الخطوتين لحسابك. يرجى إدخال رمز الأمان المكون من 6 أرقام للتحقق والتسجيل:",
+    "en": "Two-step protection is enabled. Enter the 6-digit security code to verify and sign in:",
+    "index": 395
+  },
+  {
+    "id": "text_79a84ac793d2",
+    "ar": "رمز التحقق (مثال: 123456)",
+    "en": "Verification code (e.g. 123456)",
+    "index": 396
+  },
+  {
+    "id": "text_5988003cc37a",
+    "ar": "تم التحقق بنجاح! مرحباً بك",
+    "en": "Verified successfully! Welcome",
+    "index": 397
+  },
+  {
+    "id": "text_123680f2a1b8",
+    "ar": "رمز التحقق غير صحيح",
+    "en": "Incorrect verification code",
+    "index": 398
+  },
+  {
+    "id": "text_c07631980d85",
+    "ar": "تحقق وتسجيل",
+    "en": "Verify and sign in",
+    "index": 399
+  },
+  {
+    "id": "text_ea4ec56dde86",
+    "ar": "إلغاء / الدخول المباشر",
+    "en": "Cancel / Sign in directly",
+    "index": 400
+  },
+  {
+    "id": "text_f779e19d8133",
+    "ar": "إعادة تعيين كلمة المرور",
+    "en": "Reset password",
+    "index": 401
+  },
+  {
+    "id": "text_5d097bf37a95",
+    "ar": "أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور بأمان عبر Firebase Authentication:",
+    "en": "Enter your email to receive a secure password reset link through Firebase Authentication:",
+    "index": 402
+  },
+  {
+    "id": "text_ba1d3e0fbc7b",
+    "ar": "يرجى إدخال البريد الإلكتروني",
+    "en": "Enter your email address",
+    "index": 403
+  },
+  {
+    "id": "text_973044e8aa85",
+    "ar": "تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني بنجاح!",
+    "en": "Password reset link sent successfully!",
+    "index": 404
+  },
+  {
+    "id": "text_61a0b44d7e5d",
+    "ar": "إرسال الرابط",
+    "en": "Send link",
+    "index": 405
+  },
+  {
+    "id": "text_3306a9374e57",
+    "ar": "تشفير محلي AES-256 قبل الرفع • Cloud Firestore",
+    "en": "Local AES-256 encryption before upload • Cloud Firestore",
+    "index": 406
+  },
+  {
+    "id": "text_fd14703a0a80",
+    "ar": "قفل الخزنة",
+    "en": "Lock vault",
+    "index": 407
+  },
+  {
+    "id": "text_da6e6d26cdc6",
+    "ar": "توليد كلمة سر",
+    "en": "Generate password",
+    "index": 408
+  },
+  {
+    "id": "text_c3e160350e30",
+    "ar": "سجل النشاط",
+    "en": "Activity log",
+    "index": 409
+  },
+  {
+    "id": "text_811cabca45ae",
+    "ar": "نسخة مشفرة",
+    "en": "Encrypted backup",
+    "index": 410
+  },
+  {
+    "id": "text_3e2d41206804",
+    "ar": "بحث في عناصر الخزنة أو التصنيف...",
+    "en": "Search vault items or categories...",
+    "index": 411
+  },
+  {
+    "id": "text_0d97fd6e069e",
+    "ar": "مسح",
+    "en": "Clear",
+    "index": 412
+  },
+  {
+    "id": "text_904779de8074",
+    "ar": "الكل ({0})",
+    "en": "All ({0})",
+    "index": 413
+  },
+  {
+    "id": "text_f0d6b532fd55",
+    "ar": "لا توجد عناصر مطابقة لخيارات البحث",
+    "en": "No items match your search",
+    "index": 414
+  },
+  {
+    "id": "text_31dd7827ba4f",
+    "ar": "الخزنة السحابية فارغة حالياً",
+    "en": "Your cloud vault is empty",
+    "index": 415
+  },
+  {
+    "id": "text_e39fb1c44b15",
+    "ar": "اضغط على زر (+) بالأسفل لإضافة كلمات المرور أو الملاحظات السرية لتشفيرها ومزامنتها لحظياً مع Firestore.",
+    "en": "Select (+) below to add passwords or private notes for encryption and syncing with Firestore.",
+    "index": 416
+  },
+  {
+    "id": "text_1f7d44005382",
+    "ar": "تم النسخ بأمان إلى الحافظة",
+    "en": "Copied to clipboard",
+    "index": 417
+  },
+  {
+    "id": "text_271dc1c1ef0a",
+    "ar": "تم حذف العنصر بنجاح",
+    "en": "Item deleted successfully",
+    "index": 418
+  },
+  {
+    "id": "text_0be31b74e082",
+    "ar": "إضافة عنصر جديد",
+    "en": "Add item",
+    "index": 419
+  },
+  {
+    "id": "text_7c5f51aaf731",
+    "ar": "تم التشفير والحفظ السحابي بنجاح",
+    "en": "Encrypted and saved to the cloud successfully",
+    "index": 420
+  },
+  {
+    "id": "text_e532d79c9402",
+    "ar": "تم نسخ كلمة المرور القوية إلى الحافظة",
+    "en": "Strong password copied to clipboard",
+    "index": 421
+  },
+  {
+    "id": "text_46e6841e2136",
+    "ar": "نسخ",
+    "en": "Copy",
+    "index": 422
+  },
+  {
+    "id": "text_0804220142f6",
+    "ar": "إخفاء",
+    "en": "Hide",
+    "index": 423
+  },
+  {
+    "id": "text_4bde76230633",
+    "ar": "فك التشفير وعرض",
+    "en": "Decrypt and show",
+    "index": 424
+  },
+  {
+    "id": "text_e17b604a24c6",
+    "ar": "تأكيد الحذف من الخزنة السحابية",
+    "en": "Confirm cloud vault deletion",
+    "index": 425
+  },
+  {
+    "id": "text_5d7a567d8dca",
+    "ar": "هل أنت متأكد من حذف \"{0}\"؟ سيتم حذف العنصر من Cloud Firestore نهائياً وتسجيل العملية في سجل النشاط.",
+    "en": "Delete “{0}”? This permanently removes the item from Cloud Firestore and records the action in the activity log.",
+    "index": 426
+  },
+  {
+    "id": "text_494feab789bf",
+    "ar": "نعم، احذف",
+    "en": "Yes, delete",
+    "index": 427
+  },
+  {
+    "id": "text_03d4f49a9f53",
+    "ar": "إضافة عنصر مشفر جديد",
+    "en": "Add encrypted item",
+    "index": 428
+  },
+  {
+    "id": "text_2758eaf60da4",
+    "ar": "تعديل عنصر الخزنة",
+    "en": "Edit vault item",
+    "index": 429
+  },
+  {
+    "id": "text_931f42b60f68",
+    "ar": "نوع العنصر:",
+    "en": "Item type:",
+    "index": 430
+  },
+  {
+    "id": "text_245ea7c50a6b",
+    "ar": "عنوان العنصر (مثلاً: حساب البنك، بريد العمل)",
+    "en": "Item title (e.g. bank account, work email)",
+    "index": 431
+  },
+  {
+    "id": "text_f746871b441d",
+    "ar": "التصنيف (مثلاً: شخصي، بنوك، عمل)",
+    "en": "Category (e.g. personal, banking, work)",
+    "index": 432
+  },
+  {
+    "id": "text_7f112b75b4d6",
+    "ar": "كلمة المرور السرية",
+    "en": "Secret password",
+    "index": 433
+  },
+  {
+    "id": "text_0b410d0448e6",
+    "ar": "رقم البطاقة والبيانات الحساسة",
+    "en": "Card number and sensitive details",
+    "index": 434
+  },
+  {
+    "id": "text_cd86b470984d",
+    "ar": "الملاحظة السرية",
+    "en": "Private note",
+    "index": 435
+  },
+  {
+    "id": "text_a7c4e82d7f6c",
+    "ar": "محتوى المستند أو النص السري",
+    "en": "Document content or private text",
+    "index": 436
+  },
+  {
+    "id": "text_54cdc9f60a75",
+    "ar": "التشفير يتم على هاتفك محلياً بـ AES-256 قبل رفعه إلى Firestore.",
+    "en": "Data is encrypted locally on your phone with AES-256 before upload to Firestore.",
+    "index": 437
+  },
+  {
+    "id": "text_ae865794266f",
+    "ar": "يرجى إدخال عنوان العنصر",
+    "en": "Enter an item title",
+    "index": 438
+  },
+  {
+    "id": "text_19d3d5df6a5e",
+    "ar": "يرجى إدخال البيانات السرية أو كلمة المرور",
+    "en": "Enter the private data or password",
+    "index": 439
+  },
+  {
+    "id": "text_a3a29271cc23",
+    "ar": "تشفير وحفظ",
+    "en": "Encrypt and save",
+    "index": 440
+  },
+  {
+    "id": "text_50b8de962ea0",
+    "ar": "مولّد كلمات المرور القوية",
+    "en": "Strong password generator",
+    "index": 441
+  },
+  {
+    "id": "text_194a8a3e1619",
+    "ar": "توليد جديد",
+    "en": "Generate again",
+    "index": 442
+  },
+  {
+    "id": "text_9579eae2b253",
+    "ar": "قوة كلمة المرور: ",
+    "en": "Password strength: ",
+    "index": 443
+  },
+  {
+    "id": "text_0d4da760f02f",
+    "ar": "طول كلمة المرور:",
+    "en": "Password length:",
+    "index": 444
+  },
+  {
+    "id": "text_f1a168373935",
+    "ar": "{0} حرف",
+    "en": "{0} characters",
+    "index": 445
+  },
+  {
+    "id": "text_a34b6b4ce659",
+    "ar": "أحرف كبيرة (A-Z)",
+    "en": "Uppercase letters (A-Z)",
+    "index": 446
+  },
+  {
+    "id": "text_b3b0acd2e3dc",
+    "ar": "أرقام (0-9)",
+    "en": "Numbers (0-9)",
+    "index": 447
+  },
+  {
+    "id": "text_d2e4d9585aa6",
+    "ar": "رموز خاصة (!@#$)",
+    "en": "Special characters (!@#$)",
+    "index": 448
+  },
+  {
+    "id": "text_1b3717f1298b",
+    "ar": "نسخ واستخدام",
+    "en": "Copy and use",
+    "index": 449
+  },
+  {
+    "id": "text_e20fd67d44a3",
+    "ar": "سجل نشاطات الخزنة (Firestore)",
+    "en": "Vault activity log (Firestore)",
+    "index": 450
+  },
+  {
+    "id": "text_9c607d6922dd",
+    "ar": "لا توجد نشاطات مسجلة بعد في activity_log",
+    "en": "No activity recorded yet",
+    "index": 451
+  },
+  {
+    "id": "text_bf83e7501261",
+    "ar": "إضافة: {0}",
+    "en": "Added: {0}",
+    "index": 452
+  },
+  {
+    "id": "text_f8b496281864",
+    "ar": "تعديل: {0}",
+    "en": "Edited: {0}",
+    "index": 453
+  },
+  {
+    "id": "text_75791690d672",
+    "ar": "حذف: {0}",
+    "en": "Deleted: {0}",
+    "index": 454
+  },
+  {
+    "id": "text_8d8199888617",
+    "ar": "تصدير نسخة احتياطية مشفرة (JSON)",
+    "en": "Export encrypted backup (JSON)",
+    "index": 455
+  },
+  {
+    "id": "text_777ff5690379",
+    "ar": "تحتوي هذه النسخة على جميع عناصر الخزنة مشفرة بتقنية AES-256، ولا يمكن قراءة محتواها إلا من خلال هذا التطبيق.",
+    "en": "This backup contains AES-256-encrypted vault items and can only be read using this app.",
+    "index": 456
+  },
+  {
+    "id": "text_2c4618769704",
+    "ar": "مشاركة / تصدير",
+    "en": "Share / Export",
+    "index": 457
+  },
+  {
+    "id": "text_8a7c72902813",
+    "ar": "الخزنة السحابية مقفلة بأمان",
+    "en": "Cloud vault is locked",
+    "index": 458
+  },
+  {
+    "id": "text_f9fab4694b1f",
+    "ar": "تم قفل الخزنة تلقائياً لحماية بياناتك المشفرة. اضغط على الزر أدناه لإلغاء القفل بالبصمة أو رمز المرور.",
+    "en": "The vault was locked automatically to protect your encrypted data. Unlock it with your fingerprint or passcode.",
+    "index": 459
+  },
+  {
+    "id": "text_e2326a8899ce",
+    "ar": "إلغاء القفل (البصمة / الرمز)",
+    "en": "Unlock (fingerprint / Passcode)",
+    "index": 460
+  },
+  {
+    "id": "text_5d344c201747",
+    "ar": "إضافة جديد",
+    "en": "Add new",
+    "index": 461
+  },
+  {
+    "id": "text_693a3a889d03",
+    "ar": "إجمالي الالتزامات",
+    "en": "Total commitments",
+    "index": 462
+  },
+  {
+    "id": "text_3c9fcaf97c72",
+    "ar": "تم دفعه",
+    "en": "Paid",
+    "index": 463
+  },
+  {
+    "id": "text_557f737dff23",
+    "ar": "المتبقي",
+    "en": "Remaining",
+    "index": 464
+  },
+  {
+    "id": "text_a7b009ea9d81",
+    "ar": "لا توجد التزامات شهرية مسجلة. اضغط + لإضافة إيجار أو فواتير.",
+    "en": "No monthly commitments recorded. Select + to add rent or bills.",
+    "index": 465
+  },
+  {
+    "id": "text_776204e9062e",
+    "ar": "إجمالي الدروس",
+    "en": "Total lessons",
+    "index": 466
+  },
+  {
+    "id": "text_610c9fe690b4",
+    "ar": "المتبقي للدروس",
+    "en": "Remaining lesson payments",
+    "index": 467
+  },
+  {
+    "id": "text_89bb34afddb6",
+    "ar": "لا توجد دروس أطفال مسجلة. اضغط + لإضافة درس جديدة.",
+    "en": "No children's lessons recorded. Select + to add a lesson.",
+    "index": 468
+  },
+  {
+    "id": "text_cf950597f86b",
+    "ar": "تاريخ الاستحقاق: {0}",
+    "en": "Due date: {0}",
+    "index": 469
+  },
+  {
+    "id": "text_a49bd76b1c26",
+    "ar": "تم الدفع",
+    "en": "Paid",
+    "index": 470
+  },
+  {
+    "id": "text_a30287e12410",
+    "ar": "غير مدفوع",
+    "en": "Unpaid",
+    "index": 471
+  },
+  {
+    "id": "text_edc05b12eab0",
+    "ar": "درس",
+    "en": "Lesson",
+    "index": 472
+  },
+  {
+    "id": "text_0b892ba3c6ad",
+    "ar": "المدرس: {0} | {1}",
+    "en": "Teacher: {0} | {1}",
+    "index": 473
+  },
+  {
+    "id": "text_423c46d500b6",
+    "ar": "أفضل من الشهر الماضي",
+    "en": "Better than last month",
+    "index": 474
+  },
+  {
+    "id": "text_07573c6f7bf2",
+    "ar": "مصروفاتك أقل من الشهر السابق",
+    "en": "Your expenses are lower than last month",
+    "index": 475
+  },
+  {
+    "id": "text_b1941eb051e1",
+    "ar": "اقتصادي",
+    "en": "Saver",
+    "index": 476
+  },
+  {
+    "id": "text_ff701fdfe751",
+    "ar": "وفّر 20% أو أكثر من دخل الشهر",
+    "en": "Save 20% or more of this month's income",
+    "index": 477
+  },
+  {
+    "id": "text_b0bbbdfb65cd",
+    "ar": "مُتابع يومي",
+    "en": "Daily tracker",
+    "index": 478
+  },
+  {
+    "id": "text_caf13cd7cfae",
+    "ar": "سجّل عمليات في 15 يوم أو أكثر هذا الشهر",
+    "en": "Record transactions on at least 15 days this month",
+    "index": 479
+  },
+  {
+    "id": "text_bb695066ad60",
+    "ar": "منظم الالتزامات",
+    "en": "Commitment organizer",
+    "index": 480
+  },
+  {
+    "id": "text_4cd4daac5f7a",
+    "ar": "سدّد كل التزامات ودروس الشهر",
+    "en": "Pay all commitments and lessons this month",
+    "index": 481
+  },
+  {
+    "id": "text_e0b6c7065e6a",
+    "ar": "تحت السيطرة",
+    "en": "Under control",
+    "index": 482
+  },
+  {
+    "id": "text_9c27d696138c",
+    "ar": "توقع نهاية الشهر في المنطقة الآمنة",
+    "en": "Your projected month-end balance is in the safe range",
+    "index": 483
+  },
+  {
+    "id": "text_3196303021cd",
+    "ar": "أرشيف الفواتير",
+    "en": "Receipt archive",
+    "index": 484
+  },
+  {
+    "id": "text_6316da350959",
+    "ar": "أرفق صور لنصف مصروفات الشهر على الأقل",
+    "en": "Attach receipts to at least half of this month's expenses",
+    "index": 485
+  },
+  {
+    "id": "text_e74cf8f88064",
+    "ar": "إخفاء بطاقة المدخرات",
+    "en": "Hide savings card",
+    "index": 486
+  },
+  {
+    "id": "text_c8b0cd8eb4b8",
+    "ar": "إظهار بطاقة المدخرات",
+    "en": "Show savings card",
+    "index": 487
+  },
+  {
+    "id": "text_3beed403483e",
+    "ar": "الديون",
+    "en": "Debts",
+    "index": 488
+  },
+  {
+    "id": "text_9555082e8961",
+    "ar": "التقويم",
+    "en": "Calendar",
+    "index": 489
+  },
+  {
+    "id": "text_0326e4ed17db",
+    "ar": "تحويل",
+    "en": "Transfer",
+    "index": 490
+  },
+  {
+    "id": "text_f6968545d1d8",
+    "ar": "تخصيص",
+    "en": "Customize",
+    "index": 491
+  },
+  {
+    "id": "text_cec0e67fc3a9",
+    "ar": "المستحقات",
+    "en": "Payments due",
+    "index": 492
+  },
+  {
+    "id": "text_b5ddb3447714",
+    "ar": "{0} مستحق",
+    "en": "{0} due",
+    "index": 493
+  },
+  {
+    "id": "text_877e2ea5f33a",
+    "ar": "إظهار/إخفاء الرصيد",
+    "en": "Show / Hide balance",
+    "index": 494
+  },
+  {
+    "id": "text_4654875cd068",
+    "ar": "سهم للأعلى - دخل",
+    "en": "Up arrow - Income",
+    "index": 495
+  },
+  {
+    "id": "text_3e1877e91a6f",
+    "ar": "سهم للأسفل - مصروفات",
+    "en": "Down arrow - Expenses",
+    "index": 496
+  },
+  {
+    "id": "text_1b7441ca41de",
+    "ar": "وضعي المالي اليوم (صافي الثروة) 🛡️",
+    "en": "My finances today (net worth) 🛡️",
+    "index": 497
+  },
+  {
+    "id": "text_a738ad2e9389",
+    "ar": "حساب محلي آمن لكافة الأصول والالتزامات",
+    "en": "Local calculation of assets and liabilities",
+    "index": 498
+  },
+  {
+    "id": "text_e11353146505",
+    "ar": "تفاصيل الأصول ←",
+    "en": "Asset details →",
+    "index": 499
+  },
+  {
+    "id": "text_3765938331a5",
+    "ar": "إجمالي الأصول",
+    "en": "Total assets",
+    "index": 500
+  },
+  {
+    "id": "text_24d53def2103",
+    "ar": "تحليلات ذكية",
+    "en": "Smart analytics",
+    "index": 501
+  },
+  {
+    "id": "text_d383c633feff",
+    "ar": "الرؤى والتحليلات الذكية 💡",
+    "en": "Financial insights 💡",
+    "index": 502
+  },
+  {
+    "id": "text_0d4fdbffe901",
+    "ar": "محرك ذكاء مالي محلي 100%",
+    "en": "100% local financial insights engine",
+    "index": 503
+  },
+  {
+    "id": "text_6e8c46e9d70b",
+    "ar": "عرض الكل ({0}) ←",
+    "en": "View all ({0}) →",
+    "index": 504
+  },
+  {
+    "id": "text_76258e00f832",
+    "ar": "المدخرات",
+    "en": "Savings",
+    "index": 505
+  },
+  {
+    "id": "text_74885d00713f",
+    "ar": "المدخرات والأصول المالية 💰",
+    "en": "Savings and financial assets 💰",
+    "index": 506
+  },
+  {
+    "id": "text_5814373b6d2e",
+    "ar": "ذهب وسبائك + نقدية (أصل مالي)",
+    "en": "Gold, bullion, and cash assets",
+    "index": 507
+  },
+  {
+    "id": "text_f7d9ae166049",
+    "ar": "عرض الكل ←",
+    "en": "View all →",
+    "index": 508
+  },
+  {
+    "id": "text_f3ac2e6da42a",
+    "ar": "إجمالي المدخرات (كاش + ذهب)",
+    "en": "Total savings (cash + Gold)",
+    "index": 509
+  },
+  {
+    "id": "text_a35683da616b",
+    "ar": "أصل مالي",
+    "en": "Financial asset",
+    "index": 510
+  },
+  {
+    "id": "text_a468321f66f1",
+    "ar": "💛 قيمة الذهب",
+    "en": "💛 Gold value",
+    "index": 511
+  },
+  {
+    "id": "text_c4321b7e4fed",
+    "ar": "💵 نقدية",
+    "en": "💵 Cash",
+    "index": 512
+  },
+  {
+    "id": "text_35dc88643736",
+    "ar": "⚖️ وزن الذهب",
+    "en": "⚖️ Gold weight",
+    "index": 513
+  },
+  {
+    "id": "text_23e643d03dde",
+    "ar": "📦 القطع",
+    "en": "📦 Assets",
+    "index": 514
+  },
+  {
+    "id": "text_fd835aa43312",
+    "ar": "{0} قطع",
+    "en": "{0} items",
+    "index": 515
+  },
+  {
+    "id": "text_7d83a31000b2",
+    "ar": "التحليل الذكي",
+    "en": "Smart analysis",
+    "index": 516
+  },
+  {
+    "id": "text_28dae43e8dcf",
+    "ar": "متوقع يتبقى لك {0} {1} بنهاية الشهر بنفس معدل الصرف الحالي.",
+    "en": "At your current spending rate, your projected month-end balance is {0} {1}.",
+    "index": 517
+  },
+  {
+    "id": "text_2bccc4bbf0d9",
+    "ar": "مصروفات الشهر الماضي",
+    "en": "Last month's expenses",
+    "index": 518
+  },
+  {
+    "id": "text_a39d9e5bcc98",
+    "ar": "لا مقارنة متاحة",
+    "en": "No comparison available",
+    "index": 519
+  },
+  {
+    "id": "text_4757b3b88509",
+    "ar": "دخل الشهر الماضي",
+    "en": "Last month's income",
+    "index": 520
+  },
+  {
+    "id": "text_3431c146da7c",
+    "ar": "متوسط الصرف اليومي",
+    "en": "Average daily spending",
+    "index": 521
+  },
+  {
+    "id": "text_9aa255f3885d",
+    "ar": "حد الصرف الآمن يومياً",
+    "en": "Safe daily spending limit",
+    "index": 522
+  },
+  {
+    "id": "text_f9aaa00729de",
+    "ar": "إضافة دخل",
+    "en": "Add income",
+    "index": 523
+  },
+  {
+    "id": "text_150293b7792d",
+    "ar": "نسبة المستهلك من الراتب",
+    "en": "Percentage of salary spent",
+    "index": 524
+  },
+  {
+    "id": "text_be1e41cbff16",
+    "ar": "المتبقي: {0} {1}",
+    "en": "Remaining: {0} {1}",
+    "index": 525
+  },
+  {
+    "id": "text_501aabb98ee5",
+    "ar": "المنفق: {0} {1}",
+    "en": "Spent: {0} {1}",
+    "index": 526
+  },
+  {
+    "id": "text_2e3575a463d9",
+    "ar": "تحليل الراتب",
+    "en": "Salary analysis",
+    "index": 527
+  },
+  {
+    "id": "text_4f7580d78f5f",
+    "ar": "أين ذهب راتبي هذا الشهر؟",
+    "en": "Where did my salary go this month?",
+    "index": 528
+  },
+  {
+    "id": "text_d7e36702a621",
+    "ar": "لقد قمت بإدارة {0}% من راتبك بحكمة. تفقد صفحة التقارير لرؤية التحليل التفصيلي.",
+    "en": "You have used {0}% of your salary. See Reports for a detailed breakdown.",
+    "index": 529
+  },
+  {
+    "id": "text_ba828efad7d2",
+    "ar": "مكافآتك",
+    "en": "Your badges",
+    "index": 530
+  },
+  {
+    "id": "text_d6ed50d80f68",
+    "ar": "مكافآتك هذا الشهر",
+    "en": "Your badges this month",
+    "index": 531
+  },
+  {
+    "id": "text_f8518fa27a4a",
+    "ar": "كمّل تسجيل عملياتك وسدّد التزاماتك في وقتها لتحصل على باقي الشارات.",
+    "en": "Keep recording transactions and paying commitments on time to earn more badges.",
+    "index": 532
+  },
+  {
+    "id": "text_e50acc511afa",
+    "ar": "آخر العمليات",
+    "en": "Recent transactions",
+    "index": 533
+  },
+  {
+    "id": "text_d36294e5abb3",
+    "ar": "عرض الكل",
+    "en": "View all",
+    "index": 534
+  },
+  {
+    "id": "text_c302118eabab",
+    "ar": "لا توجد عمليات بعد",
+    "en": "No transactions yet",
+    "index": 535
+  },
+  {
+    "id": "text_cecfe96db0ad",
+    "ar": "الالتزامات الشهرية",
+    "en": "Monthly commitments",
+    "index": 536
+  },
+  {
+    "id": "text_2dffd674f9b7",
+    "ar": "أين ذهب راتبي؟",
+    "en": "Where did my salary go?",
+    "index": 537
+  },
+  {
+    "id": "text_886b0c458f0a",
+    "ar": "إدارة الديون (لي / عليّ)",
+    "en": "Debt management (owed to me / I owe)",
+    "index": 538
+  },
+  {
+    "id": "text_d561097988e6",
+    "ar": "إضافة دين",
+    "en": "Add debt",
+    "index": 539
+  },
+  {
+    "id": "text_b25109f466b5",
+    "ar": "لي عند الغير",
+    "en": "Owed to me",
+    "index": 540
+  },
+  {
+    "id": "text_f032f8eb25a3",
+    "ar": "عليّ للغير",
+    "en": "I owe",
+    "index": 541
+  },
+  {
+    "id": "text_d72beaf029a2",
+    "ar": "الصافي",
+    "en": "Net",
+    "index": 542
+  },
+  {
+    "id": "text_a8ff844b8378",
+    "ar": "لي عند الآخرين ({0})",
+    "en": "Owed to me ({0})",
+    "index": 543
+  },
+  {
+    "id": "text_5873877f1bb9",
+    "ar": "أموال عليّ ({0})",
+    "en": "I owe ({0})",
+    "index": 544
+  },
+  {
+    "id": "text_11fdef2dc5f8",
+    "ar": "الكل",
+    "en": "All",
+    "index": 545
+  },
+  {
+    "id": "text_8fb4e938d831",
+    "ar": "نشط / غير مسدد",
+    "en": "Active / Unpaid",
+    "index": 546
+  },
+  {
+    "id": "text_82a270439354",
+    "ar": "تم السداد بالكامل",
+    "en": "Fully paid",
+    "index": 547
+  },
+  {
+    "id": "text_273bde324028",
+    "ar": "لا توجد أموال مستحقة لك مسجلة حاليًا",
+    "en": "No money owed to you is currently recorded",
+    "index": 548
+  },
+  {
+    "id": "text_ad6cff15df96",
+    "ar": "لا توجد ديون مستحقة عليك مسجلة حاليًا",
+    "en": "No money you owe is currently recorded",
+    "index": 549
+  },
+  {
+    "id": "text_8dd0bd35db83",
+    "ar": "تسجيل دين جديد",
+    "en": "Record new debt",
+    "index": 550
+  },
+  {
+    "id": "text_3bdc0e233e92",
+    "ar": "مسدد بالكامل",
+    "en": "Fully paid",
+    "index": 551
+  },
+  {
+    "id": "text_e69117cdd5fc",
+    "ar": "مسدد جزئيًا",
+    "en": "Partially paid",
+    "index": 552
+  },
+  {
+    "id": "text_41b054617ef6",
+    "ar": "نشط",
+    "en": "Active",
+    "index": 553
+  },
+  {
+    "id": "text_17a1e9ba641c",
+    "ar": "المبلغ الكلي",
+    "en": "Total amount",
+    "index": 554
+  },
+  {
+    "id": "text_5c793e037689",
+    "ar": "تم سداده",
+    "en": "Amount paid",
+    "index": 555
+  },
+  {
+    "id": "text_e8348cb43f1e",
+    "ar": "تسجيل سداد",
+    "en": "Record payment",
+    "index": 556
+  },
+  {
+    "id": "text_18e5596bb836",
+    "ar": "العمليات والبحث",
+    "en": "Transactions and search",
+    "index": 557
+  },
+  {
+    "id": "text_d4bd10df9899",
+    "ar": "سجل الحركات المالية المتقدم",
+    "en": "Advanced financial transaction history",
+    "index": 558
+  },
+  {
+    "id": "text_90b6c869a171",
+    "ar": "الإعدادات",
+    "en": "Settings",
+    "index": 559
+  },
+  {
+    "id": "text_dfee1ee1b524",
+    "ar": "مصروفات",
+    "en": "Expenses",
+    "index": 560
+  },
+  {
+    "id": "text_b321cd775e8e",
+    "ar": "دخل",
+    "en": "Income",
+    "index": 561
+  },
+  {
+    "id": "text_b2a8da21fa0d",
+    "ar": "تحويلات",
+    "en": "Transfers",
+    "index": 562
+  },
+  {
+    "id": "text_d076b6b87278",
+    "ar": "بحث بالوصف، الخزنة، التصنيف، أو المبلغ...",
+    "en": "Search description, vault, category, or amount...",
+    "index": 563
+  },
+  {
+    "id": "text_fb8387b2d570",
+    "ar": "فلاتر متقدمة",
+    "en": "Advanced filters",
+    "index": 564
+  },
+  {
+    "id": "text_8d23c3965527",
+    "ar": "النطاق الزمني",
+    "en": "Date range",
+    "index": 565
+  },
+  {
+    "id": "text_d38aa97bb96e",
+    "ar": "كل الأوقات",
+    "en": "All time",
+    "index": 566
+  },
+  {
+    "id": "text_b7523863599a",
+    "ar": "هذا الشهر",
+    "en": "This month",
+    "index": 567
+  },
+  {
+    "id": "text_349de9cf3c2d",
+    "ar": "آخر 7 أيام",
+    "en": "Last 7 days",
+    "index": 568
+  },
+  {
+    "id": "text_c94c6c1e0911",
+    "ar": "آخر 30 يوم",
+    "en": "Last 30 days",
+    "index": 569
+  },
+  {
+    "id": "text_cc23678b3cbc",
+    "ar": "الترتيب حسب",
+    "en": "Sort by",
+    "index": 570
+  },
+  {
+    "id": "text_36299595d69c",
+    "ar": "الأحدث",
+    "en": "Newest",
+    "index": 571
+  },
+  {
+    "id": "text_e69ddb8fafca",
+    "ar": "الأقدم",
+    "en": "Oldest",
+    "index": 572
+  },
+  {
+    "id": "text_42b76568a25e",
+    "ar": "الأعلى قيمة",
+    "en": "Highest amount",
+    "index": 573
+  },
+  {
+    "id": "text_81ae1f96d293",
+    "ar": "الأقل قيمة",
+    "en": "Lowest amount",
+    "index": 574
+  },
+  {
+    "id": "text_9650779e9a22",
+    "ar": "الخزنة",
+    "en": "Vault",
+    "index": 575
+  },
+  {
+    "id": "text_5db167239353",
+    "ar": "جميع الخزن",
+    "en": "All vaults",
+    "index": 576
+  },
+  {
+    "id": "text_93fe23db91f1",
+    "ar": "لا توجد نتائج مطابقة لبحثك أو الفلاتر المحددة",
+    "en": "No results match your search or filters",
+    "index": 577
+  },
+  {
+    "id": "text_1c63af81805c",
+    "ar": "الشهر السابق",
+    "en": "Previous month",
+    "index": 578
+  },
+  {
+    "id": "text_f948600173e7",
+    "ar": "الشهر القادم",
+    "en": "Next month",
+    "index": 579
+  },
+  {
+    "id": "text_e8c6dbaeeb61",
+    "ar": "الدخل",
+    "en": "Income",
+    "index": 580
+  },
+  {
+    "id": "text_8b9fbc5898c7",
+    "ar": "المصروف",
+    "en": "Expense",
+    "index": 581
+  },
+  {
+    "id": "text_a478daf22935",
+    "ar": "سبت",
+    "en": "Sat",
+    "index": 582
+  },
+  {
+    "id": "text_29c2a914d745",
+    "ar": "أحد",
+    "en": "Sun",
+    "index": 583
+  },
+  {
+    "id": "text_a46d7f58ba2c",
+    "ar": "اثنين",
+    "en": "Mon",
+    "index": 584
+  },
+  {
+    "id": "text_81a8732d2ed7",
+    "ar": "ثلاثاء",
+    "en": "Tue",
+    "index": 585
+  },
+  {
+    "id": "text_67e1e0bf90b1",
+    "ar": "أربعاء",
+    "en": "Wed",
+    "index": 586
+  },
+  {
+    "id": "text_af0a56c556f2",
+    "ar": "خميس",
+    "en": "Thu",
+    "index": 587
+  },
+  {
+    "id": "text_5a03133f974d",
+    "ar": "جمعة",
+    "en": "Fri",
+    "index": 588
+  },
+  {
+    "id": "text_35ca74820a1f",
+    "ar": "EEEE، d MMMM yyyy",
+    "en": "EEEE, d MMMM yyyy",
+    "index": 589
+  },
+  {
+    "id": "text_937bce15faae",
+    "ar": "الدخل: +{0} {1}",
+    "en": "Income: +{0} {1}",
+    "index": 590
+  },
+  {
+    "id": "text_140ac31d42be",
+    "ar": "المصروف: -{0} {1}",
+    "en": "Expense: -{0} {1}",
+    "index": 591
+  },
+  {
+    "id": "text_6f5935f75864",
+    "ar": "لا توجد حركات مالية أو التزامات مسجلة في هذا اليوم.",
+    "en": "No transactions or commitments recorded for this day.",
+    "index": 592
+  },
+  {
+    "id": "text_61e3af204ba7",
+    "ar": "تحويل: {0} ← {1}",
+    "en": "Transfer: {0} → {1}",
+    "index": 593
+  },
+  {
+    "id": "text_ce2e34b7a188",
+    "ar": "التزام: {0}",
+    "en": "Commitment: {0}",
+    "index": 594
+  },
+  {
+    "id": "text_0ac49977fcf1",
+    "ar": "درس: {0} - {1}",
+    "en": "Lesson: {0} - {1}",
+    "index": 595
+  },
+  {
+    "id": "text_56ea571722e0",
+    "ar": "دين: {0} ({1})",
+    "en": "Debt: {0} ({1})",
+    "index": 596
+  },
+  {
+    "id": "text_a79f76c2ab19",
+    "ar": "لي",
+    "en": "Owed to me",
+    "index": 597
+  },
+  {
+    "id": "text_36b11439ed12",
+    "ar": "عليّ",
+    "en": "I owe",
+    "index": 598
+  },
+  {
+    "id": "text_d0e88faf7ac5",
+    "ar": "صافي ثروتك",
+    "en": "Your net worth",
+    "index": 599
+  },
+  {
+    "id": "text_3e62f9aa2335",
+    "ar": "إجمالي ما تملكه ناقص إجمالي ما عليك",
+    "en": "Everything you own minus everything you owe",
+    "index": 600
+  },
+  {
+    "id": "text_f5b0b65c4672",
+    "ar": "ما تملكه: {0}%",
+    "en": "Assets: {0}%",
+    "index": 601
+  },
+  {
+    "id": "text_2ca01d14a9cd",
+    "ar": "ما عليك: {0}%",
+    "en": "Liabilities: {0}%",
+    "index": 602
+  },
+  {
+    "id": "text_a5cab93ddaa9",
+    "ar": "أين توجد أموالك؟ (توزيع الأصول)",
+    "en": "Where is your money? (asset allocation)",
+    "index": 603
+  },
+  {
+    "id": "text_6df2c1412f00",
+    "ar": "الخزن النقدية",
+    "en": "Cash vaults",
+    "index": 604
+  },
+  {
+    "id": "text_f805f891c45a",
+    "ar": "أموال لدى الآخرين (ديون لي)",
+    "en": "Money owed to you",
+    "index": 605
+  },
+  {
+    "id": "text_75f44963519a",
+    "ar": "سجل صافي الثروة عبر الزمن",
+    "en": "Net worth over time",
+    "index": 606
+  },
+  {
+    "id": "text_17eb7e3e00d7",
+    "ar": "7 أيام",
+    "en": "7 days",
+    "index": 607
+  },
+  {
+    "id": "text_843bcefe4002",
+    "ar": "30 يوم",
+    "en": "30 days",
+    "index": 608
+  },
+  {
+    "id": "text_7e25a36b91db",
+    "ar": "90 يوم",
+    "en": "90 days",
+    "index": 609
+  },
+  {
+    "id": "text_f91a7c9817c8",
+    "ar": "سنة",
+    "en": "Year",
+    "index": 610
+  },
+  {
+    "id": "text_a07a7191ef8a",
+    "ar": "يتم حفظ لقطات دورية لصافي الثروة لتتبع نمو أصولك عبر الزمن.",
+    "en": "Periodic net worth snapshots track your asset growth over time.",
+    "index": 611
+  },
+  {
+    "id": "text_ea8176c4a653",
+    "ar": "{0}% من إجمالي الأصول",
+    "en": "{0}% of total assets",
+    "index": 612
+  },
+  {
+    "id": "text_336c34278460",
+    "ar": "بدء خروجة جديدة؟",
+    "en": "Start a new outing?",
+    "index": 613
+  },
+  {
+    "id": "text_c050a00c7360",
+    "ar": "سيتم مسح جميع مصاريف الخروجة الحالية وتصفير الحساب للبدء من جديد. هل أنت متأكد؟",
+    "en": "This clears all expenses for the current outing and resets the total. Continue?",
+    "index": 614
+  },
+  {
+    "id": "text_38d709195016",
+    "ar": "نعم، مسح وبدء من جديد",
+    "en": "Yes, clear and start again",
+    "index": 615
+  },
+  {
+    "id": "text_3141e1c6517c",
+    "ar": "حذف هذا المصروف؟",
+    "en": "Delete this expense?",
+    "index": 616
+  },
+  {
+    "id": "text_572753d189df",
+    "ar": "هل تريد حذف مصروف \"{0}\" بقيمة {1} {2}؟",
+    "en": "Delete “{0}”, totaling {1} {2}?",
+    "index": 617
+  },
+  {
+    "id": "text_45fb4b937312",
+    "ar": "إضافة مصروف",
+    "en": "Add expense",
+    "index": 618
+  },
+  {
+    "id": "text_a6afe34102b0",
+    "ar": "ملخص مصاريف الخروجة",
+    "en": "Outing expense summary",
+    "index": 619
+  },
+  {
+    "id": "text_eca3d1ae0873",
+    "ar": "إجمالي المصاريف",
+    "en": "Total expenses",
+    "index": 620
+  },
+  {
+    "id": "text_6e916c175a10",
+    "ar": "عدد أفراد اللمة",
+    "en": "Number of participants",
+    "index": 621
+  },
+  {
+    "id": "text_ea26c1bf9441",
+    "ar": "زيادة",
+    "en": "Increase",
+    "index": 622
+  },
+  {
+    "id": "text_30d31f5738c7",
+    "ar": "{0} أفراد",
+    "en": "{0} people",
+    "index": 623
+  },
+  {
+    "id": "text_dfd7b77607be",
+    "ar": "تقليل",
+    "en": "Decrease",
+    "index": 624
+  },
+  {
+    "id": "text_ee9024498f3d",
+    "ar": "حساب كل واحد (نصيب الفرد)",
+    "en": "Each person's share",
+    "index": 625
+  },
+  {
+    "id": "text_559f0d9909a5",
+    "ar": "({0} {1} ÷ {2} مشاركين)",
+    "en": "({0} {1} ÷ {2} participants)",
+    "index": 626
+  },
+  {
+    "id": "text_114c075183e5",
+    "ar": "تصدير ومشاركة تقرير الخروجة PDF",
+    "en": "Export and share outing PDF report",
+    "index": 627
+  },
+  {
+    "id": "text_b754b228e048",
+    "ar": "سجل مصاريف الخروجة ({0})",
+    "en": "Outing expenses ({0})",
+    "index": 628
+  },
+  {
+    "id": "text_ca2624f4fe65",
+    "ar": "خروجة جديدة",
+    "en": "New outing",
+    "index": 629
+  },
+  {
+    "id": "text_d45aaab246f4",
+    "ar": "لا توجد مصاريف مسجلة لهذه الخروجة بعد",
+    "en": "No expenses recorded for this outing yet",
+    "index": 630
+  },
+  {
+    "id": "text_ec85d13b5b34",
+    "ar": "سجل حساب المطعم، الكافيه، المواصلات أو أي مصروفات، وسيتم تقاسم الحساب تلقائياً!",
+    "en": "Record restaurant, cafe, transport, or other expenses to split the total automatically!",
+    "index": 631
+  },
+  {
+    "id": "text_16bb72948518",
+    "ar": "إضافة أول مصروف للخروجة",
+    "en": "Add the first outing expense",
+    "index": 632
+  },
+  {
+    "id": "text_3da768e11e40",
+    "ar": "مصروف خروجة",
+    "en": "Outing expense",
+    "index": 633
+  },
+  {
+    "id": "text_fd1ca7d5d2d0",
+    "ar": "مطعم / عشاء",
+    "en": "Restaurant / Dinner",
+    "index": 634
+  },
+  {
+    "id": "text_ab4ebd37e271",
+    "ar": "كافيه / مشروبات",
+    "en": "Cafe / Drinks",
+    "index": 635
+  },
+  {
+    "id": "text_2ca551bb7508",
+    "ar": "مواصلات / بنزين",
+    "en": "Transport / Fuel",
+    "index": 636
+  },
+  {
+    "id": "text_03b7571dc33e",
+    "ar": "تذاكر سينما",
+    "en": "Cinema tickets",
+    "index": 637
+  },
+  {
+    "id": "text_2a5edfcc4a0c",
+    "ar": "حلوى / سناك",
+    "en": "Dessert / Snacks",
+    "index": 638
+  },
+  {
+    "id": "text_8680b323aade",
+    "ar": "إضافة مصروف للخروجة",
+    "en": "Add outing expense",
+    "index": 639
+  },
+  {
+    "id": "text_5056a21deb50",
+    "ar": "اقتراحات سريعة:",
+    "en": "Quick suggestions:",
+    "index": 640
+  },
+  {
+    "id": "text_5eaf512b3988",
+    "ar": "بيان المصروف (مطعم، كافيه، مواصلات...)",
+    "en": "Expense description (restaurant, cafe, transport...)",
+    "index": 641
+  },
+  {
+    "id": "text_9c3c9f280b7e",
+    "ar": "المبلغ ({0})",
+    "en": "Amount ({0})",
+    "index": 642
+  },
+  {
+    "id": "text_ef2d8a859c1f",
+    "ar": "اسم دافع المبلغ (اختياري)",
+    "en": "Payer's name (optional)",
+    "index": 643
+  },
+  {
+    "id": "text_c7291590417a",
+    "ar": "يرجى كتابة بيان المصروف",
+    "en": "Enter an expense description",
+    "index": 644
+  },
+  {
+    "id": "text_f0e0c629edec",
+    "ar": "يرجى كتابة مبلغ صحيح أكبر من صفر",
+    "en": "Enter a valid amount greater than zero",
+    "index": 645
+  },
+  {
+    "id": "text_5b644797aa91",
+    "ar": "إضافة المصروف",
+    "en": "Add expense",
+    "index": 646
+  },
+  {
+    "id": "text_92fec7ad5c88",
+    "ar": "التقارير",
+    "en": "Reports",
+    "index": 647
+  },
+  {
+    "id": "text_a7cd97e4dea8",
+    "ar": "التقارير المتقدمة والتحليلات 📊",
+    "en": "Advanced reports and analytics 📊",
+    "index": 648
+  },
+  {
+    "id": "text_503d8216b8f4",
+    "ar": "سجل الديون",
+    "en": "Debt history",
+    "index": 649
+  },
+  {
+    "id": "text_cf302286664a",
+    "ar": "الرؤى الذكية",
+    "en": "Smart insights",
+    "index": 650
+  },
+  {
+    "id": "text_8f5445f810ec",
+    "ar": "تصدير التقرير الشهري",
+    "en": "Export monthly report",
+    "index": 651
+  },
+  {
+    "id": "text_111dfb6319d5",
+    "ar": "اختر الشهر ثم صَدّر ملف Excel أو احفظه PDF.",
+    "en": "Choose a month, then export to Excel or save as PDF.",
+    "index": 652
+  },
+  {
+    "id": "text_4e1f6029deef",
+    "ar": "اختر الشهر",
+    "en": "Choose month",
+    "index": 653
+  },
+  {
+    "id": "text_37ec3ec47c75",
+    "ar": "PDF / طباعة",
+    "en": "PDF / Print",
+    "index": 654
+  },
+  {
+    "id": "text_bd8897e19b50",
+    "ar": "جاري تصدير ملف Excel...",
+    "en": "Exporting Excel file...",
+    "index": 655
+  },
+  {
+    "id": "text_f6521530b6cc",
+    "ar": "متوقع يتبقى لك {0} {1} بنهاية الشهر بنفس معدل الصرف الحالي.",
+    "en": "At your current spending rate, your projected month-end balance is {0} {1}.",
+    "index": 656
+  },
+  {
+    "id": "text_7cf2abd361a2",
+    "ar": "توقع استهلاك الدخل بنهاية الشهر",
+    "en": "Projected income usage by month-end",
+    "index": 657
+  },
+  {
+    "id": "text_0428e544f101",
+    "ar": "📅 باقي {0} يوم • التزامات غير مدفوعة 0 {1}",
+    "en": "📅 {0} days left • Unpaid commitments 0 {1}",
+    "index": 658
+  },
+  {
+    "id": "text_5e75dfd7b871",
+    "ar": "إجمالي الدخل",
+    "en": "Total income",
+    "index": 659
+  },
+  {
+    "id": "text_d93aba8f3b2c",
+    "ar": "إجمالي المصروفات",
+    "en": "Total expenses",
+    "index": 660
+  },
+  {
+    "id": "text_c3ce011cbfc7",
+    "ar": "الرصيد المتبقي",
+    "en": "Remaining balance",
+    "index": 661
+  },
+  {
+    "id": "text_ed84b21f84c6",
+    "ar": "أكثر بند إنفاقاً",
+    "en": "Highest spending category",
+    "index": 662
+  },
+  {
+    "id": "text_c04f30c9a387",
+    "ar": "أقل بند إنفاقاً",
+    "en": "Lowest spending category",
+    "index": 663
+  },
+  {
+    "id": "text_2cbbc5ba846a",
+    "ar": "عدد العمليات",
+    "en": "Transaction count",
+    "index": 664
+  },
+  {
+    "id": "text_53ac5b04893d",
+    "ar": "فواتير مرفقة",
+    "en": "Attached receipts",
+    "index": 665
+  },
+  {
+    "id": "text_74d7c133752f",
+    "ar": "توقع نهاية الشهر",
+    "en": "Month-end forecast",
+    "index": 666
+  },
+  {
+    "id": "text_3fabef14e488",
+    "ar": "نسبة ما تم صرفه من الدخل",
+    "en": "Percentage of income spent",
+    "index": 667
+  },
+  {
+    "id": "text_26f31242494d",
+    "ar": "مقارنة بالشهر الماضي: 0 {0} مصروفات",
+    "en": "Compared with last month: 0 {0} expenses",
+    "index": 668
+  },
+  {
+    "id": "text_31fe2016cd80",
+    "ar": "تقرير الشهر",
+    "en": "Monthly report",
+    "index": 669
+  },
+  {
+    "id": "text_492381ce41a9",
+    "ar": "تقرير الشهر الحالي المالي",
+    "en": "This month's financial report",
+    "index": 670
+  },
+  {
+    "id": "text_e8e2b8828ad0",
+    "ar": "أكثر بند تم الإنفاق عليه",
+    "en": "Top spending category",
+    "index": 671
+  },
+  {
+    "id": "text_aa57db81e7d4",
+    "ar": "أبريل",
+    "en": "April",
+    "index": 672
+  },
+  {
+    "id": "text_391eb76ab061",
+    "ar": "مايو",
+    "en": "May",
+    "index": 673
+  },
+  {
+    "id": "text_3131fb252b85",
+    "ar": "يونيو",
+    "en": "June",
+    "index": 674
+  },
+  {
+    "id": "text_cf519ecce6c0",
+    "ar": "يوليو",
+    "en": "July",
+    "index": 675
+  },
+  {
+    "id": "text_70667b3fc365",
+    "ar": "أغسطس",
+    "en": "August",
+    "index": 676
+  },
+  {
+    "id": "text_d7859e38f801",
+    "ar": "توقع الرصيد",
+    "en": "Balance forecast",
+    "index": 677
+  },
+  {
+    "id": "text_f2ffa599e922",
+    "ar": "توقع الرصيد المتبقي بنهاية الشهر",
+    "en": "Projected month-end balance",
+    "index": 678
+  },
+  {
+    "id": "text_f12ebdf1be6f",
+    "ar": "بناءً على معدل صرفك اليومي الحالي، يتوقع أن يتبقى معك بحلول نهاية الشهر: {0} {1}",
+    "en": "Based on your current daily spending, your projected month-end balance is {0} {1}",
+    "index": 679
+  },
+  {
+    "id": "text_452ec922a214",
+    "ar": "مارس",
+    "en": "March",
+    "index": 680
+  },
+  {
+    "id": "text_5135047b6a76",
+    "ar": "محفظة الأصول والادخار بالذهب والنقد",
+    "en": "Gold and cash savings portfolio",
+    "index": 681
+  },
+  {
+    "id": "text_5ddcc07d9261",
+    "ar": "أسعار الذهب اللحظية (GoldAPI.io)",
+    "en": "Live gold prices (GoldAPI.io)",
+    "index": 682
+  },
+  {
+    "id": "text_e217243cfbbe",
+    "ar": "جاري التحديث...",
+    "en": "Updating...",
+    "index": 683
+  },
+  {
+    "id": "text_e91d3fd3a4fb",
+    "ar": "تحديث: {0}",
+    "en": "Updated: {0}",
+    "index": 684
+  },
+  {
+    "id": "text_da854123b7f7",
+    "ar": "تحديث يومي 12:00 ظ ⏰",
+    "en": "Daily update at 12:00 PM ⏰",
+    "index": 685
+  },
+  {
+    "id": "text_cee64bdacca4",
+    "ar": "اضغط للتحديث اللحظي ⚡",
+    "en": "Tap for a live update ⚡",
+    "index": 686
+  },
+  {
+    "id": "text_2dc8f9843e1d",
+    "ar": "عيار {0}:",
+    "en": "{0} karat:",
+    "index": 687
+  },
+  {
+    "id": "text_2d933cb9406f",
+    "ar": "إعدادات GoldAPI",
+    "en": "GoldAPI settings",
+    "index": 688
+  },
+  {
+    "id": "text_a7630d594814",
+    "ar": "تعديل يدوي",
+    "en": "Manual update",
+    "index": 689
+  },
+  {
+    "id": "text_97e232087e83",
+    "ar": "قطعة",
+    "en": "Item",
+    "index": 690
+  },
+  {
+    "id": "text_1dea7c9eb0a7",
+    "ar": "إضافة ذهب / سبيكة",
+    "en": "Add gold / Bullion",
+    "index": 691
+  },
+  {
+    "id": "text_a71cfacf7e17",
+    "ar": "إضافة نقدية",
+    "en": "Add cash",
+    "index": 692
+  },
+  {
+    "id": "text_2975d499b10d",
+    "ar": "بحث بالاسم، الماركة، أو الملاحظات...",
+    "en": "Search name, brand, or notes...",
+    "index": 693
+  },
+  {
+    "id": "text_45b5db7f16d2",
+    "ar": "عيار 24",
+    "en": "24 karat",
+    "index": 694
+  },
+  {
+    "id": "text_b8c5bc7c6ec1",
+    "ar": "عيار 21",
+    "en": "21 karat",
+    "index": 695
+  },
+  {
+    "id": "text_ad3707ff7947",
+    "ar": "عيار 18",
+    "en": "18 karat",
+    "index": 696
+  },
+  {
+    "id": "text_c71b3f4b0b35",
+    "ar": "السبائك",
+    "en": "Bullion",
+    "index": 697
+  },
+  {
+    "id": "text_fa00e620f1f1",
+    "ar": "جنيهات ذهب",
+    "en": "Gold pounds",
+    "index": 698
+  },
+  {
+    "id": "text_cf067ab1d883",
+    "ar": "للادخار",
+    "en": "For savings",
+    "index": 699
+  },
+  {
+    "id": "text_996dd7d54174",
+    "ar": "اضغط على زر «إضافة ذهب / سبيكة» لتسجيل أول قطعة ومتابعة قيمتها لحظة بلحظة.",
+    "en": "Select “Add gold / Bullion” to record your first asset and track its value.",
+    "index": 700
+  },
+  {
+    "id": "text_352a4e34c03b",
+    "ar": "إضافة سبيكة أو قطعة ذهب",
+    "en": "Add bullion or gold asset",
+    "index": 701
+  },
+  {
+    "id": "text_07f1aabba20f",
+    "ar": "سجّل مدخراتك النقدية وحسابات الطوارئ لمتابعة إجمالي ثروتك في مكان واحد.",
+    "en": "Record cash savings and emergency funds to track your wealth in one place.",
+    "index": 702
+  },
+  {
+    "id": "text_6fc4b9ab4c80",
+    "ar": "إضافة مدخرات نقدية",
+    "en": "Add cash savings",
+    "index": 703
+  },
+  {
+    "id": "text_bb944309b74d",
+    "ar": "عند بيع أي قطعة ذهب من الخزنة، ستظهر هنا تفاصيل البيع والأرباح المحققة وتاريخ العملية.",
+    "en": "When you sell a gold asset, its sale details, realized profit, and date appear here.",
+    "index": 704
+  },
+  {
+    "id": "text_dff77eec3f8f",
+    "ar": "القيمة الحالية بالخزنة",
+    "en": "Current vault value",
+    "index": 705
+  },
+  {
+    "id": "text_c8480ab06f6d",
+    "ar": "صافي الربح",
+    "en": "Net profit",
+    "index": 706
+  },
+  {
+    "id": "text_4b50574269e7",
+    "ar": "شراء: {0}",
+    "en": "Purchased: {0}",
+    "index": 707
+  },
+  {
+    "id": "text_314a88e340e3",
+    "ar": "🤝 بيع",
+    "en": "🤝 Sell",
+    "index": 708
+  },
+  {
+    "id": "text_d9aad4bb6bfb",
+    "ar": "مدخرات نقدية بالخزنة",
+    "en": "Cash savings in vault",
+    "index": 709
+  },
+  {
+    "id": "text_df6ebe251845",
+    "ar": "تاريخ البيع: {0}",
+    "en": "Sale date: {0}",
+    "index": 710
+  },
+  {
+    "id": "text_28988bc62a1d",
+    "ar": "ربح: {0}{1} {2}",
+    "en": "Profit: {0}{1} {2}",
+    "index": 711
+  },
+  {
+    "id": "text_8d7760163026",
+    "ar": "سعر الشراء: {0} {1}",
+    "en": "Purchase price: {0} {1}",
+    "index": 712
+  },
+  {
+    "id": "text_0b4d734ed267",
+    "ar": "سعر البيع: {0} {1}",
+    "en": "Sale price: {0} {1}",
+    "index": 713
+  },
+  {
+    "id": "text_c3bcb0096479",
+    "ar": "توزيع الأصول والمدخرات",
+    "en": "Asset and savings allocation",
+    "index": 714
+  },
+  {
+    "id": "text_7a96970769a2",
+    "ar": "الذهب والسبائك: {0}%",
+    "en": "Gold and bullion: {0}%",
+    "index": 715
+  },
+  {
+    "id": "text_cf682f5d91ab",
+    "ar": "السيولة النقدية: {0}%",
+    "en": "Cash: {0}%",
+    "index": 716
+  },
+  {
+    "id": "text_f27f52730d77",
+    "ar": "تفاصيل الذهب حسب العيار",
+    "en": "Gold breakdown by karat",
+    "index": 717
+  },
+  {
+    "id": "text_d90fde7647eb",
+    "ar": "عيار {0}:",
+    "en": "{0} karat:",
+    "index": 718
+  },
+  {
+    "id": "text_c7cc152a38e2",
+    "ar": "({0} قطع)",
+    "en": "({0} items)",
+    "index": 719
+  },
+  {
+    "id": "text_fdde5110e883",
+    "ar": "{0} جرام",
+    "en": "{0} g",
+    "index": 720
+  },
+  {
+    "id": "text_e60659537352",
+    "ar": "إرشادات الخزنة الذكية لتنمية المدخرات",
+    "en": "Smart Vault savings guidance",
+    "index": 721
+  },
+  {
+    "id": "text_2a20ad043671",
+    "ar": "الادخار بالسبائك وجنيهات الذهب يقلل من خسارة المصنعية عند إعادة البيع مع إمكانية استرداد الكاش باك (Cashback).",
+    "en": "Saving in bullion and gold pounds reduces fabrication losses on resale, with the possibility of cashback.",
+    "index": 722
+  },
+  {
+    "id": "text_0564400ee997",
+    "ar": "الحفاظ على نسبة 30% إلى 50% من المدخرات في الذهب يحمي القوة الشرائية لأموالك على المدى الطويل ضد التضخم.",
+    "en": "Keeping 30% to 50% of savings in gold protects the long-term purchasing power of your money against inflation.",
+    "index": 723
+  },
+  {
+    "id": "text_9c6c3f2d63a2",
+    "ar": "تجنب بيع الذهب إلا عند الضرورة أو تحويله إلى أصل استثماري ذو عائد أعلى.",
+    "en": "Avoid selling gold unless necessary or to move into an investment with a higher return.",
+    "index": 724
+  },
+  {
+    "id": "text_d1768f19993f",
+    "ar": "اليوم، 04:30 م",
+    "en": "Today, 04:30 PM",
+    "index": 725
+  },
+  {
+    "id": "text_22847c503bbf",
+    "ar": "ريال سعودي",
+    "en": "Saudi riyal",
+    "index": 726
+  },
+  {
+    "id": "text_3e3938408415",
+    "ar": "درهم إماراتي",
+    "en": "UAE dirham",
+    "index": 727
+  },
+  {
+    "id": "text_9baef1f747f9",
+    "ar": "دولار أمريكي",
+    "en": "US dollar",
+    "index": 728
+  },
+  {
+    "id": "text_daa818587279",
+    "ar": "تأكيد حذف الخزنة / الحساب",
+    "en": "Confirm vault / Account deletion",
+    "index": 729
+  },
+  {
+    "id": "text_9e5ba8f6616f",
+    "ar": "هل أنت متأكد من رغبتك في حذف '{0}' ({1} {2})؟ سيتم حذفها نهائياً.",
+    "en": "Permanently delete '{0}' ({1} {2})?",
+    "index": 730
+  },
+  {
+    "id": "text_2f1f7ddd4129",
+    "ar": "نعم، حذف الحساب",
+    "en": "Yes, delete account",
+    "index": 731
+  },
+  {
+    "id": "text_5662250c3ec4",
+    "ar": "حفظ نسخة احتياطية / استعادة البيانات",
+    "en": "Back up / Restore data",
+    "index": 732
+  },
+  {
+    "id": "text_f55b07f1ae61",
+    "ar": "تعديل الحساب",
+    "en": "Edit account",
+    "index": 733
+  },
+  {
+    "id": "text_41510ce0badf",
+    "ar": "تعديل بيانات الحساب",
+    "en": "Edit profile",
+    "index": 734
+  },
+  {
+    "id": "text_8710d64ff1ad",
+    "ar": "تسجيل الخروج",
+    "en": "Sign out",
+    "index": 735
+  },
+  {
+    "id": "text_e0844ef2c543",
+    "ar": "الحسابات",
+    "en": "Accounts",
+    "index": 736
+  },
+  {
+    "id": "text_b7ad4afa609d",
+    "ar": "الخزانات والحسابات المالية",
+    "en": "Financial vaults and accounts",
+    "index": 737
+  },
+  {
+    "id": "text_e55a7fa423a7",
+    "ar": "إضافة حساب",
+    "en": "Add account",
+    "index": 738
+  },
+  {
+    "id": "text_47e4c5109ec1",
+    "ar": "تعديل المبلغ/الاسم",
+    "en": "Edit amount / Name",
+    "index": 739
+  },
+  {
+    "id": "text_278eeef2a57d",
+    "ar": "إلغاء الخزنة/الحساب",
+    "en": "Remove vault / Account",
+    "index": 740
+  },
+  {
+    "id": "text_185744848ec0",
+    "ar": "الميزانية",
+    "en": "Budget",
+    "index": 741
+  },
+  {
+    "id": "text_3a2c390f55f5",
+    "ar": "الميزانية الشهرية للتصنيفات",
+    "en": "Monthly category budgets",
+    "index": 742
+  },
+  {
+    "id": "text_c32f3d7416d3",
+    "ar": "إضافة حد جديد",
+    "en": "Add limit",
+    "index": 743
+  },
+  {
+    "id": "text_3372c9d2ab39",
+    "ar": "لم يتم تحديد أقصى حد للميزانية لأي تصنيف.",
+    "en": "No category budget limits have been set.",
+    "index": 744
+  },
+  {
+    "id": "text_615f47f69884",
+    "ar": "العملة، المظهر، الأمان والتنبيهات",
+    "en": "Currency, appearance, security, and notifications",
+    "index": 745
+  },
+  {
+    "id": "text_59d33e6d1d08",
+    "ar": "الوضع الداكن (Dark Mode)",
+    "en": "Dark mode",
+    "index": 746
+  },
+  {
+    "id": "text_3318a3c350a9",
+    "ar": "الوضع الداكن",
+    "en": "Dark mode",
+    "index": 747
+  },
+  {
+    "id": "text_b2aa3b181ef7",
+    "ar": "قفل الخزنة ببصمة الإصبع / PIN",
+    "en": "Fingerprint / PIN lock",
+    "index": 748
+  },
+  {
+    "id": "text_2cd8f97fe205",
+    "ar": "بصمة الأصبع",
+    "en": "Fingerprint",
+    "index": 749
+  },
+  {
+    "id": "text_92b90aa9b99f",
+    "ar": "مُفعل - كود أمان عند الدخول",
+    "en": "Enabled - Security code required at sign-in",
+    "index": 750
+  },
+  {
+    "id": "text_e17556ce6846",
+    "ar": "غير مُفعل",
+    "en": "Disabled",
+    "index": 751
+  },
+  {
+    "id": "text_518c30ca8f7f",
+    "ar": "تذكير يومي بمراجعة المصروفات",
+    "en": "Daily expense reminder",
+    "index": 752
+  },
+  {
+    "id": "text_3ce2fa4d9cb9",
+    "ar": "إشعار تلقائي يومياً الساعة 8:00 مساءً",
+    "en": "Automatic daily notification at 8:00 PM",
+    "index": 753
+  },
+  {
+    "id": "text_7274e30c25f2",
+    "ar": "التنبيهات اليومية",
+    "en": "Daily notifications",
+    "index": 754
+  },
+  {
+    "id": "text_d32fd57d806f",
+    "ar": "تم جدولة إشعار تجريبي يظهر فوراً",
+    "en": "An immediate test notification has been scheduled",
+    "index": 755
+  },
+  {
+    "id": "text_21011df2bcce",
+    "ar": "تجربة الإشعار",
+    "en": "Test notification",
+    "index": 756
+  },
+  {
+    "id": "text_eba265c3744d",
+    "ar": "تجربة إشعار التذكير الآن (Test Notification)",
+    "en": "Test reminder notification now",
+    "index": 757
+  },
+  {
+    "id": "text_7d11e29cfdd6",
+    "ar": "تصدير التقارير المالية",
+    "en": "Export financial reports",
+    "index": 758
+  },
+  {
+    "id": "text_d2a75b7bc22e",
+    "ar": "تصدير السجلات بصيغة PDF أو Excel",
+    "en": "Export records as PDF or Excel",
+    "index": 759
+  },
+  {
+    "id": "text_770c11e048d1",
+    "ar": "تصدير PDF",
+    "en": "Export PDF",
+    "index": 760
+  },
+  {
+    "id": "text_0f7b9bca13a1",
+    "ar": "تصدير تقرير PDF",
+    "en": "Export PDF report",
+    "index": 761
+  },
+  {
+    "id": "text_99f67b516741",
+    "ar": "تم تصدير سجل المعاملات المالية بصيغة Excel (CSV) بنجاح!",
+    "en": "Financial transactions exported to Excel (CSV) successfully!",
+    "index": 762
+  },
+  {
+    "id": "text_692e087830e9",
+    "ar": "تصدير Excel",
+    "en": "Export Excel",
+    "index": 763
+  },
+  {
+    "id": "text_9471d17ec31e",
+    "ar": "عن التطبيق",
+    "en": "About",
+    "index": 764
+  },
+  {
+    "id": "text_2731e2bf2295",
+    "ar": "معلومات التطبيق والإصدار",
+    "en": "App information and version",
+    "index": 765
+  },
+  {
+    "id": "text_b0d1f789f55d",
+    "ar": "الإصدار {0} • إدارة الأموال والذهب والمدخرات",
+    "en": "Version {0} • Money, gold, and savings management",
+    "index": 766
+  },
+  {
+    "id": "text_5d6809ca20b5",
+    "ar": "صنع بكل حـــ ❤️ــــــب فى مصر",
+    "en": "Made with ❤️ in Egypt",
+    "index": 767
+  },
+  {
+    "id": "text_b649d28445e1",
+    "ar": "يرجى إدخال البريد الإلكتروني وكلمة المرور / Please enter email and password",
+    "en": "Enter your email and password",
+    "index": 768
+  },
+  {
+    "id": "text_696deb0e591f",
+    "ar": "كلمة المرور يجب ألا تقل عن 6 أحرف / Password must be at least 6 characters",
+    "en": "Password must be at least 6 characters",
+    "index": 769
+  },
+  {
+    "id": "text_9256779cdd4a",
+    "ar": "فشل إنشاء الحساب",
+    "en": "Could not create account",
+    "index": 770
+  },
+  {
+    "id": "text_53d98fb257e8",
+    "ar": "هذا البريد الإلكتروني مسجل بالفعل. يرجى تسجيل الدخول. / This email is already registered. Please log in.",
+    "en": "This email is already registered. Please sign in.",
+    "index": 771
+  },
+  {
+    "id": "text_121320c4df9c",
+    "ar": "صيغة البريد الإلكتروني غير صحيحة / The email address is badly formatted",
+    "en": "Invalid email address format",
+    "index": 772
+  },
+  {
+    "id": "text_3401dab3bbb8",
+    "ar": "كلمة المرور ضعيفة. يجب أن تكون 6 أحرف على الأقل / Password should be at least 6 characters",
+    "en": "Weak password. Use at least 6 characters.",
+    "index": 773
+  },
+  {
+    "id": "text_7ff6d34faf78",
+    "ar": "لم يتم العثور على الحساب / User not found",
+    "en": "Account not found",
+    "index": 774
+  },
+  {
+    "id": "text_9930d1b1aa6d",
+    "ar": "فشل تسجيل الدخول",
+    "en": "Could not sign in",
+    "index": 775
+  },
+  {
+    "id": "text_1f88df1febf2",
+    "ar": "البريد الإلكتروني أو كلمة المرور غير صحيحة / Invalid email or password",
+    "en": "Incorrect email or password",
+    "index": 776
+  },
+  {
+    "id": "text_b05a627b5b30",
+    "ar": "تعذر الاتصال بالإنترنت. يرجى التحقق من الشبكة / Network error. Please check your connection.",
+    "en": "Network error. Check your internet connection.",
+    "index": 777
+  },
+  {
+    "id": "text_819cac148daf",
+    "ar": "تعذر إرسال رسالة التأكيد",
+    "en": "Could not send verification email",
+    "index": 778
+  },
+  {
+    "id": "text_aa0d0095f903",
+    "ar": "يرجى التأكد من كلمة المرور لإعادة إرسال رسالة التأكيد",
+    "en": "Check your password to resend the verification email",
+    "index": 779
+  },
+  {
+    "id": "text_c5bef9aa9b15",
+    "ar": "يرجى إدخال كلمة المرور لإعادة إرسال رابط التأكيد",
+    "en": "Enter your password to resend the verification link",
+    "index": 780
+  },
+  {
+    "id": "text_83693d7ac448",
+    "ar": "يرجى إدخال البريد الإلكتروني أولاً",
+    "en": "Enter your email first",
+    "index": 781
+  },
+  {
+    "id": "text_c166bcfd6593",
+    "ar": "تعذر إرسال رابط إعادة التعيين",
+    "en": "Could not send password reset link",
+    "index": 782
+  },
+  {
+    "id": "text_11f4e1c524c6",
+    "ar": "لا يوجد حساب مسجل بهذا البريد الإلكتروني",
+    "en": "No account is registered with this email",
+    "index": 783
+  },
+  {
+    "id": "text_c4b9c9643782",
+    "ar": "صيغة البريد الإلكتروني غير صحيحة",
+    "en": "Invalid email address format",
+    "index": 784
+  },
+  {
+    "id": "text_fd3f055df0fc",
+    "ar": "حدث خطأ أثناء الحفظ",
+    "en": "An error occurred while saving",
+    "index": 785
+  },
+  {
+    "id": "text_ee344618d7b5",
+    "ar": "حدث خطأ أثناء الحذف",
+    "en": "An error occurred while deleting",
+    "index": 786
+  },
+  {
+    "id": "text_a024fc180e2f",
+    "ar": "تغير الحساب؛ افتح النسخ الاحتياطي مجدداً",
+    "en": "The account changed. Open backup again.",
+    "index": 787
+  },
+  {
+    "id": "text_7f76a273e765",
+    "ar": "دفع التزام: {0}",
+    "en": "Commitment payment: {0}",
+    "index": 788
+  },
+  {
+    "id": "text_ba7d226884f5",
+    "ar": "دروس أطفال",
+    "en": "Children's lessons",
+    "index": 789
+  },
+  {
+    "id": "text_1b7729a095fd",
+    "ar": "دفع درس: {0} - {1}",
+    "en": "Lesson payment: {0} - {1}",
+    "index": 790
+  },
+  {
+    "id": "text_12aebb198ef9",
+    "ar": "فشل الحفظ: {0}",
+    "en": "Save failed: {0}",
+    "index": 791
+  },
+  {
+    "id": "text_5111261821f6",
+    "ar": "فشل الحفظ",
+    "en": "Save failed",
+    "index": 792
+  },
+  {
+    "id": "text_1f4dfc40d5ed",
+    "ar": "تعذر حذف الحركة",
+    "en": "Could not delete transaction",
+    "index": 793
+  },
+  {
+    "id": "text_6aa5c6446010",
+    "ar": "يرجى إدخال مفتاح API الخاص بـ GoldAPI.io أولاً",
+    "en": "Enter your GoldAPI.io API key first",
+    "index": 794
+  },
+  {
+    "id": "text_69369f94e61a",
+    "ar": "جنيه",
+    "en": "Pound",
+    "index": 795
+  },
+  {
+    "id": "text_23163ab28da5",
+    "ar": "دولار",
+    "en": "Dollar",
+    "index": 796
+  },
+  {
+    "id": "text_a2623ac83783",
+    "ar": "ريال",
+    "en": "Riyal",
+    "index": 797
+  },
+  {
+    "id": "text_983cb0a018ee",
+    "ar": "درهم",
+    "en": "Dirham",
+    "index": 798
+  },
+  {
+    "id": "text_41503f399d29",
+    "ar": "يورو",
+    "en": "Euro",
+    "index": 799
+  },
+  {
+    "id": "text_d2a7d3bf31da",
+    "ar": "د.ك",
+    "en": "KWD",
+    "index": 800
+  },
+  {
+    "id": "text_54fa9db3fa4f",
+    "ar": "د.ب",
+    "en": "BHD",
+    "index": 801
+  },
+  {
+    "id": "text_440a2a37ae6e",
+    "ar": "ر.ع",
+    "en": "OMR",
+    "index": 802
+  },
+  {
+    "id": "text_e4981e5d5f10",
+    "ar": "ر.ق",
+    "en": "QAR",
+    "index": 803
+  },
+  {
+    "id": "text_5083dedec527",
+    "ar": "تم تحديث أسعار الذهب لحظياً بنجاح ({0})!",
+    "en": "Live gold prices updated successfully ({0})!",
+    "index": 804
+  },
+  {
+    "id": "text_6c36adfa8e9a",
+    "ar": "فشل في تحديث أسعار الذهب",
+    "en": "Could not update gold prices",
+    "index": 805
+  },
+  {
+    "id": "text_9561c4855efd",
+    "ar": "فشل التحويل بين الخزن",
+    "en": "Could not transfer between vaults",
+    "index": 806
+  },
+  {
+    "id": "text_7af13fb694d2",
+    "ar": "الخزنة غير موجودة",
+    "en": "Vault not found",
+    "index": 807
+  },
+  {
+    "id": "text_43867619cfb1",
+    "ar": "فشل عكس التحويل",
+    "en": "Could not reverse transfer",
+    "index": 808
+  },
+  {
+    "id": "text_ea44af141575",
+    "ar": "فشل تسجيل السداد",
+    "en": "Could not record payment",
+    "index": 809
+  },
+  {
+    "id": "text_0d7bdd125dd8",
+    "ar": "فاكهة",
+    "en": "Fruits",
+    "index": 810
+  },
+  {
+    "id": "text_3ba071f84d25",
+    "ar": "طلبات منزل",
+    "en": "Groceries",
+    "index": 811
+  },
+  {
+    "id": "text_fff2282efd27",
+    "ar": "ملابس",
+    "en": "Clothing",
+    "index": 812
+  },
+  {
+    "id": "text_7e0974ea54ff",
+    "ar": "صيدلية",
+    "en": "Pharmacy",
+    "index": 813
+  },
+  {
+    "id": "text_42e60c6b7fa5",
+    "ar": "أدوية",
+    "en": "Medicines",
+    "index": 814
+  },
+  {
+    "id": "text_a0eee03fd261",
+    "ar": "تعليم",
+    "en": "Education",
+    "index": 815
+  },
+  {
+    "id": "text_b60aa4cd4f7a",
+    "ar": "إيجار المنزل",
+    "en": "House rent",
+    "index": 816
+  },
+  {
+    "id": "text_e78fe38cd253",
+    "ar": "فاتورة الكهرباء",
+    "en": "Electricity bill",
+    "index": 817
+  },
+  {
+    "id": "text_d3a60f947665",
+    "ar": "فاتورة المياه",
+    "en": "Water bill",
+    "index": 818
+  },
+  {
+    "id": "text_e97a914c3af4",
+    "ar": "فاتورة الغاز",
+    "en": "Gas bill",
+    "index": 819
+  },
+  {
+    "id": "text_7e3578ca7619",
+    "ar": "فاتورة الإنترنت",
+    "en": "Internet bill",
+    "index": 820
+  },
+  {
+    "id": "text_f86302880ffa",
+    "ar": "فاتورة الهاتف",
+    "en": "Phone bill",
+    "index": 821
+  },
+  {
+    "id": "text_dd1a92b70bff",
+    "ar": "ترفيه",
+    "en": "Entertainment",
+    "index": 822
+  },
+  {
+    "id": "text_c01000b4ec77",
+    "ar": "هدايا",
+    "en": "Gifts",
+    "index": 823
+  },
+  {
+    "id": "text_cf947ed2a968",
+    "ar": "صيانة",
+    "en": "Maintenance",
+    "index": 824
+  },
+  {
+    "id": "text_44f3aac66d39",
+    "ar": "إصلاحات",
+    "en": "Repairs",
+    "index": 825
+  },
+  {
+    "id": "text_0cb1a4b71327",
+    "ar": "قسط سيارة",
+    "en": "Car installment",
+    "index": 826
+  },
+  {
+    "id": "text_d6f737f4c382",
+    "ar": "الراتب",
+    "en": "Salary",
+    "index": 827
+  },
+  {
+    "id": "text_824b44b725ca",
+    "ar": "مكافأة",
+    "en": "Bonus",
+    "index": 828
+  },
+  {
+    "id": "text_f9a0ef07d2a6",
+    "ar": "أرباح",
+    "en": "Profits",
+    "index": 829
+  },
+  {
+    "id": "text_5911a9c09dc9",
+    "ar": "تحويل مالي",
+    "en": "Money transfer",
+    "index": 830
+  },
+  {
+    "id": "text_60c0278a8811",
+    "ar": "طلبات",
+    "en": "Groceries",
+    "index": 831
+  },
+  {
+    "id": "text_c2e6b4458fdf",
+    "ar": "أكل",
+    "en": "Food",
+    "index": 832
+  },
+  {
+    "id": "text_b77857871225",
+    "ar": "سيارة",
+    "en": "Car",
+    "index": 833
+  },
+  {
+    "id": "text_185f7e8de18f",
+    "ar": "دروس",
+    "en": "Lessons",
+    "index": 834
+  },
+  {
+    "id": "text_893768c6b42b",
+    "ar": "منزل",
+    "en": "Home",
+    "index": 835
+  },
+  {
+    "id": "text_7831ea58944a",
+    "ar": "مياه",
+    "en": "Water",
+    "index": 836
+  },
+  {
+    "id": "text_0daf322cd307",
+    "ar": "إنترنت",
+    "en": "Internet",
+    "index": 837
+  },
+  {
+    "id": "text_b9e9459cfa63",
+    "ar": "هاتف",
+    "en": "Phone",
+    "index": 838
+  },
+  {
+    "id": "text_0f6651f43504",
+    "ar": "تليفون",
+    "en": "Telephone",
+    "index": 839
+  },
+  {
+    "id": "text_f9c2d3602b36",
+    "ar": "باقة",
+    "en": "Plan",
+    "index": 840
+  },
+  {
+    "id": "text_f879f70ca625",
+    "ar": "بنك",
+    "en": "Bank",
+    "index": 841
+  },
+  {
+    "id": "text_5fcef4c6d878",
+    "ar": "غاز",
+    "en": "Gas",
+    "index": 842
+  },
+  {
+    "id": "text_38826a3d0488",
+    "ar": "تم رفع وتحديث النسخة الاحتياطية بنجاح على Google Drive!\nحساب: {0}\nتاريخ: {1}",
+    "en": "Backup uploaded to Google Drive!\nAccount: {0}\nDate: {1}",
+    "index": 843
+  },
+  {
+    "id": "text_86461526253e",
+    "ar": "خطأ في الاتصال بـ Google Drive: {0}",
+    "en": "Google Drive connection error: {0}",
+    "index": 844
+  },
+  {
+    "id": "text_d18ace7a5c04",
+    "ar": "جاري الاتصال بـ Google Drive ...\nتم العثور على آخر نسخة سحابية بحساب ({0}) وتم استعادتها بنجاح!",
+    "en": "Connecting to Google Drive...\nThe latest backup for ({0}) was found and restored!",
+    "index": 845
+  },
+  {
+    "id": "text_7a87c217fea6",
+    "ar": "تمت استعادة البيانات والحسابات بنجاح من Google Drive!",
+    "en": "Data and accounts restored from Google Drive successfully!",
+    "index": 846
+  },
+  {
+    "id": "text_7efb620b2f46",
+    "ar": "صورة الفاتورة / الإيصال",
+    "en": "Invoice / Receipt image",
+    "index": 847
+  },
+  {
+    "id": "text_8e4a12b8e0fb",
+    "ar": "صورة الفاتورة المرفقة",
+    "en": "Attached receipt image",
+    "index": 848
+  },
+  {
+    "id": "text_02ecf19774a4",
+    "ar": "عرض الفاتورة",
+    "en": "View receipt",
+    "index": 849
+  },
+  {
+    "id": "text_26abf901180a",
+    "ar": "الفاتورة",
+    "en": "Receipt",
+    "index": 850
+  },
+  {
+    "id": "text_de83fe0e773f",
+    "ar": "ضعيفة جداً",
+    "en": "Very weak",
+    "index": 851
+  },
+  {
+    "id": "text_19ac077a66fc",
+    "ar": "ضعيفة",
+    "en": "Weak",
+    "index": 852
+  },
+  {
+    "id": "text_4167c04a5bc0",
+    "ar": "متوسطة",
+    "en": "Moderate",
+    "index": 853
+  },
+  {
+    "id": "text_f23522a73d5e",
+    "ar": "قوية",
+    "en": "Strong",
+    "index": 854
+  },
+  {
+    "id": "text_15c81a353e6d",
+    "ar": "فائقة القوة",
+    "en": "Very strong",
+    "index": 855
+  },
+  {
+    "id": "text_f93caee4745f",
+    "ar": "الخزنة الذكية - التقرير المالي الشامل",
+    "en": "Smart Vault - Financial report",
+    "index": 856
+  },
+  {
+    "id": "text_23ff5bd3cda6",
+    "ar": "اسم المستخدم: {0}",
+    "en": "Name: {0}",
+    "index": 857
+  },
+  {
+    "id": "text_af62bc118661",
+    "ar": "البريد الإلكتروني: {0} | الهاتف: {1}",
+    "en": "Email: {0} | Phone: {1}",
+    "index": 858
+  },
+  {
+    "id": "text_5b5d51e492a1",
+    "ar": "تاريخ التقرير: {0}",
+    "en": "Report date: {0}",
+    "index": 859
+  },
+  {
+    "id": "text_598b3013c93a",
+    "ar": "1. ملخص الحركة المالية الشهرية",
+    "en": "1. Monthly financial summary",
+    "index": 860
+  },
+  {
+    "id": "text_2df6cb78d320",
+    "ar": "المتبقي / صافي التوفير",
+    "en": "Remaining / Net savings",
+    "index": 861
+  },
+  {
+    "id": "text_a07daa050122",
+    "ar": "2. أصدة الحسابات والخزانات المسجلة",
+    "en": "2. Registered vaults and accounts",
+    "index": 862
+  },
+  {
+    "id": "text_292aa105e256",
+    "ar": "اسم الخزنة / الحساب",
+    "en": "Vault / Account name",
+    "index": 863
+  },
+  {
+    "id": "text_19c61065a80f",
+    "ar": "الرصيد المتاح",
+    "en": "Available balance",
+    "index": 864
+  },
+  {
+    "id": "text_06aea1a4b6cb",
+    "ar": "3. سجل أحدث المعاملات المالية",
+    "en": "3. Recent financial transactions",
+    "index": 865
+  },
+  {
+    "id": "text_70c980e32ac0",
+    "ar": "الوصف والمعاملة",
+    "en": "Description and transaction",
+    "index": 866
+  },
+  {
+    "id": "text_7c75fec5c0f8",
+    "ar": "التصنيف",
+    "en": "Category",
+    "index": 867
+  },
+  {
+    "id": "text_0fd1ce3ab3e4",
+    "ar": "الحساب",
+    "en": "Account",
+    "index": 868
+  },
+  {
+    "id": "text_c2de3368a38f",
+    "ar": "تم استخراج التقرير بواسطة تطبيق الخزنة الذكية • Smart Vault Security & AI Statement",
+    "en": "Generated by Smart Vault • Financial Statement",
+    "index": 869
+  },
+  {
+    "id": "text_84ea95ad551f",
+    "ar": "تم توليد تقرير PDF بنجاح: {0}",
+    "en": "PDF report generated: {0}",
+    "index": 870
+  },
+  {
+    "id": "text_6a24d4f395ba",
+    "ar": "فتح تقرير PDF المالي",
+    "en": "Open financial PDF report",
+    "index": 871
+  },
+  {
+    "id": "text_b5ff5ea46c44",
+    "ar": "حدث خطأ أثناء حفظ الملف: {0}",
+    "en": "Could not save file: {0}",
+    "index": 872
+  },
+  {
+    "id": "text_882e9abff232",
+    "ar": "الخزنة الذكية - تقرير مصاريف الخروجة وتقسيم اللمة",
+    "en": "Smart Vault - Outing expense split report",
+    "index": 873
+  },
+  {
+    "id": "text_835815ab36b4",
+    "ar": "عدد عناصر المصاريف: {0}",
+    "en": "Expense items: {0}",
+    "index": 874
+  },
+  {
+    "id": "text_7a38397f0000",
+    "ar": "1. ملخص حساب الخروجة والتقسيم",
+    "en": "1. Outing and split summary",
+    "index": 875
+  },
+  {
+    "id": "text_552ed370d702",
+    "ar": "عدد اللمة (المشاركين)",
+    "en": "Number of participants",
+    "index": 876
+  },
+  {
+    "id": "text_f27a59f61ba0",
+    "ar": "2. كشف التفاصيل والمصاريف المسجلة",
+    "en": "2. Recorded expense details",
+    "index": 877
+  },
+  {
+    "id": "text_b0a293b3248f",
+    "ar": "بيان المصروف",
+    "en": "Expense description",
+    "index": 878
+  },
+  {
+    "id": "text_6462ae41af9e",
+    "ar": "من دفعه؟",
+    "en": "Paid by",
+    "index": 879
+  },
+  {
+    "id": "text_a7bc8a435179",
+    "ar": "التاريخ والوقت",
+    "en": "Date and time",
+    "index": 880
+  },
+  {
+    "id": "text_d1780ad75e2f",
+    "ar": "تم استخراج التقرير بواسطة تطبيق الخزنة الذكية • Smart Vault Outing Split Report",
+    "en": "Generated by Smart Vault • Outing Split Report",
+    "index": 881
+  },
+  {
+    "id": "text_a8441ff2295f",
+    "ar": "تم توليد تقرير PDF للخروجة بنجاح",
+    "en": "Outing PDF report generated successfully",
+    "index": 882
+  },
+  {
+    "id": "text_7a1f1081fa08",
+    "ar": "تقرير مصاريف الخروجة - إجمالي المصاريف: {0} {1} | عدد المشاركين: {2} | حساب كل واحد: {3} {4}",
+    "en": "Outing report - Total: {0} {1} | Participants: {2} | Share per person: {3} {4}",
+    "index": 883
+  },
+  {
+    "id": "text_b1b890b5a0eb",
+    "ar": "تقرير مصاريف الخروجة - الخزنة الذكية",
+    "en": "Outing expense report - Smart Vault",
+    "index": 884
+  },
+  {
+    "id": "text_c45468e5611d",
+    "ar": "مشاركة تقرير الخروجة PDF",
+    "en": "Share outing PDF report",
+    "index": 885
+  },
+  {
+    "id": "text_952072da576d",
+    "ar": "حدث خطأ أثناء مشاركة التقرير: {0}",
+    "en": "Could not share report: {0}",
+    "index": 886
+  },
+  {
+    "id": "text_9835a8feba07",
+    "ar": "الخزنة الذكية - سجل المعاملات المالية\n",
+    "en": "Smart Vault - Financial transaction history\n",
+    "index": 887
+  },
+  {
+    "id": "text_9e3a72a661ba",
+    "ar": "تاريخ التصدير,{0}\n\n",
+    "en": "Export date,{0}\n\n",
+    "index": 888
+  },
+  {
+    "id": "text_3e3c9dfb2caf",
+    "ar": "الخزائن,الرصيد\n",
+    "en": "Vaults,Balance\n",
+    "index": 889
+  },
+  {
+    "id": "text_8a2cbefb87da",
+    "ar": "المعرف,النوع,المبلغ,التصنيف,الوصف,الخزنة,التاريخ والوقت\n",
+    "en": "ID,Type,Amount,Category,Description,Vault,Date and time\n",
+    "index": 890
+  },
+  {
+    "id": "text_6daff27f6fa5",
+    "ar": "دخل (+)",
+    "en": "Income (+)",
+    "index": 891
+  },
+  {
+    "id": "text_ffed616f0b7b",
+    "ar": "مصروف (-)",
+    "en": "Expense (-)",
+    "index": 892
+  },
+  {
+    "id": "text_98cf936bc34d",
+    "ar": "تم تصدير ملف Excel بنجاح: {0}",
+    "en": "Excel file exported: {0}",
+    "index": 893
+  },
+  {
+    "id": "text_7429f5a831b5",
+    "ar": "سجل المعاملات المالية Excel - الخزنة الذكية",
+    "en": "Financial transactions Excel - Smart Vault",
+    "index": 894
+  },
+  {
+    "id": "text_4d57eda7fba5",
+    "ar": "فتح أو مشاركة ملف Excel",
+    "en": "Open or share Excel file",
+    "index": 895
+  },
+  {
+    "id": "text_c3f85c6d57fd",
+    "ar": "حدث خطأ أثناء تصدير ملف Excel: {0}",
+    "en": "Could not export Excel file: {0}",
+    "index": 896
+  },
+  {
+    "id": "text_a2f20438512f",
+    "ar": "تذكيرات الخزنة الذكية",
+    "en": "Smart Vault reminders",
+    "index": 897
+  },
+  {
+    "id": "text_49b966335c09",
+    "ar": "تنبيهات يومية لتسجيل وتفقد المصروفات والحسابات",
+    "en": "Daily reminders to record and review expenses and accounts",
+    "index": 898
+  },
+  {
+    "id": "text_5339f0151e8b",
+    "ar": "تذكير الخزنة الذكية 💰",
+    "en": "Smart Vault reminder 💰",
+    "index": 899
+  },
+  {
+    "id": "text_0b94ea568e83",
+    "ar": "لا تنسَ تسجيل مصروفات اليوم ومراجعة حركة الخزنة لضمان دقة ميزانيتك!",
+    "en": "Remember to record today's expenses and review your vault activity to keep your budget accurate!",
+    "index": 900
+  },
+  {
+    "id": "text_909099b10379",
+    "ar": "لا تنسَ تسجيل مصروفات اليوم ومراجعة حركة الخزنة لضمان دقة ميزانيتك المتبقية لهذا الشهر.",
+    "en": "Remember to record today's expenses and review your vault activity to keep this month's remaining budget accurate.",
+    "index": 901
+  },
+  {
+    "id": "text_879a8b902ae5",
+    "ar": "أسعار الذهب اليومية",
+    "en": "Daily gold prices",
+    "index": 902
+  },
+  {
+    "id": "text_3deed56eb82a",
+    "ar": "تنبيهات التحديث اليومي لأسعار الذهب (12:00 ظهراً)",
+    "en": "Daily gold price update notifications (12:00 PM)",
+    "index": 903
+  },
+  {
+    "id": "text_3c1e403d55c3",
+    "ar": "تحديث أسعار الذهب (12:00 ظهراً) 🪙",
+    "en": "Gold price update (12:00 PM) 🪙",
+    "index": 904
+  },
+  {
+    "id": "text_eb62eeef21fe",
+    "ar": "عيار 21: {0} {1} | عيار 24: {2} {3}",
+    "en": "21 karat: {0} {1} | 24 karat: {2} {3}",
+    "index": 905
+  },
+  {
+    "id": "text_1d15a727c672",
+    "ar": "تم تحديث أسعار الذهب لحظياً من GoldAPI.io بنجاح:\n• عيار 21: {0} {1}\n• عيار 24: {2} {3}\nتمت إعادة تقييم محفظة الذهب وسبائكك تلقائياً.",
+    "en": "Gold prices updated from GoldAPI.io:\n• 21 karat: {0} {1}\n• 24 karat: {2} {3}\nYour gold portfolio was revalued automatically.",
+    "index": 906
+  },
+  {
+    "id": "label_app_title",
+    "ar": "الخزنة الذكية",
+    "en": "Smart Vault"
+  },
+  {
+    "id": "label_nav_home",
+    "ar": "الرئيسية",
+    "en": "Home"
+  },
+  {
+    "id": "label_nav_savings",
+    "ar": "المدخرات",
+    "en": "Savings"
+  },
+  {
+    "id": "label_nav_transactions",
+    "ar": "العمليات",
+    "en": "Transactions"
+  },
+  {
+    "id": "label_nav_commitments",
+    "ar": "الالتزامات",
+    "en": "Commitments"
+  },
+  {
+    "id": "label_nav_outings",
+    "ar": "الخروجات",
+    "en": "Outings"
+  },
+  {
+    "id": "label_nav_reports",
+    "ar": "التقارير",
+    "en": "Reports"
+  },
+  {
+    "id": "label_nav_settings",
+    "ar": "الإعدادات",
+    "en": "Settings"
+  },
+  {
+    "id": "label_title_home",
+    "ar": "الخزنة الذكية",
+    "en": "Smart Vault"
+  },
+  {
+    "id": "label_title_savings",
+    "ar": "المدخرات والذهب 💰",
+    "en": "Savings & Gold Vault"
+  },
+  {
+    "id": "label_title_commitments",
+    "ar": "الالتزامات والدروس",
+    "en": "Commitments & Lessons"
+  },
+  {
+    "id": "label_title_outings",
+    "ar": "مصاريف الخروجات واللمة",
+    "en": "Outing Expenses & Split"
+  },
+  {
+    "id": "label_title_transactions",
+    "ar": "العمليات",
+    "en": "Transactions"
+  },
+  {
+    "id": "label_title_reports",
+    "ar": "التقارير والميزانية",
+    "en": "Reports & Budget"
+  },
+  {
+    "id": "label_title_settings",
+    "ar": "الإعدادات والحسابات",
+    "en": "Settings & Vaults"
+  },
+  {
+    "id": "label_total_savings",
+    "ar": "إجمالي المدخرات",
+    "en": "Total Savings"
+  },
+  {
+    "id": "label_total_cash_savings",
+    "ar": "المدخرات النقدية",
+    "en": "Cash Savings"
+  },
+  {
+    "id": "label_current_gold_value",
+    "ar": "قيمة الذهب الحالية",
+    "en": "Current Gold Value"
+  },
+  {
+    "id": "label_total_gold_weight",
+    "ar": "إجمالي وزن الذهب",
+    "en": "Total Gold Weight"
+  },
+  {
+    "id": "label_gold_pieces_count",
+    "ar": "عدد قطع الذهب",
+    "en": "Gold Pieces"
+  },
+  {
+    "id": "label_gold_profits",
+    "ar": "عائد وأرباح الذهب",
+    "en": "Gold Profits / Return"
+  },
+  {
+    "id": "label_update_gold_prices",
+    "ar": "تعديل أسعار الذهب اليوم",
+    "en": "Update Gold Prices"
+  },
+  {
+    "id": "label_gold_prices_today",
+    "ar": "أسعار الذهب اليوم (سعر الجرام)",
+    "en": "Today's Gold Prices (per gram)"
+  },
+  {
+    "id": "label_tab_gold",
+    "ar": "الذهب والسبائك",
+    "en": "Gold & Bullions"
+  },
+  {
+    "id": "label_tab_cash",
+    "ar": "المدخرات النقدية",
+    "en": "Cash Savings"
+  },
+  {
+    "id": "label_tab_analytics",
+    "ar": "التحليلات والنمو",
+    "en": "Analytics & Growth"
+  },
+  {
+    "id": "label_tab_sold_history",
+    "ar": "سجل المبيعات",
+    "en": "Sold Gold History"
+  },
+  {
+    "id": "label_add_gold_piece",
+    "ar": "إضافة قطعة ذهب / سبيكة",
+    "en": "Add Gold Piece"
+  },
+  {
+    "id": "label_add_cash_saving",
+    "ar": "إضافة مدخرات نقدية",
+    "en": "Add Cash Saving"
+  },
+  {
+    "id": "label_gold_piece_name",
+    "ar": "اسم القطعة / الماركة",
+    "en": "Piece Name / Brand"
+  },
+  {
+    "id": "label_gold_type",
+    "ar": "نوع الذهب",
+    "en": "Gold Type"
+  },
+  {
+    "id": "label_bullion",
+    "ar": "سبيكة",
+    "en": "Bullion / Bar"
+  },
+  {
+    "id": "label_jewelry",
+    "ar": "مشغولات",
+    "en": "Jewelry"
+  },
+  {
+    "id": "label_gold_coin",
+    "ar": "عملة ذهبية",
+    "en": "Gold Coin"
+  },
+  {
+    "id": "label_gold_pound",
+    "ar": "جنيه ذهب (8 جرام)",
+    "en": "Gold Pound (8g)"
+  },
+  {
+    "id": "label_other_gold",
+    "ar": "أخرى",
+    "en": "Other"
+  },
+  {
+    "id": "label_karat",
+    "ar": "العيار",
+    "en": "Karat"
+  },
+  {
+    "id": "label_karat24",
+    "ar": "عيار 24 (نقاء 99.9%)",
+    "en": "24 Karat (999.9)"
+  },
+  {
+    "id": "label_karat22",
+    "ar": "عيار 22",
+    "en": "22 Karat"
+  },
+  {
+    "id": "label_karat21",
+    "ar": "عيار 21 (الأكثر تداولاً)",
+    "en": "21 Karat (Standard)"
+  },
+  {
+    "id": "label_karat18",
+    "ar": "عيار 18",
+    "en": "18 Karat"
+  },
+  {
+    "id": "label_karat14",
+    "ar": "عيار 14",
+    "en": "14 Karat"
+  },
+  {
+    "id": "label_karat12",
+    "ar": "عيار 12",
+    "en": "12 Karat"
+  },
+  {
+    "id": "label_weight_in_grams",
+    "ar": "الوزن بالجرام",
+    "en": "Weight in Grams (g)"
+  },
+  {
+    "id": "label_purchase_price",
+    "ar": "سعر الشراء الفعلي (المبلغ المدفوع)",
+    "en": "Purchase Price (Total Paid)"
+  },
+  {
+    "id": "label_purchase_date",
+    "ar": "تاريخ الشراء",
+    "en": "Purchase Date"
+  },
+  {
+    "id": "label_purpose",
+    "ar": "الغرض من الاقتناء",
+    "en": "Purpose"
+  },
+  {
+    "id": "label_purpose_saving",
+    "ar": "للادخار والاستثمار",
+    "en": "For Savings / Investment"
+  },
+  {
+    "id": "label_purpose_adornment",
+    "ar": "للزينة والاستخدام",
+    "en": "For Adornment & Use"
+  },
+  {
+    "id": "label_piece_photo",
+    "ar": "صورة القطعة أو الفاتورة",
+    "en": "Piece Photo / Invoice"
+  },
+  {
+    "id": "label_sell_gold",
+    "ar": "تسجيل بيع القطعة",
+    "en": "Sell Gold Piece"
+  },
+  {
+    "id": "label_sale_price",
+    "ar": "سعر البيع الفعلي",
+    "en": "Sale Price"
+  },
+  {
+    "id": "label_sale_date",
+    "ar": "تاريخ البيع",
+    "en": "Sale Date"
+  },
+  {
+    "id": "label_sale_notes",
+    "ar": "ملاحظات البيع",
+    "en": "Sale Notes"
+  },
+  {
+    "id": "label_realized_profit",
+    "ar": "الربح المحقق",
+    "en": "Realized Profit"
+  },
+  {
+    "id": "label_profit_percentage",
+    "ar": "نسبة الربح",
+    "en": "Profit %"
+  },
+  {
+    "id": "label_loss_percentage",
+    "ar": "نسبة الخسارة",
+    "en": "Loss %"
+  },
+  {
+    "id": "label_in_vault",
+    "ar": "في الخزنة (غير مباعة)",
+    "en": "In Vault (Active)"
+  },
+  {
+    "id": "label_sold",
+    "ar": "تم البيع",
+    "en": "Sold"
+  },
+  {
+    "id": "label_piece_details",
+    "ar": "تفاصيل قطعة الذهب",
+    "en": "Gold Piece Details"
+  },
+  {
+    "id": "label_current_gram_price",
+    "ar": "سعر الجرام الحالي",
+    "en": "Current Gram Price"
+  },
+  {
+    "id": "label_no_gold_yet",
+    "ar": "لا توجد قطع ذهب مسجلة بعد",
+    "en": "No gold assets recorded yet"
+  },
+  {
+    "id": "label_no_cash_savings_yet",
+    "ar": "لا توجد مدخرات نقدية مسجلة بعد",
+    "en": "No cash savings recorded yet"
+  },
+  {
+    "id": "label_no_sold_gold_yet",
+    "ar": "لا توجد مبيعات ذهب مسجلة",
+    "en": "No sold gold history recorded"
+  },
+  {
+    "id": "label_asset_allocation",
+    "ar": "توزيع الأصول (ذهب مقابل كاش)",
+    "en": "Asset Allocation (Gold vs Cash)"
+  },
+  {
+    "id": "label_savings_advise",
+    "ar": "نصائح الخزنة لتنمية المدخرات",
+    "en": "Savings & Wealth Insights"
+  },
+  {
+    "id": "label_welcome_user",
+    "ar": "مرحباً بك،",
+    "en": "Welcome,"
+  },
+  {
+    "id": "label_current_balance",
+    "ar": "الرصيد الحالي في الخزنة",
+    "en": "Current Vault Balance"
+  },
+  {
+    "id": "label_monthly_income",
+    "ar": "دخل الشهر",
+    "en": "Monthly Income"
+  },
+  {
+    "id": "label_monthly_expenses",
+    "ar": "مصروفات الشهر",
+    "en": "Monthly Expenses"
+  },
+  {
+    "id": "label_smart_analytics",
+    "ar": "التحليل الذكي",
+    "en": "Smart Analytics"
+  },
+  {
+    "id": "label_total_available_balance",
+    "ar": "إجمالي الرصيد المتاح",
+    "en": "Total Available Balance"
+  },
+  {
+    "id": "label_this_month_income",
+    "ar": "دخل هذا الشهر",
+    "en": "This Month's Income"
+  },
+  {
+    "id": "label_this_month_expense",
+    "ar": "مصروفات هذا الشهر",
+    "en": "This Month's Expense"
+  },
+  {
+    "id": "label_add_income",
+    "ar": "إضافة دخل",
+    "en": "Add Income"
+  },
+  {
+    "id": "label_add_expense",
+    "ar": "إضافة مصروف",
+    "en": "Add Expense"
+  },
+  {
+    "id": "label_financial_vaults",
+    "ar": "الخزانات والحسابات المالية",
+    "en": "Financial Vaults & Accounts"
+  },
+  {
+    "id": "label_recent_transactions",
+    "ar": "العمليات الأخيرة",
+    "en": "Recent Transactions"
+  },
+  {
+    "id": "label_view_all",
+    "ar": "عرض الكل",
+    "en": "View All"
+  },
+  {
+    "id": "label_no_transactions_yet",
+    "ar": "لا توجد عمليات مسجلة حالياً",
+    "en": "No transactions recorded yet"
+  },
+  {
+    "id": "label_monthly_category_budget",
+    "ar": "الميزانية الشهرية للتصنيفات",
+    "en": "Monthly Category Budgets"
+  },
+  {
+    "id": "label_add_budget_limit",
+    "ar": "إضافة حد جديد",
+    "en": "Add New Limit"
+  },
+  {
+    "id": "label_set_budget",
+    "ar": "تحديد ميزانية",
+    "en": "Set Budget"
+  },
+  {
+    "id": "label_no_budget_set",
+    "ar": "لم يتم تحديد حدود ميزانية بعد.",
+    "en": "No budget limits set yet."
+  },
+  {
+    "id": "label_upcoming_commitments",
+    "ar": "الالتزامات القادمة",
+    "en": "Upcoming Commitments"
+  },
+  {
+    "id": "label_child_lessons",
+    "ar": "دروس الأطفال",
+    "en": "Children Lessons"
+  },
+  {
+    "id": "label_paid",
+    "ar": "تم الدفع",
+    "en": "Paid"
+  },
+  {
+    "id": "label_unpaid",
+    "ar": "غير مدفوع",
+    "en": "Unpaid"
+  },
+  {
+    "id": "label_intelligent_advisor",
+    "ar": "المستشار المالي الذكي",
+    "en": "Smart Financial Advisor"
+  },
+  {
+    "id": "label_achievements_and_badges",
+    "ar": "الإنجازات والشارات",
+    "en": "Achievements & Badges"
+  },
+  {
+    "id": "label_filter_all",
+    "ar": "الكل",
+    "en": "All"
+  },
+  {
+    "id": "label_filter_expenses",
+    "ar": "المصروفات",
+    "en": "Expenses"
+  },
+  {
+    "id": "label_filter_income",
+    "ar": "الدخل",
+    "en": "Income"
+  },
+  {
+    "id": "label_search_placeholder",
+    "ar": "بحث في العمليات...",
+    "en": "Search transactions..."
+  },
+  {
+    "id": "label_no_matching_transactions",
+    "ar": "لا توجد عمليات تطابق البحث",
+    "en": "No transactions match your search"
+  },
+  {
+    "id": "label_transaction_details",
+    "ar": "تفاصيل العملية",
+    "en": "Transaction Details"
+  },
+  {
+    "id": "label_delete_transaction",
+    "ar": "حذف العملية",
+    "en": "Delete Transaction"
+  },
+  {
+    "id": "label_amount",
+    "ar": "المبلغ",
+    "en": "Amount"
+  },
+  {
+    "id": "label_date",
+    "ar": "التاريخ",
+    "en": "Date"
+  },
+  {
+    "id": "label_category",
+    "ar": "التصنيف",
+    "en": "Category"
+  },
+  {
+    "id": "label_vault",
+    "ar": "الخزنة / الحساب",
+    "en": "Vault / Account"
+  },
+  {
+    "id": "label_notes",
+    "ar": "ملاحظات",
+    "en": "Notes"
+  },
+  {
+    "id": "label_name",
+    "ar": "الاسم",
+    "en": "Name"
+  },
+  {
+    "id": "label_due_day",
+    "ar": "يوم الاستحقاق",
+    "en": "Due Day"
+  },
+  {
+    "id": "label_repeat_monthly",
+    "ar": "يتكرر شهرياً",
+    "en": "Repeats Monthly"
+  },
+  {
+    "id": "label_commitment_example",
+    "ar": "مثال: فاتورة الكهرباء",
+    "en": "e.g. Electricity Bill"
+  },
+  {
+    "id": "label_commitments_tab",
+    "ar": "الالتزامات الشهرية",
+    "en": "Monthly Commitments"
+  },
+  {
+    "id": "label_lessons_tab",
+    "ar": "دروس الأطفال",
+    "en": "Children Lessons"
+  },
+  {
+    "id": "label_monthly_commitments",
+    "ar": "الالتزامات الشهرية",
+    "en": "Monthly Commitments"
+  },
+  {
+    "id": "label_add_commitment",
+    "ar": "إضافة التزام",
+    "en": "Add Commitment"
+  },
+  {
+    "id": "label_add_lesson",
+    "ar": "إضافة درس",
+    "en": "Add Lesson"
+  },
+  {
+    "id": "label_teacher_name",
+    "ar": "اسم المدرس / المادة",
+    "en": "Teacher / Subject"
+  },
+  {
+    "id": "label_child_name",
+    "ar": "اسم الطفل",
+    "en": "Child Name"
+  },
+  {
+    "id": "label_due_date",
+    "ar": "تاريخ الاستحقاق",
+    "en": "Due Date"
+  },
+  {
+    "id": "label_pay_from_vault",
+    "ar": "تم الدفع والخصم من الخزنة",
+    "en": "Pay from Vault"
+  },
+  {
+    "id": "label_no_commitments",
+    "ar": "لا توجد التزامات مسجلة",
+    "en": "No commitments recorded"
+  },
+  {
+    "id": "label_no_lessons",
+    "ar": "لا توجد دروس مسجلة",
+    "en": "No lessons recorded"
+  },
+  {
+    "id": "label_current_month_summary",
+    "ar": "ملخص الشهر الحالي",
+    "en": "Current Month Summary"
+  },
+  {
+    "id": "label_remaining_balance",
+    "ar": "المتبقي من الدخل",
+    "en": "Remaining Balance"
+  },
+  {
+    "id": "label_avg_daily_spend",
+    "ar": "متوسط الإنفاق اليومي",
+    "en": "Avg Daily Spend"
+  },
+  {
+    "id": "label_safe_daily_limit",
+    "ar": "الحد اليومي الآمن",
+    "en": "Safe Daily Limit"
+  },
+  {
+    "id": "label_expense_distribution",
+    "ar": "توزيع المصروفات حسب التصنيف",
+    "en": "Expense Distribution by Category"
+  },
+  {
+    "id": "label_export_pdf",
+    "ar": "تصدير تقرير PDF",
+    "en": "Export PDF Report"
+  },
+  {
+    "id": "label_export_excel",
+    "ar": "تصدير Excel / CSV",
+    "en": "Export Excel / CSV"
+  },
+  {
+    "id": "label_top_expense_category",
+    "ar": "أعلى تصنيف إنفاقاً",
+    "en": "Top Expense Category"
+  },
+  {
+    "id": "label_income_vs_expense",
+    "ar": "مقارنة الدخل بالمصروفات",
+    "en": "Income vs Expenses Comparison"
+  },
+  {
+    "id": "label_app_preferences",
+    "ar": "تفضيلات وإعدادات التطبيق",
+    "en": "App Preferences & Settings"
+  },
+  {
+    "id": "label_app_language",
+    "ar": "لغة التطبيق",
+    "en": "App Language"
+  },
+  {
+    "id": "label_arabic",
+    "ar": "العربية (Arabic)",
+    "en": "العربية (Arabic)"
+  },
+  {
+    "id": "label_english",
+    "ar": "English (الإنجليزية)",
+    "en": "English"
+  },
+  {
+    "id": "label_app_currency",
+    "ar": "عملة التطبيق",
+    "en": "App Currency"
+  },
+  {
+    "id": "label_dark_mode",
+    "ar": "الوضع الداكن (Dark Mode)",
+    "en": "Dark Mode"
+  },
+  {
+    "id": "label_fingerprint_pin",
+    "ar": "قفل الخزنة ببصمة الإصبع / PIN",
+    "en": "Fingerprint / PIN Lock"
+  },
+  {
+    "id": "label_two_factor_auth",
+    "ar": "التحقق بخطوتين (2FA)",
+    "en": "Two-Factor Auth (2FA)"
+  },
+  {
+    "id": "label_enabled2_f_a",
+    "ar": "مُفعل - كود أمان عند الدخول",
+    "en": "Enabled - Code required on login"
+  },
+  {
+    "id": "label_disabled2_f_a",
+    "ar": "غير مُفعل",
+    "en": "Disabled"
+  },
+  {
+    "id": "label_daily_reminder",
+    "ar": "تذكير يومي بمراجعة المصروفات",
+    "en": "Daily Expense Reminder"
+  },
+  {
+    "id": "label_reminder_sub",
+    "ar": "إشعار تلقائي يومياً الساعة 8:00 مساءً",
+    "en": "Auto notification daily at 8:00 PM"
+  },
+  {
+    "id": "label_backup_restore",
+    "ar": "النسخ الاحتياطي واستعادة البيانات",
+    "en": "Backup & Restore Data"
+  },
+  {
+    "id": "label_drive_backup",
+    "ar": "النسخ الاحتياطي على Google Drive",
+    "en": "Google Drive Backup"
+  },
+  {
+    "id": "label_restore_backup",
+    "ar": "استعادة النسخة الاحتياطية",
+    "en": "Restore Backup"
+  },
+  {
+    "id": "label_edit_profile",
+    "ar": "تعديل بيانات الحساب",
+    "en": "Edit Profile"
+  },
+  {
+    "id": "label_logout",
+    "ar": "تسجيل الخروج",
+    "en": "Logout"
+  },
+  {
+    "id": "label_add_account_vault",
+    "ar": "إضافة حساب / خزنة",
+    "en": "Add Account / Vault"
+  },
+  {
+    "id": "label_attach_receipt",
+    "ar": "إرفاق صورة الفاتورة",
+    "en": "Attach Receipt Image"
+  },
+  {
+    "id": "label_receipt_image",
+    "ar": "صورة الفاتورة",
+    "en": "Receipt Image"
+  },
+  {
+    "id": "label_optional",
+    "ar": "اختياري",
+    "en": "Optional"
+  },
+  {
+    "id": "label_save",
+    "ar": "حفظ",
+    "en": "Save"
+  },
+  {
+    "id": "label_cancel",
+    "ar": "إلغاء",
+    "en": "Cancel"
+  },
+  {
+    "id": "label_delete",
+    "ar": "حذف",
+    "en": "Delete"
+  },
+  {
+    "id": "label_edit",
+    "ar": "تعديل",
+    "en": "Edit"
+  },
+  {
+    "id": "label_confirm",
+    "ar": "تأكيد",
+    "en": "Confirm"
+  },
+  {
+    "id": "label_close",
+    "ar": "إغلاق",
+    "en": "Close"
+  },
+  {
+    "id": "label_live_gold_price_update",
+    "ar": "تحديث أسعار الذهب لحظياً (GoldAPI.io)",
+    "en": "Live Gold Prices (GoldAPI.io)"
+  },
+  {
+    "id": "label_fetch_live_gold_prices",
+    "ar": "تحديث لحظي",
+    "en": "Live Update"
+  },
+  {
+    "id": "label_gold_api_key_label",
+    "ar": "مفتاح الربط (Access Token)",
+    "en": "GoldAPI.io Access Token"
+  },
+  {
+    "id": "label_gold_api_key_hint",
+    "ar": "أدخل مفتاحك من موقع goldapi.io",
+    "en": "Enter your token from goldapi.io"
+  },
+  {
+    "id": "label_gold_api_key_explanation",
+    "ar": "يمكنك الحصول على مفتاح مجاني من موقع https://www.goldapi.io/ لتحديث أسعار الذهب لحظياً في أي وقت.",
+    "en": "Get your free API key from https://www.goldapi.io/ to enable instant real-time gold market rates."
+  },
+  {
+    "id": "label_updating_prices",
+    "ar": "جاري جلب الأسعار اللحظية...",
+    "en": "Fetching live rates..."
+  },
+  {
+    "id": "label_prices_updated_success",
+    "ar": "تم تحديث أسعار الذهب لحظياً بنجاح من GoldAPI.io!",
+    "en": "Gold prices updated successfully from GoldAPI.io!"
+  },
+  {
+    "id": "label_last_updated",
+    "ar": "آخر تحديث: ",
+    "en": "Last updated: "
+  }
+]

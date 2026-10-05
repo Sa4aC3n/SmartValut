@@ -1,5 +1,7 @@
 package com.example.ui.screens
 
+import com.example.ui.utils.AppText
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -97,7 +99,7 @@ fun CommitmentsAndLessonsScreen(
                 containerColor = EmeraldGreenPrimary,
                 contentColor = Color.White
             ) {
-                Icon(imageVector = Icons.Default.Add, contentDescription = "إضافة جديد")
+                Icon(imageVector = Icons.Default.Add, contentDescription = AppText.text(com.example.R.string.text_5d344c201747))
             }
         },
         modifier = modifier
@@ -151,16 +153,16 @@ fun CommitmentsAndLessonsScreen(
                                 horizontalArrangement = Arrangement.SpaceAround
                             ) {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Text(text = "إجمالي الالتزامات", fontSize = 11.sp, color = Color.Gray)
-                                    Text(text = "${String.format(Locale.US, "%.0f", totalCommitments)} $currency", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
+                                    Text(text = AppText.text(com.example.R.string.text_693a3a889d03), fontSize = 11.sp, color = Color.Gray)
+                                    Text(text = "${String.format(Locale.US, "%.0f", totalCommitments)} ${AppText.currency(currency)}", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
                                 }
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Text(text = "تم دفعه", fontSize = 11.sp, color = Color.Gray)
-                                    Text(text = "${String.format(Locale.US, "%.0f", paidCommitments)} $currency", fontWeight = FontWeight.Bold, color = IncomeGreen)
+                                    Text(text = AppText.text(com.example.R.string.text_3c9fcaf97c72), fontSize = 11.sp, color = Color.Gray)
+                                    Text(text = "${String.format(Locale.US, "%.0f", paidCommitments)} ${AppText.currency(currency)}", fontWeight = FontWeight.Bold, color = IncomeGreen)
                                 }
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Text(text = "المتبقي", fontSize = 11.sp, color = Color.Gray)
-                                    Text(text = "${String.format(Locale.US, "%.0f", remainingCommitments)} $currency", fontWeight = FontWeight.Bold, color = ExpenseRed)
+                                    Text(text = AppText.text(com.example.R.string.text_557f737dff23), fontSize = 11.sp, color = Color.Gray)
+                                    Text(text = "${String.format(Locale.US, "%.0f", remainingCommitments)} ${AppText.currency(currency)}", fontWeight = FontWeight.Bold, color = ExpenseRed)
                                 }
                             }
                         }
@@ -169,7 +171,7 @@ fun CommitmentsAndLessonsScreen(
                     if (commitments.isEmpty()) {
                         item {
                             Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                                Text(text = "لا توجد التزامات شهرية مسجلة. اضغط + لإضافة إيجار أو فواتير.", color = Color.Gray)
+                                Text(text = AppText.text(com.example.R.string.text_a7b009ea9d81), color = Color.Gray)
                             }
                         }
                     } else {
@@ -209,16 +211,16 @@ fun CommitmentsAndLessonsScreen(
                                 horizontalArrangement = Arrangement.SpaceAround
                             ) {
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Text(text = "إجمالي الدروس", fontSize = 11.sp, color = Color.Gray)
-                                    Text(text = "${String.format(Locale.US, "%.0f", totalLessons)} $currency", fontWeight = FontWeight.Bold)
+                                    Text(text = AppText.text(com.example.R.string.text_776204e9062e), fontSize = 11.sp, color = Color.Gray)
+                                    Text(text = "${String.format(Locale.US, "%.0f", totalLessons)} ${AppText.currency(currency)}", fontWeight = FontWeight.Bold)
                                 }
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Text(text = "تم دفعه", fontSize = 11.sp, color = Color.Gray)
-                                    Text(text = "${String.format(Locale.US, "%.0f", paidLessons)} $currency", fontWeight = FontWeight.Bold, color = IncomeGreen)
+                                    Text(text = AppText.text(com.example.R.string.text_3c9fcaf97c72), fontSize = 11.sp, color = Color.Gray)
+                                    Text(text = "${String.format(Locale.US, "%.0f", paidLessons)} ${AppText.currency(currency)}", fontWeight = FontWeight.Bold, color = IncomeGreen)
                                 }
                                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                    Text(text = "المتبقي للدروس", fontSize = 11.sp, color = Color.Gray)
-                                    Text(text = "${String.format(Locale.US, "%.0f", remainingLessons)} $currency", fontWeight = FontWeight.Bold, color = ExpenseRed)
+                                    Text(text = AppText.text(com.example.R.string.text_610c9fe690b4), fontSize = 11.sp, color = Color.Gray)
+                                    Text(text = "${String.format(Locale.US, "%.0f", remainingLessons)} ${AppText.currency(currency)}", fontWeight = FontWeight.Bold, color = ExpenseRed)
                                 }
                             }
                         }
@@ -227,7 +229,7 @@ fun CommitmentsAndLessonsScreen(
                     if (lessons.isEmpty()) {
                         item {
                             Box(modifier = Modifier.fillMaxWidth().padding(32.dp), contentAlignment = Alignment.Center) {
-                                Text(text = "لا توجد دروس أطفال مسجلة. اضغط + لإضافة درس جديدة.", color = Color.Gray)
+                                Text(text = AppText.text(com.example.R.string.text_89bb34afddb6), color = Color.Gray)
                             }
                         }
                     } else {
@@ -255,8 +257,8 @@ fun CommitmentCardItem(
     onDelete: () -> Unit,
     onViewReceipt: ((String) -> Unit)? = null
 ) {
-    val sdf = remember { SimpleDateFormat("dd MMM yyyy", Locale("ar")) }
-    val formattedDate = remember(item.dueDateMillis) { sdf.format(Date(item.dueDateMillis)) }
+    val sdf = remember(AppText.language) { SimpleDateFormat("dd MMM yyyy", AppText.locale) }
+    val formattedDate = remember(AppText.language, item.dueDateMillis) { sdf.format(Date(item.dueDateMillis)) }
     val icon = CategoryUtils.getCategoryIcon(item.title)
 
     Card(
@@ -290,7 +292,7 @@ fun CommitmentCardItem(
                 Column(modifier = Modifier.weight(1f)) {
                     Text(text = item.title, fontWeight = FontWeight.Bold, fontSize = 15.sp)
                     Spacer(modifier = Modifier.height(2.dp))
-                    Text(text = "تاريخ الاستحقاق: $formattedDate", fontSize = 12.sp, color = Color.Gray)
+                    Text(text = AppText.text(com.example.R.string.text_cf950597f86b, formattedDate), fontSize = 12.sp, color = Color.Gray)
                     if (!item.receiptImagePath.isNullOrBlank()) {
                         Spacer(modifier = Modifier.height(4.dp))
                         com.example.ui.utils.ReceiptBadgeButton(
@@ -302,7 +304,7 @@ fun CommitmentCardItem(
 
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        text = "${String.format(Locale.US, "%,.0f", item.amount)} $currency",
+                        text = "${String.format(Locale.US, "%,.0f", item.amount)} ${AppText.currency(currency)}",
                         fontWeight = FontWeight.ExtraBold,
                         fontSize = 16.sp,
                         color = MaterialTheme.colorScheme.onSurface
@@ -312,13 +314,13 @@ fun CommitmentCardItem(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
                                 imageVector = Icons.Default.Check,
-                                contentDescription = "تم الدفع",
+                                contentDescription = AppText.text(com.example.R.string.text_a49bd76b1c26),
                                 tint = IncomeGreen,
                                 modifier = Modifier.size(16.dp)
                             )
                             Spacer(modifier = Modifier.width(2.dp))
                             Text(
-                                text = "تم الدفع",
+                                text = AppText.text(com.example.R.string.text_a49bd76b1c26),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = IncomeGreen
@@ -327,7 +329,7 @@ fun CommitmentCardItem(
                     } else {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = "غير مدفوع",
+                                text = AppText.text(com.example.R.string.text_a30287e12410),
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = ExpenseRed
@@ -342,13 +344,13 @@ fun CommitmentCardItem(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Check,
-                                    contentDescription = "تم الدفع",
+                                    contentDescription = AppText.text(com.example.R.string.text_a49bd76b1c26),
                                     tint = Color.White,
                                     modifier = Modifier.size(14.dp)
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
-                                    text = "تم الدفع",
+                                    text = AppText.text(com.example.R.string.text_a49bd76b1c26),
                                     color = Color.White,
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 11.sp
@@ -378,7 +380,7 @@ fun CommitmentCardItem(
                 }
 
                 IconButton(onClick = onDelete) {
-                    Icon(imageVector = Icons.Default.Delete, contentDescription = "حذف", tint = Color.Gray)
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = AppText.text(com.example.R.string.text_2d2bbdc2d694), tint = Color.Gray)
                 }
             }
         }
@@ -393,8 +395,8 @@ fun LessonCardItem(
     onDelete: () -> Unit,
     onViewReceipt: ((String) -> Unit)? = null
 ) {
-    val sdf = remember { SimpleDateFormat("dd MMM yyyy", Locale("ar")) }
-    val formattedDate = remember(lesson.dueDateMillis) { sdf.format(Date(lesson.dueDateMillis)) }
+    val sdf = remember(AppText.language) { SimpleDateFormat("dd MMM yyyy", AppText.locale) }
+    val formattedDate = remember(AppText.language, lesson.dueDateMillis) { sdf.format(Date(lesson.dueDateMillis)) }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -414,7 +416,7 @@ fun LessonCardItem(
                 ) {
                     Icon(
                         imageVector = Icons.Default.School,
-                        contentDescription = "درس",
+                        contentDescription = AppText.text(com.example.R.string.text_edc05b12eab0),
                         tint = EmeraldGreenPrimary
                     )
                 }
@@ -424,7 +426,7 @@ fun LessonCardItem(
                 Column(modifier = Modifier.weight(1f)) {
                     Text(text = "${lesson.childName} • ${lesson.subject}", fontWeight = FontWeight.Bold, fontSize = 15.sp)
                     Spacer(modifier = Modifier.height(2.dp))
-                    Text(text = "المدرس: ${lesson.teacherName} | $formattedDate", fontSize = 12.sp, color = Color.Gray)
+                    Text(text = AppText.text(com.example.R.string.text_0b892ba3c6ad, lesson.teacherName, formattedDate), fontSize = 12.sp, color = Color.Gray)
                     if (!lesson.receiptImagePath.isNullOrBlank()) {
                         Spacer(modifier = Modifier.height(4.dp))
                         com.example.ui.utils.ReceiptBadgeButton(
@@ -436,7 +438,7 @@ fun LessonCardItem(
 
                 Column(horizontalAlignment = Alignment.End) {
                     Text(
-                        text = "${String.format(Locale.US, "%,.0f", lesson.amount)} $currency",
+                        text = "${String.format(Locale.US, "%,.0f", lesson.amount)} ${AppText.currency(currency)}",
                         fontWeight = FontWeight.ExtraBold,
                         fontSize = 16.sp,
                         color = MaterialTheme.colorScheme.onSurface
@@ -446,13 +448,13 @@ fun LessonCardItem(
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
                                 imageVector = Icons.Default.Check,
-                                contentDescription = "تم الدفع",
+                                contentDescription = AppText.text(com.example.R.string.text_a49bd76b1c26),
                                 tint = IncomeGreen,
                                 modifier = Modifier.size(16.dp)
                             )
                             Spacer(modifier = Modifier.width(2.dp))
                             Text(
-                                text = "تم الدفع",
+                                text = AppText.text(com.example.R.string.text_a49bd76b1c26),
                                 fontSize = 12.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = IncomeGreen
@@ -461,7 +463,7 @@ fun LessonCardItem(
                     } else {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Text(
-                                text = "غير مدفوع",
+                                text = AppText.text(com.example.R.string.text_a30287e12410),
                                 fontSize = 11.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = ExpenseRed
@@ -476,13 +478,13 @@ fun LessonCardItem(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Check,
-                                    contentDescription = "تم الدفع",
+                                    contentDescription = AppText.text(com.example.R.string.text_a49bd76b1c26),
                                     tint = Color.White,
                                     modifier = Modifier.size(14.dp)
                                 )
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
-                                    text = "تم الدفع",
+                                    text = AppText.text(com.example.R.string.text_a49bd76b1c26),
                                     color = Color.White,
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 11.sp
@@ -501,7 +503,7 @@ fun LessonCardItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = onDelete) {
-                    Icon(imageVector = Icons.Default.Delete, contentDescription = "حذف", tint = Color.Gray)
+                    Icon(imageVector = Icons.Default.Delete, contentDescription = AppText.text(com.example.R.string.text_2d2bbdc2d694), tint = Color.Gray)
                 }
             }
         }

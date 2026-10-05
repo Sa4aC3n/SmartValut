@@ -1,5 +1,7 @@
 package com.example.ui.components
 
+import com.example.ui.utils.AppText
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -87,7 +89,7 @@ fun QuickAddBottomSheet(
                 horizontalArrangement = Arrangement.Center
             ) {
                 Text(
-                    text = "مركز الإضافة السريعة",
+                    text = AppText.text(com.example.R.string.text_9aa663951be0),
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurface
@@ -100,7 +102,7 @@ fun QuickAddBottomSheet(
             // Income (Always enabled)
             actions.add(
                 QuickActionItem(
-                    title = "دخل جديد",
+                    title = AppText.text(com.example.R.string.text_90cf34f71fc5),
                     icon = Icons.Default.ArrowDownward,
                     tint = IncomeGreen,
                     backgroundTint = IncomeGreen.copy(alpha = 0.12f),
@@ -114,7 +116,7 @@ fun QuickAddBottomSheet(
             // Expense (Always enabled)
             actions.add(
                 QuickActionItem(
-                    title = "مصروف جديد",
+                    title = AppText.text(com.example.R.string.text_70c7a31530f9),
                     icon = Icons.Default.ArrowUpward,
                     tint = ExpenseRed,
                     backgroundTint = ExpenseRed.copy(alpha = 0.12f),
@@ -128,7 +130,7 @@ fun QuickAddBottomSheet(
             // Transfer (Between Vaults)
             actions.add(
                 QuickActionItem(
-                    title = "تحويل خزن",
+                    title = AppText.text(com.example.R.string.text_dc66f1ed7b0c),
                     icon = Icons.Default.SwapHoriz,
                     tint = EmeraldGreenPrimary,
                     backgroundTint = EmeraldGreenPrimary.copy(alpha = 0.12f),
@@ -143,7 +145,7 @@ fun QuickAddBottomSheet(
             if (config.debts) {
                 actions.add(
                     QuickActionItem(
-                        title = "تسجيل دين",
+                        title = AppText.text(com.example.R.string.text_011d3adc2108),
                         icon = Icons.Default.AccountBalance,
                         tint = Color(0xFF7C4DFF),
                         backgroundTint = Color(0xFF7C4DFF).copy(alpha = 0.12f),
@@ -159,7 +161,7 @@ fun QuickAddBottomSheet(
             if (config.savings) {
                 actions.add(
                     QuickActionItem(
-                        title = "ادخار نقدي",
+                        title = AppText.text(com.example.R.string.text_b7b0b20f899d),
                         icon = Icons.Default.AccountBalanceWallet,
                         tint = Color(0xFF009688),
                         backgroundTint = Color(0xFF009688).copy(alpha = 0.12f),
@@ -175,7 +177,7 @@ fun QuickAddBottomSheet(
             if (config.gold) {
                 actions.add(
                     QuickActionItem(
-                        title = "شراء ذهب",
+                        title = AppText.text(com.example.R.string.text_bbc92ccaafd4),
                         icon = Icons.Default.MonetizationOn,
                         tint = GoldAccent,
                         backgroundTint = GoldAccent.copy(alpha = 0.15f),
@@ -191,7 +193,7 @@ fun QuickAddBottomSheet(
             if (config.commitments) {
                 actions.add(
                     QuickActionItem(
-                        title = "التزام / فاتورة",
+                        title = AppText.text(com.example.R.string.text_a20482d75799),
                         icon = Icons.Default.EventNote,
                         tint = Color(0xFFE91E63),
                         backgroundTint = Color(0xFFE91E63).copy(alpha = 0.12f),
@@ -207,7 +209,7 @@ fun QuickAddBottomSheet(
             if (config.lessons) {
                 actions.add(
                     QuickActionItem(
-                        title = "درس طفل",
+                        title = AppText.text(com.example.R.string.text_b6bc98a0e74b),
                         icon = Icons.Default.School,
                         tint = Color(0xFF3F51B5),
                         backgroundTint = Color(0xFF3F51B5).copy(alpha = 0.12f),
@@ -223,7 +225,7 @@ fun QuickAddBottomSheet(
             if (config.outings) {
                 actions.add(
                     QuickActionItem(
-                        title = "خروجة جماعية",
+                        title = AppText.text(com.example.R.string.text_1a7c58a55bb7),
                         icon = Icons.Default.Attractions,
                         tint = Color(0xFFFF9800),
                         backgroundTint = Color(0xFFFF9800).copy(alpha = 0.12f),

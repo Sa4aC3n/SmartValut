@@ -1,5 +1,7 @@
 package com.example.data.firestore
 
+import com.example.ui.utils.AppText
+
 import android.util.Log
 import com.example.data.model.CloudVaultItem
 import com.google.firebase.auth.FirebaseAuth
@@ -16,11 +18,13 @@ import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.coroutines.resume
 
-enum class CloudSyncStatus(val labelAr: String, val iconEmoji: String) {
-    CONNECTED("متصل بالسحابة", "🟢"),
-    SYNCING("جارِ المزامنة...", "🔄"),
-    OFFLINE("وضع دون اتصال (مخزن محلياً)", "🟡"),
-    ERROR("تعذر الاتصال بالسحابة", "🔴")
+enum class CloudSyncStatus(private val labelId: Int, val iconEmoji: String) {
+    CONNECTED(com.example.R.string.text_d69dfb852af8, "🟢"),
+    SYNCING(com.example.R.string.text_c0d85c5fe38a, "🔄"),
+    OFFLINE(com.example.R.string.text_4384dc18a516, "🟡"),
+    ERROR(com.example.R.string.text_22a67ceb72fd, "🔴");
+
+    val labelAr: String get() = AppText.text(labelId)
 }
 
 /**

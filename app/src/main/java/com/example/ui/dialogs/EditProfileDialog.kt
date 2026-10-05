@@ -1,5 +1,7 @@
 package com.example.ui.dialogs
 
+import com.example.ui.utils.AppText
+
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -58,7 +60,7 @@ fun EditProfileDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = "تعديل بيانات الحساب وصورة الملف الشخصي",
+                text = AppText.text(com.example.R.string.text_aee0d2b605de),
                 fontWeight = FontWeight.Bold,
                 style = MaterialTheme.typography.titleMedium
             )
@@ -79,7 +81,7 @@ fun EditProfileDialog(
 
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = "اختر صورة الحساب / الأيقونة المفضلة:",
+                    text = AppText.text(com.example.R.string.text_6d7077bedfa5),
                     fontSize = 12.sp,
                     color = Color.Gray
                 )
@@ -118,8 +120,8 @@ fun EditProfileDialog(
                 OutlinedTextField(
                     value = name,
                     onValueChange = { name = it },
-                    label = { Text("الاسم الكامل") },
-                    leadingIcon = { Icon(Icons.Default.Person, contentDescription = "اسم المستخدم") },
+                    label = { Text(AppText.text(com.example.R.string.text_e19b16bdb71a)) },
+                    leadingIcon = { Icon(Icons.Default.Person, contentDescription = AppText.text(com.example.R.string.text_794f68a24741)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
@@ -131,8 +133,8 @@ fun EditProfileDialog(
                 OutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("البريد الإلكتروني") },
-                    leadingIcon = { Icon(Icons.Default.Email, contentDescription = "البريد") },
+                    label = { Text(AppText.text(com.example.R.string.text_0915ef8ea533)) },
+                    leadingIcon = { Icon(Icons.Default.Email, contentDescription = AppText.text(com.example.R.string.text_8e70d27f84ec)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
@@ -144,8 +146,8 @@ fun EditProfileDialog(
                 OutlinedTextField(
                     value = phone,
                     onValueChange = { phone = it },
-                    label = { Text("رقم الهاتف") },
-                    leadingIcon = { Icon(Icons.Default.Phone, contentDescription = "الهاتف") },
+                    label = { Text(AppText.text(com.example.R.string.text_211cce4ca4ef)) },
+                    leadingIcon = { Icon(Icons.Default.Phone, contentDescription = AppText.text(com.example.R.string.text_760c65a1fab6)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
@@ -161,7 +163,7 @@ fun EditProfileDialog(
                 colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary),
                 shape = RoundedCornerShape(10.dp)
             ) {
-                Text("حفظ التغييرات", fontWeight = FontWeight.Bold)
+                Text(AppText.text(com.example.R.string.text_33081e44cb7c), fontWeight = FontWeight.Bold)
             }
         },
         dismissButton = {
@@ -169,7 +171,7 @@ fun EditProfileDialog(
                 onClick = onDismiss,
                 shape = RoundedCornerShape(10.dp)
             ) {
-                Text("إلغاء")
+                Text(AppText.text(com.example.R.string.text_e776b0209b50))
             }
         },
         shape = RoundedCornerShape(20.dp)

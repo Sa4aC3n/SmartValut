@@ -1,5 +1,7 @@
 package com.example.ui.screens
 
+import com.example.ui.utils.AppText
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -96,10 +98,10 @@ fun DebtsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("إدارة الديون (لي / عليّ)", fontWeight = FontWeight.Bold, fontSize = 18.sp) },
+                title = { Text(AppText.text(com.example.R.string.text_886b0c458f0a), fontWeight = FontWeight.Bold, fontSize = 18.sp) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "رجوع")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = AppText.text(com.example.R.string.text_328ddce5bbca))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background)
@@ -111,7 +113,7 @@ fun DebtsScreen(
                 containerColor = EmeraldGreenPrimary,
                 contentColor = Color.White
             ) {
-                Icon(Icons.Default.Add, contentDescription = "إضافة دين")
+                Icon(Icons.Default.Add, contentDescription = AppText.text(com.example.R.string.text_d561097988e6))
             }
         }
     ) { paddingValues ->
@@ -134,10 +136,10 @@ fun DebtsScreen(
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Column(modifier = Modifier.padding(10.dp)) {
-                        Text("لي عند الغير", fontSize = 11.sp, color = IncomeGreen, fontWeight = FontWeight.Medium)
+                        Text(AppText.text(com.example.R.string.text_b25109f466b5), fontSize = 11.sp, color = IncomeGreen, fontWeight = FontWeight.Medium)
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            "${String.format("%,d", totalOwedToMe.toInt())} $currency",
+                            "${String.format("%,d", totalOwedToMe.toInt())} ${AppText.currency(currency)}",
                             fontWeight = FontWeight.Bold,
                             fontSize = 14.sp,
                             color = IncomeGreen
@@ -151,10 +153,10 @@ fun DebtsScreen(
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Column(modifier = Modifier.padding(10.dp)) {
-                        Text("عليّ للغير", fontSize = 11.sp, color = ExpenseRed, fontWeight = FontWeight.Medium)
+                        Text(AppText.text(com.example.R.string.text_f032f8eb25a3), fontSize = 11.sp, color = ExpenseRed, fontWeight = FontWeight.Medium)
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            "${String.format("%,d", totalIOwe.toInt())} $currency",
+                            "${String.format("%,d", totalIOwe.toInt())} ${AppText.currency(currency)}",
                             fontWeight = FontWeight.Bold,
                             fontSize = 14.sp,
                             color = ExpenseRed
@@ -168,10 +170,10 @@ fun DebtsScreen(
                     shape = RoundedCornerShape(12.dp)
                 ) {
                     Column(modifier = Modifier.padding(10.dp)) {
-                        Text("الصافي", fontSize = 11.sp, color = EmeraldGreenPrimary, fontWeight = FontWeight.Medium)
+                        Text(AppText.text(com.example.R.string.text_d72beaf029a2), fontSize = 11.sp, color = EmeraldGreenPrimary, fontWeight = FontWeight.Medium)
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            "${String.format("%,d", netDebt.toInt())} $currency",
+                            "${String.format("%,d", netDebt.toInt())} ${AppText.currency(currency)}",
                             fontWeight = FontWeight.Bold,
                             fontSize = 14.sp,
                             color = if (netDebt >= 0) IncomeGreen else ExpenseRed
@@ -190,12 +192,12 @@ fun DebtsScreen(
                 Tab(
                     selected = selectedTab == 0,
                     onClick = { selectedTab = 0 },
-                    text = { Text("لي عند الآخرين (${owedToMeList.count { it.status != "PAID" }})") }
+                    text = { Text(AppText.text(com.example.R.string.text_a8ff844b8378, owedToMeList.count { it.status != "PAID" })) }
                 )
                 Tab(
                     selected = selectedTab == 1,
                     onClick = { selectedTab = 1 },
-                    text = { Text("أموال عليّ (${iOweList.count { it.status != "PAID" }})") }
+                    text = { Text(AppText.text(com.example.R.string.text_5873877f1bb9, iOweList.count { it.status != "PAID" })) }
                 )
             }
 
@@ -209,17 +211,17 @@ fun DebtsScreen(
                 FilterChip(
                     selected = statusFilter == "ALL",
                     onClick = { statusFilter = "ALL" },
-                    label = { Text("الكل") }
+                    label = { Text(AppText.text(com.example.R.string.text_11fdef2dc5f8)) }
                 )
                 FilterChip(
                     selected = statusFilter == "ACTIVE",
                     onClick = { statusFilter = "ACTIVE" },
-                    label = { Text("نشط / غير مسدد") }
+                    label = { Text(AppText.text(com.example.R.string.text_8fb4e938d831)) }
                 )
                 FilterChip(
                     selected = statusFilter == "PAID",
                     onClick = { statusFilter = "PAID" },
-                    label = { Text("تم السداد بالكامل") }
+                    label = { Text(AppText.text(com.example.R.string.text_82a270439354)) }
                 )
             }
 
@@ -232,7 +234,7 @@ fun DebtsScreen(
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
-                            if (selectedTab == 0) "لا توجد أموال مستحقة لك مسجلة حاليًا" else "لا توجد ديون مستحقة عليك مسجلة حاليًا",
+                            if (selectedTab == 0) AppText.text(com.example.R.string.text_273bde324028) else AppText.text(com.example.R.string.text_ad6cff15df96),
                             color = Color.Gray,
                             fontSize = 14.sp
                         )
@@ -241,7 +243,7 @@ fun DebtsScreen(
                             onClick = { showAddDialog = true },
                             colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary)
                         ) {
-                            Text("تسجيل دين جديد")
+                            Text(AppText.text(com.example.R.string.text_8dd0bd35db83))
                         }
                     }
                 }
@@ -298,7 +300,7 @@ private fun DebtCard(
     onRecordPayment: () -> Unit,
     onDelete: () -> Unit
 ) {
-    val sdf = SimpleDateFormat("dd MMM yyyy", Locale("ar"))
+    val sdf = SimpleDateFormat("dd MMM yyyy", AppText.locale)
     val isPaid = debt.status == "PAID"
     val progress = if (debt.originalAmount > 0) (debt.paidAmount / debt.originalAmount).toFloat().coerceIn(0f, 1f) else 1f
 
@@ -322,9 +324,9 @@ private fun DebtCard(
 
                 // Status Badge
                 val (badgeText, badgeColor) = when (debt.status) {
-                    "PAID" -> Pair("مسدد بالكامل", IncomeGreen)
-                    "PARTIALLY_PAID" -> Pair("مسدد جزئيًا", Color(0xFFFF9800))
-                    else -> Pair("نشط", EmeraldGreenPrimary)
+                    "PAID" -> Pair(AppText.text(com.example.R.string.text_3bdc0e233e92), IncomeGreen)
+                    "PARTIALLY_PAID" -> Pair(AppText.text(com.example.R.string.text_e69117cdd5fc), Color(0xFFFF9800))
+                    else -> Pair(AppText.text(com.example.R.string.text_41b054617ef6), EmeraldGreenPrimary)
                 }
 
                 Box(
@@ -349,17 +351,17 @@ private fun DebtCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
-                    Text("المبلغ الكلي", fontSize = 11.sp, color = Color.Gray)
-                    Text("${String.format("%,d", debt.originalAmount.toInt())} $currency", fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
+                    Text(AppText.text(com.example.R.string.text_17a1e9ba641c), fontSize = 11.sp, color = Color.Gray)
+                    Text("${String.format("%,d", debt.originalAmount.toInt())} ${AppText.currency(currency)}", fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
                 }
                 Column {
-                    Text("تم سداده", fontSize = 11.sp, color = Color.Gray)
-                    Text("${String.format("%,d", debt.paidAmount.toInt())} $currency", fontWeight = FontWeight.SemiBold, fontSize = 13.sp, color = IncomeGreen)
+                    Text(AppText.text(com.example.R.string.text_5c793e037689), fontSize = 11.sp, color = Color.Gray)
+                    Text("${String.format("%,d", debt.paidAmount.toInt())} ${AppText.currency(currency)}", fontWeight = FontWeight.SemiBold, fontSize = 13.sp, color = IncomeGreen)
                 }
                 Column(horizontalAlignment = Alignment.End) {
-                    Text("المتبقي", fontSize = 11.sp, color = Color.Gray)
+                    Text(AppText.text(com.example.R.string.text_557f737dff23), fontSize = 11.sp, color = Color.Gray)
                     Text(
-                        "${String.format("%,d", debt.remainingAmount.toInt())} $currency",
+                        "${String.format("%,d", debt.remainingAmount.toInt())} ${AppText.currency(currency)}",
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp,
                         color = if (isPaid) IncomeGreen else ExpenseRed
@@ -411,7 +413,7 @@ private fun DebtCard(
                         ) {
                             Icon(Icons.Default.Payment, contentDescription = null, modifier = Modifier.size(16.dp))
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text("تسجيل سداد", fontSize = 11.sp)
+                            Text(AppText.text(com.example.R.string.text_e8348cb43f1e), fontSize = 11.sp)
                         }
                         Spacer(modifier = Modifier.width(6.dp))
                     }
@@ -420,7 +422,7 @@ private fun DebtCard(
                         onClick = onDelete,
                         modifier = Modifier.size(36.dp)
                     ) {
-                        Icon(Icons.Default.Delete, contentDescription = "حذف", tint = Color.Gray)
+                        Icon(Icons.Default.Delete, contentDescription = AppText.text(com.example.R.string.text_2d2bbdc2d694), tint = Color.Gray)
                     }
                 }
             }

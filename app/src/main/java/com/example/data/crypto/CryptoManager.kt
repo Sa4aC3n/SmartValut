@@ -1,5 +1,7 @@
 package com.example.data.crypto
 
+import com.example.ui.utils.AppText
+
 import android.os.Build
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
@@ -46,7 +48,7 @@ object CryptoManager {
                 keyGen.generateKey()
             }
         } catch (e: Exception) {
-            throw SecurityException("تعذر الوصول إلى مخزن المفاتيح الآمن (Hardware KeyStore unavailable): ${e.message}", e)
+            throw SecurityException(AppText.text(com.example.R.string.text_6dbafe4740d0, e.message), e)
         }
     }
 
@@ -70,7 +72,7 @@ object CryptoManager {
 
             return Base64.encodeToString(byteBuffer.array(), Base64.NO_WRAP)
         } catch (e: Exception) {
-            throw SecurityException("فشل تشفير البيانات بشكل آمن", e)
+            throw SecurityException(AppText.text(com.example.R.string.text_56a3db5d1b36), e)
         }
     }
 
@@ -101,7 +103,7 @@ object CryptoManager {
 
             return String(cipher.doFinal(cipherBytes), Charsets.UTF_8)
         } catch (e: Exception) {
-            throw SecurityException("فشل فك تشفير البيانات: المفتاح غير صالح أو البيانات معطوبة", e)
+            throw SecurityException(AppText.text(com.example.R.string.text_98426460a495), e)
         }
     }
 }

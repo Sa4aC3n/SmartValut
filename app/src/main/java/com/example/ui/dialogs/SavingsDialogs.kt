@@ -1,5 +1,7 @@
 package com.example.ui.dialogs
 
+import com.example.ui.utils.AppText
+
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -157,7 +159,7 @@ fun AddEditGoldDialog(
     val standardKarats = listOf(24, 22, 21, 18, 14, 12)
     val weightPresets = listOf(1.0, 2.5, 5.0, 8.0, 10.0, 20.0, 31.1, 50.0, 100.0)
 
-    val formattedDate = remember(purchaseDateMillis) {
+    val formattedDate = remember(AppText.language, purchaseDateMillis) {
         val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.US)
         sdf.format(Date(purchaseDateMillis))
     }
@@ -186,7 +188,7 @@ fun AddEditGoldDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = if (initialAsset == null) appStrings.addGoldPiece else "تعديل قطعة الذهب",
+                        text = if (initialAsset == null) appStrings.addGoldPiece else AppText.text(com.example.R.string.text_7bf909688837),
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp,
                         color = MaterialTheme.colorScheme.onSurface
@@ -207,7 +209,7 @@ fun AddEditGoldDialog(
                     value = name,
                     onValueChange = { name = it },
                     label = { Text(appStrings.goldPieceName) },
-                    placeholder = { Text("مثال: سبيكة 10 جرام BTC أو غوايش لازوردي") },
+                    placeholder = { Text(AppText.text(com.example.R.string.text_30d402720db8)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
@@ -227,7 +229,7 @@ fun AddEditGoldDialog(
                         modifier = Modifier.weight(1f)
                     ) {
                         OutlinedTextField(
-                            value = goldType,
+                            value = AppText.goldType(goldType),
                             onValueChange = {},
                             readOnly = true,
                             label = { Text(appStrings.goldType) },
@@ -241,7 +243,7 @@ fun AddEditGoldDialog(
                         ) {
                             goldTypes.forEach { typeOption ->
                                 DropdownMenuItem(
-                                    text = { Text(typeOption) },
+                                    text = { Text(AppText.goldType(typeOption)) },
                                     onClick = {
                                         goldType = typeOption
                                         if (typeOption == "جنيه ذهب") {
@@ -262,7 +264,7 @@ fun AddEditGoldDialog(
                         modifier = Modifier.weight(1f)
                     ) {
                         OutlinedTextField(
-                            value = "عيار $karat",
+                            value = AppText.text(com.example.R.string.text_2c3d2ad75181, karat),
                             onValueChange = {},
                             readOnly = true,
                             label = { Text(appStrings.karat) },
@@ -276,7 +278,7 @@ fun AddEditGoldDialog(
                         ) {
                             standardKarats.forEach { k ->
                                 DropdownMenuItem(
-                                    text = { Text("عيار $k") },
+                                    text = { Text(AppText.text(com.example.R.string.text_9595409f46b5, k)) },
                                     onClick = {
                                         karat = k
                                         expandedKaratDropdown = false
@@ -300,14 +302,14 @@ fun AddEditGoldDialog(
                 OutlinedTextField(
                     value = weightText,
                     onValueChange = { weightText = it },
-                    placeholder = { Text("مثال: 10.0 أو 8.0 أو 31.1") },
+                    placeholder = { Text(AppText.text(com.example.R.string.text_0651503e203d)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     trailingIcon = {
                         Text(
-                            text = "جرام",
+                            text = AppText.text(com.example.R.string.text_ae71934c1102),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             color = EmeraldGreenPrimary,
@@ -333,8 +335,8 @@ fun AddEditGoldDialog(
                             label = {
                                 Text(
                                     text = when (w) {
-                                        8.0 -> "8g (جنيه)"
-                                        31.1 -> "31.1g (أونصة)"
+                                        8.0 -> AppText.text(com.example.R.string.text_09355e9347df)
+                                        31.1 -> AppText.text(com.example.R.string.text_73e9421c8325)
                                         else -> "${w}g"
                                     },
                                     fontSize = 11.sp
@@ -355,14 +357,14 @@ fun AddEditGoldDialog(
                     value = purchasePriceText,
                     onValueChange = { purchasePriceText = it },
                     label = { Text(appStrings.purchasePrice) },
-                    placeholder = { Text("مثال: 50000") },
+                    placeholder = { Text(AppText.text(com.example.R.string.text_7bb800f48f49)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     trailingIcon = {
                         Text(
-                            text = "ج.م",
+                            text = AppText.text(com.example.R.string.text_5c54bb48fcff),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             color = EmeraldGreenPrimary,
@@ -392,12 +394,12 @@ fun AddEditGoldDialog(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    text = "القيمة الحالية بالخزنة:",
+                                    text = AppText.text(com.example.R.string.text_af339c9bb6d8),
                                     fontSize = 12.sp,
                                     color = Color.Gray
                                 )
                                 Text(
-                                    text = "${String.format(Locale.US, "%,.0f", calculatedCurrentValue)} ج.م",
+                                    text = AppText.text(com.example.R.string.text_fb74677123fd, String.format(Locale.US, "%,.0f", calculatedCurrentValue)),
                                     fontSize = 13.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
@@ -409,12 +411,12 @@ fun AddEditGoldDialog(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
-                                    text = "سعر الجرام عيار $karat:",
+                                    text = AppText.text(com.example.R.string.text_02d2dfdd5f2b, karat),
                                     fontSize = 11.sp,
                                     color = Color.Gray
                                 )
                                 Text(
-                                    text = "${String.format(Locale.US, "%,.0f", currentGramPrice)} ج.م/جرام",
+                                    text = AppText.text(com.example.R.string.text_938d3e255411, String.format(Locale.US, "%,.0f", currentGramPrice)),
                                     fontSize = 11.sp,
                                     fontWeight = FontWeight.Medium
                                 )
@@ -426,13 +428,13 @@ fun AddEditGoldDialog(
                                     horizontalArrangement = Arrangement.SpaceBetween
                                 ) {
                                     Text(
-                                        text = "الربح / العائد التقديري:",
+                                        text = AppText.text(com.example.R.string.text_5736e8751e12),
                                         fontSize = 12.sp,
                                         color = if (profitLoss >= 0) IncomeGreen else ExpenseRed,
                                         fontWeight = FontWeight.Bold
                                     )
                                     Text(
-                                        text = "${if (profitLoss >= 0) "+" else ""}${String.format(Locale.US, "%,.0f", profitLoss)} ج.م (${String.format(Locale.US, "%.1f", profitPct)}%)",
+                                        text = AppText.text(com.example.R.string.text_542bbcfa90cb, if (profitLoss >= 0) "+" else "", String.format(Locale.US, "%,.0f", profitLoss), String.format(Locale.US, "%.1f", profitPct)),
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = if (profitLoss >= 0) IncomeGreen else ExpenseRed
@@ -487,7 +489,7 @@ fun AddEditGoldDialog(
                 OutlinedTextField(
                     value = notes,
                     onValueChange = { notes = it },
-                    label = { Text("ملاحظات (العيار، رقم الكشف، التغليف...)") },
+                    label = { Text(AppText.text(com.example.R.string.text_940eb631311c)) },
                     maxLines = 2,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
@@ -514,7 +516,7 @@ fun AddEditGoldDialog(
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = if (imageUriString == null) appStrings.piecePhoto else "تغيير الصورة",
+                            text = if (imageUriString == null) appStrings.piecePhoto else AppText.text(com.example.R.string.text_f12384b96e33),
                             color = EmeraldGreenPrimary,
                             fontSize = 12.sp
                         )
@@ -654,11 +656,11 @@ fun SellGoldDialog(
                         )
                         Spacer(modifier = Modifier.height(4.dp))
                         Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                            Text("عيار ${asset.karat}", fontSize = 12.sp, color = GoldAccent, fontWeight = FontWeight.Bold)
+                            Text(AppText.text(com.example.R.string.text_5fa7c4ce5839, asset.karat), fontSize = 12.sp, color = GoldAccent, fontWeight = FontWeight.Bold)
                             Text("•", fontSize = 12.sp, color = Color.Gray)
-                            Text("${asset.weight} جرام", fontSize = 12.sp, color = Color.Gray)
+                            Text(AppText.text(com.example.R.string.text_953e21c4f2c5, asset.weight), fontSize = 12.sp, color = Color.Gray)
                             Text("•", fontSize = 12.sp, color = Color.Gray)
-                            Text("سعر الشراء: ${String.format(Locale.US, "%,.0f", asset.purchasePrice)} ج.م", fontSize = 12.sp, color = Color.Gray)
+                            Text(AppText.text(com.example.R.string.text_fff19b8abb41, String.format(Locale.US, "%,.0f", asset.purchasePrice)), fontSize = 12.sp, color = Color.Gray)
                         }
                     }
                 }
@@ -670,14 +672,14 @@ fun SellGoldDialog(
                     value = salePriceText,
                     onValueChange = { salePriceText = it },
                     label = { Text(appStrings.salePrice) },
-                    placeholder = { Text("المبلغ الفعلي المستلم بالجنيه") },
+                    placeholder = { Text(AppText.text(com.example.R.string.text_92291ba269c7)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     trailingIcon = {
                         Text(
-                            text = "ج.م",
+                            text = AppText.text(com.example.R.string.text_5c54bb48fcff),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             color = EmeraldGreenPrimary,
@@ -710,12 +712,12 @@ fun SellGoldDialog(
                         ) {
                             Column {
                                 Text(
-                                    text = if (realizedProfit >= 0) "الربح المحقق من البيع:" else "الخسارة المحققة من البيع:",
+                                    text = if (realizedProfit >= 0) AppText.text(com.example.R.string.text_3459448d9802) else AppText.text(com.example.R.string.text_bb392991a17f),
                                     fontSize = 12.sp,
                                     color = Color.Gray
                                 )
                                 Text(
-                                    text = "${if (realizedProfit >= 0) "+" else ""}${String.format(Locale.US, "%,.0f", realizedProfit)} ج.م",
+                                    text = AppText.text(com.example.R.string.text_ae55a78e16f4, if (realizedProfit >= 0) "+" else "", String.format(Locale.US, "%,.0f", realizedProfit)),
                                     fontSize = 16.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = if (realizedProfit >= 0) IncomeGreen else ExpenseRed
@@ -744,7 +746,7 @@ fun SellGoldDialog(
                 OutlinedTextField(
                     value = saleNotes,
                     onValueChange = { saleNotes = it },
-                    label = { Text("ملاحظات البيع (اسم المحل، السعر للجرام، إلخ)") },
+                    label = { Text(AppText.text(com.example.R.string.text_8c2840bd04e1)) },
                     maxLines = 2,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
@@ -776,7 +778,7 @@ fun SellGoldDialog(
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary)
                     ) {
-                        Text("تأكيد البيع", color = Color.White, fontWeight = FontWeight.Bold)
+                        Text(AppText.text(com.example.R.string.text_bd5b1d4d50d9), color = Color.White, fontWeight = FontWeight.Bold)
                     }
                 }
             }
@@ -796,12 +798,12 @@ fun GoldDetailsDialog(
     val asset = assetComputed.asset
     val isSold = asset.status == "SOLD"
 
-    val purchaseDateStr = remember(asset.purchaseDateMillis) {
-        SimpleDateFormat("dd MMMM yyyy", Locale("ar")).format(Date(asset.purchaseDateMillis))
+    val purchaseDateStr = remember(AppText.language, asset.purchaseDateMillis) {
+        SimpleDateFormat("dd MMMM yyyy", AppText.locale).format(Date(asset.purchaseDateMillis))
     }
-    val saleDateStr = remember(asset.saleDateMillis) {
+    val saleDateStr = remember(AppText.language, asset.saleDateMillis) {
         if (asset.saleDateMillis != null) {
-            SimpleDateFormat("dd MMMM yyyy", Locale("ar")).format(Date(asset.saleDateMillis))
+            SimpleDateFormat("dd MMMM yyyy", AppText.locale).format(Date(asset.saleDateMillis))
         } else ""
     }
 
@@ -852,7 +854,7 @@ fun GoldDetailsDialog(
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
-                                text = if (isSold) "تم البيع • $saleDateStr" else "في الخزنة • عيار ${asset.karat}",
+                                text = if (isSold) AppText.text(com.example.R.string.text_8f3cc63d292c, saleDateStr) else AppText.text(com.example.R.string.text_0619e9cfa1ee, asset.karat),
                                 fontSize = 12.sp,
                                 color = if (isSold) Color.Gray else EmeraldGreenPrimary,
                                 fontWeight = FontWeight.Medium
@@ -900,35 +902,35 @@ fun GoldDetailsDialog(
                         modifier = Modifier.padding(14.dp),
                         verticalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
-                        DetailRow("نوع القطعة", asset.goldType)
-                        DetailRow("العيار", "عيار ${asset.karat}")
-                        DetailRow("الوزن بالجرام", "${asset.weight} جرام")
-                        DetailRow("الغرض", if (asset.purpose == "SAVING") "للادخار والاستثمار" else "للزينة والاستخدام")
-                        DetailRow("تاريخ الشراء", purchaseDateStr)
-                        DetailRow("سعر الشراء", "${String.format(Locale.US, "%,.0f", asset.purchasePrice)} ج.م")
+                        DetailRow(AppText.text(com.example.R.string.text_2a5f152b8551), AppText.goldType(asset.goldType))
+                        DetailRow(AppText.text(com.example.R.string.text_6e31d9bdf7b4), AppText.text(com.example.R.string.text_5fa7c4ce5839, asset.karat))
+                        DetailRow(AppText.text(com.example.R.string.text_20218fd4bf04), AppText.text(com.example.R.string.text_953e21c4f2c5, asset.weight))
+                        DetailRow(AppText.text(com.example.R.string.text_fc4d767fab55), if (asset.purpose == "SAVING") AppText.text(com.example.R.string.text_f4bce26fcbd7) else AppText.text(com.example.R.string.text_0694745f849b))
+                        DetailRow(AppText.text(com.example.R.string.text_21fc46ec23cd), purchaseDateStr)
+                        DetailRow(AppText.text(com.example.R.string.text_6d3b8a57de85), AppText.text(com.example.R.string.text_d03ed058b768, String.format(Locale.US, "%,.0f", asset.purchasePrice)))
                         if (!isSold) {
-                            DetailRow("سعر الجرام الحالي", "${String.format(Locale.US, "%,.0f", assetComputed.currentPricePerGram)} ج.م")
-                            DetailRow("القيمة السوقية الحالية", "${String.format(Locale.US, "%,.0f", assetComputed.currentValue)} ج.م", isHighlighted = true)
+                            DetailRow(AppText.text(com.example.R.string.text_574c4d101909), AppText.text(com.example.R.string.text_e9af10cebbd5, String.format(Locale.US, "%,.0f", assetComputed.currentPricePerGram)))
+                            DetailRow(AppText.text(com.example.R.string.text_29f8a247485e), AppText.text(com.example.R.string.text_97c39d12f919, String.format(Locale.US, "%,.0f", assetComputed.currentValue)), isHighlighted = true)
                             DetailRow(
-                                label = "الربح / العائد",
-                                value = "${if (assetComputed.profitLoss >= 0) "+" else ""}${String.format(Locale.US, "%,.0f", assetComputed.profitLoss)} ج.م (${String.format(Locale.US, "%.1f", assetComputed.profitLossPercentage)}%)",
+                                label = AppText.text(com.example.R.string.text_ec746491fb2e),
+                                value = AppText.text(com.example.R.string.text_6f6b054fcaf6, if (assetComputed.profitLoss >= 0) "+" else "", String.format(Locale.US, "%,.0f", assetComputed.profitLoss), String.format(Locale.US, "%.1f", assetComputed.profitLossPercentage)),
                                 valueColor = if (assetComputed.profitLoss >= 0) IncomeGreen else ExpenseRed
                             )
                         } else {
-                            DetailRow("سعر البيع الفعلي", "${String.format(Locale.US, "%,.0f", asset.salePrice ?: 0.0)} ج.م", isHighlighted = true)
-                            DetailRow("تاريخ البيع", saleDateStr)
+                            DetailRow(AppText.text(com.example.R.string.text_37e9486a6817), AppText.text(com.example.R.string.text_044936796b55, String.format(Locale.US, "%,.0f", asset.salePrice ?: 0.0)), isHighlighted = true)
+                            DetailRow(AppText.text(com.example.R.string.text_6045f88b80a0), saleDateStr)
                             DetailRow(
-                                label = "الربح المحقق",
-                                value = "${if (assetComputed.profitLoss >= 0) "+" else ""}${String.format(Locale.US, "%,.0f", assetComputed.profitLoss)} ج.م (${String.format(Locale.US, "%.1f", assetComputed.profitLossPercentage)}%)",
+                                label = AppText.text(com.example.R.string.text_378584de934b),
+                                value = AppText.text(com.example.R.string.text_6f6b054fcaf6, if (assetComputed.profitLoss >= 0) "+" else "", String.format(Locale.US, "%,.0f", assetComputed.profitLoss), String.format(Locale.US, "%.1f", assetComputed.profitLossPercentage)),
                                 valueColor = if (assetComputed.profitLoss >= 0) IncomeGreen else ExpenseRed
                             )
                             if (!asset.saleNotes.isNullOrBlank()) {
-                                DetailRow("ملاحظات البيع", asset.saleNotes)
+                                DetailRow(AppText.text(com.example.R.string.text_267dda293317), asset.saleNotes)
                             }
                         }
 
                         if (asset.notes.isNotBlank()) {
-                            DetailRow("ملاحظات إضافية", asset.notes)
+                            DetailRow(AppText.text(com.example.R.string.text_f05125201dc0), asset.notes)
                         }
                     }
                 }
@@ -950,7 +952,7 @@ fun GoldDetailsDialog(
                             shape = RoundedCornerShape(12.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = GoldAccent)
                         ) {
-                            Text("🤝 بيع القطعة", color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 13.sp)
+                            Text(AppText.text(com.example.R.string.text_40ca4ab3b62c), color = Color.Black, fontWeight = FontWeight.Bold, fontSize = 13.sp)
                         }
 
                         OutlinedButton(
@@ -961,7 +963,7 @@ fun GoldDetailsDialog(
                             modifier = Modifier.weight(1f),
                             shape = RoundedCornerShape(12.dp)
                         ) {
-                            Text("تعديل", fontSize = 13.sp)
+                            Text(AppText.text(com.example.R.string.text_b4f76c3aa21e), fontSize = 13.sp)
                         }
                     }
 
@@ -1063,7 +1065,7 @@ fun UpdateGoldPricesDialog(
                 }
 
                 Text(
-                    text = "أدخل سعر الجرام بالجنيه لكل عيار لتحديث قيمة سبائك وقطع الذهب تلقائيًا.",
+                    text = AppText.text(com.example.R.string.text_32ef45f6c4dd),
                     fontSize = 12.sp,
                     color = Color.Gray,
                     lineHeight = 16.sp
@@ -1104,13 +1106,13 @@ fun UpdateGoldPricesDialog(
                                 }
                                 Column {
                                     Text(
-                                        text = "تحديث لحظي عبر GoldAPI.io",
+                                        text = AppText.text(com.example.R.string.text_c733eb2d663a),
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 13.sp,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
-                                        text = "جلب الأسعار مباشرة من خادم goldapi.io",
+                                        text = AppText.text(com.example.R.string.text_f6141002d56d),
                                         fontSize = 11.sp,
                                         color = Color.Gray
                                     )
@@ -1123,17 +1125,17 @@ fun UpdateGoldPricesDialog(
 
                 Spacer(modifier = Modifier.height(14.dp))
 
-                PriceInputField(label = "عيار 24 (السبائك النقية 99.9)", value = price24, onValueChange = { price24 = it })
+                PriceInputField(label = AppText.text(com.example.R.string.text_e06f61ff041d), value = price24, onValueChange = { price24 = it })
                 Spacer(modifier = Modifier.height(10.dp))
-                PriceInputField(label = "عيار 22", value = price22, onValueChange = { price22 = it })
+                PriceInputField(label = AppText.text(com.example.R.string.text_33c43892b786), value = price22, onValueChange = { price22 = it })
                 Spacer(modifier = Modifier.height(10.dp))
-                PriceInputField(label = "عيار 21 (الأكثر تداولاً / الجنيهات)", value = price21, onValueChange = { price21 = it })
+                PriceInputField(label = AppText.text(com.example.R.string.text_bf390a0524ba), value = price21, onValueChange = { price21 = it })
                 Spacer(modifier = Modifier.height(10.dp))
-                PriceInputField(label = "عيار 18 (المشغولات الحديثة)", value = price18, onValueChange = { price18 = it })
+                PriceInputField(label = AppText.text(com.example.R.string.text_af3b35eeda19), value = price18, onValueChange = { price18 = it })
                 Spacer(modifier = Modifier.height(10.dp))
-                PriceInputField(label = "عيار 14", value = price14, onValueChange = { price14 = it })
+                PriceInputField(label = AppText.text(com.example.R.string.text_e69a15a0a8d1), value = price14, onValueChange = { price14 = it })
                 Spacer(modifier = Modifier.height(10.dp))
-                PriceInputField(label = "عيار 12", value = price12, onValueChange = { price12 = it })
+                PriceInputField(label = AppText.text(com.example.R.string.text_a49055f064e4), value = price12, onValueChange = { price12 = it })
 
                 Spacer(modifier = Modifier.height(14.dp))
 
@@ -1142,7 +1144,7 @@ fun UpdateGoldPricesDialog(
                     onClick = { resetToDefaults() },
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 ) {
-                    Text("استعادة أسعار السوق الافتراضية", color = EmeraldGreenPrimary, fontSize = 12.sp)
+                    Text(AppText.text(com.example.R.string.text_29dc89ac3e1d), color = EmeraldGreenPrimary, fontSize = 12.sp)
                 }
 
                 Spacer(modifier = Modifier.height(14.dp))
@@ -1176,7 +1178,7 @@ fun UpdateGoldPricesDialog(
                         shape = RoundedCornerShape(12.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary)
                     ) {
-                        Text("حفظ وتحديث", color = Color.White, fontWeight = FontWeight.Bold)
+                        Text(AppText.text(com.example.R.string.text_0b97ec532c0e), color = Color.White, fontWeight = FontWeight.Bold)
                     }
                 }
             }
@@ -1200,7 +1202,7 @@ private fun PriceInputField(
         shape = RoundedCornerShape(12.dp),
         trailingIcon = {
             Text(
-                text = "ج.م",
+                text = AppText.text(com.example.R.string.text_5c54bb48fcff),
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Bold,
                 color = EmeraldGreenPrimary,
@@ -1276,13 +1278,13 @@ fun LiveGoldApiDialog(
                         }
                         Column {
                             Text(
-                                text = "تحديث أسعار الذهب لحظياً",
+                                text = AppText.text(com.example.R.string.text_0cb303cf3d30),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 17.sp,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                             Text(
-                                text = "عبر مزود الخدمة GoldAPI.io",
+                                text = AppText.text(com.example.R.string.text_d9e689d6c7ee),
                                 fontSize = 11.sp,
                                 color = Color.Gray
                             )
@@ -1290,7 +1292,7 @@ fun LiveGoldApiDialog(
                     }
 
                     IconButton(onClick = onDismiss) {
-                        Icon(Icons.Default.Close, contentDescription = "إغلاق")
+                        Icon(Icons.Default.Close, contentDescription = AppText.text(com.example.R.string.text_5bf826c5e57c))
                     }
                 }
 
@@ -1309,7 +1311,7 @@ fun LiveGoldApiDialog(
                     ) {
                         Icon(Icons.Default.CheckCircle, contentDescription = null, tint = EmeraldGreenPrimary, modifier = Modifier.size(18.dp))
                         Text(
-                            text = "مفتاح API مدمج ومفعل بنجاح. يتم جلب أسعار جرام الذهب لجميع الأعيرة عالمياً ومحلياً وفقاً للعملة المحددة.",
+                            text = AppText.text(com.example.R.string.text_64667411274d),
                             fontSize = 11.5.sp,
                             color = Color(0xFF1B382B),
                             lineHeight = 16.sp
@@ -1349,13 +1351,13 @@ fun LiveGoldApiDialog(
                             }
                             Column {
                                 Text(
-                                    text = "تحديث تلقائي كل يوم (12:00 ظهراً)",
+                                    text = AppText.text(com.example.R.string.text_62aa66740379),
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 12.5.sp,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
-                                    text = "تحديث لحظي مجدول في الخلفية وإشعارك بالأسعار الجديدة",
+                                    text = AppText.text(com.example.R.string.text_d0b12b2cc73d),
                                     fontSize = 10.5.sp,
                                     color = Color.Gray,
                                     lineHeight = 14.sp
@@ -1382,8 +1384,8 @@ fun LiveGoldApiDialog(
                         apiKey = it
                         onSaveApiKey(it)
                     },
-                    label = { Text("مفتاح API الخاص بك (Access Token)", fontSize = 12.sp) },
-                    placeholder = { Text("مثال: goldapi-xxxxxxxxxxxxxxxx-drv", fontSize = 11.sp) },
+                    label = { Text(AppText.text(com.example.R.string.text_c5f5d253fe51), fontSize = 12.sp) },
+                    placeholder = { Text(AppText.text(com.example.R.string.text_753686b7d08a), fontSize = 11.sp) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(14.dp),
@@ -1410,7 +1412,7 @@ fun LiveGoldApiDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "⚡ المفتاح الحالي مدمج وجاهز للاستخدام",
+                        text = AppText.text(com.example.R.string.text_05f0a0d376f8),
                         fontSize = 11.sp,
                         color = EmeraldGreenDark,
                         fontWeight = FontWeight.Medium,
@@ -1423,7 +1425,7 @@ fun LiveGoldApiDialog(
                                 onSaveApiKey(apiKey)
                             }
                         ) {
-                            Text("استعادة الافتراضي", fontSize = 11.sp, color = EmeraldGreenPrimary)
+                            Text(AppText.text(com.example.R.string.text_e3629ac272ce), fontSize = 11.sp, color = EmeraldGreenPrimary)
                         }
                     }
                 }
@@ -1432,13 +1434,13 @@ fun LiveGoldApiDialog(
 
                 // Currency selector
                 Text(
-                    text = "عملة التسعير:",
+                    text = AppText.text(com.example.R.string.text_5136d2baf9c5),
                     fontSize = 12.5.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Spacer(modifier = Modifier.height(6.dp))
-                val currencies = listOf("EGP" to "جنيه مصري (EGP)", "USD" to "دولار أمريكي (USD)", "SAR" to "ريال سعودي (SAR)", "AED" to "درهم إماراتي (AED)")
+                val currencies = listOf("EGP" to AppText.text(com.example.R.string.text_a70ee3c6a8cd), "USD" to AppText.text(com.example.R.string.text_98ca59bfadc9), "SAR" to AppText.text(com.example.R.string.text_1d09a9c7dfb6), "AED" to AppText.text(com.example.R.string.text_1288bee92f4e))
                 LazyRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.fillMaxWidth()
@@ -1507,7 +1509,7 @@ fun LiveGoldApiDialog(
                         modifier = Modifier.weight(1f),
                         shape = RoundedCornerShape(12.dp)
                     ) {
-                        Text("إغلاق")
+                        Text(AppText.text(com.example.R.string.text_5bf826c5e57c))
                     }
 
                     Button(
@@ -1526,11 +1528,11 @@ fun LiveGoldApiDialog(
                                 strokeWidth = 2.dp
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text("جاري الجلب...", color = Color.White, fontSize = 12.5.sp)
+                            Text(AppText.text(com.example.R.string.text_51ccc930475c), color = Color.White, fontSize = 12.5.sp)
                         } else {
                             Icon(Icons.Default.Refresh, contentDescription = null, tint = Color.White, modifier = Modifier.size(16.dp))
                             Spacer(modifier = Modifier.width(6.dp))
-                            Text("جلب وتحديث الآن", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.5.sp)
+                            Text(AppText.text(com.example.R.string.text_aa669a2ec51f), color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.5.sp)
                         }
                     }
                 }
@@ -1575,7 +1577,7 @@ fun AddEditCashSavingDialog(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = if (initialSaving == null) appStrings.addCashSaving else "تعديل المدخرات النقدية",
+                        text = if (initialSaving == null) appStrings.addCashSaving else AppText.text(com.example.R.string.text_342321732127),
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp,
                         color = MaterialTheme.colorScheme.onSurface
@@ -1590,15 +1592,15 @@ fun AddEditCashSavingDialog(
                 OutlinedTextField(
                     value = amountText,
                     onValueChange = { amountText = it },
-                    label = { Text("المبلغ المدخر") },
-                    placeholder = { Text("مثال: 25000") },
+                    label = { Text(AppText.text(com.example.R.string.text_a6a99774a971)) },
+                    placeholder = { Text(AppText.text(com.example.R.string.text_dd178e8508b9)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
                     trailingIcon = {
                         Text(
-                            text = "ج.م",
+                            text = AppText.text(com.example.R.string.text_5c54bb48fcff),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             color = EmeraldGreenPrimary,
@@ -1612,8 +1614,8 @@ fun AddEditCashSavingDialog(
                 OutlinedTextField(
                     value = notes,
                     onValueChange = { notes = it },
-                    label = { Text("وصف / هدف الادخار") },
-                    placeholder = { Text("مثال: مدخرات صندوق الطوارئ، سيولة استثمارية...") },
+                    label = { Text(AppText.text(com.example.R.string.text_a7cc4e694ddc)) },
+                    placeholder = { Text(AppText.text(com.example.R.string.text_ebab6415c56f)) },
                     maxLines = 2,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)

@@ -1,6 +1,7 @@
 package com.example.ui.components
 
 import com.example.ui.utils.AppText
+import com.example.ui.utils.AppStrings
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -146,7 +147,7 @@ fun PieChartComposable(
                                 )
                                 Spacer(modifier = Modifier.width(6.dp))
                                 Text(
-                                    text = cat,
+                                    text = AppStrings(AppText.language).translateCategory(cat),
                                     style = MaterialTheme.typography.bodySmall,
                                     fontWeight = FontWeight.Medium,
                                     modifier = Modifier.weight(1f),

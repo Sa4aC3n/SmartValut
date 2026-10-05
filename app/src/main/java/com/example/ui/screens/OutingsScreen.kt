@@ -184,7 +184,7 @@ fun OutingsScreen(
         )
     }
 
-    CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+    CompositionLocalProvider(LocalLayoutDirection provides if (AppText.language == "en") LayoutDirection.Ltr else LayoutDirection.Rtl) {
         Scaffold(
             floatingActionButton = {
                 if (outingExpenses.isNotEmpty()) {

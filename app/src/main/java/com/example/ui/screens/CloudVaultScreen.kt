@@ -604,7 +604,7 @@ fun VaultItemCard(
 ) {
     var showDeleteConfirm by remember { mutableStateOf(false) }
     val typeEnum = VaultItemType.fromRaw(item.type)
-    val dateFormat = remember(AppText.language) { SimpleDateFormat("yyyy/MM/dd HH:mm", Locale.getDefault()) }
+    val dateFormat = remember(AppText.language) { SimpleDateFormat("yyyy/MM/dd HH:mm", AppText.locale) }
 
     Card(
         modifier = Modifier
@@ -1148,7 +1148,7 @@ fun ActivityLogDialog(
     logs: List<VaultActivityLog>,
     onDismiss: () -> Unit
 ) {
-    val dateFormat = remember(AppText.language) { SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault()) }
+    val dateFormat = remember(AppText.language) { SimpleDateFormat("yyyy/MM/dd HH:mm:ss", AppText.locale) }
 
     AlertDialog(
         onDismissRequest = onDismiss,

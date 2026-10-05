@@ -126,10 +126,17 @@ class MainActivity : ComponentActivity() {
 
             val layoutDirection = if (selectedLanguage == "en") LayoutDirection.Ltr else LayoutDirection.Rtl
             val appStrings = remember(selectedLanguage) { AppStrings(selectedLanguage) }
+            val localizedContext = remember(selectedLanguage) {
+                createConfigurationContext(android.content.res.Configuration(resources.configuration).apply {
+                    setLocale(java.util.Locale.forLanguageTag(selectedLanguage))
+                })
+            }
 
             SmartVaultTheme(darkTheme = isDarkMode) {
                 CompositionLocalProvider(
                     LocalLayoutDirection provides layoutDirection,
+                    androidx.compose.ui.platform.LocalContext provides localizedContext,
+                    androidx.compose.ui.platform.LocalConfiguration provides localizedContext.resources.configuration,
                     LocalAppLanguage provides selectedLanguage,
                     LocalStrings provides appStrings
                 ) {

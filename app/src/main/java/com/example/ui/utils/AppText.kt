@@ -11,8 +11,8 @@ import java.util.Locale
 
 /** Shared language for Compose, dialogs, reports and background workers. */
 object AppText {
-    var language by mutableStateOf("ar")
-        private set
+    private var currentLanguage by mutableStateOf("ar")
+    val language: String get() = currentLanguage
     private lateinit var arabic: Resources
     private lateinit var english: Resources
     private val argumentPattern = Regex("\\{(\\d+)\\}")
@@ -30,7 +30,7 @@ object AppText {
     }
 
     fun setLanguage(code: String) {
-        language = if (code == "en") "en" else "ar"
+        currentLanguage = if (code == "en") "en" else "ar"
     }
 
     val locale: Locale get() = Locale.forLanguageTag(language)

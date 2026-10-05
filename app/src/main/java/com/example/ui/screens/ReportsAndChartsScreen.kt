@@ -1054,7 +1054,7 @@ fun ReportsAndChartsScreen(
                                             .background(item.color)
                                     )
                                     Text(
-                                        text = item.name,
+                                        text = AppStrings(AppText.language).translateCategory(item.name),
                                         fontSize = 13.sp,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )

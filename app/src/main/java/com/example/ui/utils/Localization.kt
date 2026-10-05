@@ -184,6 +184,10 @@ class AppStrings(val language: String) {
     fun translateCategory(cat: String): String {
         if (!isEn) return cat
         return when (cat) {
+            "فواتير" -> "Bills"
+            "علاج" -> "Healthcare"
+            "مصاريف عامة" -> "General expenses"
+            "عام" -> "General"
             "خضروات" -> "Vegetables"
             "فاكهة" -> "Fruits"
             "طلبات منزل" -> "Groceries"

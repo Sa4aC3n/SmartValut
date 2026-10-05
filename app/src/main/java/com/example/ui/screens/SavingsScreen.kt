@@ -380,7 +380,7 @@ fun SavingsScreen(
                             } else {
                                 val text = when {
                                     lastGoldPriceUpdateTimestamp > 0 -> {
-                                        val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
+                                        val sdf = SimpleDateFormat("hh:mm a", AppText.locale)
                                         AppText.text(com.example.R.string.text_e91d3fd3a4fb, sdf.format(Date(lastGoldPriceUpdateTimestamp)))
                                     }
                                     isDailyGoldPriceUpdateEnabled -> AppText.text(com.example.R.string.text_da854123b7f7)

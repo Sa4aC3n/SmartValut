@@ -19,9 +19,9 @@ The GitHub Actions workflow runs `:app:assembleDebug :app:testDebugUnitTest :app
 
 ## Local build requirements
 
-AGP 9.1.1 requires JDK 17 and Gradle 9.3.1. Install Android SDK platform 36.1 and build tools 36.0.0. Reference: https://developer.android.com/build/releases/agp-9-1-0-release-notes
+AGP 9.1.1 requires at least JDK 17 and Gradle 9.3.1. Use JDK 21 for this project's API 36 Robolectric tests. Install Android SDK platform 36.1 and build tools 36.0.0. References: https://developer.android.com/build/releases/agp-9-1-0-release-notes and https://robolectric.org/compatibility_table/
 
-The missing Gradle Wrapper has now been restored from the official `gradle/gradle` v9.3.1 source. It is configured to download Gradle 9.3.1. Run `bash ./gradlew :app:assembleDebug :app:testDebugUnitTest :app:lintDebug` (Windows: `.\gradlew.bat :app:assembleDebug :app:testDebugUnitTest :app:lintDebug`). Use JDK 17 rather than Java 8. Keep your local `app/google-services.json`; it is excluded from Git and this change set.
+The missing Gradle Wrapper has now been restored from the official `gradle/gradle` v9.3.1 source. It is configured to download Gradle 9.3.1. Run `bash ./gradlew :app:assembleDebug :app:testDebugUnitTest :app:lintDebug` (Windows: `.\gradlew.bat :app:assembleDebug :app:testDebugUnitTest :app:lintDebug`). Use JDK 21 rather than Java 8. Keep your local `app/google-services.json`; it is excluded from Git and this change set.
 
 Wrapper source: https://github.com/gradle/gradle/tree/v9.3.1/gradle/wrapper. Expected Git blob SHA for the downloaded wrapper JAR: `61285a659d17295f1de7c53e24fdf13ad755c379`.
 

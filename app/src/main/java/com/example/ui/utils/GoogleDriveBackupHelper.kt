@@ -1,5 +1,7 @@
 package com.example.ui.utils
 
+import com.example.ui.utils.AppText
+
 import android.content.Context
 import android.widget.Toast
 import com.example.data.UserProfile
@@ -24,7 +26,7 @@ object GoogleDriveBackupHelper {
         onSuccess: (String) -> Unit
     ) {
         try {
-            val sdf = SimpleDateFormat("yyyy/MM/dd - hh:mm a", Locale("ar"))
+            val sdf = SimpleDateFormat("yyyy/MM/dd - hh:mm a", AppText.locale)
             val formattedTime = sdf.format(Date())
 
             // Build Backup JSON Representation
@@ -47,14 +49,14 @@ object GoogleDriveBackupHelper {
 
             Toast.makeText(
                 context,
-                "تم رفع وتحديث النسخة الاحتياطية بنجاح على Google Drive!\nحساب: ${userProfile.email}\nتاريخ: $formattedTime",
+                AppText.text(com.example.R.string.text_38826a3d0488, userProfile.email, formattedTime),
                 Toast.LENGTH_LONG
             ).show()
 
             onSuccess(formattedTime)
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(context, "خطأ في الاتصال بـ Google Drive: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, AppText.text(com.example.R.string.text_86461526253e, e.localizedMessage), Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -67,13 +69,13 @@ object GoogleDriveBackupHelper {
         if (!driveCacheFile.exists()) {
             Toast.makeText(
                 context,
-                "جاري الاتصال بـ Google Drive ...\nتم العثور على آخر نسخة سحابية بحساب (${userProfile.email}) وتم استعادتها بنجاح!",
+                AppText.text(com.example.R.string.text_d18ace7a5c04, userProfile.email),
                 Toast.LENGTH_LONG
             ).show()
         } else {
             Toast.makeText(
                 context,
-                "تمت استعادة البيانات والحسابات بنجاح من Google Drive!",
+                AppText.text(com.example.R.string.text_7a87c217fea6),
                 Toast.LENGTH_LONG
             ).show()
         }

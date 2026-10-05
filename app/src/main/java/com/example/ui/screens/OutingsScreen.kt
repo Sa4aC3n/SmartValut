@@ -1,5 +1,7 @@
 package com.example.ui.screens
 
+import com.example.ui.utils.AppText
+
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -93,7 +95,7 @@ fun OutingsScreen(
     var showClearConfirmDialog by remember { mutableStateOf(false) }
     var expenseToDelete by remember { mutableStateOf<OutingExpenseEntity?>(null) }
 
-    val totalExpenses = remember(outingExpenses) { outingExpenses.sumOf { it.amount } }
+    val totalExpenses = remember(AppText.language, outingExpenses) { outingExpenses.sumOf { it.amount } }
     val validParticipants = if (participantsCount > 0) participantsCount else 1
     val sharePerPerson = totalExpenses / validParticipants
 
@@ -121,7 +123,7 @@ fun OutingsScreen(
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
-                        text = "بدء خروجة جديدة؟",
+                        text = AppText.text(com.example.R.string.text_336c34278460),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = ExpenseRed
@@ -129,7 +131,7 @@ fun OutingsScreen(
                 }
             },
             text = {
-                Text("سيتم مسح جميع مصاريف الخروجة الحالية وتصفير الحساب للبدء من جديد. هل أنت متأكد؟")
+                Text(AppText.text(com.example.R.string.text_c050a00c7360))
             },
             confirmButton = {
                 Button(
@@ -139,12 +141,12 @@ fun OutingsScreen(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = ExpenseRed)
                 ) {
-                    Text("نعم، مسح وبدء من جديد", color = Color.White)
+                    Text(AppText.text(com.example.R.string.text_38d709195016), color = Color.White)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showClearConfirmDialog = false }) {
-                    Text("إلغاء")
+                    Text(AppText.text(com.example.R.string.text_e776b0209b50))
                 }
             }
         )
@@ -155,13 +157,13 @@ fun OutingsScreen(
             onDismissRequest = { expenseToDelete = null },
             title = {
                 Text(
-                    text = "حذف هذا المصروف؟",
+                    text = AppText.text(com.example.R.string.text_3141e1c6517c),
                     fontWeight = FontWeight.Bold,
                     color = ExpenseRed
                 )
             },
             text = {
-                Text("هل تريد حذف مصروف \"${exp.title}\" بقيمة ${String.format(Locale.US, "%.0f", exp.amount)} $currency؟")
+                Text(AppText.text(com.example.R.string.text_572753d189df, exp.title, String.format(Locale.US, "%.0f", exp.amount), AppText.currency(currency)))
             },
             confirmButton = {
                 Button(
@@ -171,12 +173,12 @@ fun OutingsScreen(
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = ExpenseRed)
                 ) {
-                    Text("حذف", color = Color.White)
+                    Text(AppText.text(com.example.R.string.text_2d2bbdc2d694), color = Color.White)
                 }
             },
             dismissButton = {
                 TextButton(onClick = { expenseToDelete = null }) {
-                    Text("إلغاء")
+                    Text(AppText.text(com.example.R.string.text_e776b0209b50))
                 }
             }
         )
@@ -196,9 +198,9 @@ fun OutingsScreen(
                             modifier = Modifier.padding(horizontal = 16.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Icon(imageVector = Icons.Default.Add, contentDescription = "إضافة مصروف")
+                            Icon(imageVector = Icons.Default.Add, contentDescription = AppText.text(com.example.R.string.text_45fb4b937312))
                             Spacer(modifier = Modifier.width(6.dp))
-                            Text("إضافة مصروف", fontWeight = FontWeight.Bold)
+                            Text(AppText.text(com.example.R.string.text_45fb4b937312), fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -246,7 +248,7 @@ fun OutingsScreen(
                                 Spacer(modifier = Modifier.width(10.dp))
 
                                 Text(
-                                    text = "ملخص مصاريف الخروجة",
+                                    text = AppText.text(com.example.R.string.text_a6afe34102b0),
                                     style = MaterialTheme.typography.titleMedium,
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 17.sp
@@ -264,7 +266,7 @@ fun OutingsScreen(
                                 // Column 1 (Right): إجمالي المصاريف
                                 Column(horizontalAlignment = Alignment.Start) {
                                     Text(
-                                        text = "إجمالي المصاريف",
+                                        text = AppText.text(com.example.R.string.text_eca3d1ae0873),
                                         fontSize = 12.sp,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -272,7 +274,7 @@ fun OutingsScreen(
                                     Spacer(modifier = Modifier.height(4.dp))
 
                                     Text(
-                                        text = "${String.format(Locale.US, "%.0f", totalExpenses)} $currency",
+                                        text = "${String.format(Locale.US, "%.0f", totalExpenses)} ${AppText.currency(currency)}",
                                         fontSize = 24.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = ExpenseRed
@@ -290,7 +292,7 @@ fun OutingsScreen(
                                         )
                                         Spacer(modifier = Modifier.width(4.dp))
                                         Text(
-                                            text = "عدد أفراد اللمة",
+                                            text = AppText.text(com.example.R.string.text_6e916c175a10),
                                             fontSize = 12.sp,
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
@@ -312,14 +314,14 @@ fun OutingsScreen(
                                             ) {
                                                 Icon(
                                                     imageVector = Icons.Default.AddCircleOutline,
-                                                    contentDescription = "زيادة",
+                                                    contentDescription = AppText.text(com.example.R.string.text_ea26c1bf9441),
                                                     tint = EmeraldGreenPrimary,
                                                     modifier = Modifier.size(20.dp)
                                                 )
                                             }
 
                                             Text(
-                                                text = "$validParticipants أفراد",
+                                                text = AppText.text(com.example.R.string.text_30d31f5738c7, validParticipants),
                                                 fontWeight = FontWeight.Bold,
                                                 fontSize = 14.sp,
                                                 modifier = Modifier.padding(horizontal = 8.dp)
@@ -335,7 +337,7 @@ fun OutingsScreen(
                                             ) {
                                                 Icon(
                                                     imageVector = Icons.Default.RemoveCircleOutline,
-                                                    contentDescription = "تقليل",
+                                                    contentDescription = AppText.text(com.example.R.string.text_dfd7b77607be),
                                                     tint = EmeraldGreenPrimary,
                                                     modifier = Modifier.size(20.dp)
                                                 )
@@ -377,7 +379,7 @@ fun OutingsScreen(
                                         )
                                         Spacer(modifier = Modifier.width(6.dp))
                                         Text(
-                                            text = "حساب كل واحد (نصيب الفرد)",
+                                            text = AppText.text(com.example.R.string.text_ee9024498f3d),
                                             fontSize = 13.sp,
                                             color = Color.White.copy(alpha = 0.95f),
                                             fontWeight = FontWeight.Bold
@@ -387,14 +389,14 @@ fun OutingsScreen(
                                     Spacer(modifier = Modifier.height(4.dp))
 
                                     Text(
-                                        text = "${String.format(Locale.US, "%.1f", sharePerPerson)} $currency",
+                                        text = "${String.format(Locale.US, "%.1f", sharePerPerson)} ${AppText.currency(currency)}",
                                         fontSize = 24.sp,
                                         fontWeight = FontWeight.ExtraBold,
                                         color = Color.White
                                     )
 
                                     Text(
-                                        text = "(${String.format(Locale.US, "%.0f", totalExpenses)} $currency ÷ $validParticipants مشاركين)",
+                                        text = AppText.text(com.example.R.string.text_559f0d9909a5, String.format(Locale.US, "%.0f", totalExpenses), AppText.currency(currency), validParticipants),
                                         fontSize = 11.sp,
                                         color = Color.White.copy(alpha = 0.8f)
                                     )
@@ -449,7 +451,7 @@ fun OutingsScreen(
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
-                                        text = "تصدير ومشاركة تقرير الخروجة PDF",
+                                        text = AppText.text(com.example.R.string.text_114c075183e5),
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 13.sp,
                                         color = EmeraldGreenPrimary
@@ -484,7 +486,7 @@ fun OutingsScreen(
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = "سجل مصاريف الخروجة (${outingExpenses.size})",
+                            text = AppText.text(com.example.R.string.text_b754b228e048, outingExpenses.size),
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold
                         )
@@ -499,7 +501,7 @@ fun OutingsScreen(
                                 modifier = Modifier.size(16.dp)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text("خروجة جديدة", color = ExpenseRed, fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            Text(AppText.text(com.example.R.string.text_ca2624f4fe65), color = ExpenseRed, fontSize = 12.sp, fontWeight = FontWeight.Bold)
                         }
                     }
                 }
@@ -531,7 +533,7 @@ fun OutingsScreen(
                             Spacer(modifier = Modifier.height(14.dp))
 
                             Text(
-                                text = "لا توجد مصاريف مسجلة لهذه الخروجة بعد",
+                                text = AppText.text(com.example.R.string.text_d45aaab246f4),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 15.sp,
                                 textAlign = TextAlign.Center
@@ -540,7 +542,7 @@ fun OutingsScreen(
                             Spacer(modifier = Modifier.height(6.dp))
 
                             Text(
-                                text = "سجل حساب المطعم، الكافيه، المواصلات أو أي مصروفات، وسيتم تقاسم الحساب تلقائياً!",
+                                text = AppText.text(com.example.R.string.text_ec85d13b5b34),
                                 fontSize = 12.sp,
                                 color = Color.Gray,
                                 textAlign = TextAlign.Center,
@@ -556,7 +558,7 @@ fun OutingsScreen(
                                 contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp)
                             ) {
                                 Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Text("إضافة أول مصروف للخروجة", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                    Text(AppText.text(com.example.R.string.text_16bb72948518), fontWeight = FontWeight.Bold, fontSize = 14.sp)
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Icon(imageVector = Icons.Default.Add, contentDescription = null)
                                 }
@@ -588,8 +590,8 @@ fun OutingExpenseCardItem(
     currency: String,
     onDelete: () -> Unit
 ) {
-    val sdf = remember { SimpleDateFormat("dd MMM - hh:mm a", Locale("ar")) }
-    val formattedDate = remember(expense.dateMillis) { sdf.format(Date(expense.dateMillis)) }
+    val sdf = remember(AppText.language) { SimpleDateFormat("dd MMM - hh:mm a", AppText.locale) }
+    val formattedDate = remember(AppText.language, expense.dateMillis) { sdf.format(Date(expense.dateMillis)) }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -626,7 +628,7 @@ fun OutingExpenseCardItem(
 
                 Column {
                     Text(
-                        text = expense.title.ifBlank { "مصروف خروجة" },
+                        text = expense.title.ifBlank { AppText.text(com.example.R.string.text_3da768e11e40) },
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp,
                         maxLines = 1,
@@ -660,7 +662,7 @@ fun OutingExpenseCardItem(
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "${String.format(Locale.US, "%.0f", expense.amount)} $currency",
+                    text = "${String.format(Locale.US, "%.0f", expense.amount)} ${AppText.currency(currency)}",
                     fontWeight = FontWeight.Bold,
                     fontSize = 15.sp,
                     color = ExpenseRed
@@ -669,7 +671,7 @@ fun OutingExpenseCardItem(
                 IconButton(onClick = onDelete) {
                     Icon(
                         imageVector = Icons.Default.Delete,
-                        contentDescription = "حذف",
+                        contentDescription = AppText.text(com.example.R.string.text_2d2bbdc2d694),
                         tint = Color.Gray.copy(alpha = 0.7f),
                         modifier = Modifier.size(18.dp)
                     )
@@ -690,7 +692,7 @@ fun AddOutingExpenseDialog(
     var payerText by remember { mutableStateOf("") }
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
-    val quickTitles = listOf("مطعم / عشاء", "كافيه / مشروبات", "مواصلات / بنزين", "تذاكر سينما", "حلوى / سناك")
+    val quickTitles = listOf(AppText.text(com.example.R.string.text_fd1ca7d5d2d0), AppText.text(com.example.R.string.text_ab4ebd37e271), AppText.text(com.example.R.string.text_2ca551bb7508), AppText.text(com.example.R.string.text_03b7571dc33e), AppText.text(com.example.R.string.text_2a5edfcc4a0c))
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -704,7 +706,7 @@ fun AddOutingExpenseDialog(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = "إضافة مصروف للخروجة",
+                    text = AppText.text(com.example.R.string.text_8680b323aade),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -717,7 +719,7 @@ fun AddOutingExpenseDialog(
             ) {
                 // Quick suggestions
                 Text(
-                    text = "اقتراحات سريعة:",
+                    text = AppText.text(com.example.R.string.text_5056a21deb50),
                     fontSize = 11.sp,
                     color = Color.Gray
                 )
@@ -737,7 +739,7 @@ fun AddOutingExpenseDialog(
                         titleText = it
                         errorMessage = null
                     },
-                    label = { Text("بيان المصروف (مطعم، كافيه، مواصلات...)") },
+                    label = { Text(AppText.text(com.example.R.string.text_5eaf512b3988)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
@@ -749,7 +751,7 @@ fun AddOutingExpenseDialog(
                         amountText = it
                         errorMessage = null
                     },
-                    label = { Text("المبلغ ($currency)") },
+                    label = { Text(AppText.text(com.example.R.string.text_9c3c9f280b7e, AppText.currency(currency))) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
@@ -758,7 +760,7 @@ fun AddOutingExpenseDialog(
                 OutlinedTextField(
                     value = payerText,
                     onValueChange = { payerText = it },
-                    label = { Text("اسم دافع المبلغ (اختياري)") },
+                    label = { Text(AppText.text(com.example.R.string.text_ef2d8a859c1f)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp)
@@ -774,11 +776,11 @@ fun AddOutingExpenseDialog(
                 onClick = {
                     val amount = amountText.toDoubleOrNull()
                     if (titleText.isBlank()) {
-                        errorMessage = "يرجى كتابة بيان المصروف"
+                        errorMessage = AppText.text(com.example.R.string.text_c7291590417a)
                         return@Button
                     }
                     if (amount == null || amount <= 0.0) {
-                        errorMessage = "يرجى كتابة مبلغ صحيح أكبر من صفر"
+                        errorMessage = AppText.text(com.example.R.string.text_f0e0c629edec)
                         return@Button
                     }
                     onConfirm(titleText.trim(), amount, payerText.trim())
@@ -786,12 +788,12 @@ fun AddOutingExpenseDialog(
                 colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary),
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Text("إضافة المصروف", color = Color.White)
+                Text(AppText.text(com.example.R.string.text_5b644797aa91), color = Color.White)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("إلغاء")
+                Text(AppText.text(com.example.R.string.text_e776b0209b50))
             }
         }
     )

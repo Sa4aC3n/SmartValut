@@ -1,5 +1,7 @@
 package com.example.ui.screens
 
+import com.example.ui.utils.AppText
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -276,7 +278,7 @@ fun SavingsScreen(
     }
 
     // Filter Active Gold Items
-    val activeGoldComputed = remember(savingsState.activeGoldAssets, searchQuery, filterKarat, filterType, filterPurpose) {
+    val activeGoldComputed = remember(AppText.language, savingsState.activeGoldAssets, searchQuery, filterKarat, filterType, filterPurpose) {
         savingsState.activeGoldAssets.filter { computed ->
             val asset = computed.asset
             val matchesQuery = searchQuery.isBlank() ||
@@ -311,7 +313,7 @@ fun SavingsScreen(
                     color = MaterialTheme.colorScheme.onSurface
                 )
                 Text(
-                    text = "محفظة الأصول والادخار بالذهب والنقد",
+                    text = AppText.text(com.example.R.string.text_5135047b6a76),
                     fontSize = 13.sp,
                     color = Color.Gray,
                     fontWeight = FontWeight.Medium
@@ -352,7 +354,7 @@ fun SavingsScreen(
                                     .background(if (lastGoldPriceUpdateTimestamp > 0) Color(0xFF4ADE80) else GoldAccent)
                             )
                             Text(
-                                text = "أسعار الذهب اللحظية (GoldAPI.io)",
+                                text = AppText.text(com.example.R.string.text_5ddcc07d9261),
                                 fontSize = 12.5.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSurface
@@ -365,7 +367,7 @@ fun SavingsScreen(
                         ) {
                             if (isUpdatingLiveGoldPrice) {
                                 Text(
-                                    text = "جاري التحديث...",
+                                    text = AppText.text(com.example.R.string.text_e217243cfbbe),
                                     fontSize = 11.sp,
                                     color = EmeraldGreenPrimary,
                                     fontWeight = FontWeight.Medium
@@ -379,10 +381,10 @@ fun SavingsScreen(
                                 val text = when {
                                     lastGoldPriceUpdateTimestamp > 0 -> {
                                         val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
-                                        "تحديث: ${sdf.format(Date(lastGoldPriceUpdateTimestamp))}"
+                                        AppText.text(com.example.R.string.text_e91d3fd3a4fb, sdf.format(Date(lastGoldPriceUpdateTimestamp)))
                                     }
-                                    isDailyGoldPriceUpdateEnabled -> "تحديث يومي 12:00 ظ ⏰"
-                                    else -> "اضغط للتحديث اللحظي ⚡"
+                                    isDailyGoldPriceUpdateEnabled -> AppText.text(com.example.R.string.text_da854123b7f7)
+                                    else -> AppText.text(com.example.R.string.text_cee64bdacca4)
                                 }
                                 Text(
                                     text = text,
@@ -420,13 +422,13 @@ fun SavingsScreen(
                                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                                 ) {
                                     Text(
-                                        text = "عيار $k:",
+                                        text = AppText.text(com.example.R.string.text_2dc8f9843e1d, k),
                                         fontSize = 11.sp,
                                         fontWeight = FontWeight.SemiBold,
                                         color = EmeraldGreenDark
                                     )
                                     Text(
-                                        text = "${String.format(Locale.US, "%,.0f", p)} ${savingsState.currency}",
+                                        text = "${String.format(Locale.US, "%,.0f", p)} ${AppText.currency(savingsState.currency)}",
                                         fontSize = 11.5.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = MaterialTheme.colorScheme.onSurface
@@ -449,7 +451,7 @@ fun SavingsScreen(
                                 ) {
                                     Icon(Icons.Default.Bolt, contentDescription = null, tint = Color(0xFFB8860B), modifier = Modifier.size(13.dp))
                                     Text(
-                                        text = "إعدادات GoldAPI",
+                                        text = AppText.text(com.example.R.string.text_2d933cb9406f),
                                         fontSize = 11.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = Color(0xFFB8860B)
@@ -472,7 +474,7 @@ fun SavingsScreen(
                                 ) {
                                     Icon(Icons.Default.Edit, contentDescription = null, tint = Color.Gray, modifier = Modifier.size(12.dp))
                                     Text(
-                                        text = "تعديل يدوي",
+                                        text = AppText.text(com.example.R.string.text_a7630d594814),
                                         fontSize = 11.sp,
                                         fontWeight = FontWeight.Medium,
                                         color = MaterialTheme.colorScheme.onSurface
@@ -564,7 +566,7 @@ fun SavingsScreen(
 
                         // Large Total Savings Amount
                         Text(
-                            text = "${String.format(Locale.US, "%,.0f", savingsState.totalSavings)} ${savingsState.currency}",
+                            text = "${String.format(Locale.US, "%,.0f", savingsState.totalSavings)} ${AppText.currency(savingsState.currency)}",
                             fontSize = 28.sp,
                             fontWeight = FontWeight.ExtraBold,
                             color = Color.White
@@ -579,30 +581,30 @@ fun SavingsScreen(
                         ) {
                             // Gold Value
                             StatMiniCard(
-                                title = "💛 قيمة الذهب",
+                                title = AppText.text(com.example.R.string.text_a468321f66f1),
                                 value = "${String.format(Locale.US, "%,.0f", savingsState.totalGoldCurrentValue)}",
                                 unit = savingsState.currency,
                                 modifier = Modifier.weight(1f)
                             )
                             // Cash Savings
                             StatMiniCard(
-                                title = "💵 نقدية",
+                                title = AppText.text(com.example.R.string.text_c4321b7e4fed),
                                 value = "${String.format(Locale.US, "%,.0f", savingsState.totalCashSavings)}",
                                 unit = savingsState.currency,
                                 modifier = Modifier.weight(1f)
                             )
                             // Gold Weight
                             StatMiniCard(
-                                title = "⚖️ وزن الذهب",
+                                title = AppText.text(com.example.R.string.text_35dc88643736),
                                 value = String.format(Locale.US, "%.1f", savingsState.totalGoldWeightGrams),
-                                unit = "جرام",
+                                unit = AppText.text(com.example.R.string.text_ae71934c1102),
                                 modifier = Modifier.weight(1f)
                             )
                             // Pieces Count
                             StatMiniCard(
-                                title = "📦 القطع",
+                                title = AppText.text(com.example.R.string.text_23e643d03dde),
                                 value = "${savingsState.totalGoldPiecesCount}",
-                                unit = "قطعة",
+                                unit = AppText.text(com.example.R.string.text_97e232087e83),
                                 modifier = Modifier.weight(0.85f)
                             )
                         }
@@ -631,7 +633,7 @@ fun SavingsScreen(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = "إضافة ذهب / سبيكة",
+                        text = AppText.text(com.example.R.string.text_1dea7c9eb0a7),
                         color = Color.Black,
                         fontWeight = FontWeight.Bold,
                         fontSize = 13.sp
@@ -652,7 +654,7 @@ fun SavingsScreen(
                     )
                     Spacer(modifier = Modifier.width(6.dp))
                     Text(
-                        text = "إضافة نقدية",
+                        text = AppText.text(com.example.R.string.text_a71cfacf7e17),
                         color = Color.White,
                         fontWeight = FontWeight.Bold,
                         fontSize = 13.sp
@@ -717,7 +719,7 @@ fun SavingsScreen(
                         OutlinedTextField(
                             value = searchQuery,
                             onValueChange = { searchQuery = it },
-                            placeholder = { Text("بحث بالاسم، الماركة، أو الملاحظات...") },
+                            placeholder = { Text(AppText.text(com.example.R.string.text_2975d499b10d)) },
                             leadingIcon = {
                                 Icon(Icons.Default.Search, contentDescription = "Search", tint = Color.Gray)
                             },
@@ -739,49 +741,49 @@ fun SavingsScreen(
                                         filterType = null
                                         filterPurpose = null
                                     },
-                                    label = { Text("الكل", fontSize = 11.sp) }
+                                    label = { Text(AppText.text(com.example.R.string.text_11fdef2dc5f8), fontSize = 11.sp) }
                                 )
                             }
                             item {
                                 FilterChip(
                                     selected = filterKarat == 24,
                                     onClick = { filterKarat = if (filterKarat == 24) null else 24 },
-                                    label = { Text("عيار 24", fontSize = 11.sp) }
+                                    label = { Text(AppText.text(com.example.R.string.text_45b5db7f16d2), fontSize = 11.sp) }
                                 )
                             }
                             item {
                                 FilterChip(
                                     selected = filterKarat == 21,
                                     onClick = { filterKarat = if (filterKarat == 21) null else 21 },
-                                    label = { Text("عيار 21", fontSize = 11.sp) }
+                                    label = { Text(AppText.text(com.example.R.string.text_b8c5bc7c6ec1), fontSize = 11.sp) }
                                 )
                             }
                             item {
                                 FilterChip(
                                     selected = filterKarat == 18,
                                     onClick = { filterKarat = if (filterKarat == 18) null else 18 },
-                                    label = { Text("عيار 18", fontSize = 11.sp) }
+                                    label = { Text(AppText.text(com.example.R.string.text_ad3707ff7947), fontSize = 11.sp) }
                                 )
                             }
                             item {
                                 FilterChip(
                                     selected = filterType == "سبيكة",
                                     onClick = { filterType = if (filterType == "سبيكة") null else "سبيكة" },
-                                    label = { Text("السبائك", fontSize = 11.sp) }
+                                    label = { Text(AppText.text(com.example.R.string.text_c71b3f4b0b35), fontSize = 11.sp) }
                                 )
                             }
                             item {
                                 FilterChip(
                                     selected = filterType == "جنيه ذهب",
                                     onClick = { filterType = if (filterType == "جنيه ذهب") null else "جنيه ذهب" },
-                                    label = { Text("جنيهات ذهب", fontSize = 11.sp) }
+                                    label = { Text(AppText.text(com.example.R.string.text_fa00e620f1f1), fontSize = 11.sp) }
                                 )
                             }
                             item {
                                 FilterChip(
                                     selected = filterPurpose == "SAVING",
                                     onClick = { filterPurpose = if (filterPurpose == "SAVING") null else "SAVING" },
-                                    label = { Text("للادخار", fontSize = 11.sp) }
+                                    label = { Text(AppText.text(com.example.R.string.text_cf067ab1d883), fontSize = 11.sp) }
                                 )
                             }
                         }
@@ -793,8 +795,8 @@ fun SavingsScreen(
                         EmptyStateCard(
                             icon = Icons.Default.AccountBalanceWallet,
                             title = appStrings.noGoldYet,
-                            subtitle = "اضغط على زر «إضافة ذهب / سبيكة» لتسجيل أول قطعة ومتابعة قيمتها لحظة بلحظة.",
-                            buttonText = "إضافة سبيكة أو قطعة ذهب",
+                            subtitle = AppText.text(com.example.R.string.text_996dd7d54174),
+                            buttonText = AppText.text(com.example.R.string.text_352a4e34c03b),
                             onButtonClick = { showAddGoldDialog = true }
                         )
                     }
@@ -819,8 +821,8 @@ fun SavingsScreen(
                         EmptyStateCard(
                             icon = Icons.Default.MonetizationOn,
                             title = appStrings.noCashSavingsYet,
-                            subtitle = "سجّل مدخراتك النقدية وحسابات الطوارئ لمتابعة إجمالي ثروتك في مكان واحد.",
-                            buttonText = "إضافة مدخرات نقدية",
+                            subtitle = AppText.text(com.example.R.string.text_07f1aabba20f),
+                            buttonText = AppText.text(com.example.R.string.text_6fc4b9ab4c80),
                             onButtonClick = { showAddCashDialog = true }
                         )
                     }
@@ -855,7 +857,7 @@ fun SavingsScreen(
                         EmptyStateCard(
                             icon = Icons.Default.Sell,
                             title = appStrings.noSoldGoldYet,
-                            subtitle = "عند بيع أي قطعة ذهب من الخزنة، ستظهر هنا تفاصيل البيع والأرباح المحققة وتاريخ العملية.",
+                            subtitle = AppText.text(com.example.R.string.text_bb944309b74d),
                             buttonText = null,
                             onButtonClick = {}
                         )
@@ -931,7 +933,7 @@ fun GoldAssetCard(
     onDelete: () -> Unit
 ) {
     val asset = assetComputed.asset
-    val formattedPurchaseDate = remember(asset.purchaseDateMillis) {
+    val formattedPurchaseDate = remember(AppText.language, asset.purchaseDateMillis) {
         SimpleDateFormat("dd/MM/yyyy", Locale.US).format(Date(asset.purchaseDateMillis))
     }
 
@@ -1005,20 +1007,20 @@ fun GoldAssetCard(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = "عيار ${asset.karat}",
+                                text = AppText.text(com.example.R.string.text_5fa7c4ce5839, asset.karat),
                                 fontSize = 11.5.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = GoldAccent
                             )
                             Text("•", fontSize = 10.sp, color = Color.Gray)
                             Text(
-                                text = "${asset.weight} جرام",
+                                text = AppText.text(com.example.R.string.text_953e21c4f2c5, asset.weight),
                                 fontSize = 11.5.sp,
                                 color = Color.Gray
                             )
                             Text("•", fontSize = 10.sp, color = Color.Gray)
                             Text(
-                                text = asset.goldType,
+                                text = AppText.goldType(asset.goldType),
                                 fontSize = 11.sp,
                                 color = EmeraldGreenPrimary,
                                 fontWeight = FontWeight.Medium
@@ -1062,10 +1064,10 @@ fun GoldAssetCard(
                 ) {
                     // Current Value
                     Column {
-                        Text("القيمة الحالية بالخزنة", fontSize = 11.sp, color = Color.Gray)
+                        Text(AppText.text(com.example.R.string.text_dff77eec3f8f), fontSize = 11.sp, color = Color.Gray)
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = "${String.format(Locale.US, "%,.0f", assetComputed.currentValue)} $currency",
+                            text = "${String.format(Locale.US, "%,.0f", assetComputed.currentValue)} ${AppText.currency(currency)}",
                             fontSize = 14.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -1074,10 +1076,10 @@ fun GoldAssetCard(
 
                     // Purchase Price
                     Column {
-                        Text("سعر الشراء", fontSize = 11.sp, color = Color.Gray)
+                        Text(AppText.text(com.example.R.string.text_6d3b8a57de85), fontSize = 11.sp, color = Color.Gray)
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = "${String.format(Locale.US, "%,.0f", asset.purchasePrice)} $currency",
+                            text = "${String.format(Locale.US, "%,.0f", asset.purchasePrice)} ${AppText.currency(currency)}",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Medium,
                             color = Color.Gray
@@ -1086,10 +1088,10 @@ fun GoldAssetCard(
 
                     // Net Profit
                     Column(horizontalAlignment = Alignment.End) {
-                        Text("صافي الربح", fontSize = 11.sp, color = Color.Gray)
+                        Text(AppText.text(com.example.R.string.text_c8480ab06f6d), fontSize = 11.sp, color = Color.Gray)
                         Spacer(modifier = Modifier.height(2.dp))
                         Text(
-                            text = "${if (assetComputed.profitLoss >= 0) "+" else ""}${String.format(Locale.US, "%,.0f", assetComputed.profitLoss)} $currency",
+                            text = "${if (assetComputed.profitLoss >= 0) "+" else ""}${String.format(Locale.US, "%,.0f", assetComputed.profitLoss)} ${AppText.currency(currency)}",
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Bold,
                             color = if (assetComputed.profitLoss >= 0) IncomeGreen else ExpenseRed
@@ -1107,7 +1109,7 @@ fun GoldAssetCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "شراء: $formattedPurchaseDate",
+                    text = AppText.text(com.example.R.string.text_4b50574269e7, formattedPurchaseDate),
                     fontSize = 11.sp,
                     color = Color.Gray
                 )
@@ -1123,7 +1125,7 @@ fun GoldAssetCard(
                             .padding(horizontal = 10.dp),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text("🤝 بيع", fontSize = 11.5.sp, fontWeight = FontWeight.Bold, color = Color(0xFFB8860B))
+                        Text(AppText.text(com.example.R.string.text_314a88e340e3), fontSize = 11.5.sp, fontWeight = FontWeight.Bold, color = Color(0xFFB8860B))
                     }
 
                     // Edit
@@ -1153,8 +1155,8 @@ fun CashSavingCard(
     onEdit: () -> Unit,
     onDelete: () -> Unit
 ) {
-    val formattedDate = remember(saving.dateMillis) {
-        SimpleDateFormat("dd MMMM yyyy", Locale("ar")).format(Date(saving.dateMillis))
+    val formattedDate = remember(AppText.language, saving.dateMillis) {
+        SimpleDateFormat("dd MMMM yyyy", AppText.locale).format(Date(saving.dateMillis))
     }
 
     Card(
@@ -1201,7 +1203,7 @@ fun CashSavingCard(
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = if (saving.notes.isNotBlank()) saving.notes else "مدخرات نقدية بالخزنة",
+                        text = if (saving.notes.isNotBlank()) saving.notes else AppText.text(com.example.R.string.text_d9aad4bb6bfb),
                         fontSize = 12.sp,
                         color = Color.Gray,
                         maxLines = 1
@@ -1234,7 +1236,7 @@ fun SoldGoldCard(
     onDelete: () -> Unit
 ) {
     val asset = assetComputed.asset
-    val saleDateStr = remember(asset.saleDateMillis) {
+    val saleDateStr = remember(AppText.language, asset.saleDateMillis) {
         if (asset.saleDateMillis != null) {
             SimpleDateFormat("dd/MM/yyyy", Locale.US).format(Date(asset.saleDateMillis))
         } else ""
@@ -1272,7 +1274,7 @@ fun SoldGoldCard(
                             fontSize = 14.sp
                         )
                         Text(
-                            text = "تاريخ البيع: $saleDateStr",
+                            text = AppText.text(com.example.R.string.text_df6ebe251845, saleDateStr),
                             fontSize = 11.sp,
                             color = Color.Gray
                         )
@@ -1286,7 +1288,7 @@ fun SoldGoldCard(
                         .padding(horizontal = 8.dp, vertical = 4.dp)
                 ) {
                     Text(
-                        text = "ربح: ${if (assetComputed.profitLoss >= 0) "+" else ""}${String.format(Locale.US, "%,.0f", assetComputed.profitLoss)} $currency",
+                        text = AppText.text(com.example.R.string.text_28988bc62a1d, if (assetComputed.profitLoss >= 0) "+" else "", String.format(Locale.US, "%,.0f", assetComputed.profitLoss), AppText.currency(currency)),
                         fontSize = 11.5.sp,
                         fontWeight = FontWeight.Bold,
                         color = if (assetComputed.profitLoss >= 0) IncomeGreen else ExpenseRed
@@ -1300,8 +1302,8 @@ fun SoldGoldCard(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("سعر الشراء: ${String.format(Locale.US, "%,.0f", asset.purchasePrice)} $currency", fontSize = 11.sp, color = Color.Gray)
-                Text("سعر البيع: ${String.format(Locale.US, "%,.0f", asset.salePrice ?: 0.0)} $currency", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+                Text(AppText.text(com.example.R.string.text_8d7760163026, String.format(Locale.US, "%,.0f", asset.purchasePrice), AppText.currency(currency)), fontSize = 11.sp, color = Color.Gray)
+                Text(AppText.text(com.example.R.string.text_0b4d734ed267, String.format(Locale.US, "%,.0f", asset.salePrice ?: 0.0), AppText.currency(currency)), fontSize = 11.sp, fontWeight = FontWeight.Bold)
             }
         }
     }
@@ -1348,7 +1350,7 @@ fun AnalyticsAndAllocationSection(
                         Icon(Icons.Default.PieChart, contentDescription = null, tint = EmeraldGreenPrimary, modifier = Modifier.size(18.dp))
                     }
                     Text(
-                        text = "توزيع الأصول والمدخرات",
+                        text = AppText.text(com.example.R.string.text_c3bcb0096479),
                         fontWeight = FontWeight.Bold,
                         fontSize = 16.sp
                     )
@@ -1393,7 +1395,7 @@ fun AnalyticsAndAllocationSection(
                         Box(modifier = Modifier.size(10.dp).clip(CircleShape).background(GoldAccent))
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = "الذهب والسبائك: ${String.format(Locale.US, "%.1f", savingsState.goldRatioPercentage)}%",
+                            text = AppText.text(com.example.R.string.text_7a96970769a2, String.format(Locale.US, "%.1f", savingsState.goldRatioPercentage)),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium
                         )
@@ -1403,7 +1405,7 @@ fun AnalyticsAndAllocationSection(
                         Box(modifier = Modifier.size(10.dp).clip(CircleShape).background(EmeraldGreenPrimary))
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = "السيولة النقدية: ${String.format(Locale.US, "%.1f", savingsState.cashRatioPercentage)}%",
+                            text = AppText.text(com.example.R.string.text_cf682f5d91ab, String.format(Locale.US, "%.1f", savingsState.cashRatioPercentage)),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Medium
                         )
@@ -1422,7 +1424,7 @@ fun AnalyticsAndAllocationSection(
             ) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "تفاصيل الذهب حسب العيار",
+                        text = AppText.text(com.example.R.string.text_f27f52730d77),
                         fontWeight = FontWeight.Bold,
                         fontSize = 15.sp
                     )
@@ -1442,13 +1444,13 @@ fun AnalyticsAndAllocationSection(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                Text("عيار $karat:", fontSize = 13.sp, fontWeight = FontWeight.Bold, color = GoldAccent)
+                                Text(AppText.text(com.example.R.string.text_d90fde7647eb, karat), fontSize = 13.sp, fontWeight = FontWeight.Bold, color = GoldAccent)
                                 Spacer(modifier = Modifier.width(6.dp))
-                                Text("($piecesCount قطع)", fontSize = 11.sp, color = Color.Gray)
+                                Text(AppText.text(com.example.R.string.text_c7cc152a38e2, piecesCount), fontSize = 11.sp, color = Color.Gray)
                             }
                             Column(horizontalAlignment = Alignment.End) {
-                                Text("${String.format(Locale.US, "%.1f", weight)} جرام", fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
-                                Text("${String.format(Locale.US, "%,.0f", currentKaratValue)} ${savingsState.currency}", fontSize = 11.sp, color = Color.Gray)
+                                Text(AppText.text(com.example.R.string.text_fdde5110e883, String.format(Locale.US, "%.1f", weight)), fontSize = 13.sp, fontWeight = FontWeight.SemiBold)
+                                Text("${String.format(Locale.US, "%,.0f", currentKaratValue)} ${AppText.currency(savingsState.currency)}", fontSize = 11.sp, color = Color.Gray)
                             }
                         }
                     }
@@ -1470,7 +1472,7 @@ fun AnalyticsAndAllocationSection(
                 ) {
                     Icon(Icons.Default.Lightbulb, contentDescription = null, tint = EmeraldGreenDark)
                     Text(
-                        text = "إرشادات الخزنة الذكية لتنمية المدخرات",
+                        text = AppText.text(com.example.R.string.text_e60659537352),
                         fontWeight = FontWeight.Bold,
                         fontSize = 14.sp,
                         color = EmeraldGreenDark
@@ -1479,9 +1481,9 @@ fun AnalyticsAndAllocationSection(
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                WealthTipItem("الادخار بالسبائك وجنيهات الذهب يقلل من خسارة المصنعية عند إعادة البيع مع إمكانية استرداد الكاش باك (Cashback).")
-                WealthTipItem("الحفاظ على نسبة 30% إلى 50% من المدخرات في الذهب يحمي القوة الشرائية لأموالك على المدى الطويل ضد التضخم.")
-                WealthTipItem("تجنب بيع الذهب إلا عند الضرورة أو تحويله إلى أصل استثماري ذو عائد أعلى.")
+                WealthTipItem(AppText.text(com.example.R.string.text_2a20ad043671))
+                WealthTipItem(AppText.text(com.example.R.string.text_0564400ee997))
+                WealthTipItem(AppText.text(com.example.R.string.text_9c6c3f2d63a2))
             }
         }
     }

@@ -1,5 +1,7 @@
 package com.example.ui.screens
 
+import com.example.ui.utils.AppText
+
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -157,7 +159,7 @@ fun AuthScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Shield,
-                    contentDescription = "الخزنة الذكية",
+                    contentDescription = AppText.text(com.example.R.string.text_cf185716b8b8),
                     tint = Color.White,
                     modifier = Modifier.size(42.dp)
                 )
@@ -166,13 +168,13 @@ fun AuthScreen(
             Spacer(modifier = Modifier.height(14.dp))
 
             Text(
-                text = "الخزنة الذكية 🔐",
+                text = AppText.text(com.example.R.string.text_ab638fff0e70),
                 fontSize = 22.sp,
                 fontWeight = FontWeight.ExtraBold,
                 color = GoldAccent
             )
             Text(
-                text = "إدارة ميزانيتك وأصولك بأمان وموثوقية",
+                text = AppText.text(com.example.R.string.text_225183350e62),
                 fontSize = 12.sp,
                 color = Color.LightGray
             )
@@ -215,7 +217,7 @@ fun AuthScreen(
                                 Spacer(modifier = Modifier.height(14.dp))
 
                                 Text(
-                                    text = "تأكيد البريد الإلكتروني",
+                                    text = AppText.text(com.example.R.string.text_7af517281485),
                                     fontSize = 19.sp,
                                     fontWeight = FontWeight.ExtraBold,
                                     color = MaterialTheme.colorScheme.onSurface
@@ -254,7 +256,7 @@ fun AuthScreen(
                                         Spacer(modifier = Modifier.height(10.dp))
 
                                         Text(
-                                            text = "“لقد أرسلنا رسالة تأكيد إلى $verificationEmail. يرجى تأكيد بريدك الإلكتروني ثم تسجيل الدخول.”",
+                                            text = AppText.text(com.example.R.string.text_70a45a2ea39f, verificationEmail),
                                             fontSize = 13.sp,
                                             color = Color.Gray,
                                             textAlign = TextAlign.Center,
@@ -280,7 +282,7 @@ fun AuthScreen(
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
-                                        text = "بعد فتح الرابط في بريدك، اضغط زر تسجيل الدخول أدناه للمتابعة.",
+                                        text = AppText.text(com.example.R.string.text_417be3fdb6ec),
                                         fontSize = 11.sp,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
@@ -325,7 +327,7 @@ fun AuthScreen(
                                     shape = RoundedCornerShape(14.dp)
                                 ) {
                                     Text(
-                                        text = "تسجيل الدخول / Login",
+                                        text = AppText.text(com.example.R.string.text_5f4d515e99b3),
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 14.sp
                                     )
@@ -345,7 +347,7 @@ fun AuthScreen(
                                                 passwordInput,
                                                 {
                                                     isLoading = false
-                                                    successNotice = "تمت إعادة إرسال رسالة التأكيد بنجاح! / Verification email resent!"
+                                                    successNotice = AppText.text(com.example.R.string.text_750d50487cef)
                                                 },
                                                 { error ->
                                                     isLoading = false
@@ -368,7 +370,7 @@ fun AuthScreen(
                                     )
                                     Spacer(modifier = Modifier.width(8.dp))
                                     Text(
-                                        text = "إعادة إرسال رسالة التأكيد / Resend Email",
+                                        text = AppText.text(com.example.R.string.text_c67db272bcec),
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight.SemiBold
                                     )
@@ -384,7 +386,7 @@ fun AuthScreen(
                                     }
                                 ) {
                                     Text(
-                                        text = "تغيير البريد الإلكتروني / Change Email",
+                                        text = AppText.text(com.example.R.string.text_f6f2f35c8ae0),
                                         fontSize = 12.sp,
                                         color = GoldAccent
                                     )
@@ -397,7 +399,7 @@ fun AuthScreen(
                             // 🔑 LOGIN SCREEN (EMAIL / PASSWORD)
                             // ==========================================
                             Text(
-                                text = "تسجيل الدخول إلى حسابك",
+                                text = AppText.text(com.example.R.string.text_151ff0110e44),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.ExtraBold,
                                 color = MaterialTheme.colorScheme.onSurface
@@ -416,7 +418,7 @@ fun AuthScreen(
                                     emailInput = it
                                     errorMessage = null
                                 },
-                                label = { Text("البريد الإلكتروني / Email") },
+                                label = { Text(AppText.text(com.example.R.string.text_f4e3d0a3436a)) },
                                 leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
                                 singleLine = true,
                                 modifier = Modifier.fillMaxWidth(),
@@ -431,7 +433,7 @@ fun AuthScreen(
                                     passwordInput = it
                                     errorMessage = null
                                 },
-                                label = { Text("كلمة المرور / Password") },
+                                label = { Text(AppText.text(com.example.R.string.text_af8756f4d1af)) },
                                 leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
                                 trailingIcon = {
                                     IconButton(onClick = { showPassword = !showPassword }) {
@@ -460,7 +462,7 @@ fun AuthScreen(
                                     contentPadding = PaddingValues(horizontal = 4.dp, vertical = 2.dp)
                                 ) {
                                     Text(
-                                        text = "نسيت كلمة المرور؟ / Forgot Password?",
+                                        text = AppText.text(com.example.R.string.text_491a8e0b00c1),
                                         fontSize = 11.5.sp,
                                         color = EmeraldGreenPrimary,
                                         fontWeight = FontWeight.SemiBold
@@ -483,7 +485,7 @@ fun AuthScreen(
                             Button(
                                 onClick = {
                                     if (emailInput.isBlank() || passwordInput.isBlank()) {
-                                        errorMessage = "يرجى إدخال البريد الإلكتروني وكلمة المرور"
+                                        errorMessage = AppText.text(com.example.R.string.text_a81fe1ccd11a)
                                         return@Button
                                     }
                                     isLoading = true
@@ -493,7 +495,7 @@ fun AuthScreen(
                                         passwordInput,
                                         { _ ->
                                             isLoading = false
-                                            Toast.makeText(context, "تم تسجيل الدخول بنجاح! مرحباً بك", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(context, AppText.text(com.example.R.string.text_d05c14280302), Toast.LENGTH_SHORT).show()
                                         },
                                         { unverifiedEmailAddress ->
                                             // RULE: If user logs in and email is not verified, block access and show verification screen
@@ -521,7 +523,7 @@ fun AuthScreen(
                                         strokeWidth = 2.dp
                                     )
                                 } else {
-                                    Text("تسجيل الدخول / Log In", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                    Text(AppText.text(com.example.R.string.text_c6c409f93604), fontWeight = FontWeight.Bold, fontSize = 14.sp)
                                 }
                             }
 
@@ -532,10 +534,10 @@ fun AuthScreen(
                                 horizontalArrangement = Arrangement.Center,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("ليس لديك حساب؟", fontSize = 12.sp, color = Color.Gray)
+                                Text(AppText.text(com.example.R.string.text_f37cc9c94b5a), fontSize = 12.sp, color = Color.Gray)
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
-                                    text = "إنشاء حساب جديد",
+                                    text = AppText.text(com.example.R.string.text_bb6cc0f4362b),
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = GoldAccent,
@@ -552,7 +554,7 @@ fun AuthScreen(
                             // 📝 REGISTER / SIGN UP SCREEN
                             // ==========================================
                             Text(
-                                text = "إنشاء حساب جديد",
+                                text = AppText.text(com.example.R.string.text_bb6cc0f4362b),
                                 fontSize = 18.sp,
                                 fontWeight = FontWeight.ExtraBold,
                                 color = MaterialTheme.colorScheme.onSurface
@@ -568,7 +570,7 @@ fun AuthScreen(
                             OutlinedTextField(
                                 value = nameInput,
                                 onValueChange = { nameInput = it },
-                                label = { Text("الاسم الكامل / Full Name") },
+                                label = { Text(AppText.text(com.example.R.string.text_556ff56ab3e7)) },
                                 leadingIcon = { Icon(Icons.Default.Person, contentDescription = null) },
                                 singleLine = true,
                                 modifier = Modifier.fillMaxWidth(),
@@ -583,7 +585,7 @@ fun AuthScreen(
                                     emailInput = it
                                     errorMessage = null
                                 },
-                                label = { Text("البريد الإلكتروني / Email") },
+                                label = { Text(AppText.text(com.example.R.string.text_f4e3d0a3436a)) },
                                 leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
                                 singleLine = true,
                                 modifier = Modifier.fillMaxWidth(),
@@ -598,7 +600,7 @@ fun AuthScreen(
                                     passwordInput = it
                                     errorMessage = null
                                 },
-                                label = { Text("كلمة المرور (6 أحرف على الأقل)") },
+                                label = { Text(AppText.text(com.example.R.string.text_00e10734fb09)) },
                                 leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
                                 visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
                                 trailingIcon = {
@@ -622,7 +624,7 @@ fun AuthScreen(
                                     confirmPasswordInput = it
                                     errorMessage = null
                                 },
-                                label = { Text("تأكيد كلمة المرور / Confirm Password") },
+                                label = { Text(AppText.text(com.example.R.string.text_2f9171d15f58)) },
                                 leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
                                 visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
                                 singleLine = true,
@@ -646,15 +648,15 @@ fun AuthScreen(
                                 onClick = {
                                     val trimmedEmail = emailInput.trim()
                                     if (trimmedEmail.isBlank() || passwordInput.isBlank()) {
-                                        errorMessage = "يرجى ملء جميع الحقول المطلوبة / Please fill all required fields"
+                                        errorMessage = AppText.text(com.example.R.string.text_aa496dc24580)
                                         return@Button
                                     }
                                     if (passwordInput != confirmPasswordInput) {
-                                        errorMessage = "كلمتا المرور غير متطابقتين / Passwords do not match"
+                                        errorMessage = AppText.text(com.example.R.string.text_f3e5984d2c87)
                                         return@Button
                                     }
                                     if (passwordInput.length < 6) {
-                                        errorMessage = "كلمة المرور يجب أن تكون 6 أحرف على الأقل / Password must be at least 6 characters"
+                                        errorMessage = AppText.text(com.example.R.string.text_792bd0e35f6c)
                                         return@Button
                                     }
 
@@ -691,7 +693,7 @@ fun AuthScreen(
                                         strokeWidth = 2.dp
                                     )
                                 } else {
-                                    Text("إنشاء حساب / Register", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                    Text(AppText.text(com.example.R.string.text_46e64ce1d547), fontWeight = FontWeight.Bold, fontSize = 14.sp)
                                 }
                             }
 
@@ -702,10 +704,10 @@ fun AuthScreen(
                                 horizontalArrangement = Arrangement.Center,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text("لديك حساب بالفعل؟", fontSize = 12.sp, color = Color.Gray)
+                                Text(AppText.text(com.example.R.string.text_9e6712c97481), fontSize = 12.sp, color = Color.Gray)
                                 Spacer(modifier = Modifier.width(4.dp))
                                 Text(
-                                    text = "تسجيل الدخول",
+                                    text = AppText.text(com.example.R.string.text_8c6117b67c8b),
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = EmeraldGreenPrimary,
@@ -726,12 +728,12 @@ fun AuthScreen(
             AlertDialog(
                 onDismissRequest = { showResendDialog = false },
                 title = {
-                    Text("إعادة إرسال رسالة التأكيد", fontWeight = FontWeight.Bold)
+                    Text(AppText.text(com.example.R.string.text_728bd4323f59), fontWeight = FontWeight.Bold)
                 },
                 text = {
                     Column {
                         Text(
-                            text = "أدخل كلمة المرور الخاصة بحسابك لإعادة إرسال رابط التحقق إلى:\n$verificationEmail",
+                            text = AppText.text(com.example.R.string.text_39859f44ad6e, verificationEmail),
                             fontSize = 13.sp,
                             color = Color.Gray
                         )
@@ -739,7 +741,7 @@ fun AuthScreen(
                         OutlinedTextField(
                             value = resendPasswordInput,
                             onValueChange = { resendPasswordInput = it },
-                            label = { Text("كلمة المرور") },
+                            label = { Text(AppText.text(com.example.R.string.text_7ba22cf7e99d)) },
                             visualTransformation = PasswordVisualTransformation(),
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth(),
@@ -758,7 +760,7 @@ fun AuthScreen(
                                     resendPasswordInput,
                                     {
                                         isLoading = false
-                                        successNotice = "تم إرسال رسالة التأكيد مرة أخرى إلى بريدك الإلكتروني!"
+                                        successNotice = AppText.text(com.example.R.string.text_07e0622de969)
                                     },
                                     { err ->
                                         isLoading = false
@@ -769,12 +771,12 @@ fun AuthScreen(
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary)
                     ) {
-                        Text("إرسال الآن")
+                        Text(AppText.text(com.example.R.string.text_ed2999d5230c))
                     }
                 },
                 dismissButton = {
                     OutlinedButton(onClick = { showResendDialog = false }) {
-                        Text("إلغاء")
+                        Text(AppText.text(com.example.R.string.text_e776b0209b50))
                     }
                 },
                 shape = RoundedCornerShape(20.dp)
@@ -789,13 +791,13 @@ fun AuthScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(
                             imageVector = Icons.Default.Security,
-                            contentDescription = "التحقق بخطوتين",
+                            contentDescription = AppText.text(com.example.R.string.text_ca1e582768c3),
                             tint = GoldAccent,
                             modifier = Modifier.size(28.dp)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
-                            text = "التحقق بخطوتين (2FA)",
+                            text = AppText.text(com.example.R.string.text_e408bd278ef3),
                             fontWeight = FontWeight.Bold,
                             fontSize = 18.sp
                         )
@@ -804,7 +806,7 @@ fun AuthScreen(
                 text = {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
-                            text = "تم تفعيل حماية الخطوتين لحسابك. يرجى إدخال رمز الأمان المكون من 6 أرقام للتحقق والتسجيل:",
+                            text = AppText.text(com.example.R.string.text_6b2387213f6b),
                             fontSize = 13.sp,
                             color = Color.Gray
                         )
@@ -813,7 +815,7 @@ fun AuthScreen(
                         OutlinedTextField(
                             value = twoFactorCodeInput,
                             onValueChange = { twoFactorCodeInput = it },
-                            label = { Text("رمز التحقق (مثال: 123456)") },
+                            label = { Text(AppText.text(com.example.R.string.text_79a84ac793d2)) },
                             leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth(),
@@ -826,15 +828,15 @@ fun AuthScreen(
                         onClick = {
                             val success = onVerify2FA(twoFactorCodeInput)
                             if (success) {
-                                Toast.makeText(context, "تم التحقق بنجاح! مرحباً بك", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, AppText.text(com.example.R.string.text_5988003cc37a), Toast.LENGTH_SHORT).show()
                             } else {
-                                Toast.makeText(context, "رمز التحقق غير صحيح", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, AppText.text(com.example.R.string.text_123680f2a1b8), Toast.LENGTH_SHORT).show()
                             }
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary),
                         shape = RoundedCornerShape(10.dp)
                     ) {
-                        Text("تحقق وتسجيل", fontWeight = FontWeight.Bold)
+                        Text(AppText.text(com.example.R.string.text_c07631980d85), fontWeight = FontWeight.Bold)
                     }
                 },
                 dismissButton = {
@@ -842,7 +844,7 @@ fun AuthScreen(
                         onClick = onCancel2FA,
                         shape = RoundedCornerShape(10.dp)
                     ) {
-                        Text("إلغاء / الدخول المباشر")
+                        Text(AppText.text(com.example.R.string.text_ea4ec56dde86))
                     }
                 },
                 shape = RoundedCornerShape(20.dp)
@@ -859,13 +861,13 @@ fun AuthScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Icon(Icons.Default.Lock, contentDescription = null, tint = EmeraldGreenPrimary)
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("إعادة تعيين كلمة المرور", fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                        Text(AppText.text(com.example.R.string.text_f779e19d8133), fontWeight = FontWeight.Bold, fontSize = 16.sp)
                     }
                 },
                 text = {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Text(
-                            text = "أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور بأمان عبر Firebase Authentication:",
+                            text = AppText.text(com.example.R.string.text_5d097bf37a95),
                             fontSize = 12.5.sp,
                             color = Color.Gray,
                             lineHeight = 18.sp
@@ -874,7 +876,7 @@ fun AuthScreen(
                         OutlinedTextField(
                             value = forgotPasswordEmail,
                             onValueChange = { forgotPasswordEmail = it },
-                            label = { Text("البريد الإلكتروني / Email") },
+                            label = { Text(AppText.text(com.example.R.string.text_f4e3d0a3436a)) },
                             leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
                             singleLine = true,
                             modifier = Modifier.fillMaxWidth(),
@@ -886,7 +888,7 @@ fun AuthScreen(
                     Button(
                         onClick = {
                             if (forgotPasswordEmail.isBlank()) {
-                                Toast.makeText(context, "يرجى إدخال البريد الإلكتروني", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, AppText.text(com.example.R.string.text_ba1d3e0fbc7b), Toast.LENGTH_SHORT).show()
                                 return@Button
                             }
                             forgotPasswordLoading = true
@@ -897,7 +899,7 @@ fun AuthScreen(
                                     showForgotPasswordDialog = false
                                     Toast.makeText(
                                         context,
-                                        "تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني بنجاح!",
+                                        AppText.text(com.example.R.string.text_973044e8aa85),
                                         Toast.LENGTH_LONG
                                     ).show()
                                 },
@@ -914,7 +916,7 @@ fun AuthScreen(
                         if (forgotPasswordLoading) {
                             CircularProgressIndicator(modifier = Modifier.size(18.dp), color = Color.White, strokeWidth = 2.dp)
                         } else {
-                            Text("إرسال الرابط", fontWeight = FontWeight.Bold)
+                            Text(AppText.text(com.example.R.string.text_61a0b44d7e5d), fontWeight = FontWeight.Bold)
                         }
                     }
                 },
@@ -923,7 +925,7 @@ fun AuthScreen(
                         onClick = { showForgotPasswordDialog = false },
                         enabled = !forgotPasswordLoading
                     ) {
-                        Text("إلغاء")
+                        Text(AppText.text(com.example.R.string.text_e776b0209b50))
                     }
                 },
                 shape = RoundedCornerShape(20.dp)

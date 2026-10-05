@@ -1,3 +1,1072 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">الخزنة الذكية</string>
+    <string name="app_name">"الخزنة الذكية"</string>
+    <string name="text_5996de7ad383" formatted="false">"يرجى إدخال مفتاح API الخاص بـ GoldAPI.io / Please enter your GoldAPI key"</string>
+    <string name="text_2262f8c02440" formatted="false">"مفتاح API غير صالح أو منتهي الصلاحية ({0}). يرجى التأكد من المفتاح في goldapi.io"</string>
+    <string name="text_13c20d98b615" formatted="false">"تم تجاوز الحد المسموح من الطلبات على GoldAPI.io (Quota limit exceeded)."</string>
+    <string name="text_2130a9d5ded6" formatted="false">"لم يتم العثور على بيانات العملة {0} أو الرمز {1} في GoldAPI."</string>
+    <string name="text_94b64c26d582" formatted="false">"فشل جلب الأسعار من GoldAPI.io (رمز الخطأ: {0} {1})"</string>
+    <string name="text_1b66c5619eb7" formatted="false">"لم يتم استلام أسعار صحيحة من GoldAPI.io للعملة {0}"</string>
+    <string name="text_6ba30f0e392f" formatted="false">"تعذر الاتصال بخادم GoldAPI.io. يرجى التحقق من اتصالك بالإنترنت."</string>
+    <string name="text_02f94b071638" formatted="false">"خطأ في الاتصال بـ GoldAPI: {0}"</string>
+    <string name="text_1eaf822690f6" formatted="false">"يجب تحديد كلمة مرور لحماية وتشفير النسخة الاحتياطية"</string>
+    <string name="text_b68c4167a739" formatted="false">"مسارات إيصالات الصور هي مراجع محلية على الجهاز ولا يتم تضمينها كملفات ثنائية محمولة"</string>
+    <string name="text_d149426b1847" formatted="false">"تتطلب هذه النسخة إدخال كلمة المرور المخصصة التي تم إنشاؤها بها"</string>
+    <string name="text_df61b78ee02b" formatted="false">"الملف ليس نسخة احتياطية صالحة لتطبيق الخزنة الذكية"</string>
+    <string name="text_da53da316ecd" formatted="false">"إصدار النسخة الاحتياطية غير مدعوم"</string>
+    <string name="text_062b2d70edce" formatted="false">"إصدار النسخة الاحتياطية أحدث من هذا التطبيق. يرجى تحديث التطبيق أولاً."</string>
+    <string name="text_4f3fab203926" formatted="false">"بيانات النسخة الاحتياطية تالفة أو فارغة"</string>
+    <string name="text_afceb2df3dcb" formatted="false">"فشل التحقق من سلامة الملف (Checksum Mismatch) — الملف تم التعديل عليه أو تالف"</string>
+    <string name="text_7b2a35c0d83a" formatted="false">"النسخة تحتوي على مبالغ ديون غير صالحة (NaN أو Infinity)"</string>
+    <string name="text_6bd03c82dd4a" formatted="false">"النسخة تحتوي على دفعات دين يتيمة لا ترتبط بأي دين مسجل (سجلات يتيمة: debtId = {0})"</string>
+    <string name="text_ea3b3bcf9724" formatted="false">"النسخة تحتوي على مبالغ دفعات دين غير صالحة"</string>
+    <string name="text_f9bbdae65dcf" formatted="false">"النسخة تحتوي على مصاريف خرجة يتيمة لا ترتبط بأي خرجة مسجلة (سجلات يتيمة: outingId = {0})"</string>
+    <string name="text_bf97239d27d0" formatted="false">"النسخة تحتوي على مبالغ مصاريف خرجة غير صالحة"</string>
+    <string name="text_7c87c4d590f7" formatted="false">"النسخة تحتوي على معاملات مالية بمبالغ غير صالحة"</string>
+    <string name="text_8db054edb533" formatted="false">"النسخة تحتوي على مدخرات نقدية بمبالغ غير صالحة"</string>
+    <string name="text_eecc440c33f0" formatted="false">"كلمة المرور غير صحيحة أو الملف تالف: {0}"</string>
+    <string name="text_9053a7c678f2" formatted="false">"الدمج غير مدعوم؛ استخدم الاستبدال بعد حفظ نسخة من بياناتك"</string>
+    <string name="text_178594875103" formatted="false">"عام"</string>
+    <string name="text_6d580c750a12" formatted="false">"الخزنة الرئيسية"</string>
+    <string name="text_c15fe79b40d5" formatted="false">"سبيكة"</string>
+    <string name="text_ba488a9c8812" formatted="false">"تعذر ربط مصروف بالخروجة الأصلية"</string>
+    <string name="text_25f603d8df62" formatted="false">"فشل ربط دفعة الدين: الدين الأصلي (id={0}) غير موجود في النسخة"</string>
+    <string name="text_085c13d97af5" formatted="false">"تنسيق النسخة الاحتياطية غير مدعوم أو تالف"</string>
+    <string name="text_5c54bb48fcff" formatted="false">"ج.م"</string>
+    <string name="text_6dbafe4740d0" formatted="false">"تعذر الوصول إلى مخزن المفاتيح الآمن (Hardware KeyStore unavailable): {0}"</string>
+    <string name="text_56a3db5d1b36" formatted="false">"فشل تشفير البيانات بشكل آمن"</string>
+    <string name="text_98426460a495" formatted="false">"فشل فك تشفير البيانات: المفتاح غير صالح أو البيانات معطوبة"</string>
+    <string name="text_d69dfb852af8" formatted="false">"متصل بالسحابة"</string>
+    <string name="text_c0d85c5fe38a" formatted="false">"جارِ المزامنة..."</string>
+    <string name="text_4384dc18a516" formatted="false">"وضع دون اتصال (مخزن محلياً)"</string>
+    <string name="text_22a67ceb72fd" formatted="false">"تعذر الاتصال بالسحابة"</string>
+    <string name="text_750a633cf01e" formatted="false">"الخزنة الذكية - Smart Safe"</string>
+    <string name="text_d171d8506d04" formatted="false">"تجاوز الميزانية"</string>
+    <string name="text_dad18188a262" formatted="false">"تجاوزت ميزانية «{0}» بنسبة {1}% (أنفقت {2} من أصل {3} {4})"</string>
+    <string name="text_e1ea6189fc30" formatted="false">"اقتراب من الحد الشهري"</string>
+    <string name="text_8b88d889acb8" formatted="false">"أنت قريب من سقف ميزانية «{0}»، المتبقي لك {1} {2} فقط."</string>
+    <string name="text_d91cfc1ad51c" formatted="false">"التزام مستحق قريبًا"</string>
+    <string name="text_ef044647ae0e" formatted="false">"لديك التزام «{0}» بقيمة {1} {2} خلال أيام قليلة."</string>
+    <string name="text_2a20f11fd4c3" formatted="false">"مصروف درس مستحق"</string>
+    <string name="text_00a1d5002e6c" formatted="false">"درس «{0}» للطفل {1} بقيمة {2} {3} مستحق قريبًا."</string>
+    <string name="text_6a90374a7a88" formatted="false">"نسبة ادخار ممتازة"</string>
+    <string name="text_64a60e7a0bf6" formatted="false">"وفّرت {0}% من دخلك هذا الشهر! أحسنت الاستمرار في إدارة مصاريفك."</string>
+    <string name="text_e0c6c094ba6d" formatted="false">"أعلى بند إنفاق"</string>
+    <string name="text_1c91b27c2d9d" formatted="false">"أعلى بند إنفاق هو «{0}» بنسبة {1}% من إجمالي مصروفاتك."</string>
+    <string name="text_b4a9c7335a43" formatted="false">"سداد دين مستحق"</string>
+    <string name="text_6b3c7e411379" formatted="false">"يجب سداد مبلغ {0} {1} للمستحق {2} خلال 3 أيام."</string>
+    <string name="text_edbc29df7299" formatted="false">"تحسن في معدل الإنفاق"</string>
+    <string name="text_ec6704a86003" formatted="false">"إنفاقك هذا الشهر أقل من الشهر الماضي بنسبة {0}% حتى الآن."</string>
+    <string name="text_12e1baa483b8" formatted="false">"ارتفاع وتيرة الإنفاق"</string>
+    <string name="text_2100370c5e06" formatted="false">"أنفقت حتى الآن {0}% أكثر مقارنة بالشهر الماضي."</string>
+    <string name="text_f2f7325ba6e9" formatted="false">"أعلى بند إنفاق هذا الشهر هو «{0}» ويمثل {1}% من إجمالي مصروفاتك."</string>
+    <string name="text_f89b12710474" formatted="false">"متوسط الإنفاق اليومي"</string>
+    <string name="text_f1e858bfb37f" formatted="false">"متوسط إنفاقك اليومي خلال هذا الشهر هو {0} {1}."</string>
+    <string name="text_fba441b2afbf" formatted="false">"يوم بلا مصروفات"</string>
+    <string name="text_e516a4efd7da" formatted="false">"لم تسجل أي مصروفات اليوم، يوم ممتاز للادخار!"</string>
+    <string name="text_e6b96ce194c0" formatted="false">"كلمة مرور"</string>
+    <string name="text_e4627f47b69b" formatted="false">"ملاحظة سرية"</string>
+    <string name="text_b4316420bcc3" formatted="false">"بطاقة بنكية"</string>
+    <string name="text_7822deda09a6" formatted="false">"مستند سري"</string>
+    <string name="text_cd638da461ee" formatted="false">"المبلغ غير صالح: يجب أن يكون رقمًا موجبًا"</string>
+    <string name="text_324813c834f1" formatted="false">"لا يمكن حذف الحركة قبل استعادة الخزنة المرتبطة بها"</string>
+    <string name="text_d375d2c8d4ee" formatted="false">"نوع الحركة غير مدعوم"</string>
+    <string name="text_a4de2402af53" formatted="false">"مبلغ المصروف غير صالح"</string>
+    <string name="text_709b83a58038" formatted="false">"سعر البيع غير صالح"</string>
+    <string name="text_321e7ab95b7e" formatted="false">"يجب أن يكون مبلغ التحويل رقمًا موجبًا أكبر من صفر"</string>
+    <string name="text_cb0aaf62ada7" formatted="false">"لا يمكن التحويل من الخزنة إلى نفسها"</string>
+    <string name="text_89acb7abfb61" formatted="false">"الخزنة المصدر غير موجودة"</string>
+    <string name="text_f72448989b3c" formatted="false">"رصيد الخزنة ({0}) لا يكفي لتحويل ({1})"</string>
+    <string name="text_7a962d7fe6e8" formatted="false">"لم يتم العثور على سجل التحويل أو ليس لديك صلاحية"</string>
+    <string name="text_5f125b7987c4" formatted="false">"الخزنة المصدر للتحويل غير موجودة"</string>
+    <string name="text_574658039b19" formatted="false">"الخزنة المستلمة للتحويل غير موجودة"</string>
+    <string name="text_24e31759427c" formatted="false">"مبلغ الدين غير صالح: يجب أن يكون أكبر من صفر"</string>
+    <string name="text_bb0319b35c1c" formatted="false">"يجب أن يكون مبلغ السداد أكبر من صفر"</string>
+    <string name="text_bcdddf713495" formatted="false">"لم يتم العثور على سجل الدين أو ليس لديك صلاحية الوصول إليه"</string>
+    <string name="text_c3a83f2c4743" formatted="false">"مبلغ السداد ({0}) يتجاوز المبلغ المتبقي ({1})"</string>
+    <string name="text_b5cb21d8142c" formatted="false">"سوبر ماركت"</string>
+    <string name="text_7272df92ca36" formatted="false">"الخزنة السحابية المشفرة"</string>
+    <string name="text_328ddce5bbca" formatted="false">"رجوع"</string>
+    <string name="text_cd0cf75e27fe" formatted="false">"الخزنة السحابية"</string>
+    <string name="text_b48ae0941d3d" formatted="false">"إضافة سريعة"</string>
+    <string name="text_5e6b2c72f16a" formatted="false">"صورة المستخدم"</string>
+    <string name="text_7a747c6bf88a" formatted="false">"توزيع الإنفاق حسب التصنيف (Pie Chart)"</string>
+    <string name="text_eb859d766281" formatted="false">"لا توجد مصروفات مسجلة هذا الشهر حتى الآن"</string>
+    <string name="text_413c51af19b5" formatted="false">"الإجمالي"</string>
+    <string name="text_8c69562811f0" formatted="false">"الإنفاق لكل شهر (Bar Chart)"</string>
+    <string name="text_6eea66fc03a3" formatted="false">"تطور الرصيد مع الوقت (Line Chart)"</string>
+    <string name="text_aee9e778a590" formatted="false">"سيظهر منحنى التطور مع زيادة العمليات"</string>
+    <string name="text_9aa663951be0" formatted="false">"مركز الإضافة السريعة"</string>
+    <string name="text_90cf34f71fc5" formatted="false">"دخل جديد"</string>
+    <string name="text_70c7a31530f9" formatted="false">"مصروف جديد"</string>
+    <string name="text_dc66f1ed7b0c" formatted="false">"تحويل خزن"</string>
+    <string name="text_011d3adc2108" formatted="false">"تسجيل دين"</string>
+    <string name="text_b7b0b20f899d" formatted="false">"ادخار نقدي"</string>
+    <string name="text_bbc92ccaafd4" formatted="false">"شراء ذهب"</string>
+    <string name="text_a20482d75799" formatted="false">"التزام / فاتورة"</string>
+    <string name="text_b6bc98a0e74b" formatted="false">"درس طفل"</string>
+    <string name="text_1a7c58a55bb7" formatted="false">"خروجة جماعية"</string>
+    <string name="text_959e6920e1ce" formatted="false">"النمو"</string>
+    <string name="text_f5107f3d6f0d" formatted="false">"تطور نمو المدخرات والأصول"</string>
+    <string name="text_d4f5338e88bb" formatted="false">"تحليل بياني تفاعلي للذهب والنقدية"</string>
+    <string name="text_33df7769cfd5" formatted="false">"اسحب للمعاينة"</string>
+    <string name="text_165afb7ab809" formatted="false">"تراكمي"</string>
+    <string name="text_564ef2249a86" formatted="false">"شهري"</string>
+    <string name="text_5e67cfd23385" formatted="false">"إجمالي الرصيد التراكمي"</string>
+    <string name="text_adc0ff0e37cb" formatted="false">"إجمالي إضافات الشهر"</string>
+    <string name="text_c851efa80cad" formatted="false">"الذهب"</string>
+    <string name="text_8e6f51524318" formatted="false">"النقدية"</string>
+    <string name="text_6d7a99b071cc" formatted="false">"مدخرات الذهب والسبائك"</string>
+    <string name="text_0ec0549f1122" formatted="false">"المدخرات والسيولة النقدية"</string>
+    <string name="text_0b61348b434f" formatted="false">"معدل النمو للفترة"</string>
+    <string name="text_114c955de7c4" formatted="false">"نمو إيجابي مستمر"</string>
+    <string name="text_a60a8f0e5530" formatted="false">"معدل مستقر"</string>
+    <string name="text_f9dc5d61b247" formatted="false">"متوسط الادخار الشهري"</string>
+    <string name="text_97297cf83728" formatted="false">"الشهر الأعلى ادخاراً"</string>
+    <string name="text_fec5262bafc9" formatted="false">"الرؤى والتحليلات الذكية المحلية"</string>
+    <string name="text_891924a91014" formatted="false">"لا توجد ملاحظات مالية مهمة حاليًا."</string>
+    <string name="text_5bf826c5e57c" formatted="false">"إغلاق"</string>
+    <string name="text_bf8d7bd53353" formatted="false">"تسجيل أموال لي عند الآخرين"</string>
+    <string name="text_a37cd3567d4d" formatted="false">"تسجيل دين عليّ للآخرين"</string>
+    <string name="text_7612847d2233" formatted="false">"أموال لي عند الغير"</string>
+    <string name="text_dd169bf23200" formatted="false">"دين عليّ للغير"</string>
+    <string name="text_7201473b2591" formatted="false">"اسم الشخص المدين"</string>
+    <string name="text_63feb3bb804e" formatted="false">"اسم الشخص الدائن"</string>
+    <string name="text_bc44a773ac92" formatted="false">"مبلغ الدين"</string>
+    <string name="text_c8a0cdd5189a" formatted="false">"ملاحظات / موعد السداد المتوقع"</string>
+    <string name="text_19af7a0f2ad8" formatted="false">"يرجى إدخال اسم الشخص"</string>
+    <string name="text_268c5b73a9b0" formatted="false">"يرجى إدخال مبلغ صحيح أكبر من صفر"</string>
+    <string name="text_56ee6e0d206b" formatted="false">"حفظ"</string>
+    <string name="text_e776b0209b50" formatted="false">"إلغاء"</string>
+    <string name="text_b1635a0b10cd" formatted="false">"تحصيل سداد من {0}"</string>
+    <string name="text_56d7f604af7f" formatted="false">"سداد دين لـ {0}"</string>
+    <string name="text_082322fac562" formatted="false">"المبلغ المتبقي: {0} {1} (من أصل {2} {3})"</string>
+    <string name="text_f88f6cb033cb" formatted="false">"المبلغ المدفوع / المحصل"</string>
+    <string name="text_d40d75caab23" formatted="false">"ملاحظة على الدفعة (اختياري)"</string>
+    <string name="text_c77f84848501" formatted="false">"يرجى إدخال مبلغ سداد صحيح"</string>
+    <string name="text_9ec43fbe481b" formatted="false">"مبلغ السداد أكبر من المتبقي ({0} {1})"</string>
+    <string name="text_11b0cc7ecdb7" formatted="false">"تأكيد السداد"</string>
+    <string name="text_2045dbe9ad39" formatted="false">"+ إضافة دخل جديد إلى الخزنة"</string>
+    <string name="text_8399a8121b07" formatted="false">"المبلغ (بالجنيه)"</string>
+    <string name="text_9daaed987022" formatted="false">"تصنيف الدخل"</string>
+    <string name="text_6e200a34c778" formatted="false">"الخزنة المستهدفة"</string>
+    <string name="text_d554c7b27da7" formatted="false">"الوصف / ملاحظة (اختياري)"</string>
+    <string name="text_5e3a3fdfce20" formatted="false">"إضافة"</string>
+    <string name="text_df20037c090f" formatted="false">"خضروات"</string>
+    <string name="text_5741b09082a3" formatted="false">"تم إرفاق صورة الفاتورة ✓"</string>
+    <string name="text_caf3f5fa344d" formatted="false">"بيانات سيتم إرسالها"</string>
+    <string name="text_b730937d1d5e" formatted="false">"متابعة الحفظ"</string>
+    <string name="text_a02759f37c7e" formatted="false">"+ إضافة درس للأطفال"</string>
+    <string name="text_c97c2377ad3c" formatted="false">"اسم الطفل (مثل: محمد، سارة)"</string>
+    <string name="text_d5681a90cfde" formatted="false">"المادة (مثل: رياضيات، إنجليزي)"</string>
+    <string name="text_0667a9bf31ce" formatted="false">"اسم المدرس"</string>
+    <string name="text_5e42a81c0bdb" formatted="false">"المبلغ الشهري"</string>
+    <string name="text_c82c597a6f7d" formatted="false">"حفظ الدرس"</string>
+    <string name="text_4cdf4b9f0083" formatted="false">"+ إضافة حساب / خزنة جديدة"</string>
+    <string name="text_02f7925bc7b6" formatted="false">"اسم الخزنة (مثل: محفظة اتصالات كاش، البنك الأهلي)"</string>
+    <string name="text_d85b2adf0086" formatted="false">"الرصيد الافتتاحي"</string>
+    <string name="text_866cb767ecfb" formatted="false">"إضافة الخزنة"</string>
+    <string name="text_7af1c46cdde4" formatted="false">"مطاعم"</string>
+    <string name="text_bdda0c5b4a61" formatted="false">"بنزين"</string>
+    <string name="text_dc0448c7bbdb" formatted="false">"كهرباء"</string>
+    <string name="text_356f390ccc4b" formatted="false">"إيجار"</string>
+    <string name="text_38fac5fcec7c" formatted="false">"مواصلات"</string>
+    <string name="text_21da4e22df73" formatted="false">"فواتير"</string>
+    <string name="text_ad5a18db7678" formatted="false">"علاج"</string>
+    <string name="text_e5ee006cd669" formatted="false">"مصاريف عامة"</string>
+    <string name="text_b0a9803991e9" formatted="false">"تأكيد حذف الميزانية"</string>
+    <string name="text_0a6fb171955e" formatted="false">"هل أنت تأكد من حذف حد الميزانية الشهرية لتصنيف ({0})؟"</string>
+    <string name="text_2d2bbdc2d694" formatted="false">"حذف"</string>
+    <string name="text_166e9d1b4fe3" formatted="false">"تعديل ميزانية ({0})"</string>
+    <string name="text_32f1966a4cd5" formatted="false">"تحديد ميزانية شهرية لتصنيف"</string>
+    <string name="text_e18899dad359" formatted="false">"سيقوم التطبيق بتنبيهك عند الاقتراب أو تجاوز الحد المسموح به لهذا البند شهرياً."</string>
+    <string name="text_1a0f3b39aac5" formatted="false">"اسم التصنيف"</string>
+    <string name="text_7b4764ccb0f0" formatted="false">"أو اختر تصنيفاً سريعاً:"</string>
+    <string name="text_0e2c15ffddf0" formatted="false">"الحد الأقصى (بالجنيه)"</string>
+    <string name="text_ef1c45607fc6" formatted="false">"حذف الميزانية"</string>
+    <string name="text_6d5aa037cf62" formatted="false">"حفظ الميزانية"</string>
+    <string name="text_53ccaef115ec" formatted="false">"تأكيد إزالة الحساب"</string>
+    <string name="text_97fab5f15441" formatted="false">"هل أنت تأكد من إلغاء وحذف هذا الحساب / الخزنة ({0}) بالكامل؟"</string>
+    <string name="text_5ef55c0db740" formatted="false">"إلغاء / حذف الحساب"</string>
+    <string name="text_98df46fbd83b" formatted="false">"تراجع"</string>
+    <string name="text_f55f825ec231" formatted="false">"تعديل الخزنة / الحساب"</string>
+    <string name="text_7ce2b7078a8e" formatted="false">"إلغاء الحساب"</string>
+    <string name="text_4555e916f59f" formatted="false">"اسم الخزنة / الحساب (مثل: بنك مصر، فودافون كاش)"</string>
+    <string name="text_8e6dada6dcc2" formatted="false">"تعديل مبلغ / رصيد الحساب الحالي"</string>
+    <string name="text_33081e44cb7c" formatted="false">"حفظ التغييرات"</string>
+    <string name="text_a0b93eb47f97" formatted="false">"الفواتير والالتزامات المستحقة"</string>
+    <string name="text_b87ef5afd60a" formatted="false">"{0} فواتير غير مسدّدة • الإجمالي: {1} {2}"</string>
+    <string name="text_1222aedee374" formatted="false">"🎉 جميع الفواتير والالتزامات مسدّدة!"</string>
+    <string name="text_0d209f6617e0" formatted="false">"لا توجد أي فواتير أو دروس معلّقة حالياً."</string>
+    <string name="text_f23d86570e8d" formatted="false">"الالتزامات الشهرية والفواتير"</string>
+    <string name="text_e359071b6d6c" formatted="false">"المبلغ: {0} {1}"</string>
+    <string name="text_82f89f773df0" formatted="false">"تاريخ الاستحقاق: {0}"</string>
+    <string name="text_d20206869e15" formatted="false">"ملاحظات: {0}"</string>
+    <string name="text_00892ccddcd9" formatted="false">"تسديد"</string>
+    <string name="text_0647a642ebee" formatted="false">"دروس الأبناء المستحقة"</string>
+    <string name="text_765b68c05b0d" formatted="false">"المعلم: {0}"</string>
+    <string name="text_b0a5de0afd74" formatted="false">"المبلغ: {0} {1}"</string>
+    <string name="text_aee0d2b605de" formatted="false">"تعديل بيانات الحساب وصورة الملف الشخصي"</string>
+    <string name="text_6d7077bedfa5" formatted="false">"اختر صورة الحساب / الأيقونة المفضلة:"</string>
+    <string name="text_e19b16bdb71a" formatted="false">"الاسم الكامل"</string>
+    <string name="text_794f68a24741" formatted="false">"اسم المستخدم"</string>
+    <string name="text_0915ef8ea533" formatted="false">"البريد الإلكتروني"</string>
+    <string name="text_8e70d27f84ec" formatted="false">"البريد"</string>
+    <string name="text_211cce4ca4ef" formatted="false">"رقم الهاتف"</string>
+    <string name="text_760c65a1fab6" formatted="false">"الهاتف"</string>
+    <string name="text_c12100c61b18" formatted="false">"تم إلغاء الحفظ؛ يمكنك المحاولة مجدداً"</string>
+    <string name="text_1eb9aa242624" formatted="false">"تغير الحساب؛ افتح النافذة مجدداً"</string>
+    <string name="text_a8793266c256" formatted="false">"تعذر فتح الملف للحفظ"</string>
+    <string name="text_06f26e015e2c" formatted="false">"تم حفظ النسخة المشفرة بنجاح"</string>
+    <string name="text_414e1e6dc40e" formatted="false">"تعذر حفظ النسخة"</string>
+    <string name="text_a929b754604e" formatted="false">"تعذر فتح الملف"</string>
+    <string name="text_e6804597584a" formatted="false">"حجم النسخة يتجاوز 20 ميجابايت"</string>
+    <string name="text_d384371c7d76" formatted="false">"النسخة غير صالحة"</string>
+    <string name="text_a9bd5dc954ba" formatted="false">"تعذر قراءة النسخة"</string>
+    <string name="text_694abc983ec7" formatted="false">"استبدال بيانات الحساب الحالي؟"</string>
+    <string name="text_722dca4d5e9b" formatted="false">"سيتم استبدال بيانات الحساب الحالي بالكامل. احفظ نسخة منها أولاً.\n"</string>
+    <string name="text_4df94446f435" formatted="false">"الحركات: {0}، الذهب: {1}، المدخرات: {2}.\n"</string>
+    <string name="text_f82f083ba1cf" formatted="false">"صور الإيصالات والمرفقات غير مضمنة. لن تتغير بيانات الحسابات الأخرى."</string>
+    <string name="text_7f40355588ef" formatted="false">"تمت الاستعادة بنجاح"</string>
+    <string name="text_82e454e3065d" formatted="false">"فشلت الاستعادة ولم تتغير بياناتك. النسخ القديمة للأسرار تتطلب مفتاح الجهاز الأصلي."</string>
+    <string name="text_b07a7cb3a1af" formatted="false">"تعذرت الاستعادة"</string>
+    <string name="text_5fc5f97d822a" formatted="false">"استبدال واستعادة"</string>
+    <string name="text_949fece4e9b3" formatted="false">"النسخ الاحتياطي المشفر"</string>
+    <string name="text_8a0a96f7a552" formatted="false">"احفظ بياناتك المالية وأسرار الخزنة بكلمة مرور. احتفظ بالكلمة لاستعادة النسخة على أي جهاز. الصور والمرفقات غير مضمنة."</string>
+    <string name="text_5aa636210f67" formatted="false">"كلمة مرور النسخة"</string>
+    <string name="text_f29136956db6" formatted="false">"تعذر إنشاء النسخة"</string>
+    <string name="text_1019d9dd0ede" formatted="false">"حفظ نسخة"</string>
+    <string name="text_0ba062d0f757" formatted="false">"تعذر فتح مستعرض الملفات"</string>
+    <string name="text_90bab6e8c99d" formatted="false">"فتح نسخة للاستعادة"</string>
+    <string name="text_d0e559035070" formatted="false">"إدارة وتخصيص الأقسام"</string>
+    <string name="text_241c729c5948" formatted="false">"يمكنك إخفاء أو إظهار أقسام التطبيق حسب احتياجاتك اليومية. لن يتم حذف أي بيانات مسجلة عند إخفاء القسم."</string>
+    <string name="text_ac5f8981223b" formatted="false">"الدخل والمصروفات"</string>
+    <string name="text_9eabacadf3bd" formatted="false">"القسم الأساسي (مفعّل دائمًا)"</string>
+    <string name="text_0b8ff6a5604b" formatted="false">"صافي الثروة"</string>
+    <string name="text_5053d7bf195f" formatted="false">"حساب الأصول والالتزامات"</string>
+    <string name="text_3c7023c98558" formatted="false">"الديون (لي / عليّ)"</string>
+    <string name="text_630aff3fd3d6" formatted="false">"إدارة الديون والأموال المستحقة"</string>
+    <string name="text_3ac532621c03" formatted="false">"التقويم المالي"</string>
+    <string name="text_4fc432f8f7b5" formatted="false">"عرض العمليات والالتزامات على مدار الشهر"</string>
+    <string name="text_0911e2b39ae7" formatted="false">"المدخرات النقدية"</string>
+    <string name="text_8203c5a07039" formatted="false">"صناديق الادخار والعملات"</string>
+    <string name="text_270cfe7362c3" formatted="false">"الذهب والسبائك"</string>
+    <string name="text_78bca3b4e55d" formatted="false">"المشغولات، السبائك، وقيمتها الحالية"</string>
+    <string name="text_bb5f9ffd9b6d" formatted="false">"الالتزامات والفواتير"</string>
+    <string name="text_9e754462d4ab" formatted="false">"الإيجار، الفواتير، والأقساط الشهرية"</string>
+    <string name="text_6831249d5a13" formatted="false">"دروس الأطفال"</string>
+    <string name="text_25b22a8dc6ba" formatted="false">"حسابات المدرسين ومصروفات المواد"</string>
+    <string name="text_1e293181f8da" formatted="false">"الخروجات الجماعية"</string>
+    <string name="text_6eee8a54550a" formatted="false">"حساب النزهات وتقسيم المصاريف"</string>
+    <string name="text_73227b4300b7" formatted="false">"الميزانيات وسقف الإنفاق"</string>
+    <string name="text_b3e90b0100ae" formatted="false">"تحديد ميزانية لكل تصنيف"</string>
+    <string name="text_25e01e43fe84" formatted="false">"مشغولات"</string>
+    <string name="text_acf535a08f2a" formatted="false">"عملة ذهبية"</string>
+    <string name="text_add83a5f7f2d" formatted="false">"جنيه ذهب"</string>
+    <string name="text_83b4b55adb2a" formatted="false">"أخرى"</string>
+    <string name="text_7bf909688837" formatted="false">"تعديل قطعة الذهب"</string>
+    <string name="text_30d402720db8" formatted="false">"مثال: سبيكة 10 جرام BTC أو غوايش لازوردي"</string>
+    <string name="text_2c3d2ad75181" formatted="false">"عيار {0}"</string>
+    <string name="text_9595409f46b5" formatted="false">"عيار {0}"</string>
+    <string name="text_0651503e203d" formatted="false">"مثال: 10.0 أو 8.0 أو 31.1"</string>
+    <string name="text_ae71934c1102" formatted="false">"جرام"</string>
+    <string name="text_09355e9347df" formatted="false">"8g (جنيه)"</string>
+    <string name="text_73e9421c8325" formatted="false">"31.1g (أونصة)"</string>
+    <string name="text_7bb800f48f49" formatted="false">"مثال: 50000"</string>
+    <string name="text_af339c9bb6d8" formatted="false">"القيمة الحالية بالخزنة:"</string>
+    <string name="text_fb74677123fd" formatted="false">"{0} ج.م"</string>
+    <string name="text_02d2dfdd5f2b" formatted="false">"سعر الجرام عيار {0}:"</string>
+    <string name="text_938d3e255411" formatted="false">"{0} ج.م/جرام"</string>
+    <string name="text_5736e8751e12" formatted="false">"الربح / العائد التقديري:"</string>
+    <string name="text_542bbcfa90cb" formatted="false">"{0}{1} ج.م ({2}%)"</string>
+    <string name="text_940eb631311c" formatted="false">"ملاحظات (العيار، رقم الكشف، التغليف...)"</string>
+    <string name="text_f12384b96e33" formatted="false">"تغيير الصورة"</string>
+    <string name="text_5fa7c4ce5839" formatted="false">"عيار {0}"</string>
+    <string name="text_953e21c4f2c5" formatted="false">"{0} جرام"</string>
+    <string name="text_fff19b8abb41" formatted="false">"سعر الشراء: {0} ج.م"</string>
+    <string name="text_92291ba269c7" formatted="false">"المبلغ الفعلي المستلم بالجنيه"</string>
+    <string name="text_3459448d9802" formatted="false">"الربح المحقق من البيع:"</string>
+    <string name="text_bb392991a17f" formatted="false">"الخسارة المحققة من البيع:"</string>
+    <string name="text_ae55a78e16f4" formatted="false">"{0}{1} ج.م"</string>
+    <string name="text_8c2840bd04e1" formatted="false">"ملاحظات البيع (اسم المحل، السعر للجرام، إلخ)"</string>
+    <string name="text_bd5b1d4d50d9" formatted="false">"تأكيد البيع"</string>
+    <string name="text_8f3cc63d292c" formatted="false">"تم البيع • {0}"</string>
+    <string name="text_0619e9cfa1ee" formatted="false">"في الخزنة • عيار {0}"</string>
+    <string name="text_2a5f152b8551" formatted="false">"نوع القطعة"</string>
+    <string name="text_6e31d9bdf7b4" formatted="false">"العيار"</string>
+    <string name="text_20218fd4bf04" formatted="false">"الوزن بالجرام"</string>
+    <string name="text_fc4d767fab55" formatted="false">"الغرض"</string>
+    <string name="text_f4bce26fcbd7" formatted="false">"للادخار والاستثمار"</string>
+    <string name="text_0694745f849b" formatted="false">"للزينة والاستخدام"</string>
+    <string name="text_21fc46ec23cd" formatted="false">"تاريخ الشراء"</string>
+    <string name="text_6d3b8a57de85" formatted="false">"سعر الشراء"</string>
+    <string name="text_d03ed058b768" formatted="false">"{0} ج.م"</string>
+    <string name="text_574c4d101909" formatted="false">"سعر الجرام الحالي"</string>
+    <string name="text_e9af10cebbd5" formatted="false">"{0} ج.م"</string>
+    <string name="text_29f8a247485e" formatted="false">"القيمة السوقية الحالية"</string>
+    <string name="text_97c39d12f919" formatted="false">"{0} ج.م"</string>
+    <string name="text_ec746491fb2e" formatted="false">"الربح / العائد"</string>
+    <string name="text_6f6b054fcaf6" formatted="false">"{0}{1} ج.م ({2}%)"</string>
+    <string name="text_37e9486a6817" formatted="false">"سعر البيع الفعلي"</string>
+    <string name="text_044936796b55" formatted="false">"{0} ج.م"</string>
+    <string name="text_6045f88b80a0" formatted="false">"تاريخ البيع"</string>
+    <string name="text_378584de934b" formatted="false">"الربح المحقق"</string>
+    <string name="text_267dda293317" formatted="false">"ملاحظات البيع"</string>
+    <string name="text_f05125201dc0" formatted="false">"ملاحظات إضافية"</string>
+    <string name="text_40ca4ab3b62c" formatted="false">"🤝 بيع القطعة"</string>
+    <string name="text_b4f76c3aa21e" formatted="false">"تعديل"</string>
+    <string name="text_32ef45f6c4dd" formatted="false">"أدخل سعر الجرام بالجنيه لكل عيار لتحديث قيمة سبائك وقطع الذهب تلقائيًا."</string>
+    <string name="text_c733eb2d663a" formatted="false">"تحديث لحظي عبر GoldAPI.io"</string>
+    <string name="text_f6141002d56d" formatted="false">"جلب الأسعار مباشرة من خادم goldapi.io"</string>
+    <string name="text_e06f61ff041d" formatted="false">"عيار 24 (السبائك النقية 99.9)"</string>
+    <string name="text_33c43892b786" formatted="false">"عيار 22"</string>
+    <string name="text_bf390a0524ba" formatted="false">"عيار 21 (الأكثر تداولاً / الجنيهات)"</string>
+    <string name="text_af3b35eeda19" formatted="false">"عيار 18 (المشغولات الحديثة)"</string>
+    <string name="text_e69a15a0a8d1" formatted="false">"عيار 14"</string>
+    <string name="text_a49055f064e4" formatted="false">"عيار 12"</string>
+    <string name="text_29dc89ac3e1d" formatted="false">"استعادة أسعار السوق الافتراضية"</string>
+    <string name="text_0b97ec532c0e" formatted="false">"حفظ وتحديث"</string>
+    <string name="text_0272fe37ecfa" formatted="false">"ر.س"</string>
+    <string name="text_258bc29b7ae5" formatted="false">"د.إ"</string>
+    <string name="text_0cb303cf3d30" formatted="false">"تحديث أسعار الذهب لحظياً"</string>
+    <string name="text_d9e689d6c7ee" formatted="false">"عبر مزود الخدمة GoldAPI.io"</string>
+    <string name="text_64667411274d" formatted="false">"مفتاح API مدمج ومفعل بنجاح. يتم جلب أسعار جرام الذهب لجميع الأعيرة عالمياً ومحلياً وفقاً للعملة المحددة."</string>
+    <string name="text_62aa66740379" formatted="false">"تحديث تلقائي كل يوم (12:00 ظهراً)"</string>
+    <string name="text_d0b12b2cc73d" formatted="false">"تحديث لحظي مجدول في الخلفية وإشعارك بالأسعار الجديدة"</string>
+    <string name="text_c5f5d253fe51" formatted="false">"مفتاح API الخاص بك (Access Token)"</string>
+    <string name="text_753686b7d08a" formatted="false">"مثال: goldapi-xxxxxxxxxxxxxxxx-drv"</string>
+    <string name="text_05f0a0d376f8" formatted="false">"⚡ المفتاح الحالي مدمج وجاهز للاستخدام"</string>
+    <string name="text_e3629ac272ce" formatted="false">"استعادة الافتراضي"</string>
+    <string name="text_5136d2baf9c5" formatted="false">"عملة التسعير:"</string>
+    <string name="text_a70ee3c6a8cd" formatted="false">"جنيه مصري (EGP)"</string>
+    <string name="text_98ca59bfadc9" formatted="false">"دولار أمريكي (USD)"</string>
+    <string name="text_1d09a9c7dfb6" formatted="false">"ريال سعودي (SAR)"</string>
+    <string name="text_1288bee92f4e" formatted="false">"درهم إماراتي (AED)"</string>
+    <string name="text_51ccc930475c" formatted="false">"جاري الجلب..."</string>
+    <string name="text_aa669a2ec51f" formatted="false">"جلب وتحديث الآن"</string>
+    <string name="text_342321732127" formatted="false">"تعديل المدخرات النقدية"</string>
+    <string name="text_a6a99774a971" formatted="false">"المبلغ المدخر"</string>
+    <string name="text_dd178e8508b9" formatted="false">"مثال: 25000"</string>
+    <string name="text_a7cc4e694ddc" formatted="false">"وصف / هدف الادخار"</string>
+    <string name="text_ebab6415c56f" formatted="false">"مثال: مدخرات صندوق الطوارئ، سيولة استثمارية..."</string>
+    <string name="text_2621b907b936" formatted="false">"تحويل بين الخزن"</string>
+    <string name="text_e9258a5036f8" formatted="false">"تحتاج إلى وجود خزنتين على الأقل لتتمكن من إجراء التحويل."</string>
+    <string name="text_d4c6598d6ffa" formatted="false">"حسناً"</string>
+    <string name="text_8ab3355c9b8e" formatted="false">"{0} (الرصيد: {1})"</string>
+    <string name="text_e4b742a3d7dd" formatted="false">"من خزنة"</string>
+    <string name="text_b22041755a8d" formatted="false">"{0} (رصيد: {1})"</string>
+    <string name="text_54536665883b" formatted="false">"إلى خزنة"</string>
+    <string name="text_6d657f28024a" formatted="false">"المبلغ المحول"</string>
+    <string name="text_e85b74a3d0e3" formatted="false">"ملاحظة (اختياري)"</string>
+    <string name="text_fca3bacd6fd9" formatted="false">"يرجى إدخال مبلغ تحويل صحيح"</string>
+    <string name="text_5af8cd372f42" formatted="false">"رصيد الخزنة ({0}) لا يكفي للتحويل"</string>
+    <string name="text_0728ae910ae8" formatted="false">"تنفيذ التحويل"</string>
+    <string name="text_cf185716b8b8" formatted="false">"الخزنة الذكية"</string>
+    <string name="text_ab638fff0e70" formatted="false">"الخزنة الذكية 🔐"</string>
+    <string name="text_225183350e62" formatted="false">"إدارة ميزانيتك وأصولك بأمان وموثوقية"</string>
+    <string name="text_7af517281485" formatted="false">"تأكيد البريد الإلكتروني"</string>
+    <string name="text_70a45a2ea39f" formatted="false">"“لقد أرسلنا رسالة تأكيد إلى {0}. يرجى تأكيد بريدك الإلكتروني ثم تسجيل الدخول.”"</string>
+    <string name="text_417be3fdb6ec" formatted="false">"بعد فتح الرابط في بريدك، اضغط زر تسجيل الدخول أدناه للمتابعة."</string>
+    <string name="text_5f4d515e99b3" formatted="false">"تسجيل الدخول / Login"</string>
+    <string name="text_750d50487cef" formatted="false">"تمت إعادة إرسال رسالة التأكيد بنجاح! / Verification email resent!"</string>
+    <string name="text_c67db272bcec" formatted="false">"إعادة إرسال رسالة التأكيد / Resend Email"</string>
+    <string name="text_f6f2f35c8ae0" formatted="false">"تغيير البريد الإلكتروني / Change Email"</string>
+    <string name="text_151ff0110e44" formatted="false">"تسجيل الدخول إلى حسابك"</string>
+    <string name="text_f4e3d0a3436a" formatted="false">"البريد الإلكتروني / Email"</string>
+    <string name="text_af8756f4d1af" formatted="false">"كلمة المرور / Password"</string>
+    <string name="text_491a8e0b00c1" formatted="false">"نسيت كلمة المرور؟ / Forgot Password?"</string>
+    <string name="text_a81fe1ccd11a" formatted="false">"يرجى إدخال البريد الإلكتروني وكلمة المرور"</string>
+    <string name="text_d05c14280302" formatted="false">"تم تسجيل الدخول بنجاح! مرحباً بك"</string>
+    <string name="text_c6c409f93604" formatted="false">"تسجيل الدخول / Log In"</string>
+    <string name="text_f37cc9c94b5a" formatted="false">"ليس لديك حساب؟"</string>
+    <string name="text_bb6cc0f4362b" formatted="false">"إنشاء حساب جديد"</string>
+    <string name="text_556ff56ab3e7" formatted="false">"الاسم الكامل / Full Name"</string>
+    <string name="text_00e10734fb09" formatted="false">"كلمة المرور (6 أحرف على الأقل)"</string>
+    <string name="text_2f9171d15f58" formatted="false">"تأكيد كلمة المرور / Confirm Password"</string>
+    <string name="text_aa496dc24580" formatted="false">"يرجى ملء جميع الحقول المطلوبة / Please fill all required fields"</string>
+    <string name="text_f3e5984d2c87" formatted="false">"كلمتا المرور غير متطابقتين / Passwords do not match"</string>
+    <string name="text_792bd0e35f6c" formatted="false">"كلمة المرور يجب أن تكون 6 أحرف على الأقل / Password must be at least 6 characters"</string>
+    <string name="text_46e64ce1d547" formatted="false">"إنشاء حساب / Register"</string>
+    <string name="text_9e6712c97481" formatted="false">"لديك حساب بالفعل؟"</string>
+    <string name="text_8c6117b67c8b" formatted="false">"تسجيل الدخول"</string>
+    <string name="text_728bd4323f59" formatted="false">"إعادة إرسال رسالة التأكيد"</string>
+    <string name="text_39859f44ad6e" formatted="false">"أدخل كلمة المرور الخاصة بحسابك لإعادة إرسال رابط التحقق إلى:\n{0}"</string>
+    <string name="text_7ba22cf7e99d" formatted="false">"كلمة المرور"</string>
+    <string name="text_07e0622de969" formatted="false">"تم إرسال رسالة التأكيد مرة أخرى إلى بريدك الإلكتروني!"</string>
+    <string name="text_ed2999d5230c" formatted="false">"إرسال الآن"</string>
+    <string name="text_ca1e582768c3" formatted="false">"التحقق بخطوتين"</string>
+    <string name="text_e408bd278ef3" formatted="false">"التحقق بخطوتين (2FA)"</string>
+    <string name="text_6b2387213f6b" formatted="false">"تم تفعيل حماية الخطوتين لحسابك. يرجى إدخال رمز الأمان المكون من 6 أرقام للتحقق والتسجيل:"</string>
+    <string name="text_79a84ac793d2" formatted="false">"رمز التحقق (مثال: 123456)"</string>
+    <string name="text_5988003cc37a" formatted="false">"تم التحقق بنجاح! مرحباً بك"</string>
+    <string name="text_123680f2a1b8" formatted="false">"رمز التحقق غير صحيح"</string>
+    <string name="text_c07631980d85" formatted="false">"تحقق وتسجيل"</string>
+    <string name="text_ea4ec56dde86" formatted="false">"إلغاء / الدخول المباشر"</string>
+    <string name="text_f779e19d8133" formatted="false">"إعادة تعيين كلمة المرور"</string>
+    <string name="text_5d097bf37a95" formatted="false">"أدخل بريدك الإلكتروني وسنرسل لك رابطاً لإعادة تعيين كلمة المرور بأمان عبر Firebase Authentication:"</string>
+    <string name="text_ba1d3e0fbc7b" formatted="false">"يرجى إدخال البريد الإلكتروني"</string>
+    <string name="text_973044e8aa85" formatted="false">"تم إرسال رابط إعادة التعيين إلى بريدك الإلكتروني بنجاح!"</string>
+    <string name="text_61a0b44d7e5d" formatted="false">"إرسال الرابط"</string>
+    <string name="text_3306a9374e57" formatted="false">"تشفير محلي AES-256 قبل الرفع • Cloud Firestore"</string>
+    <string name="text_fd14703a0a80" formatted="false">"قفل الخزنة"</string>
+    <string name="text_da6e6d26cdc6" formatted="false">"توليد كلمة سر"</string>
+    <string name="text_c3e160350e30" formatted="false">"سجل النشاط"</string>
+    <string name="text_811cabca45ae" formatted="false">"نسخة مشفرة"</string>
+    <string name="text_3e2d41206804" formatted="false">"بحث في عناصر الخزنة أو التصنيف..."</string>
+    <string name="text_0d97fd6e069e" formatted="false">"مسح"</string>
+    <string name="text_904779de8074" formatted="false">"الكل ({0})"</string>
+    <string name="text_f0d6b532fd55" formatted="false">"لا توجد عناصر مطابقة لخيارات البحث"</string>
+    <string name="text_31dd7827ba4f" formatted="false">"الخزنة السحابية فارغة حالياً"</string>
+    <string name="text_e39fb1c44b15" formatted="false">"اضغط على زر (+) بالأسفل لإضافة كلمات المرور أو الملاحظات السرية لتشفيرها ومزامنتها لحظياً مع Firestore."</string>
+    <string name="text_1f7d44005382" formatted="false">"تم النسخ بأمان إلى الحافظة"</string>
+    <string name="text_271dc1c1ef0a" formatted="false">"تم حذف العنصر بنجاح"</string>
+    <string name="text_0be31b74e082" formatted="false">"إضافة عنصر جديد"</string>
+    <string name="text_7c5f51aaf731" formatted="false">"تم التشفير والحفظ السحابي بنجاح"</string>
+    <string name="text_e532d79c9402" formatted="false">"تم نسخ كلمة المرور القوية إلى الحافظة"</string>
+    <string name="text_46e6841e2136" formatted="false">"نسخ"</string>
+    <string name="text_0804220142f6" formatted="false">"إخفاء"</string>
+    <string name="text_4bde76230633" formatted="false">"فك التشفير وعرض"</string>
+    <string name="text_e17b604a24c6" formatted="false">"تأكيد الحذف من الخزنة السحابية"</string>
+    <string name="text_5d7a567d8dca" formatted="false">"هل أنت متأكد من حذف \"{0}\"؟ سيتم حذف العنصر من Cloud Firestore نهائياً وتسجيل العملية في سجل النشاط."</string>
+    <string name="text_494feab789bf" formatted="false">"نعم، احذف"</string>
+    <string name="text_03d4f49a9f53" formatted="false">"إضافة عنصر مشفر جديد"</string>
+    <string name="text_2758eaf60da4" formatted="false">"تعديل عنصر الخزنة"</string>
+    <string name="text_931f42b60f68" formatted="false">"نوع العنصر:"</string>
+    <string name="text_245ea7c50a6b" formatted="false">"عنوان العنصر (مثلاً: حساب البنك، بريد العمل)"</string>
+    <string name="text_f746871b441d" formatted="false">"التصنيف (مثلاً: شخصي، بنوك، عمل)"</string>
+    <string name="text_7f112b75b4d6" formatted="false">"كلمة المرور السرية"</string>
+    <string name="text_0b410d0448e6" formatted="false">"رقم البطاقة والبيانات الحساسة"</string>
+    <string name="text_cd86b470984d" formatted="false">"الملاحظة السرية"</string>
+    <string name="text_a7c4e82d7f6c" formatted="false">"محتوى المستند أو النص السري"</string>
+    <string name="text_54cdc9f60a75" formatted="false">"التشفير يتم على هاتفك محلياً بـ AES-256 قبل رفعه إلى Firestore."</string>
+    <string name="text_ae865794266f" formatted="false">"يرجى إدخال عنوان العنصر"</string>
+    <string name="text_19d3d5df6a5e" formatted="false">"يرجى إدخال البيانات السرية أو كلمة المرور"</string>
+    <string name="text_a3a29271cc23" formatted="false">"تشفير وحفظ"</string>
+    <string name="text_50b8de962ea0" formatted="false">"مولّد كلمات المرور القوية"</string>
+    <string name="text_194a8a3e1619" formatted="false">"توليد جديد"</string>
+    <string name="text_9579eae2b253" formatted="false">"قوة كلمة المرور: "</string>
+    <string name="text_0d4da760f02f" formatted="false">"طول كلمة المرور:"</string>
+    <string name="text_f1a168373935" formatted="false">"{0} حرف"</string>
+    <string name="text_a34b6b4ce659" formatted="false">"أحرف كبيرة (A-Z)"</string>
+    <string name="text_b3b0acd2e3dc" formatted="false">"أرقام (0-9)"</string>
+    <string name="text_d2e4d9585aa6" formatted="false">"رموز خاصة (!@#$)"</string>
+    <string name="text_1b3717f1298b" formatted="false">"نسخ واستخدام"</string>
+    <string name="text_e20fd67d44a3" formatted="false">"سجل نشاطات الخزنة (Firestore)"</string>
+    <string name="text_9c607d6922dd" formatted="false">"لا توجد نشاطات مسجلة بعد في activity_log"</string>
+    <string name="text_bf83e7501261" formatted="false">"إضافة: {0}"</string>
+    <string name="text_f8b496281864" formatted="false">"تعديل: {0}"</string>
+    <string name="text_75791690d672" formatted="false">"حذف: {0}"</string>
+    <string name="text_8d8199888617" formatted="false">"تصدير نسخة احتياطية مشفرة (JSON)"</string>
+    <string name="text_777ff5690379" formatted="false">"تحتوي هذه النسخة على جميع عناصر الخزنة مشفرة بتقنية AES-256، ولا يمكن قراءة محتواها إلا من خلال هذا التطبيق."</string>
+    <string name="text_2c4618769704" formatted="false">"مشاركة / تصدير"</string>
+    <string name="text_8a7c72902813" formatted="false">"الخزنة السحابية مقفلة بأمان"</string>
+    <string name="text_f9fab4694b1f" formatted="false">"تم قفل الخزنة تلقائياً لحماية بياناتك المشفرة. اضغط على الزر أدناه لإلغاء القفل بالبصمة أو رمز المرور."</string>
+    <string name="text_e2326a8899ce" formatted="false">"إلغاء القفل (البصمة / الرمز)"</string>
+    <string name="text_5d344c201747" formatted="false">"إضافة جديد"</string>
+    <string name="text_693a3a889d03" formatted="false">"إجمالي الالتزامات"</string>
+    <string name="text_3c9fcaf97c72" formatted="false">"تم دفعه"</string>
+    <string name="text_557f737dff23" formatted="false">"المتبقي"</string>
+    <string name="text_a7b009ea9d81" formatted="false">"لا توجد التزامات شهرية مسجلة. اضغط + لإضافة إيجار أو فواتير."</string>
+    <string name="text_776204e9062e" formatted="false">"إجمالي الدروس"</string>
+    <string name="text_610c9fe690b4" formatted="false">"المتبقي للدروس"</string>
+    <string name="text_89bb34afddb6" formatted="false">"لا توجد دروس أطفال مسجلة. اضغط + لإضافة درس جديدة."</string>
+    <string name="text_cf950597f86b" formatted="false">"تاريخ الاستحقاق: {0}"</string>
+    <string name="text_a49bd76b1c26" formatted="false">"تم الدفع"</string>
+    <string name="text_a30287e12410" formatted="false">"غير مدفوع"</string>
+    <string name="text_edc05b12eab0" formatted="false">"درس"</string>
+    <string name="text_0b892ba3c6ad" formatted="false">"المدرس: {0} | {1}"</string>
+    <string name="text_423c46d500b6" formatted="false">"أفضل من الشهر الماضي"</string>
+    <string name="text_07573c6f7bf2" formatted="false">"مصروفاتك أقل من الشهر السابق"</string>
+    <string name="text_b1941eb051e1" formatted="false">"اقتصادي"</string>
+    <string name="text_ff701fdfe751" formatted="false">"وفّر 20% أو أكثر من دخل الشهر"</string>
+    <string name="text_b0bbbdfb65cd" formatted="false">"مُتابع يومي"</string>
+    <string name="text_caf13cd7cfae" formatted="false">"سجّل عمليات في 15 يوم أو أكثر هذا الشهر"</string>
+    <string name="text_bb695066ad60" formatted="false">"منظم الالتزامات"</string>
+    <string name="text_4cd4daac5f7a" formatted="false">"سدّد كل التزامات ودروس الشهر"</string>
+    <string name="text_e0b6c7065e6a" formatted="false">"تحت السيطرة"</string>
+    <string name="text_9c27d696138c" formatted="false">"توقع نهاية الشهر في المنطقة الآمنة"</string>
+    <string name="text_3196303021cd" formatted="false">"أرشيف الفواتير"</string>
+    <string name="text_6316da350959" formatted="false">"أرفق صور لنصف مصروفات الشهر على الأقل"</string>
+    <string name="text_e74cf8f88064" formatted="false">"إخفاء بطاقة المدخرات"</string>
+    <string name="text_c8b0cd8eb4b8" formatted="false">"إظهار بطاقة المدخرات"</string>
+    <string name="text_3beed403483e" formatted="false">"الديون"</string>
+    <string name="text_9555082e8961" formatted="false">"التقويم"</string>
+    <string name="text_0326e4ed17db" formatted="false">"تحويل"</string>
+    <string name="text_f6968545d1d8" formatted="false">"تخصيص"</string>
+    <string name="text_cec0e67fc3a9" formatted="false">"المستحقات"</string>
+    <string name="text_b5ddb3447714" formatted="false">"{0} مستحق"</string>
+    <string name="text_877e2ea5f33a" formatted="false">"إظهار/إخفاء الرصيد"</string>
+    <string name="text_4654875cd068" formatted="false">"سهم للأعلى - دخل"</string>
+    <string name="text_3e1877e91a6f" formatted="false">"سهم للأسفل - مصروفات"</string>
+    <string name="text_1b7441ca41de" formatted="false">"وضعي المالي اليوم (صافي الثروة) 🛡️"</string>
+    <string name="text_a738ad2e9389" formatted="false">"حساب محلي آمن لكافة الأصول والالتزامات"</string>
+    <string name="text_e11353146505" formatted="false">"تفاصيل الأصول ←"</string>
+    <string name="text_3765938331a5" formatted="false">"إجمالي الأصول"</string>
+    <string name="text_24d53def2103" formatted="false">"تحليلات ذكية"</string>
+    <string name="text_d383c633feff" formatted="false">"الرؤى والتحليلات الذكية 💡"</string>
+    <string name="text_0d4fdbffe901" formatted="false">"محرك ذكاء مالي محلي 100%"</string>
+    <string name="text_6e8c46e9d70b" formatted="false">"عرض الكل ({0}) ←"</string>
+    <string name="text_76258e00f832" formatted="false">"المدخرات"</string>
+    <string name="text_74885d00713f" formatted="false">"المدخرات والأصول المالية 💰"</string>
+    <string name="text_5814373b6d2e" formatted="false">"ذهب وسبائك + نقدية (أصل مالي)"</string>
+    <string name="text_f7d9ae166049" formatted="false">"عرض الكل ←"</string>
+    <string name="text_f3ac2e6da42a" formatted="false">"إجمالي المدخرات (كاش + ذهب)"</string>
+    <string name="text_a35683da616b" formatted="false">"أصل مالي"</string>
+    <string name="text_a468321f66f1" formatted="false">"💛 قيمة الذهب"</string>
+    <string name="text_c4321b7e4fed" formatted="false">"💵 نقدية"</string>
+    <string name="text_35dc88643736" formatted="false">"⚖️ وزن الذهب"</string>
+    <string name="text_23e643d03dde" formatted="false">"📦 القطع"</string>
+    <string name="text_fd835aa43312" formatted="false">"{0} قطع"</string>
+    <string name="text_7d83a31000b2" formatted="false">"التحليل الذكي"</string>
+    <string name="text_28dae43e8dcf" formatted="false">"متوقع يتبقى لك {0} {1} بنهاية الشهر بنفس معدل الصرف الحالي."</string>
+    <string name="text_2bccc4bbf0d9" formatted="false">"مصروفات الشهر الماضي"</string>
+    <string name="text_a39d9e5bcc98" formatted="false">"لا مقارنة متاحة"</string>
+    <string name="text_4757b3b88509" formatted="false">"دخل الشهر الماضي"</string>
+    <string name="text_3431c146da7c" formatted="false">"متوسط الصرف اليومي"</string>
+    <string name="text_9aa255f3885d" formatted="false">"حد الصرف الآمن يومياً"</string>
+    <string name="text_f9aaa00729de" formatted="false">"إضافة دخل"</string>
+    <string name="text_150293b7792d" formatted="false">"نسبة المستهلك من الراتب"</string>
+    <string name="text_be1e41cbff16" formatted="false">"المتبقي: {0} {1}"</string>
+    <string name="text_501aabb98ee5" formatted="false">"المنفق: {0} {1}"</string>
+    <string name="text_2e3575a463d9" formatted="false">"تحليل الراتب"</string>
+    <string name="text_4f7580d78f5f" formatted="false">"أين ذهب راتبي هذا الشهر؟"</string>
+    <string name="text_d7e36702a621" formatted="false">"لقد قمت بإدارة {0}% من راتبك بحكمة. تفقد صفحة التقارير لرؤية التحليل التفصيلي."</string>
+    <string name="text_ba828efad7d2" formatted="false">"مكافآتك"</string>
+    <string name="text_d6ed50d80f68" formatted="false">"مكافآتك هذا الشهر"</string>
+    <string name="text_f8518fa27a4a" formatted="false">"كمّل تسجيل عملياتك وسدّد التزاماتك في وقتها لتحصل على باقي الشارات."</string>
+    <string name="text_e50acc511afa" formatted="false">"آخر العمليات"</string>
+    <string name="text_d36294e5abb3" formatted="false">"عرض الكل"</string>
+    <string name="text_c302118eabab" formatted="false">"لا توجد عمليات بعد"</string>
+    <string name="text_cecfe96db0ad" formatted="false">"الالتزامات الشهرية"</string>
+    <string name="text_2dffd674f9b7" formatted="false">"أين ذهب راتبي؟"</string>
+    <string name="text_886b0c458f0a" formatted="false">"إدارة الديون (لي / عليّ)"</string>
+    <string name="text_d561097988e6" formatted="false">"إضافة دين"</string>
+    <string name="text_b25109f466b5" formatted="false">"لي عند الغير"</string>
+    <string name="text_f032f8eb25a3" formatted="false">"عليّ للغير"</string>
+    <string name="text_d72beaf029a2" formatted="false">"الصافي"</string>
+    <string name="text_a8ff844b8378" formatted="false">"لي عند الآخرين ({0})"</string>
+    <string name="text_5873877f1bb9" formatted="false">"أموال عليّ ({0})"</string>
+    <string name="text_11fdef2dc5f8" formatted="false">"الكل"</string>
+    <string name="text_8fb4e938d831" formatted="false">"نشط / غير مسدد"</string>
+    <string name="text_82a270439354" formatted="false">"تم السداد بالكامل"</string>
+    <string name="text_273bde324028" formatted="false">"لا توجد أموال مستحقة لك مسجلة حاليًا"</string>
+    <string name="text_ad6cff15df96" formatted="false">"لا توجد ديون مستحقة عليك مسجلة حاليًا"</string>
+    <string name="text_8dd0bd35db83" formatted="false">"تسجيل دين جديد"</string>
+    <string name="text_3bdc0e233e92" formatted="false">"مسدد بالكامل"</string>
+    <string name="text_e69117cdd5fc" formatted="false">"مسدد جزئيًا"</string>
+    <string name="text_41b054617ef6" formatted="false">"نشط"</string>
+    <string name="text_17a1e9ba641c" formatted="false">"المبلغ الكلي"</string>
+    <string name="text_5c793e037689" formatted="false">"تم سداده"</string>
+    <string name="text_e8348cb43f1e" formatted="false">"تسجيل سداد"</string>
+    <string name="text_18e5596bb836" formatted="false">"العمليات والبحث"</string>
+    <string name="text_d4bd10df9899" formatted="false">"سجل الحركات المالية المتقدم"</string>
+    <string name="text_90b6c869a171" formatted="false">"الإعدادات"</string>
+    <string name="text_dfee1ee1b524" formatted="false">"مصروفات"</string>
+    <string name="text_b321cd775e8e" formatted="false">"دخل"</string>
+    <string name="text_b2a8da21fa0d" formatted="false">"تحويلات"</string>
+    <string name="text_d076b6b87278" formatted="false">"بحث بالوصف، الخزنة، التصنيف، أو المبلغ..."</string>
+    <string name="text_fb8387b2d570" formatted="false">"فلاتر متقدمة"</string>
+    <string name="text_8d23c3965527" formatted="false">"النطاق الزمني"</string>
+    <string name="text_d38aa97bb96e" formatted="false">"كل الأوقات"</string>
+    <string name="text_b7523863599a" formatted="false">"هذا الشهر"</string>
+    <string name="text_349de9cf3c2d" formatted="false">"آخر 7 أيام"</string>
+    <string name="text_c94c6c1e0911" formatted="false">"آخر 30 يوم"</string>
+    <string name="text_cc23678b3cbc" formatted="false">"الترتيب حسب"</string>
+    <string name="text_36299595d69c" formatted="false">"الأحدث"</string>
+    <string name="text_e69ddb8fafca" formatted="false">"الأقدم"</string>
+    <string name="text_42b76568a25e" formatted="false">"الأعلى قيمة"</string>
+    <string name="text_81ae1f96d293" formatted="false">"الأقل قيمة"</string>
+    <string name="text_9650779e9a22" formatted="false">"الخزنة"</string>
+    <string name="text_5db167239353" formatted="false">"جميع الخزن"</string>
+    <string name="text_93fe23db91f1" formatted="false">"لا توجد نتائج مطابقة لبحثك أو الفلاتر المحددة"</string>
+    <string name="text_1c63af81805c" formatted="false">"الشهر السابق"</string>
+    <string name="text_f948600173e7" formatted="false">"الشهر القادم"</string>
+    <string name="text_e8c6dbaeeb61" formatted="false">"الدخل"</string>
+    <string name="text_8b9fbc5898c7" formatted="false">"المصروف"</string>
+    <string name="text_a478daf22935" formatted="false">"سبت"</string>
+    <string name="text_29c2a914d745" formatted="false">"أحد"</string>
+    <string name="text_a46d7f58ba2c" formatted="false">"اثنين"</string>
+    <string name="text_81a8732d2ed7" formatted="false">"ثلاثاء"</string>
+    <string name="text_67e1e0bf90b1" formatted="false">"أربعاء"</string>
+    <string name="text_af0a56c556f2" formatted="false">"خميس"</string>
+    <string name="text_5a03133f974d" formatted="false">"جمعة"</string>
+    <string name="text_35ca74820a1f" formatted="false">"EEEE، d MMMM yyyy"</string>
+    <string name="text_937bce15faae" formatted="false">"الدخل: +{0} {1}"</string>
+    <string name="text_140ac31d42be" formatted="false">"المصروف: -{0} {1}"</string>
+    <string name="text_6f5935f75864" formatted="false">"لا توجد حركات مالية أو التزامات مسجلة في هذا اليوم."</string>
+    <string name="text_61e3af204ba7" formatted="false">"تحويل: {0} ← {1}"</string>
+    <string name="text_ce2e34b7a188" formatted="false">"التزام: {0}"</string>
+    <string name="text_0ac49977fcf1" formatted="false">"درس: {0} - {1}"</string>
+    <string name="text_56ea571722e0" formatted="false">"دين: {0} ({1})"</string>
+    <string name="text_a79f76c2ab19" formatted="false">"لي"</string>
+    <string name="text_36b11439ed12" formatted="false">"عليّ"</string>
+    <string name="text_d0e88faf7ac5" formatted="false">"صافي ثروتك"</string>
+    <string name="text_3e62f9aa2335" formatted="false">"إجمالي ما تملكه ناقص إجمالي ما عليك"</string>
+    <string name="text_f5b0b65c4672" formatted="false">"ما تملكه: {0}%"</string>
+    <string name="text_2ca01d14a9cd" formatted="false">"ما عليك: {0}%"</string>
+    <string name="text_a5cab93ddaa9" formatted="false">"أين توجد أموالك؟ (توزيع الأصول)"</string>
+    <string name="text_6df2c1412f00" formatted="false">"الخزن النقدية"</string>
+    <string name="text_f805f891c45a" formatted="false">"أموال لدى الآخرين (ديون لي)"</string>
+    <string name="text_75f44963519a" formatted="false">"سجل صافي الثروة عبر الزمن"</string>
+    <string name="text_17eb7e3e00d7" formatted="false">"7 أيام"</string>
+    <string name="text_843bcefe4002" formatted="false">"30 يوم"</string>
+    <string name="text_7e25a36b91db" formatted="false">"90 يوم"</string>
+    <string name="text_f91a7c9817c8" formatted="false">"سنة"</string>
+    <string name="text_a07a7191ef8a" formatted="false">"يتم حفظ لقطات دورية لصافي الثروة لتتبع نمو أصولك عبر الزمن."</string>
+    <string name="text_ea8176c4a653" formatted="false">"{0}% من إجمالي الأصول"</string>
+    <string name="text_336c34278460" formatted="false">"بدء خروجة جديدة؟"</string>
+    <string name="text_c050a00c7360" formatted="false">"سيتم مسح جميع مصاريف الخروجة الحالية وتصفير الحساب للبدء من جديد. هل أنت متأكد؟"</string>
+    <string name="text_38d709195016" formatted="false">"نعم، مسح وبدء من جديد"</string>
+    <string name="text_3141e1c6517c" formatted="false">"حذف هذا المصروف؟"</string>
+    <string name="text_572753d189df" formatted="false">"هل تريد حذف مصروف \"{0}\" بقيمة {1} {2}؟"</string>
+    <string name="text_45fb4b937312" formatted="false">"إضافة مصروف"</string>
+    <string name="text_a6afe34102b0" formatted="false">"ملخص مصاريف الخروجة"</string>
+    <string name="text_eca3d1ae0873" formatted="false">"إجمالي المصاريف"</string>
+    <string name="text_6e916c175a10" formatted="false">"عدد أفراد اللمة"</string>
+    <string name="text_ea26c1bf9441" formatted="false">"زيادة"</string>
+    <string name="text_30d31f5738c7" formatted="false">"{0} أفراد"</string>
+    <string name="text_dfd7b77607be" formatted="false">"تقليل"</string>
+    <string name="text_ee9024498f3d" formatted="false">"حساب كل واحد (نصيب الفرد)"</string>
+    <string name="text_559f0d9909a5" formatted="false">"({0} {1} ÷ {2} مشاركين)"</string>
+    <string name="text_114c075183e5" formatted="false">"تصدير ومشاركة تقرير الخروجة PDF"</string>
+    <string name="text_b754b228e048" formatted="false">"سجل مصاريف الخروجة ({0})"</string>
+    <string name="text_ca2624f4fe65" formatted="false">"خروجة جديدة"</string>
+    <string name="text_d45aaab246f4" formatted="false">"لا توجد مصاريف مسجلة لهذه الخروجة بعد"</string>
+    <string name="text_ec85d13b5b34" formatted="false">"سجل حساب المطعم، الكافيه، المواصلات أو أي مصروفات، وسيتم تقاسم الحساب تلقائياً!"</string>
+    <string name="text_16bb72948518" formatted="false">"إضافة أول مصروف للخروجة"</string>
+    <string name="text_3da768e11e40" formatted="false">"مصروف خروجة"</string>
+    <string name="text_fd1ca7d5d2d0" formatted="false">"مطعم / عشاء"</string>
+    <string name="text_ab4ebd37e271" formatted="false">"كافيه / مشروبات"</string>
+    <string name="text_2ca551bb7508" formatted="false">"مواصلات / بنزين"</string>
+    <string name="text_03b7571dc33e" formatted="false">"تذاكر سينما"</string>
+    <string name="text_2a5edfcc4a0c" formatted="false">"حلوى / سناك"</string>
+    <string name="text_8680b323aade" formatted="false">"إضافة مصروف للخروجة"</string>
+    <string name="text_5056a21deb50" formatted="false">"اقتراحات سريعة:"</string>
+    <string name="text_5eaf512b3988" formatted="false">"بيان المصروف (مطعم، كافيه، مواصلات...)"</string>
+    <string name="text_9c3c9f280b7e" formatted="false">"المبلغ ({0})"</string>
+    <string name="text_ef2d8a859c1f" formatted="false">"اسم دافع المبلغ (اختياري)"</string>
+    <string name="text_c7291590417a" formatted="false">"يرجى كتابة بيان المصروف"</string>
+    <string name="text_f0e0c629edec" formatted="false">"يرجى كتابة مبلغ صحيح أكبر من صفر"</string>
+    <string name="text_5b644797aa91" formatted="false">"إضافة المصروف"</string>
+    <string name="text_92fec7ad5c88" formatted="false">"التقارير"</string>
+    <string name="text_a7cd97e4dea8" formatted="false">"التقارير المتقدمة والتحليلات 📊"</string>
+    <string name="text_503d8216b8f4" formatted="false">"سجل الديون"</string>
+    <string name="text_cf302286664a" formatted="false">"الرؤى الذكية"</string>
+    <string name="text_8f5445f810ec" formatted="false">"تصدير التقرير الشهري"</string>
+    <string name="text_111dfb6319d5" formatted="false">"اختر الشهر ثم صَدّر ملف Excel أو احفظه PDF."</string>
+    <string name="text_4e1f6029deef" formatted="false">"اختر الشهر"</string>
+    <string name="text_37ec3ec47c75" formatted="false">"PDF / طباعة"</string>
+    <string name="text_bd8897e19b50" formatted="false">"جاري تصدير ملف Excel..."</string>
+    <string name="text_f6521530b6cc" formatted="false">"متوقع يتبقى لك {0} {1} بنهاية الشهر بنفس معدل الصرف الحالي."</string>
+    <string name="text_7cf2abd361a2" formatted="false">"توقع استهلاك الدخل بنهاية الشهر"</string>
+    <string name="text_0428e544f101" formatted="false">"📅 باقي {0} يوم • التزامات غير مدفوعة 0 {1}"</string>
+    <string name="text_5e75dfd7b871" formatted="false">"إجمالي الدخل"</string>
+    <string name="text_d93aba8f3b2c" formatted="false">"إجمالي المصروفات"</string>
+    <string name="text_c3ce011cbfc7" formatted="false">"الرصيد المتبقي"</string>
+    <string name="text_ed84b21f84c6" formatted="false">"أكثر بند إنفاقاً"</string>
+    <string name="text_c04f30c9a387" formatted="false">"أقل بند إنفاقاً"</string>
+    <string name="text_2cbbc5ba846a" formatted="false">"عدد العمليات"</string>
+    <string name="text_53ac5b04893d" formatted="false">"فواتير مرفقة"</string>
+    <string name="text_74d7c133752f" formatted="false">"توقع نهاية الشهر"</string>
+    <string name="text_3fabef14e488" formatted="false">"نسبة ما تم صرفه من الدخل"</string>
+    <string name="text_26f31242494d" formatted="false">"مقارنة بالشهر الماضي: 0 {0} مصروفات"</string>
+    <string name="text_31fe2016cd80" formatted="false">"تقرير الشهر"</string>
+    <string name="text_492381ce41a9" formatted="false">"تقرير الشهر الحالي المالي"</string>
+    <string name="text_e8e2b8828ad0" formatted="false">"أكثر بند تم الإنفاق عليه"</string>
+    <string name="text_aa57db81e7d4" formatted="false">"أبريل"</string>
+    <string name="text_391eb76ab061" formatted="false">"مايو"</string>
+    <string name="text_3131fb252b85" formatted="false">"يونيو"</string>
+    <string name="text_cf519ecce6c0" formatted="false">"يوليو"</string>
+    <string name="text_70667b3fc365" formatted="false">"أغسطس"</string>
+    <string name="text_d7859e38f801" formatted="false">"توقع الرصيد"</string>
+    <string name="text_f2ffa599e922" formatted="false">"توقع الرصيد المتبقي بنهاية الشهر"</string>
+    <string name="text_f12ebdf1be6f" formatted="false">"بناءً على معدل صرفك اليومي الحالي، يتوقع أن يتبقى معك بحلول نهاية الشهر: {0} {1}"</string>
+    <string name="text_452ec922a214" formatted="false">"مارس"</string>
+    <string name="text_5135047b6a76" formatted="false">"محفظة الأصول والادخار بالذهب والنقد"</string>
+    <string name="text_5ddcc07d9261" formatted="false">"أسعار الذهب اللحظية (GoldAPI.io)"</string>
+    <string name="text_e217243cfbbe" formatted="false">"جاري التحديث..."</string>
+    <string name="text_e91d3fd3a4fb" formatted="false">"تحديث: {0}"</string>
+    <string name="text_da854123b7f7" formatted="false">"تحديث يومي 12:00 ظ ⏰"</string>
+    <string name="text_cee64bdacca4" formatted="false">"اضغط للتحديث اللحظي ⚡"</string>
+    <string name="text_2dc8f9843e1d" formatted="false">"عيار {0}:"</string>
+    <string name="text_2d933cb9406f" formatted="false">"إعدادات GoldAPI"</string>
+    <string name="text_a7630d594814" formatted="false">"تعديل يدوي"</string>
+    <string name="text_97e232087e83" formatted="false">"قطعة"</string>
+    <string name="text_1dea7c9eb0a7" formatted="false">"إضافة ذهب / سبيكة"</string>
+    <string name="text_a71cfacf7e17" formatted="false">"إضافة نقدية"</string>
+    <string name="text_2975d499b10d" formatted="false">"بحث بالاسم، الماركة، أو الملاحظات..."</string>
+    <string name="text_45b5db7f16d2" formatted="false">"عيار 24"</string>
+    <string name="text_b8c5bc7c6ec1" formatted="false">"عيار 21"</string>
+    <string name="text_ad3707ff7947" formatted="false">"عيار 18"</string>
+    <string name="text_c71b3f4b0b35" formatted="false">"السبائك"</string>
+    <string name="text_fa00e620f1f1" formatted="false">"جنيهات ذهب"</string>
+    <string name="text_cf067ab1d883" formatted="false">"للادخار"</string>
+    <string name="text_996dd7d54174" formatted="false">"اضغط على زر «إضافة ذهب / سبيكة» لتسجيل أول قطعة ومتابعة قيمتها لحظة بلحظة."</string>
+    <string name="text_352a4e34c03b" formatted="false">"إضافة سبيكة أو قطعة ذهب"</string>
+    <string name="text_07f1aabba20f" formatted="false">"سجّل مدخراتك النقدية وحسابات الطوارئ لمتابعة إجمالي ثروتك في مكان واحد."</string>
+    <string name="text_6fc4b9ab4c80" formatted="false">"إضافة مدخرات نقدية"</string>
+    <string name="text_bb944309b74d" formatted="false">"عند بيع أي قطعة ذهب من الخزنة، ستظهر هنا تفاصيل البيع والأرباح المحققة وتاريخ العملية."</string>
+    <string name="text_dff77eec3f8f" formatted="false">"القيمة الحالية بالخزنة"</string>
+    <string name="text_c8480ab06f6d" formatted="false">"صافي الربح"</string>
+    <string name="text_4b50574269e7" formatted="false">"شراء: {0}"</string>
+    <string name="text_314a88e340e3" formatted="false">"🤝 بيع"</string>
+    <string name="text_d9aad4bb6bfb" formatted="false">"مدخرات نقدية بالخزنة"</string>
+    <string name="text_df6ebe251845" formatted="false">"تاريخ البيع: {0}"</string>
+    <string name="text_28988bc62a1d" formatted="false">"ربح: {0}{1} {2}"</string>
+    <string name="text_8d7760163026" formatted="false">"سعر الشراء: {0} {1}"</string>
+    <string name="text_0b4d734ed267" formatted="false">"سعر البيع: {0} {1}"</string>
+    <string name="text_c3bcb0096479" formatted="false">"توزيع الأصول والمدخرات"</string>
+    <string name="text_7a96970769a2" formatted="false">"الذهب والسبائك: {0}%"</string>
+    <string name="text_cf682f5d91ab" formatted="false">"السيولة النقدية: {0}%"</string>
+    <string name="text_f27f52730d77" formatted="false">"تفاصيل الذهب حسب العيار"</string>
+    <string name="text_d90fde7647eb" formatted="false">"عيار {0}:"</string>
+    <string name="text_c7cc152a38e2" formatted="false">"({0} قطع)"</string>
+    <string name="text_fdde5110e883" formatted="false">"{0} جرام"</string>
+    <string name="text_e60659537352" formatted="false">"إرشادات الخزنة الذكية لتنمية المدخرات"</string>
+    <string name="text_2a20ad043671" formatted="false">"الادخار بالسبائك وجنيهات الذهب يقلل من خسارة المصنعية عند إعادة البيع مع إمكانية استرداد الكاش باك (Cashback)."</string>
+    <string name="text_0564400ee997" formatted="false">"الحفاظ على نسبة 30% إلى 50% من المدخرات في الذهب يحمي القوة الشرائية لأموالك على المدى الطويل ضد التضخم."</string>
+    <string name="text_9c6c3f2d63a2" formatted="false">"تجنب بيع الذهب إلا عند الضرورة أو تحويله إلى أصل استثماري ذو عائد أعلى."</string>
+    <string name="text_d1768f19993f" formatted="false">"اليوم، 04:30 م"</string>
+    <string name="text_22847c503bbf" formatted="false">"ريال سعودي"</string>
+    <string name="text_3e3938408415" formatted="false">"درهم إماراتي"</string>
+    <string name="text_9baef1f747f9" formatted="false">"دولار أمريكي"</string>
+    <string name="text_daa818587279" formatted="false">"تأكيد حذف الخزنة / الحساب"</string>
+    <string name="text_9e5ba8f6616f" formatted="false">"هل أنت متأكد من رغبتك في حذف \'{0}\' ({1} {2})؟ سيتم حذفها نهائياً."</string>
+    <string name="text_2f1f7ddd4129" formatted="false">"نعم، حذف الحساب"</string>
+    <string name="text_5662250c3ec4" formatted="false">"حفظ نسخة احتياطية / استعادة البيانات"</string>
+    <string name="text_f55b07f1ae61" formatted="false">"تعديل الحساب"</string>
+    <string name="text_41510ce0badf" formatted="false">"تعديل بيانات الحساب"</string>
+    <string name="text_8710d64ff1ad" formatted="false">"تسجيل الخروج"</string>
+    <string name="text_e0844ef2c543" formatted="false">"الحسابات"</string>
+    <string name="text_b7ad4afa609d" formatted="false">"الخزانات والحسابات المالية"</string>
+    <string name="text_e55a7fa423a7" formatted="false">"إضافة حساب"</string>
+    <string name="text_47e4c5109ec1" formatted="false">"تعديل المبلغ/الاسم"</string>
+    <string name="text_278eeef2a57d" formatted="false">"إلغاء الخزنة/الحساب"</string>
+    <string name="text_185744848ec0" formatted="false">"الميزانية"</string>
+    <string name="text_3a2c390f55f5" formatted="false">"الميزانية الشهرية للتصنيفات"</string>
+    <string name="text_c32f3d7416d3" formatted="false">"إضافة حد جديد"</string>
+    <string name="text_3372c9d2ab39" formatted="false">"لم يتم تحديد أقصى حد للميزانية لأي تصنيف."</string>
+    <string name="text_615f47f69884" formatted="false">"العملة، المظهر، الأمان والتنبيهات"</string>
+    <string name="text_59d33e6d1d08" formatted="false">"الوضع الداكن (Dark Mode)"</string>
+    <string name="text_3318a3c350a9" formatted="false">"الوضع الداكن"</string>
+    <string name="text_b2aa3b181ef7" formatted="false">"قفل الخزنة ببصمة الإصبع / PIN"</string>
+    <string name="text_2cd8f97fe205" formatted="false">"بصمة الأصبع"</string>
+    <string name="text_92b90aa9b99f" formatted="false">"مُفعل - كود أمان عند الدخول"</string>
+    <string name="text_e17556ce6846" formatted="false">"غير مُفعل"</string>
+    <string name="text_518c30ca8f7f" formatted="false">"تذكير يومي بمراجعة المصروفات"</string>
+    <string name="text_3ce2fa4d9cb9" formatted="false">"إشعار تلقائي يومياً الساعة 8:00 مساءً"</string>
+    <string name="text_7274e30c25f2" formatted="false">"التنبيهات اليومية"</string>
+    <string name="text_d32fd57d806f" formatted="false">"تم جدولة إشعار تجريبي يظهر فوراً"</string>
+    <string name="text_21011df2bcce" formatted="false">"تجربة الإشعار"</string>
+    <string name="text_eba265c3744d" formatted="false">"تجربة إشعار التذكير الآن (Test Notification)"</string>
+    <string name="text_7d11e29cfdd6" formatted="false">"تصدير التقارير المالية"</string>
+    <string name="text_d2a75b7bc22e" formatted="false">"تصدير السجلات بصيغة PDF أو Excel"</string>
+    <string name="text_770c11e048d1" formatted="false">"تصدير PDF"</string>
+    <string name="text_0f7b9bca13a1" formatted="false">"تصدير تقرير PDF"</string>
+    <string name="text_99f67b516741" formatted="false">"تم تصدير سجل المعاملات المالية بصيغة Excel (CSV) بنجاح!"</string>
+    <string name="text_692e087830e9" formatted="false">"تصدير Excel"</string>
+    <string name="text_9471d17ec31e" formatted="false">"عن التطبيق"</string>
+    <string name="text_2731e2bf2295" formatted="false">"معلومات التطبيق والإصدار"</string>
+    <string name="text_b0d1f789f55d" formatted="false">"الإصدار {0} • إدارة الأموال والذهب والمدخرات"</string>
+    <string name="text_5d6809ca20b5" formatted="false">"صنع بكل حـــ ❤️ــــــب فى مصر"</string>
+    <string name="text_b649d28445e1" formatted="false">"يرجى إدخال البريد الإلكتروني وكلمة المرور / Please enter email and password"</string>
+    <string name="text_696deb0e591f" formatted="false">"كلمة المرور يجب ألا تقل عن 6 أحرف / Password must be at least 6 characters"</string>
+    <string name="text_9256779cdd4a" formatted="false">"فشل إنشاء الحساب"</string>
+    <string name="text_53d98fb257e8" formatted="false">"هذا البريد الإلكتروني مسجل بالفعل. يرجى تسجيل الدخول. / This email is already registered. Please log in."</string>
+    <string name="text_121320c4df9c" formatted="false">"صيغة البريد الإلكتروني غير صحيحة / The email address is badly formatted"</string>
+    <string name="text_3401dab3bbb8" formatted="false">"كلمة المرور ضعيفة. يجب أن تكون 6 أحرف على الأقل / Password should be at least 6 characters"</string>
+    <string name="text_7ff6d34faf78" formatted="false">"لم يتم العثور على الحساب / User not found"</string>
+    <string name="text_9930d1b1aa6d" formatted="false">"فشل تسجيل الدخول"</string>
+    <string name="text_1f88df1febf2" formatted="false">"البريد الإلكتروني أو كلمة المرور غير صحيحة / Invalid email or password"</string>
+    <string name="text_b05a627b5b30" formatted="false">"تعذر الاتصال بالإنترنت. يرجى التحقق من الشبكة / Network error. Please check your connection."</string>
+    <string name="text_819cac148daf" formatted="false">"تعذر إرسال رسالة التأكيد"</string>
+    <string name="text_aa0d0095f903" formatted="false">"يرجى التأكد من كلمة المرور لإعادة إرسال رسالة التأكيد"</string>
+    <string name="text_c5bef9aa9b15" formatted="false">"يرجى إدخال كلمة المرور لإعادة إرسال رابط التأكيد"</string>
+    <string name="text_83693d7ac448" formatted="false">"يرجى إدخال البريد الإلكتروني أولاً"</string>
+    <string name="text_c166bcfd6593" formatted="false">"تعذر إرسال رابط إعادة التعيين"</string>
+    <string name="text_11f4e1c524c6" formatted="false">"لا يوجد حساب مسجل بهذا البريد الإلكتروني"</string>
+    <string name="text_c4b9c9643782" formatted="false">"صيغة البريد الإلكتروني غير صحيحة"</string>
+    <string name="text_fd3f055df0fc" formatted="false">"حدث خطأ أثناء الحفظ"</string>
+    <string name="text_ee344618d7b5" formatted="false">"حدث خطأ أثناء الحذف"</string>
+    <string name="text_a024fc180e2f" formatted="false">"تغير الحساب؛ افتح النسخ الاحتياطي مجدداً"</string>
+    <string name="text_7f76a273e765" formatted="false">"دفع التزام: {0}"</string>
+    <string name="text_ba7d226884f5" formatted="false">"دروس أطفال"</string>
+    <string name="text_1b7729a095fd" formatted="false">"دفع درس: {0} - {1}"</string>
+    <string name="text_12aebb198ef9" formatted="false">"فشل الحفظ: {0}"</string>
+    <string name="text_5111261821f6" formatted="false">"فشل الحفظ"</string>
+    <string name="text_1f4dfc40d5ed" formatted="false">"تعذر حذف الحركة"</string>
+    <string name="text_6aa5c6446010" formatted="false">"يرجى إدخال مفتاح API الخاص بـ GoldAPI.io أولاً"</string>
+    <string name="text_69369f94e61a" formatted="false">"جنيه"</string>
+    <string name="text_23163ab28da5" formatted="false">"دولار"</string>
+    <string name="text_a2623ac83783" formatted="false">"ريال"</string>
+    <string name="text_983cb0a018ee" formatted="false">"درهم"</string>
+    <string name="text_41503f399d29" formatted="false">"يورو"</string>
+    <string name="text_d2a7d3bf31da" formatted="false">"د.ك"</string>
+    <string name="text_54fa9db3fa4f" formatted="false">"د.ب"</string>
+    <string name="text_440a2a37ae6e" formatted="false">"ر.ع"</string>
+    <string name="text_e4981e5d5f10" formatted="false">"ر.ق"</string>
+    <string name="text_5083dedec527" formatted="false">"تم تحديث أسعار الذهب لحظياً بنجاح ({0})!"</string>
+    <string name="text_6c36adfa8e9a" formatted="false">"فشل في تحديث أسعار الذهب"</string>
+    <string name="text_9561c4855efd" formatted="false">"فشل التحويل بين الخزن"</string>
+    <string name="text_7af13fb694d2" formatted="false">"الخزنة غير موجودة"</string>
+    <string name="text_43867619cfb1" formatted="false">"فشل عكس التحويل"</string>
+    <string name="text_ea44af141575" formatted="false">"فشل تسجيل السداد"</string>
+    <string name="text_0d7bdd125dd8" formatted="false">"فاكهة"</string>
+    <string name="text_3ba071f84d25" formatted="false">"طلبات منزل"</string>
+    <string name="text_fff2282efd27" formatted="false">"ملابس"</string>
+    <string name="text_7e0974ea54ff" formatted="false">"صيدلية"</string>
+    <string name="text_42e60c6b7fa5" formatted="false">"أدوية"</string>
+    <string name="text_a0eee03fd261" formatted="false">"تعليم"</string>
+    <string name="text_b60aa4cd4f7a" formatted="false">"إيجار المنزل"</string>
+    <string name="text_e78fe38cd253" formatted="false">"فاتورة الكهرباء"</string>
+    <string name="text_d3a60f947665" formatted="false">"فاتورة المياه"</string>
+    <string name="text_e97a914c3af4" formatted="false">"فاتورة الغاز"</string>
+    <string name="text_7e3578ca7619" formatted="false">"فاتورة الإنترنت"</string>
+    <string name="text_f86302880ffa" formatted="false">"فاتورة الهاتف"</string>
+    <string name="text_dd1a92b70bff" formatted="false">"ترفيه"</string>
+    <string name="text_c01000b4ec77" formatted="false">"هدايا"</string>
+    <string name="text_cf947ed2a968" formatted="false">"صيانة"</string>
+    <string name="text_44f3aac66d39" formatted="false">"إصلاحات"</string>
+    <string name="text_0cb1a4b71327" formatted="false">"قسط سيارة"</string>
+    <string name="text_d6f737f4c382" formatted="false">"الراتب"</string>
+    <string name="text_824b44b725ca" formatted="false">"مكافأة"</string>
+    <string name="text_f9a0ef07d2a6" formatted="false">"أرباح"</string>
+    <string name="text_5911a9c09dc9" formatted="false">"تحويل مالي"</string>
+    <string name="text_60c0278a8811" formatted="false">"طلبات"</string>
+    <string name="text_c2e6b4458fdf" formatted="false">"أكل"</string>
+    <string name="text_b77857871225" formatted="false">"سيارة"</string>
+    <string name="text_185f7e8de18f" formatted="false">"دروس"</string>
+    <string name="text_893768c6b42b" formatted="false">"منزل"</string>
+    <string name="text_7831ea58944a" formatted="false">"مياه"</string>
+    <string name="text_0daf322cd307" formatted="false">"إنترنت"</string>
+    <string name="text_b9e9459cfa63" formatted="false">"هاتف"</string>
+    <string name="text_0f6651f43504" formatted="false">"تليفون"</string>
+    <string name="text_f9c2d3602b36" formatted="false">"باقة"</string>
+    <string name="text_f879f70ca625" formatted="false">"بنك"</string>
+    <string name="text_5fcef4c6d878" formatted="false">"غاز"</string>
+    <string name="text_38826a3d0488" formatted="false">"تم رفع وتحديث النسخة الاحتياطية بنجاح على Google Drive!\nحساب: {0}\nتاريخ: {1}"</string>
+    <string name="text_86461526253e" formatted="false">"خطأ في الاتصال بـ Google Drive: {0}"</string>
+    <string name="text_d18ace7a5c04" formatted="false">"جاري الاتصال بـ Google Drive ...\nتم العثور على آخر نسخة سحابية بحساب ({0}) وتم استعادتها بنجاح!"</string>
+    <string name="text_7a87c217fea6" formatted="false">"تمت استعادة البيانات والحسابات بنجاح من Google Drive!"</string>
+    <string name="text_7efb620b2f46" formatted="false">"صورة الفاتورة / الإيصال"</string>
+    <string name="text_8e4a12b8e0fb" formatted="false">"صورة الفاتورة المرفقة"</string>
+    <string name="text_02ecf19774a4" formatted="false">"عرض الفاتورة"</string>
+    <string name="text_26abf901180a" formatted="false">"الفاتورة"</string>
+    <string name="text_de83fe0e773f" formatted="false">"ضعيفة جداً"</string>
+    <string name="text_19ac077a66fc" formatted="false">"ضعيفة"</string>
+    <string name="text_4167c04a5bc0" formatted="false">"متوسطة"</string>
+    <string name="text_f23522a73d5e" formatted="false">"قوية"</string>
+    <string name="text_15c81a353e6d" formatted="false">"فائقة القوة"</string>
+    <string name="text_f93caee4745f" formatted="false">"الخزنة الذكية - التقرير المالي الشامل"</string>
+    <string name="text_23ff5bd3cda6" formatted="false">"اسم المستخدم: {0}"</string>
+    <string name="text_af62bc118661" formatted="false">"البريد الإلكتروني: {0} | الهاتف: {1}"</string>
+    <string name="text_5b5d51e492a1" formatted="false">"تاريخ التقرير: {0}"</string>
+    <string name="text_598b3013c93a" formatted="false">"1. ملخص الحركة المالية الشهرية"</string>
+    <string name="text_2df6cb78d320" formatted="false">"المتبقي / صافي التوفير"</string>
+    <string name="text_a07daa050122" formatted="false">"2. أصدة الحسابات والخزانات المسجلة"</string>
+    <string name="text_292aa105e256" formatted="false">"اسم الخزنة / الحساب"</string>
+    <string name="text_19c61065a80f" formatted="false">"الرصيد المتاح"</string>
+    <string name="text_06aea1a4b6cb" formatted="false">"3. سجل أحدث المعاملات المالية"</string>
+    <string name="text_70c980e32ac0" formatted="false">"الوصف والمعاملة"</string>
+    <string name="text_7c75fec5c0f8" formatted="false">"التصنيف"</string>
+    <string name="text_0fd1ce3ab3e4" formatted="false">"الحساب"</string>
+    <string name="text_c2de3368a38f" formatted="false">"تم استخراج التقرير بواسطة تطبيق الخزنة الذكية • Smart Vault Security &amp; AI Statement"</string>
+    <string name="text_84ea95ad551f" formatted="false">"تم توليد تقرير PDF بنجاح: {0}"</string>
+    <string name="text_6a24d4f395ba" formatted="false">"فتح تقرير PDF المالي"</string>
+    <string name="text_b5ff5ea46c44" formatted="false">"حدث خطأ أثناء حفظ الملف: {0}"</string>
+    <string name="text_882e9abff232" formatted="false">"الخزنة الذكية - تقرير مصاريف الخروجة وتقسيم اللمة"</string>
+    <string name="text_835815ab36b4" formatted="false">"عدد عناصر المصاريف: {0}"</string>
+    <string name="text_7a38397f0000" formatted="false">"1. ملخص حساب الخروجة والتقسيم"</string>
+    <string name="text_552ed370d702" formatted="false">"عدد اللمة (المشاركين)"</string>
+    <string name="text_f27a59f61ba0" formatted="false">"2. كشف التفاصيل والمصاريف المسجلة"</string>
+    <string name="text_b0a293b3248f" formatted="false">"بيان المصروف"</string>
+    <string name="text_6462ae41af9e" formatted="false">"من دفعه؟"</string>
+    <string name="text_a7bc8a435179" formatted="false">"التاريخ والوقت"</string>
+    <string name="text_d1780ad75e2f" formatted="false">"تم استخراج التقرير بواسطة تطبيق الخزنة الذكية • Smart Vault Outing Split Report"</string>
+    <string name="text_a8441ff2295f" formatted="false">"تم توليد تقرير PDF للخروجة بنجاح"</string>
+    <string name="text_7a1f1081fa08" formatted="false">"تقرير مصاريف الخروجة - إجمالي المصاريف: {0} {1} | عدد المشاركين: {2} | حساب كل واحد: {3} {4}"</string>
+    <string name="text_b1b890b5a0eb" formatted="false">"تقرير مصاريف الخروجة - الخزنة الذكية"</string>
+    <string name="text_c45468e5611d" formatted="false">"مشاركة تقرير الخروجة PDF"</string>
+    <string name="text_952072da576d" formatted="false">"حدث خطأ أثناء مشاركة التقرير: {0}"</string>
+    <string name="text_9835a8feba07" formatted="false">"الخزنة الذكية - سجل المعاملات المالية\n"</string>
+    <string name="text_9e3a72a661ba" formatted="false">"تاريخ التصدير,{0}\n\n"</string>
+    <string name="text_3e3c9dfb2caf" formatted="false">"الخزائن,الرصيد\n"</string>
+    <string name="text_8a2cbefb87da" formatted="false">"المعرف,النوع,المبلغ,التصنيف,الوصف,الخزنة,التاريخ والوقت\n"</string>
+    <string name="text_6daff27f6fa5" formatted="false">"دخل (+)"</string>
+    <string name="text_ffed616f0b7b" formatted="false">"مصروف (-)"</string>
+    <string name="text_98cf936bc34d" formatted="false">"تم تصدير ملف Excel بنجاح: {0}"</string>
+    <string name="text_7429f5a831b5" formatted="false">"سجل المعاملات المالية Excel - الخزنة الذكية"</string>
+    <string name="text_4d57eda7fba5" formatted="false">"فتح أو مشاركة ملف Excel"</string>
+    <string name="text_c3f85c6d57fd" formatted="false">"حدث خطأ أثناء تصدير ملف Excel: {0}"</string>
+    <string name="text_a2f20438512f" formatted="false">"تذكيرات الخزنة الذكية"</string>
+    <string name="text_49b966335c09" formatted="false">"تنبيهات يومية لتسجيل وتفقد المصروفات والحسابات"</string>
+    <string name="text_5339f0151e8b" formatted="false">"تذكير الخزنة الذكية 💰"</string>
+    <string name="text_0b94ea568e83" formatted="false">"لا تنسَ تسجيل مصروفات اليوم ومراجعة حركة الخزنة لضمان دقة ميزانيتك!"</string>
+    <string name="text_909099b10379" formatted="false">"لا تنسَ تسجيل مصروفات اليوم ومراجعة حركة الخزنة لضمان دقة ميزانيتك المتبقية لهذا الشهر."</string>
+    <string name="text_879a8b902ae5" formatted="false">"أسعار الذهب اليومية"</string>
+    <string name="text_3deed56eb82a" formatted="false">"تنبيهات التحديث اليومي لأسعار الذهب (12:00 ظهراً)"</string>
+    <string name="text_3c1e403d55c3" formatted="false">"تحديث أسعار الذهب (12:00 ظهراً) 🪙"</string>
+    <string name="text_eb62eeef21fe" formatted="false">"عيار 21: {0} {1} | عيار 24: {2} {3}"</string>
+    <string name="text_1d15a727c672" formatted="false">"تم تحديث أسعار الذهب لحظياً من GoldAPI.io بنجاح:\n• عيار 21: {0} {1}\n• عيار 24: {2} {3}\nتمت إعادة تقييم محفظة الذهب وسبائكك تلقائياً."</string>
+    <string name="label_app_title" formatted="false">"الخزنة الذكية"</string>
+    <string name="label_nav_home" formatted="false">"الرئيسية"</string>
+    <string name="label_nav_savings" formatted="false">"المدخرات"</string>
+    <string name="label_nav_transactions" formatted="false">"العمليات"</string>
+    <string name="label_nav_commitments" formatted="false">"الالتزامات"</string>
+    <string name="label_nav_outings" formatted="false">"الخروجات"</string>
+    <string name="label_nav_reports" formatted="false">"التقارير"</string>
+    <string name="label_nav_settings" formatted="false">"الإعدادات"</string>
+    <string name="label_title_home" formatted="false">"الخزنة الذكية"</string>
+    <string name="label_title_savings" formatted="false">"المدخرات والذهب 💰"</string>
+    <string name="label_title_commitments" formatted="false">"الالتزامات والدروس"</string>
+    <string name="label_title_outings" formatted="false">"مصاريف الخروجات واللمة"</string>
+    <string name="label_title_transactions" formatted="false">"العمليات"</string>
+    <string name="label_title_reports" formatted="false">"التقارير والميزانية"</string>
+    <string name="label_title_settings" formatted="false">"الإعدادات والحسابات"</string>
+    <string name="label_total_savings" formatted="false">"إجمالي المدخرات"</string>
+    <string name="label_total_cash_savings" formatted="false">"المدخرات النقدية"</string>
+    <string name="label_current_gold_value" formatted="false">"قيمة الذهب الحالية"</string>
+    <string name="label_total_gold_weight" formatted="false">"إجمالي وزن الذهب"</string>
+    <string name="label_gold_pieces_count" formatted="false">"عدد قطع الذهب"</string>
+    <string name="label_gold_profits" formatted="false">"عائد وأرباح الذهب"</string>
+    <string name="label_update_gold_prices" formatted="false">"تعديل أسعار الذهب اليوم"</string>
+    <string name="label_gold_prices_today" formatted="false">"أسعار الذهب اليوم (سعر الجرام)"</string>
+    <string name="label_tab_gold" formatted="false">"الذهب والسبائك"</string>
+    <string name="label_tab_cash" formatted="false">"المدخرات النقدية"</string>
+    <string name="label_tab_analytics" formatted="false">"التحليلات والنمو"</string>
+    <string name="label_tab_sold_history" formatted="false">"سجل المبيعات"</string>
+    <string name="label_add_gold_piece" formatted="false">"إضافة قطعة ذهب / سبيكة"</string>
+    <string name="label_add_cash_saving" formatted="false">"إضافة مدخرات نقدية"</string>
+    <string name="label_gold_piece_name" formatted="false">"اسم القطعة / الماركة"</string>
+    <string name="label_gold_type" formatted="false">"نوع الذهب"</string>
+    <string name="label_bullion" formatted="false">"سبيكة"</string>
+    <string name="label_jewelry" formatted="false">"مشغولات"</string>
+    <string name="label_gold_coin" formatted="false">"عملة ذهبية"</string>
+    <string name="label_gold_pound" formatted="false">"جنيه ذهب (8 جرام)"</string>
+    <string name="label_other_gold" formatted="false">"أخرى"</string>
+    <string name="label_karat" formatted="false">"العيار"</string>
+    <string name="label_karat24" formatted="false">"عيار 24 (نقاء 99.9%)"</string>
+    <string name="label_karat22" formatted="false">"عيار 22"</string>
+    <string name="label_karat21" formatted="false">"عيار 21 (الأكثر تداولاً)"</string>
+    <string name="label_karat18" formatted="false">"عيار 18"</string>
+    <string name="label_karat14" formatted="false">"عيار 14"</string>
+    <string name="label_karat12" formatted="false">"عيار 12"</string>
+    <string name="label_weight_in_grams" formatted="false">"الوزن بالجرام"</string>
+    <string name="label_purchase_price" formatted="false">"سعر الشراء الفعلي (المبلغ المدفوع)"</string>
+    <string name="label_purchase_date" formatted="false">"تاريخ الشراء"</string>
+    <string name="label_purpose" formatted="false">"الغرض من الاقتناء"</string>
+    <string name="label_purpose_saving" formatted="false">"للادخار والاستثمار"</string>
+    <string name="label_purpose_adornment" formatted="false">"للزينة والاستخدام"</string>
+    <string name="label_piece_photo" formatted="false">"صورة القطعة أو الفاتورة"</string>
+    <string name="label_sell_gold" formatted="false">"تسجيل بيع القطعة"</string>
+    <string name="label_sale_price" formatted="false">"سعر البيع الفعلي"</string>
+    <string name="label_sale_date" formatted="false">"تاريخ البيع"</string>
+    <string name="label_sale_notes" formatted="false">"ملاحظات البيع"</string>
+    <string name="label_realized_profit" formatted="false">"الربح المحقق"</string>
+    <string name="label_profit_percentage" formatted="false">"نسبة الربح"</string>
+    <string name="label_loss_percentage" formatted="false">"نسبة الخسارة"</string>
+    <string name="label_in_vault" formatted="false">"في الخزنة (غير مباعة)"</string>
+    <string name="label_sold" formatted="false">"تم البيع"</string>
+    <string name="label_piece_details" formatted="false">"تفاصيل قطعة الذهب"</string>
+    <string name="label_current_gram_price" formatted="false">"سعر الجرام الحالي"</string>
+    <string name="label_no_gold_yet" formatted="false">"لا توجد قطع ذهب مسجلة بعد"</string>
+    <string name="label_no_cash_savings_yet" formatted="false">"لا توجد مدخرات نقدية مسجلة بعد"</string>
+    <string name="label_no_sold_gold_yet" formatted="false">"لا توجد مبيعات ذهب مسجلة"</string>
+    <string name="label_asset_allocation" formatted="false">"توزيع الأصول (ذهب مقابل كاش)"</string>
+    <string name="label_savings_advise" formatted="false">"نصائح الخزنة لتنمية المدخرات"</string>
+    <string name="label_welcome_user" formatted="false">"مرحباً بك،"</string>
+    <string name="label_current_balance" formatted="false">"الرصيد الحالي في الخزنة"</string>
+    <string name="label_monthly_income" formatted="false">"دخل الشهر"</string>
+    <string name="label_monthly_expenses" formatted="false">"مصروفات الشهر"</string>
+    <string name="label_smart_analytics" formatted="false">"التحليل الذكي"</string>
+    <string name="label_total_available_balance" formatted="false">"إجمالي الرصيد المتاح"</string>
+    <string name="label_this_month_income" formatted="false">"دخل هذا الشهر"</string>
+    <string name="label_this_month_expense" formatted="false">"مصروفات هذا الشهر"</string>
+    <string name="label_add_income" formatted="false">"إضافة دخل"</string>
+    <string name="label_add_expense" formatted="false">"إضافة مصروف"</string>
+    <string name="label_financial_vaults" formatted="false">"الخزانات والحسابات المالية"</string>
+    <string name="label_recent_transactions" formatted="false">"العمليات الأخيرة"</string>
+    <string name="label_view_all" formatted="false">"عرض الكل"</string>
+    <string name="label_no_transactions_yet" formatted="false">"لا توجد عمليات مسجلة حالياً"</string>
+    <string name="label_monthly_category_budget" formatted="false">"الميزانية الشهرية للتصنيفات"</string>
+    <string name="label_add_budget_limit" formatted="false">"إضافة حد جديد"</string>
+    <string name="label_set_budget" formatted="false">"تحديد ميزانية"</string>
+    <string name="label_no_budget_set" formatted="false">"لم يتم تحديد حدود ميزانية بعد."</string>
+    <string name="label_upcoming_commitments" formatted="false">"الالتزامات القادمة"</string>
+    <string name="label_child_lessons" formatted="false">"دروس الأطفال"</string>
+    <string name="label_paid" formatted="false">"تم الدفع"</string>
+    <string name="label_unpaid" formatted="false">"غير مدفوع"</string>
+    <string name="label_intelligent_advisor" formatted="false">"المستشار المالي الذكي"</string>
+    <string name="label_achievements_and_badges" formatted="false">"الإنجازات والشارات"</string>
+    <string name="label_filter_all" formatted="false">"الكل"</string>
+    <string name="label_filter_expenses" formatted="false">"المصروفات"</string>
+    <string name="label_filter_income" formatted="false">"الدخل"</string>
+    <string name="label_search_placeholder" formatted="false">"بحث في العمليات..."</string>
+    <string name="label_no_matching_transactions" formatted="false">"لا توجد عمليات تطابق البحث"</string>
+    <string name="label_transaction_details" formatted="false">"تفاصيل العملية"</string>
+    <string name="label_delete_transaction" formatted="false">"حذف العملية"</string>
+    <string name="label_amount" formatted="false">"المبلغ"</string>
+    <string name="label_date" formatted="false">"التاريخ"</string>
+    <string name="label_category" formatted="false">"التصنيف"</string>
+    <string name="label_vault" formatted="false">"الخزنة / الحساب"</string>
+    <string name="label_notes" formatted="false">"ملاحظات"</string>
+    <string name="label_name" formatted="false">"الاسم"</string>
+    <string name="label_due_day" formatted="false">"يوم الاستحقاق"</string>
+    <string name="label_repeat_monthly" formatted="false">"يتكرر شهرياً"</string>
+    <string name="label_commitment_example" formatted="false">"مثال: فاتورة الكهرباء"</string>
+    <string name="label_commitments_tab" formatted="false">"الالتزامات الشهرية"</string>
+    <string name="label_lessons_tab" formatted="false">"دروس الأطفال"</string>
+    <string name="label_monthly_commitments" formatted="false">"الالتزامات الشهرية"</string>
+    <string name="label_add_commitment" formatted="false">"إضافة التزام"</string>
+    <string name="label_add_lesson" formatted="false">"إضافة درس"</string>
+    <string name="label_teacher_name" formatted="false">"اسم المدرس / المادة"</string>
+    <string name="label_child_name" formatted="false">"اسم الطفل"</string>
+    <string name="label_due_date" formatted="false">"تاريخ الاستحقاق"</string>
+    <string name="label_pay_from_vault" formatted="false">"تم الدفع والخصم من الخزنة"</string>
+    <string name="label_no_commitments" formatted="false">"لا توجد التزامات مسجلة"</string>
+    <string name="label_no_lessons" formatted="false">"لا توجد دروس مسجلة"</string>
+    <string name="label_current_month_summary" formatted="false">"ملخص الشهر الحالي"</string>
+    <string name="label_remaining_balance" formatted="false">"المتبقي من الدخل"</string>
+    <string name="label_avg_daily_spend" formatted="false">"متوسط الإنفاق اليومي"</string>
+    <string name="label_safe_daily_limit" formatted="false">"الحد اليومي الآمن"</string>
+    <string name="label_expense_distribution" formatted="false">"توزيع المصروفات حسب التصنيف"</string>
+    <string name="label_export_pdf" formatted="false">"تصدير تقرير PDF"</string>
+    <string name="label_export_excel" formatted="false">"تصدير Excel / CSV"</string>
+    <string name="label_top_expense_category" formatted="false">"أعلى تصنيف إنفاقاً"</string>
+    <string name="label_income_vs_expense" formatted="false">"مقارنة الدخل بالمصروفات"</string>
+    <string name="label_app_preferences" formatted="false">"تفضيلات وإعدادات التطبيق"</string>
+    <string name="label_app_language" formatted="false">"لغة التطبيق"</string>
+    <string name="label_arabic" formatted="false">"العربية (Arabic)"</string>
+    <string name="label_english" formatted="false">"English (الإنجليزية)"</string>
+    <string name="label_app_currency" formatted="false">"عملة التطبيق"</string>
+    <string name="label_dark_mode" formatted="false">"الوضع الداكن (Dark Mode)"</string>
+    <string name="label_fingerprint_pin" formatted="false">"قفل الخزنة ببصمة الإصبع / PIN"</string>
+    <string name="label_two_factor_auth" formatted="false">"التحقق بخطوتين (2FA)"</string>
+    <string name="label_enabled2_f_a" formatted="false">"مُفعل - كود أمان عند الدخول"</string>
+    <string name="label_disabled2_f_a" formatted="false">"غير مُفعل"</string>
+    <string name="label_daily_reminder" formatted="false">"تذكير يومي بمراجعة المصروفات"</string>
+    <string name="label_reminder_sub" formatted="false">"إشعار تلقائي يومياً الساعة 8:00 مساءً"</string>
+    <string name="label_backup_restore" formatted="false">"النسخ الاحتياطي واستعادة البيانات"</string>
+    <string name="label_drive_backup" formatted="false">"النسخ الاحتياطي على Google Drive"</string>
+    <string name="label_restore_backup" formatted="false">"استعادة النسخة الاحتياطية"</string>
+    <string name="label_edit_profile" formatted="false">"تعديل بيانات الحساب"</string>
+    <string name="label_logout" formatted="false">"تسجيل الخروج"</string>
+    <string name="label_add_account_vault" formatted="false">"إضافة حساب / خزنة"</string>
+    <string name="label_attach_receipt" formatted="false">"إرفاق صورة الفاتورة"</string>
+    <string name="label_receipt_image" formatted="false">"صورة الفاتورة"</string>
+    <string name="label_optional" formatted="false">"اختياري"</string>
+    <string name="label_save" formatted="false">"حفظ"</string>
+    <string name="label_cancel" formatted="false">"إلغاء"</string>
+    <string name="label_delete" formatted="false">"حذف"</string>
+    <string name="label_edit" formatted="false">"تعديل"</string>
+    <string name="label_confirm" formatted="false">"تأكيد"</string>
+    <string name="label_close" formatted="false">"إغلاق"</string>
+    <string name="label_live_gold_price_update" formatted="false">"تحديث أسعار الذهب لحظياً (GoldAPI.io)"</string>
+    <string name="label_fetch_live_gold_prices" formatted="false">"تحديث لحظي"</string>
+    <string name="label_gold_api_key_label" formatted="false">"مفتاح الربط (Access Token)"</string>
+    <string name="label_gold_api_key_hint" formatted="false">"أدخل مفتاحك من موقع goldapi.io"</string>
+    <string name="label_gold_api_key_explanation" formatted="false">"يمكنك الحصول على مفتاح مجاني من موقع https://www.goldapi.io/ لتحديث أسعار الذهب لحظياً في أي وقت."</string>
+    <string name="label_updating_prices" formatted="false">"جاري جلب الأسعار اللحظية..."</string>
+    <string name="label_prices_updated_success" formatted="false">"تم تحديث أسعار الذهب لحظياً بنجاح من GoldAPI.io!"</string>
+    <string name="label_last_updated" formatted="false">"آخر تحديث: "</string>
 </resources>

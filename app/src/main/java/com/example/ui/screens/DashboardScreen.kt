@@ -1,5 +1,9 @@
 package com.example.ui.screens
 
+import com.example.ui.utils.AppStrings
+
+import com.example.ui.utils.AppText
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -156,19 +160,19 @@ fun DashboardScreen(
         )
     }
 
-    val formattedCurrentMonth = remember {
-        val sdf = SimpleDateFormat("MMMM yyyy", Locale("ar"))
+    val formattedCurrentMonth = remember(AppText.language) {
+        val sdf = SimpleDateFormat("MMMM yyyy", AppText.locale)
         sdf.format(Date())
     }
 
-    val badgesList = remember {
+    val badgesList = remember(AppText.language) {
         listOf(
-            AchievementBadge("أفضل من الشهر الماضي", "مصروفاتك أقل من الشهر السابق", Icons.Default.TrendingDown),
-            AchievementBadge("اقتصادي", "وفّر 20% أو أكثر من دخل الشهر", Icons.Default.AccountBalanceWallet),
-            AchievementBadge("مُتابع يومي", "سجّل عمليات في 15 يوم أو أكثر هذا الشهر", Icons.Default.EventNote),
-            AchievementBadge("منظم الالتزامات", "سدّد كل التزامات ودروس الشهر", Icons.Default.CheckCircle),
-            AchievementBadge("تحت السيطرة", "توقع نهاية الشهر في المنطقة الآمنة", Icons.Default.Verified),
-            AchievementBadge("أرشيف الفواتير", "أرفق صور لنصف مصروفات الشهر على الأقل", Icons.Default.InsertDriveFile)
+            AchievementBadge(AppText.text(com.example.R.string.text_423c46d500b6), AppText.text(com.example.R.string.text_07573c6f7bf2), Icons.Default.TrendingDown),
+            AchievementBadge(AppText.text(com.example.R.string.text_b1941eb051e1), AppText.text(com.example.R.string.text_ff701fdfe751), Icons.Default.AccountBalanceWallet),
+            AchievementBadge(AppText.text(com.example.R.string.text_b0bbbdfb65cd), AppText.text(com.example.R.string.text_caf13cd7cfae), Icons.Default.EventNote),
+            AchievementBadge(AppText.text(com.example.R.string.text_bb695066ad60), AppText.text(com.example.R.string.text_4cd4daac5f7a), Icons.Default.CheckCircle),
+            AchievementBadge(AppText.text(com.example.R.string.text_e0b6c7065e6a), AppText.text(com.example.R.string.text_9c27d696138c), Icons.Default.Verified),
+            AchievementBadge(AppText.text(com.example.R.string.text_3196303021cd), AppText.text(com.example.R.string.text_6316da350959), Icons.Default.InsertDriveFile)
         )
     }
 
@@ -247,7 +251,7 @@ fun DashboardScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.MonetizationOn,
-                            contentDescription = if (isSavingsCardVisible) "إخفاء بطاقة المدخرات" else "إظهار بطاقة المدخرات",
+                            contentDescription = if (isSavingsCardVisible) AppText.text(com.example.R.string.text_e74cf8f88064) else AppText.text(com.example.R.string.text_c8b0cd8eb4b8),
                             tint = if (isSavingsCardVisible) Color(0xFFB8860B) else MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(20.dp)
                         )
@@ -283,7 +287,7 @@ fun DashboardScreen(
             ) {
                 // Net Worth
                 QuickShortcutButton(
-                    title = "صافي الثروة",
+                    title = AppText.text(com.example.R.string.text_0b8ff6a5604b),
                     icon = Icons.Default.Security,
                     tint = EmeraldGreenPrimary,
                     modifier = Modifier.weight(1f),
@@ -293,7 +297,7 @@ fun DashboardScreen(
                 // Debts (if enabled)
                 if (config.debts) {
                     QuickShortcutButton(
-                        title = "الديون",
+                        title = AppText.text(com.example.R.string.text_3beed403483e),
                         icon = Icons.Default.AccountBalance,
                         tint = Color(0xFF7C4DFF),
                         modifier = Modifier.weight(1f),
@@ -303,7 +307,7 @@ fun DashboardScreen(
 
                 // Calendar
                 QuickShortcutButton(
-                    title = "التقويم",
+                    title = AppText.text(com.example.R.string.text_9555082e8961),
                     icon = Icons.Default.CalendarMonth,
                     tint = Color(0xFFFF9800),
                     modifier = Modifier.weight(1f),
@@ -312,7 +316,7 @@ fun DashboardScreen(
 
                 // Transfer
                 QuickShortcutButton(
-                    title = "تحويل",
+                    title = AppText.text(com.example.R.string.text_0326e4ed17db),
                     icon = Icons.Default.SwapHoriz,
                     tint = Color(0xFF0288D1),
                     modifier = Modifier.weight(1f),
@@ -321,7 +325,7 @@ fun DashboardScreen(
 
                 // Manage Modules
                 QuickShortcutButton(
-                    title = "تخصيص",
+                    title = AppText.text(com.example.R.string.text_f6968545d1d8),
                     icon = Icons.Default.Tune,
                     tint = Color.Gray,
                     modifier = Modifier.weight(1f),
@@ -381,12 +385,12 @@ fun DashboardScreen(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Alarm,
-                                        contentDescription = "المستحقات",
+                                        contentDescription = AppText.text(com.example.R.string.text_cec0e67fc3a9),
                                         tint = Color.White,
                                         modifier = Modifier.size(16.dp)
                                     )
                                     Text(
-                                        text = "${state.dueBillsCount} مستحق",
+                                        text = AppText.text(com.example.R.string.text_b5ddb3447714, state.dueBillsCount),
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = Color.White
@@ -404,7 +408,7 @@ fun DashboardScreen(
                                 ) {
                                     Icon(
                                         imageVector = if (isBalanceVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
-                                        contentDescription = "إظهار/إخفاء الرصيد",
+                                        contentDescription = AppText.text(com.example.R.string.text_877e2ea5f33a),
                                         tint = Color.White,
                                         modifier = Modifier.size(18.dp)
                                     )
@@ -416,9 +420,9 @@ fun DashboardScreen(
 
                         Text(
                             text = if (isBalanceVisible)
-                                "${String.format(Locale.US, "%,.0f", state.currentVaultBalance)} ${state.currency}"
+                                "${String.format(Locale.US, "%,.0f", state.currentVaultBalance)} ${AppText.currency(state.currency)}"
                             else
-                                "•••••• ${state.currency}",
+                                "•••••• ${AppText.currency(state.currency)}",
                             fontSize = 32.sp,
                             fontWeight = FontWeight.ExtraBold,
                             color = Color.White
@@ -455,7 +459,7 @@ fun DashboardScreen(
                                         ) {
                                             Icon(
                                                 imageVector = Icons.Default.ArrowUpward,
-                                                contentDescription = "سهم للأعلى - دخل",
+                                                contentDescription = AppText.text(com.example.R.string.text_4654875cd068),
                                                 tint = Color(0xFF4ADE80),
                                                 modifier = Modifier.size(13.dp)
                                             )
@@ -470,9 +474,9 @@ fun DashboardScreen(
                                     Spacer(modifier = Modifier.height(4.dp))
                                     Text(
                                         text = if (isBalanceVisible)
-                                            "${String.format(Locale.US, "%,.0f", state.totalIncomeThisMonth)} ${state.currency}"
+                                            "${String.format(Locale.US, "%,.0f", state.totalIncomeThisMonth)} ${AppText.currency(state.currency)}"
                                         else
-                                            "•••• ${state.currency}",
+                                            "•••• ${AppText.currency(state.currency)}",
                                         fontSize = 15.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = Color.White
@@ -504,7 +508,7 @@ fun DashboardScreen(
                                         ) {
                                             Icon(
                                                 imageVector = Icons.Default.ArrowDownward,
-                                                contentDescription = "سهم للأسفل - مصروفات",
+                                                contentDescription = AppText.text(com.example.R.string.text_3e1877e91a6f),
                                                 tint = Color(0xFFF87171),
                                                 modifier = Modifier.size(13.dp)
                                             )
@@ -519,9 +523,9 @@ fun DashboardScreen(
                                     Spacer(modifier = Modifier.height(4.dp))
                                     Text(
                                         text = if (isBalanceVisible)
-                                            "${String.format(Locale.US, "%,.0f", state.totalExpenseThisMonth)} ${state.currency}"
+                                            "${String.format(Locale.US, "%,.0f", state.totalExpenseThisMonth)} ${AppText.currency(state.currency)}"
                                         else
-                                            "•••• ${state.currency}",
+                                            "•••• ${AppText.currency(state.currency)}",
                                         fontSize = 15.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = Color.White
@@ -564,20 +568,20 @@ fun DashboardScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.Security,
-                                    contentDescription = "صافي الثروة",
+                                    contentDescription = AppText.text(com.example.R.string.text_0b8ff6a5604b),
                                     tint = EmeraldGreenPrimary,
                                     modifier = Modifier.size(20.dp)
                                 )
                             }
                             Column {
                                 Text(
-                                    text = "وضعي المالي اليوم (صافي الثروة) 🛡️",
+                                    text = AppText.text(com.example.R.string.text_1b7441ca41de),
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 15.sp,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
-                                    text = "حساب محلي آمن لكافة الأصول والالتزامات",
+                                    text = AppText.text(com.example.R.string.text_a738ad2e9389),
                                     fontSize = 11.sp,
                                     color = Color.Gray
                                 )
@@ -585,7 +589,7 @@ fun DashboardScreen(
                         }
 
                         Text(
-                            text = "تفاصيل الأصول ←",
+                            text = AppText.text(com.example.R.string.text_e11353146505),
                             fontSize = 11.5.sp,
                             fontWeight = FontWeight.Bold,
                             color = EmeraldGreenPrimary
@@ -601,15 +605,15 @@ fun DashboardScreen(
                     ) {
                         Column {
                             Text(
-                                text = "صافي الثروة",
+                                text = AppText.text(com.example.R.string.text_0b8ff6a5604b),
                                 fontSize = 11.sp,
                                 color = Color.Gray
                             )
                             Text(
                                 text = if (isBalanceVisible)
-                                    "${String.format(Locale.US, "%,d", financialSummary.netWorthBreakdown.netWorth.toLong())} ${state.currency}"
+                                    "${String.format(Locale.US, "%,d", financialSummary.netWorthBreakdown.netWorth.toLong())} ${AppText.currency(state.currency)}"
                                 else
-                                    "•••• ${state.currency}",
+                                    "•••• ${AppText.currency(state.currency)}",
                                 fontWeight = FontWeight.ExtraBold,
                                 fontSize = 22.sp,
                                 color = EmeraldGreenPrimary
@@ -618,7 +622,7 @@ fun DashboardScreen(
 
                         Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                             Column(horizontalAlignment = Alignment.End) {
-                                Text("إجمالي الأصول", fontSize = 10.5.sp, color = Color.Gray)
+                                Text(AppText.text(com.example.R.string.text_3765938331a5), fontSize = 10.5.sp, color = Color.Gray)
                                 Text(
                                     text = if (isBalanceVisible) "${String.format(Locale.US, "%,d", financialSummary.netWorthBreakdown.totalAssets.toLong())}" else "••••",
                                     fontWeight = FontWeight.Bold,
@@ -627,7 +631,7 @@ fun DashboardScreen(
                                 )
                             }
                             Column(horizontalAlignment = Alignment.End) {
-                                Text("إجمالي الالتزامات", fontSize = 10.5.sp, color = Color.Gray)
+                                Text(AppText.text(com.example.R.string.text_693a3a889d03), fontSize = 10.5.sp, color = Color.Gray)
                                 Text(
                                     text = if (isBalanceVisible) "${String.format(Locale.US, "%,d", financialSummary.netWorthBreakdown.totalLiabilities.toLong())}" else "••••",
                                     fontWeight = FontWeight.Bold,
@@ -670,20 +674,20 @@ fun DashboardScreen(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.Psychology,
-                                        contentDescription = "تحليلات ذكية",
+                                        contentDescription = AppText.text(com.example.R.string.text_24d53def2103),
                                         tint = Color(0xFF00897B),
                                         modifier = Modifier.size(20.dp)
                                     )
                                 }
                                 Column {
                                     Text(
-                                        text = "الرؤى والتحليلات الذكية 💡",
+                                        text = AppText.text(com.example.R.string.text_d383c633feff),
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 15.sp,
                                         color = MaterialTheme.colorScheme.onSurface
                                     )
                                     Text(
-                                        text = "محرك ذكاء مالي محلي 100%",
+                                        text = AppText.text(com.example.R.string.text_0d4fdbffe901),
                                         fontSize = 11.sp,
                                         color = Color.Gray
                                     )
@@ -691,7 +695,7 @@ fun DashboardScreen(
                             }
 
                             Text(
-                                text = "عرض الكل (${insights.size}) ←",
+                                text = AppText.text(com.example.R.string.text_6e8c46e9d70b, insights.size),
                                 fontSize = 11.5.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = EmeraldGreenPrimary,
@@ -769,7 +773,7 @@ fun DashboardScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.MonetizationOn,
-                                    contentDescription = "المدخرات",
+                                    contentDescription = AppText.text(com.example.R.string.text_76258e00f832),
                                     tint = Color(0xFFB8860B),
                                     modifier = Modifier.size(20.dp)
                                 )
@@ -777,13 +781,13 @@ fun DashboardScreen(
 
                             Column {
                                 Text(
-                                    text = "المدخرات والأصول المالية 💰",
+                                    text = AppText.text(com.example.R.string.text_74885d00713f),
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 15.sp,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
                                 Text(
-                                    text = "ذهب وسبائك + نقدية (أصل مالي)",
+                                    text = AppText.text(com.example.R.string.text_5814373b6d2e),
                                     fontSize = 11.sp,
                                     color = Color.Gray
                                 )
@@ -791,7 +795,7 @@ fun DashboardScreen(
                         }
 
                         Text(
-                            text = "عرض الكل ←",
+                            text = AppText.text(com.example.R.string.text_f7d9ae166049),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                             color = EmeraldGreenPrimary
@@ -814,13 +818,13 @@ fun DashboardScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Column {
-                                Text("إجمالي المدخرات (كاش + ذهب)", fontSize = 11.5.sp, color = EmeraldGreenDark, fontWeight = FontWeight.Medium)
+                                Text(AppText.text(com.example.R.string.text_f3ac2e6da42a), fontSize = 11.5.sp, color = EmeraldGreenDark, fontWeight = FontWeight.Medium)
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
                                     text = if (isBalanceVisible)
-                                        "${String.format(Locale.US, "%,.0f", state.totalSavings)} ${state.currency}"
+                                        "${String.format(Locale.US, "%,.0f", state.totalSavings)} ${AppText.currency(state.currency)}"
                                     else
-                                        "•••• ${state.currency}",
+                                        "•••• ${AppText.currency(state.currency)}",
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.ExtraBold,
                                     color = EmeraldGreenDark
@@ -834,7 +838,7 @@ fun DashboardScreen(
                                     .padding(horizontal = 8.dp, vertical = 4.dp)
                             ) {
                                 Text(
-                                    text = "أصل مالي",
+                                    text = AppText.text(com.example.R.string.text_a35683da616b),
                                     fontSize = 11.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color.White
@@ -858,7 +862,7 @@ fun DashboardScreen(
                             border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
                         ) {
                             Column(modifier = Modifier.padding(8.dp)) {
-                                Text("💛 قيمة الذهب", fontSize = 10.sp, color = Color.Gray, maxLines = 1)
+                                Text(AppText.text(com.example.R.string.text_a468321f66f1), fontSize = 10.sp, color = Color.Gray, maxLines = 1)
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
                                     text = if (isBalanceVisible) "${String.format(Locale.US, "%,.0f", state.totalGoldValue)}" else "••••",
@@ -877,7 +881,7 @@ fun DashboardScreen(
                             border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
                         ) {
                             Column(modifier = Modifier.padding(8.dp)) {
-                                Text("💵 نقدية", fontSize = 10.sp, color = Color.Gray, maxLines = 1)
+                                Text(AppText.text(com.example.R.string.text_c4321b7e4fed), fontSize = 10.sp, color = Color.Gray, maxLines = 1)
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
                                     text = if (isBalanceVisible) "${String.format(Locale.US, "%,.0f", state.totalCashSavings)}" else "••••",
@@ -896,7 +900,7 @@ fun DashboardScreen(
                             border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
                         ) {
                             Column(modifier = Modifier.padding(8.dp)) {
-                                Text("⚖️ وزن الذهب", fontSize = 10.sp, color = Color.Gray, maxLines = 1)
+                                Text(AppText.text(com.example.R.string.text_35dc88643736), fontSize = 10.sp, color = Color.Gray, maxLines = 1)
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
                                     text = "${String.format(Locale.US, "%.1f", state.totalGoldWeightGrams)}g",
@@ -915,10 +919,10 @@ fun DashboardScreen(
                             border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
                         ) {
                             Column(modifier = Modifier.padding(8.dp)) {
-                                Text("📦 القطع", fontSize = 10.sp, color = Color.Gray, maxLines = 1)
+                                Text(AppText.text(com.example.R.string.text_23e643d03dde), fontSize = 10.sp, color = Color.Gray, maxLines = 1)
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
-                                    text = "${state.totalGoldPiecesCount} قطع",
+                                    text = AppText.text(com.example.R.string.text_fd835aa43312, state.totalGoldPiecesCount),
                                     fontSize = 12.5.sp,
                                     fontWeight = FontWeight.Bold,
                                     maxLines = 1
@@ -955,7 +959,7 @@ fun DashboardScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Psychology,
-                                contentDescription = "التحليل الذكي",
+                                contentDescription = AppText.text(com.example.R.string.text_7d83a31000b2),
                                 tint = EmeraldGreenPrimary,
                                 modifier = Modifier.size(20.dp)
                             )
@@ -978,7 +982,7 @@ fun DashboardScreen(
                         colors = CardDefaults.cardColors(containerColor = MintBackground)
                     ) {
                         Text(
-                            text = "متوقع يتبقى لك ${String.format(Locale.US, "%,.0f", state.remainingSalary)} ${state.currency} بنهاية الشهر بنفس معدل الصرف الحالي.",
+                            text = AppText.text(com.example.R.string.text_28dae43e8dcf, String.format(Locale.US, "%,.0f", state.remainingSalary), AppText.currency(state.currency)),
                             fontSize = 12.5.sp,
                             color = EmeraldGreenDark,
                             fontWeight = FontWeight.Medium,
@@ -1004,11 +1008,11 @@ fun DashboardScreen(
                                 border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
                             ) {
                                 Column(modifier = Modifier.padding(12.dp)) {
-                                    Text("مصروفات الشهر الماضي", fontSize = 11.sp, color = Color.Gray)
+                                    Text(AppText.text(com.example.R.string.text_2bccc4bbf0d9), fontSize = 11.sp, color = Color.Gray)
                                     Spacer(modifier = Modifier.height(4.dp))
-                                    Text("0 ${state.currency}", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                                    Text("0 ${AppText.currency(state.currency)}", fontSize = 14.sp, fontWeight = FontWeight.Bold)
                                     Spacer(modifier = Modifier.height(2.dp))
-                                    Text("لا مقارنة متاحة", fontSize = 10.sp, color = Color.Gray)
+                                    Text(AppText.text(com.example.R.string.text_a39d9e5bcc98), fontSize = 10.sp, color = Color.Gray)
                                 }
                             }
 
@@ -1020,11 +1024,11 @@ fun DashboardScreen(
                                 border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
                             ) {
                                 Column(modifier = Modifier.padding(12.dp)) {
-                                    Text("دخل الشهر الماضي", fontSize = 11.sp, color = Color.Gray)
+                                    Text(AppText.text(com.example.R.string.text_4757b3b88509), fontSize = 11.sp, color = Color.Gray)
                                     Spacer(modifier = Modifier.height(4.dp))
-                                    Text("0 ${state.currency}", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                                    Text("0 ${AppText.currency(state.currency)}", fontSize = 14.sp, fontWeight = FontWeight.Bold)
                                     Spacer(modifier = Modifier.height(2.dp))
-                                    Text("لا مقارنة متاحة", fontSize = 10.sp, color = Color.Gray)
+                                    Text(AppText.text(com.example.R.string.text_a39d9e5bcc98), fontSize = 10.sp, color = Color.Gray)
                                 }
                             }
                         }
@@ -1042,10 +1046,10 @@ fun DashboardScreen(
                                 border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
                             ) {
                                 Column(modifier = Modifier.padding(12.dp)) {
-                                    Text("متوسط الصرف اليومي", fontSize = 11.sp, color = Color.Gray)
+                                    Text(AppText.text(com.example.R.string.text_3431c146da7c), fontSize = 11.sp, color = Color.Gray)
                                     Spacer(modifier = Modifier.height(4.dp))
                                     val dailyAvg = state.totalExpenseThisMonth / 30.0
-                                    Text("${String.format(Locale.US, "%,.0f", dailyAvg)} ${state.currency}", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                                    Text("${String.format(Locale.US, "%,.0f", dailyAvg)} ${AppText.currency(state.currency)}", fontSize = 14.sp, fontWeight = FontWeight.Bold)
                                 }
                             }
 
@@ -1057,10 +1061,10 @@ fun DashboardScreen(
                                 border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
                             ) {
                                 Column(modifier = Modifier.padding(12.dp)) {
-                                    Text("حد الصرف الآمن يومياً", fontSize = 11.sp, color = Color.Gray)
+                                    Text(AppText.text(com.example.R.string.text_9aa255f3885d), fontSize = 11.sp, color = Color.Gray)
                                     Spacer(modifier = Modifier.height(4.dp))
                                     val safeDaily = (state.remainingSalary / 23.0).coerceAtLeast(0.0)
-                                    Text("${String.format(Locale.US, "%,.0f", safeDaily)} ${state.currency}", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                                    Text("${String.format(Locale.US, "%,.0f", safeDaily)} ${AppText.currency(state.currency)}", fontSize = 14.sp, fontWeight = FontWeight.Bold)
                                 }
                             }
                         }
@@ -1084,7 +1088,7 @@ fun DashboardScreen(
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Add,
-                                contentDescription = "إضافة دخل",
+                                contentDescription = AppText.text(com.example.R.string.text_f9aaa00729de),
                                 tint = Color.White,
                                 modifier = Modifier.size(20.dp)
                             )
@@ -1141,7 +1145,7 @@ fun DashboardScreen(
                                     color = EmeraldGreenDark
                                 )
                                 Text(
-                                    text = "نسبة المستهلك من الراتب",
+                                    text = AppText.text(com.example.R.string.text_150293b7792d),
                                     fontSize = 15.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = MaterialTheme.colorScheme.onSurface
@@ -1170,13 +1174,13 @@ fun DashboardScreen(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "المتبقي: ${String.format(Locale.US, "%,.0f", state.remainingSalary)} ${state.currency}",
+                                    text = AppText.text(com.example.R.string.text_be1e41cbff16, String.format(Locale.US, "%,.0f", state.remainingSalary), AppText.currency(state.currency)),
                                     fontSize = 12.5.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = EmeraldGreenDark
                                 )
                                 Text(
-                                    text = "المنفق: ${String.format(Locale.US, "%,.0f", state.totalExpenseThisMonth)} ${state.currency}",
+                                    text = AppText.text(com.example.R.string.text_501aabb98ee5, String.format(Locale.US, "%,.0f", state.totalExpenseThisMonth), AppText.currency(state.currency)),
                                     fontSize = 12.5.sp,
                                     color = Color.Gray,
                                     fontWeight = FontWeight.Medium
@@ -1212,7 +1216,7 @@ fun DashboardScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.PieChart,
-                                    contentDescription = "تحليل الراتب",
+                                    contentDescription = AppText.text(com.example.R.string.text_2e3575a463d9),
                                     tint = Color.Black,
                                     modifier = Modifier.size(26.dp)
                                 )
@@ -1223,14 +1227,14 @@ fun DashboardScreen(
                                 horizontalAlignment = Alignment.Start
                             ) {
                                 Text(
-                                    text = "أين ذهب راتبي هذا الشهر؟",
+                                    text = AppText.text(com.example.R.string.text_4f7580d78f5f),
                                     fontSize = 15.5.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = EmeraldGreenDark
                                 )
                                 Spacer(modifier = Modifier.height(6.dp))
                                 Text(
-                                    text = "لقد قمت بإدارة ${state.salarySpentPercentage.toInt()}% من راتبك بحكمة. تفقد صفحة التقارير لرؤية التحليل التفصيلي.",
+                                    text = AppText.text(com.example.R.string.text_d7e36702a621, state.salarySpentPercentage.toInt()),
                                     fontSize = 12.sp,
                                     color = Color(0xFF4B5563),
                                     lineHeight = 18.sp,
@@ -1269,14 +1273,14 @@ fun DashboardScreen(
                             ) {
                                 Icon(
                                     imageVector = Icons.Default.EmojiEvents,
-                                    contentDescription = "مكافآتك",
+                                    contentDescription = AppText.text(com.example.R.string.text_ba828efad7d2),
                                     tint = EmeraldGreenPrimary,
                                     modifier = Modifier.size(20.dp)
                                 )
                             }
                             Spacer(modifier = Modifier.width(10.dp))
                             Text(
-                                text = "مكافآتك هذا الشهر",
+                                text = AppText.text(com.example.R.string.text_d6ed50d80f68),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp,
                                 color = MaterialTheme.colorScheme.onSurface
@@ -1319,7 +1323,7 @@ fun DashboardScreen(
                     Spacer(modifier = Modifier.height(14.dp))
 
                     Text(
-                        text = "كمّل تسجيل عملياتك وسدّد التزاماتك في وقتها لتحصل على باقي الشارات.",
+                        text = AppText.text(com.example.R.string.text_f8518fa27a4a),
                         fontSize = 11.5.sp,
                         color = Color.Gray,
                         textAlign = TextAlign.Center,
@@ -1338,13 +1342,13 @@ fun DashboardScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "آخر العمليات",
+                        text = AppText.text(com.example.R.string.text_e50acc511afa),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
 
                     Text(
-                        text = "عرض الكل",
+                        text = AppText.text(com.example.R.string.text_d36294e5abb3),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
                         color = EmeraldGreenPrimary,
@@ -1368,7 +1372,7 @@ fun DashboardScreen(
                             contentAlignment = Alignment.Center
                         ) {
                             Text(
-                                text = "لا توجد عمليات بعد",
+                                text = AppText.text(com.example.R.string.text_c302118eabab),
                                 color = Color.Gray,
                                 fontSize = 13.sp,
                                 fontWeight = FontWeight.Medium
@@ -1416,7 +1420,7 @@ fun DashboardScreen(
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = "الالتزامات الشهرية",
+                            text = AppText.text(com.example.R.string.text_cecfe96db0ad),
                             fontSize = 12.5.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -1449,7 +1453,7 @@ fun DashboardScreen(
                         )
                         Spacer(modifier = Modifier.width(6.dp))
                         Text(
-                            text = "أين ذهب راتبي؟",
+                            text = AppText.text(com.example.R.string.text_2dffd674f9b7),
                             fontSize = 12.5.sp,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurface
@@ -1570,8 +1574,8 @@ fun TransactionRowItem(tx: TransactionEntity, currency: String) {
     val isIncome = tx.type == "INCOME"
     val icon = CategoryUtils.getCategoryIcon(tx.category)
     val iconColor = if (isIncome) IncomeGreen else CategoryUtils.getCategoryColor(tx.category)
-    val sdf = remember { SimpleDateFormat("dd MMM, hh:mm a", Locale("ar")) }
-    val formattedDate = remember(tx.dateMillis) { sdf.format(Date(tx.dateMillis)) }
+    val sdf = remember(AppText.language) { SimpleDateFormat("dd MMM, hh:mm a", AppText.locale) }
+    val formattedDate = remember(AppText.language, tx.dateMillis) { sdf.format(Date(tx.dateMillis)) }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -1613,7 +1617,7 @@ fun TransactionRowItem(tx: TransactionEntity, currency: String) {
                 Spacer(modifier = Modifier.height(2.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = tx.category,
+                        text = AppStrings(AppText.language).translateCategory(tx.category),
                         fontSize = 11.sp,
                         color = iconColor,
                         fontWeight = FontWeight.SemiBold
@@ -1634,7 +1638,7 @@ fun TransactionRowItem(tx: TransactionEntity, currency: String) {
             }
 
             Text(
-                text = "${if (isIncome) "+" else "-"}${String.format(Locale.US, "%,.0f", tx.amount)} $currency",
+                text = "${if (isIncome) "+" else "-"}${String.format(Locale.US, "%,.0f", tx.amount)} ${AppText.currency(currency)}",
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 13.sp,
                 color = if (isIncome) IncomeGreen else ExpenseRed

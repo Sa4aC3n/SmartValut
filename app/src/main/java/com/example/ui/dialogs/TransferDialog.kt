@@ -1,5 +1,7 @@
 package com.example.ui.dialogs
 
+import com.example.ui.utils.AppText
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,14 +41,14 @@ fun TransferDialog(
     if (vaults.size < 2) {
         AlertDialog(
             onDismissRequest = onDismiss,
-            title = { Text("تحويل بين الخزن", fontWeight = FontWeight.Bold) },
-            text = { Text("تحتاج إلى وجود خزنتين على الأقل لتتمكن من إجراء التحويل.") },
+            title = { Text(AppText.text(com.example.R.string.text_2621b907b936), fontWeight = FontWeight.Bold) },
+            text = { Text(AppText.text(com.example.R.string.text_e9258a5036f8)) },
             confirmButton = {
                 Button(
                     onClick = onDismiss,
                     colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary)
                 ) {
-                    Text("حسناً")
+                    Text(AppText.text(com.example.R.string.text_d4c6598d6ffa))
                 }
             }
         )
@@ -66,7 +68,7 @@ fun TransferDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("تحويل بين الخزن", fontWeight = FontWeight.Bold) },
+        title = { Text(AppText.text(com.example.R.string.text_2621b907b936), fontWeight = FontWeight.Bold) },
         text = {
             Column(modifier = Modifier.fillMaxWidth()) {
                 // Source Vault
@@ -75,10 +77,10 @@ fun TransferDialog(
                     onExpandedChange = { expandedFrom = it }
                 ) {
                     OutlinedTextField(
-                        value = "$fromVaultName (الرصيد: ${fromVault?.balance?.toInt() ?: 0})",
+                        value = AppText.text(com.example.R.string.text_8ab3355c9b8e, fromVaultName, fromVault?.balance?.toInt() ?: 0),
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("من خزنة") },
+                        label = { Text(AppText.text(com.example.R.string.text_e4b742a3d7dd)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedFrom) },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -90,7 +92,7 @@ fun TransferDialog(
                     ) {
                         vaults.forEach { vault ->
                             DropdownMenuItem(
-                                text = { Text("${vault.name} (رصيد: ${vault.balance.toInt()})") },
+                                text = { Text(AppText.text(com.example.R.string.text_b22041755a8d, vault.name, vault.balance.toInt())) },
                                 onClick = {
                                     fromVaultName = vault.name
                                     expandedFrom = false
@@ -111,7 +113,7 @@ fun TransferDialog(
                         value = toVaultName,
                         onValueChange = {},
                         readOnly = true,
-                        label = { Text("إلى خزنة") },
+                        label = { Text(AppText.text(com.example.R.string.text_54536665883b)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedTo) },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -123,7 +125,7 @@ fun TransferDialog(
                     ) {
                         vaults.filter { it.name != fromVaultName }.forEach { vault ->
                             DropdownMenuItem(
-                                text = { Text("${vault.name} (رصيد: ${vault.balance.toInt()})") },
+                                text = { Text(AppText.text(com.example.R.string.text_b22041755a8d, vault.name, vault.balance.toInt())) },
                                 onClick = {
                                     toVaultName = vault.name
                                     expandedTo = false
@@ -141,7 +143,7 @@ fun TransferDialog(
                         amountText = it
                         errorMessage = null
                     },
-                    label = { Text("المبلغ المحول") },
+                    label = { Text(AppText.text(com.example.R.string.text_6d657f28024a)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
@@ -152,7 +154,7 @@ fun TransferDialog(
                 OutlinedTextField(
                     value = notes,
                     onValueChange = { notes = it },
-                    label = { Text("ملاحظة (اختياري)") },
+                    label = { Text(AppText.text(com.example.R.string.text_e85b74a3d0e3)) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -171,15 +173,15 @@ fun TransferDialog(
                 onClick = {
                     val amount = amountText.toDoubleOrNull()
                     if (amount == null || amount <= 0) {
-                        errorMessage = "يرجى إدخال مبلغ تحويل صحيح"
+                        errorMessage = AppText.text(com.example.R.string.text_fca3bacd6fd9)
                         return@Button
                     }
                     if (fromVaultName == toVaultName) {
-                        errorMessage = "لا يمكن التحويل من الخزنة إلى نفسها"
+                        errorMessage = AppText.text(com.example.R.string.text_cb0aaf62ada7)
                         return@Button
                     }
                     if (fromVault != null && fromVault.balance < amount) {
-                        errorMessage = "رصيد الخزنة (${fromVault.balance.toInt()}) لا يكفي للتحويل"
+                        errorMessage = AppText.text(com.example.R.string.text_5af8cd372f42, fromVault.balance.toInt())
                         return@Button
                     }
 
@@ -192,12 +194,12 @@ fun TransferDialog(
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary)
             ) {
-                Text("تنفيذ التحويل")
+                Text(AppText.text(com.example.R.string.text_0728ae910ae8))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("إلغاء")
+                Text(AppText.text(com.example.R.string.text_e776b0209b50))
             }
         }
     )

@@ -1,5 +1,7 @@
 package com.example.ui.dialogs
 
+import com.example.ui.utils.AppText
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -46,12 +48,12 @@ fun ManageModulesDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text("إدارة وتخصيص الأقسام", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+            Text(AppText.text(com.example.R.string.text_d0e559035070), fontWeight = FontWeight.Bold, fontSize = 18.sp)
         },
         text = {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "يمكنك إخفاء أو إظهار أقسام التطبيق حسب احتياجاتك اليومية. لن يتم حذف أي بيانات مسجلة عند إخفاء القسم.",
+                    text = AppText.text(com.example.R.string.text_241c729c5948),
                     fontSize = 12.sp,
                     color = androidx.compose.ui.graphics.Color.Gray,
                     lineHeight = 16.sp
@@ -61,8 +63,8 @@ fun ManageModulesDialog(
                 LazyColumn(modifier = Modifier.fillMaxWidth()) {
                     item {
                         ModuleToggleRow(
-                            title = "الدخل والمصروفات",
-                            subtitle = "القسم الأساسي (مفعّل دائمًا)",
+                            title = AppText.text(com.example.R.string.text_ac5f8981223b),
+                            subtitle = AppText.text(com.example.R.string.text_9eabacadf3bd),
                             checked = true,
                             enabled = false,
                             onCheckedChange = {}
@@ -70,72 +72,72 @@ fun ManageModulesDialog(
                     }
                     item {
                         ModuleToggleRow(
-                            title = "صافي الثروة",
-                            subtitle = "حساب الأصول والالتزامات",
+                            title = AppText.text(com.example.R.string.text_0b8ff6a5604b),
+                            subtitle = AppText.text(com.example.R.string.text_5053d7bf195f),
                             checked = netWorth,
                             onCheckedChange = { netWorth = it }
                         )
                     }
                     item {
                         ModuleToggleRow(
-                            title = "الديون (لي / عليّ)",
-                            subtitle = "إدارة الديون والأموال المستحقة",
+                            title = AppText.text(com.example.R.string.text_3c7023c98558),
+                            subtitle = AppText.text(com.example.R.string.text_630aff3fd3d6),
                             checked = debts,
                             onCheckedChange = { debts = it }
                         )
                     }
                     item {
                         ModuleToggleRow(
-                            title = "التقويم المالي",
-                            subtitle = "عرض العمليات والالتزامات على مدار الشهر",
+                            title = AppText.text(com.example.R.string.text_3ac532621c03),
+                            subtitle = AppText.text(com.example.R.string.text_4fc432f8f7b5),
                             checked = calendar,
                             onCheckedChange = { calendar = it }
                         )
                     }
                     item {
                         ModuleToggleRow(
-                            title = "المدخرات النقدية",
-                            subtitle = "صناديق الادخار والعملات",
+                            title = AppText.text(com.example.R.string.text_0911e2b39ae7),
+                            subtitle = AppText.text(com.example.R.string.text_8203c5a07039),
                             checked = savings,
                             onCheckedChange = { savings = it }
                         )
                     }
                     item {
                         ModuleToggleRow(
-                            title = "الذهب والسبائك",
-                            subtitle = "المشغولات، السبائك، وقيمتها الحالية",
+                            title = AppText.text(com.example.R.string.text_270cfe7362c3),
+                            subtitle = AppText.text(com.example.R.string.text_78bca3b4e55d),
                             checked = gold,
                             onCheckedChange = { gold = it }
                         )
                     }
                     item {
                         ModuleToggleRow(
-                            title = "الالتزامات والفواتير",
-                            subtitle = "الإيجار، الفواتير، والأقساط الشهرية",
+                            title = AppText.text(com.example.R.string.text_bb5f9ffd9b6d),
+                            subtitle = AppText.text(com.example.R.string.text_9e754462d4ab),
                             checked = commitments,
                             onCheckedChange = { commitments = it }
                         )
                     }
                     item {
                         ModuleToggleRow(
-                            title = "دروس الأطفال",
-                            subtitle = "حسابات المدرسين ومصروفات المواد",
+                            title = AppText.text(com.example.R.string.text_6831249d5a13),
+                            subtitle = AppText.text(com.example.R.string.text_25b22a8dc6ba),
                             checked = lessons,
                             onCheckedChange = { lessons = it }
                         )
                     }
                     item {
                         ModuleToggleRow(
-                            title = "الخروجات الجماعية",
-                            subtitle = "حساب النزهات وتقسيم المصاريف",
+                            title = AppText.text(com.example.R.string.text_1e293181f8da),
+                            subtitle = AppText.text(com.example.R.string.text_6eee8a54550a),
                             checked = outings,
                             onCheckedChange = { outings = it }
                         )
                     }
                     item {
                         ModuleToggleRow(
-                            title = "الميزانيات وسقف الإنفاق",
-                            subtitle = "تحديد ميزانية لكل تصنيف",
+                            title = AppText.text(com.example.R.string.text_73227b4300b7),
+                            subtitle = AppText.text(com.example.R.string.text_b3e90b0100ae),
                             checked = budgets,
                             onCheckedChange = { budgets = it }
                         )
@@ -164,12 +166,12 @@ fun ManageModulesDialog(
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary)
             ) {
-                Text("حفظ التغييرات")
+                Text(AppText.text(com.example.R.string.text_33081e44cb7c))
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("إلغاء")
+                Text(AppText.text(com.example.R.string.text_e776b0209b50))
             }
         }
     )

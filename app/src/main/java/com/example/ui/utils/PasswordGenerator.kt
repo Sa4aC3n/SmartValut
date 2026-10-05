@@ -1,5 +1,7 @@
 package com.example.ui.utils
 
+import com.example.ui.utils.AppText
+
 import java.security.SecureRandom
 
 object PasswordGenerator {
@@ -46,12 +48,14 @@ object PasswordGenerator {
         return String(charArray)
     }
 
-    enum class PasswordStrength(val labelAr: String, val score: Int) {
-        VERY_WEAK("ضعيفة جداً", 1),
-        WEAK("ضعيفة", 2),
-        MEDIUM("متوسطة", 3),
-        STRONG("قوية", 4),
-        VERY_STRONG("فائقة القوة", 5)
+    enum class PasswordStrength(private val labelId: Int, val score: Int) {
+        VERY_WEAK(com.example.R.string.text_de83fe0e773f, 1),
+        WEAK(com.example.R.string.text_19ac077a66fc, 2),
+        MEDIUM(com.example.R.string.text_4167c04a5bc0, 3),
+        STRONG(com.example.R.string.text_f23522a73d5e, 4),
+        VERY_STRONG(com.example.R.string.text_15c81a353e6d, 5);
+
+        val labelAr: String get() = AppText.text(labelId)
     }
 
     fun evaluateStrength(password: String): PasswordStrength {

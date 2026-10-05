@@ -1,5 +1,7 @@
 package com.example.ui.screens
 
+import com.example.ui.utils.AppText
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -74,14 +76,14 @@ fun NetWorthScreen(
             TopAppBar(
                 title = {
                     Text(
-                        text = "صافي الثروة",
+                        text = AppText.text(com.example.R.string.text_0b8ff6a5604b),
                         fontWeight = FontWeight.Bold,
                         fontSize = 18.sp
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "رجوع")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = AppText.text(com.example.R.string.text_328ddce5bbca))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -122,7 +124,7 @@ fun NetWorthScreen(
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    text = "صافي ثروتك",
+                                    text = AppText.text(com.example.R.string.text_d0e88faf7ac5),
                                     color = Color.White.copy(alpha = 0.85f),
                                     fontSize = 14.sp
                                 )
@@ -137,14 +139,14 @@ fun NetWorthScreen(
                             Spacer(modifier = Modifier.height(6.dp))
 
                             Text(
-                                text = "${String.format("%,d", breakdown.netWorth.toInt())} $currency",
+                                text = "${String.format("%,d", breakdown.netWorth.toInt())} ${AppText.currency(currency)}",
                                 color = Color.White,
                                 fontSize = 32.sp,
                                 fontWeight = FontWeight.Bold
                             )
 
                             Text(
-                                text = "إجمالي ما تملكه ناقص إجمالي ما عليك",
+                                text = AppText.text(com.example.R.string.text_3e62f9aa2335),
                                 color = Color.White.copy(alpha = 0.7f),
                                 fontSize = 11.sp
                             )
@@ -157,12 +159,12 @@ fun NetWorthScreen(
                             ) {
                                 Column {
                                     Text(
-                                        text = "إجمالي الأصول",
+                                        text = AppText.text(com.example.R.string.text_3765938331a5),
                                         color = Color.White.copy(alpha = 0.8f),
                                         fontSize = 12.sp
                                     )
                                     Text(
-                                        text = "${String.format("%,d", breakdown.totalAssets.toInt())} $currency",
+                                        text = "${String.format("%,d", breakdown.totalAssets.toInt())} ${AppText.currency(currency)}",
                                         color = IncomeGreen,
                                         fontSize = 16.sp,
                                         fontWeight = FontWeight.Bold
@@ -170,12 +172,12 @@ fun NetWorthScreen(
                                 }
                                 Column(horizontalAlignment = Alignment.End) {
                                     Text(
-                                        text = "إجمالي الالتزامات",
+                                        text = AppText.text(com.example.R.string.text_693a3a889d03),
                                         color = Color.White.copy(alpha = 0.8f),
                                         fontSize = 12.sp
                                     )
                                     Text(
-                                        text = "${String.format("%,d", breakdown.totalLiabilities.toInt())} $currency",
+                                        text = "${String.format("%,d", breakdown.totalLiabilities.toInt())} ${AppText.currency(currency)}",
                                         color = ExpenseRed,
                                         fontSize = 16.sp,
                                         fontWeight = FontWeight.Bold
@@ -200,13 +202,13 @@ fun NetWorthScreen(
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
-                                text = "ما تملكه: ${breakdown.assetsPercentage.toInt()}%",
+                                text = AppText.text(com.example.R.string.text_f5b0b65c4672, breakdown.assetsPercentage.toInt()),
                                 color = IncomeGreen,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 13.sp
                             )
                             Text(
-                                text = "ما عليك: ${breakdown.liabilitiesPercentage.toInt()}%",
+                                text = AppText.text(com.example.R.string.text_2ca01d14a9cd, breakdown.liabilitiesPercentage.toInt()),
                                 color = ExpenseRed,
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 13.sp
@@ -238,7 +240,7 @@ fun NetWorthScreen(
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "أين توجد أموالك؟ (توزيع الأصول)",
+                            text = AppText.text(com.example.R.string.text_a5cab93ddaa9),
                             fontWeight = FontWeight.Bold,
                             fontSize = 15.sp
                         )
@@ -247,7 +249,7 @@ fun NetWorthScreen(
                         val totalAssetsSafe = breakdown.totalAssets.coerceAtLeast(1.0)
 
                         AssetCategoryRow(
-                            name = "الخزن النقدية",
+                            name = AppText.text(com.example.R.string.text_6df2c1412f00),
                             amount = breakdown.vaultsTotal,
                             percentage = (breakdown.vaultsTotal / totalAssetsSafe) * 100.0,
                             icon = Icons.Default.AccountBalanceWallet,
@@ -258,7 +260,7 @@ fun NetWorthScreen(
                         Spacer(modifier = Modifier.height(10.dp))
 
                         AssetCategoryRow(
-                            name = "الذهب والسبائك",
+                            name = AppText.text(com.example.R.string.text_270cfe7362c3),
                             amount = breakdown.goldEstimatedValue,
                             percentage = (breakdown.goldEstimatedValue / totalAssetsSafe) * 100.0,
                             icon = Icons.Default.MonetizationOn,
@@ -269,7 +271,7 @@ fun NetWorthScreen(
                         Spacer(modifier = Modifier.height(10.dp))
 
                         AssetCategoryRow(
-                            name = "المدخرات النقدية",
+                            name = AppText.text(com.example.R.string.text_0911e2b39ae7),
                             amount = breakdown.cashSavingsTotal,
                             percentage = (breakdown.cashSavingsTotal / totalAssetsSafe) * 100.0,
                             icon = Icons.Default.AccountBalance,
@@ -280,7 +282,7 @@ fun NetWorthScreen(
                         Spacer(modifier = Modifier.height(10.dp))
 
                         AssetCategoryRow(
-                            name = "أموال لدى الآخرين (ديون لي)",
+                            name = AppText.text(com.example.R.string.text_f805f891c45a),
                             amount = breakdown.moneyOwedToMe,
                             percentage = (breakdown.moneyOwedToMe / totalAssetsSafe) * 100.0,
                             icon = Icons.Default.TrendingUp,
@@ -300,7 +302,7 @@ fun NetWorthScreen(
                 ) {
                     Column(modifier = Modifier.padding(16.dp)) {
                         Text(
-                            text = "سجل صافي الثروة عبر الزمن",
+                            text = AppText.text(com.example.R.string.text_75f44963519a),
                             fontWeight = FontWeight.Bold,
                             fontSize = 15.sp
                         )
@@ -311,10 +313,10 @@ fun NetWorthScreen(
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             listOf(
-                                "7d" to "7 أيام",
-                                "30d" to "30 يوم",
-                                "90d" to "90 يوم",
-                                "1y" to "سنة"
+                                "7d" to AppText.text(com.example.R.string.text_17eb7e3e00d7),
+                                "30d" to AppText.text(com.example.R.string.text_843bcefe4002),
+                                "90d" to AppText.text(com.example.R.string.text_7e25a36b91db),
+                                "1y" to AppText.text(com.example.R.string.text_f91a7c9817c8)
                             ).forEach { (key, label) ->
                                 FilterChip(
                                     selected = selectedPeriod == key,
@@ -337,13 +339,13 @@ fun NetWorthScreen(
 
                         if (periodSnapshots.isEmpty()) {
                             Text(
-                                text = "يتم حفظ لقطات دورية لصافي الثروة لتتبع نمو أصولك عبر الزمن.",
+                                text = AppText.text(com.example.R.string.text_a07a7191ef8a),
                                 fontSize = 12.sp,
                                 color = Color.Gray,
                                 modifier = Modifier.padding(vertical = 12.dp)
                             )
                         } else {
-                            val sdf = SimpleDateFormat("dd MMM yyyy", Locale("ar"))
+                            val sdf = SimpleDateFormat("dd MMM yyyy", AppText.locale)
                             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                                 periodSnapshots.takeLast(5).reversed().forEach { snap ->
                                     Row(
@@ -363,7 +365,7 @@ fun NetWorthScreen(
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                         Text(
-                                            text = "${String.format("%,d", snap.netWorth.toInt())} $currency",
+                                            text = "${String.format("%,d", snap.netWorth.toInt())} ${AppText.currency(currency)}",
                                             fontWeight = FontWeight.Bold,
                                             fontSize = 13.sp,
                                             color = EmeraldGreenPrimary
@@ -411,7 +413,7 @@ private fun AssetCategoryRow(
             Column {
                 Text(name, fontWeight = FontWeight.SemiBold, fontSize = 13.sp)
                 Text(
-                    text = "${percentage.toInt()}% من إجمالي الأصول",
+                    text = AppText.text(com.example.R.string.text_ea8176c4a653, percentage.toInt()),
                     fontSize = 11.sp,
                     color = Color.Gray
                 )
@@ -419,7 +421,7 @@ private fun AssetCategoryRow(
         }
 
         Text(
-            text = "${String.format("%,d", amount.toInt())} $currency",
+            text = "${String.format("%,d", amount.toInt())} ${AppText.currency(currency)}",
             fontWeight = FontWeight.Bold,
             fontSize = 14.sp
         )

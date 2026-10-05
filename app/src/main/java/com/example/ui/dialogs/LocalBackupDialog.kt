@@ -1,5 +1,7 @@
 package com.example.ui.dialogs
 
+import com.example.ui.utils.AppText
+
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
@@ -49,22 +51,22 @@ fun LocalBackupDialog(viewModel: SmartVaultViewModel, onDismiss: () -> Unit) {
         encryptedExport = null
         if (uri == null || payload == null) {
             busy = false
-            message = "تم إلغاء الحفظ؛ يمكنك المحاولة مجدداً"
+            message = AppText.text(com.example.R.string.text_c12100c61b18)
         } else {
             scope.launch {
                 try {
-                    check(viewModel.activeUserId.value == userId) { "تغير الحساب؛ افتح النافذة مجدداً" }
+                    check(viewModel.activeUserId.value == userId) { AppText.text(com.example.R.string.text_1eb9aa242624) }
                     withContext(Dispatchers.IO) {
                         val output = context.contentResolver.openOutputStream(uri, "wt")
-                            ?: error("تعذر فتح الملف للحفظ")
+                            ?: error(AppText.text(com.example.R.string.text_a8793266c256))
                         output.use { it.write(payload.toByteArray(Charsets.UTF_8)) }
                     }
                     password = ""
-                    message = "تم حفظ النسخة المشفرة بنجاح"
+                    message = AppText.text(com.example.R.string.text_06f26e015e2c)
                 } catch (e: CancellationException) {
                     throw e
                 } catch (e: Exception) {
-                    message = e.message ?: "تعذر حفظ النسخة"
+                    message = e.message ?: AppText.text(com.example.R.string.text_414e1e6dc40e)
                 } finally {
                     busy = false
                 }
@@ -78,16 +80,16 @@ fun LocalBackupDialog(viewModel: SmartVaultViewModel, onDismiss: () -> Unit) {
         } else {
             scope.launch {
                 try {
-                    check(viewModel.activeUserId.value == userId) { "تغير الحساب؛ افتح النافذة مجدداً" }
+                    check(viewModel.activeUserId.value == userId) { AppText.text(com.example.R.string.text_1eb9aa242624) }
                     val result = withContext(Dispatchers.IO) {
-                        val input = context.contentResolver.openInputStream(uri) ?: error("تعذر فتح الملف")
+                        val input = context.contentResolver.openInputStream(uri) ?: error(AppText.text(com.example.R.string.text_a929b754604e))
                         val payload = input.use { stream ->
                             val output = ByteArrayOutputStream()
                             val buffer = ByteArray(8192)
                             while (true) {
                                 val count = stream.read(buffer)
                                 if (count < 0) break
-                                require(output.size() + count <= 20 * 1024 * 1024) { "حجم النسخة يتجاوز 20 ميجابايت" }
+                                require(output.size() + count <= 20 * 1024 * 1024) { AppText.text(com.example.R.string.text_e6804597584a) }
                                 output.write(buffer, 0, count)
                             }
                             output.toString("UTF-8")
@@ -98,13 +100,13 @@ fun LocalBackupDialog(viewModel: SmartVaultViewModel, onDismiss: () -> Unit) {
                         pendingRestore = result
                         message = ""
                     } else {
-                        message = result.errorMessage ?: "النسخة غير صالحة"
+                        message = result.errorMessage ?: AppText.text(com.example.R.string.text_d384371c7d76)
                     }
                     password = ""
                 } catch (e: CancellationException) {
                     throw e
                 } catch (e: Exception) {
-                    message = e.message ?: "تعذر قراءة النسخة"
+                    message = e.message ?: AppText.text(com.example.R.string.text_a9bd5dc954ba)
                 } finally {
                     busy = false
                 }
@@ -116,11 +118,11 @@ fun LocalBackupDialog(viewModel: SmartVaultViewModel, onDismiss: () -> Unit) {
     if (restore != null) {
         AlertDialog(
             onDismissRequest = { if (!busy) pendingRestore = null },
-            title = { Text("استبدال بيانات الحساب الحالي؟") },
+            title = { Text(AppText.text(com.example.R.string.text_694abc983ec7)) },
             text = {
-                Text("سيتم استبدال بيانات الحساب الحالي بالكامل. احفظ نسخة منها أولاً.\n" +
-                    "الحركات: ${restore.transactionCount}، الذهب: ${restore.goldAssetCount}، المدخرات: ${restore.cashSavingCount}.\n" +
-                    "صور الإيصالات والمرفقات غير مضمنة. لن تتغير بيانات الحسابات الأخرى.")
+                Text(AppText.text(com.example.R.string.text_722dca4d5e9b) +
+                    AppText.text(com.example.R.string.text_4df94446f435, restore.transactionCount, restore.goldAssetCount, restore.cashSavingCount) +
+                    AppText.text(com.example.R.string.text_f82f083ba1cf))
             },
             confirmButton = {
                 Button(enabled = !busy, onClick = {
@@ -128,31 +130,31 @@ fun LocalBackupDialog(viewModel: SmartVaultViewModel, onDismiss: () -> Unit) {
                     scope.launch {
                         try {
                             val success = viewModel.restoreLocalBackup(userId, requireNotNull(restore.decryptedJson))
-                            message = if (success) "تمت الاستعادة بنجاح" else
-                                "فشلت الاستعادة ولم تتغير بياناتك. النسخ القديمة للأسرار تتطلب مفتاح الجهاز الأصلي."
+                            message = if (success) AppText.text(com.example.R.string.text_7f40355588ef) else
+                                AppText.text(com.example.R.string.text_82e454e3065d)
                         } catch (e: CancellationException) {
                             throw e
                         } catch (e: Exception) {
-                            message = e.message ?: "تعذرت الاستعادة"
+                            message = e.message ?: AppText.text(com.example.R.string.text_b07a7cb3a1af)
                         } finally {
                             pendingRestore = null
                             busy = false
                         }
                     }
-                }) { Text("استبدال واستعادة") }
+                }) { Text(AppText.text(com.example.R.string.text_5fc5f97d822a)) }
             },
-            dismissButton = { TextButton(enabled = !busy, onClick = { pendingRestore = null }) { Text("إلغاء") } }
+            dismissButton = { TextButton(enabled = !busy, onClick = { pendingRestore = null }) { Text(AppText.text(com.example.R.string.text_e776b0209b50)) } }
         )
     } else {
         AlertDialog(
             onDismissRequest = { if (!busy) onDismiss() },
-            title = { Text("النسخ الاحتياطي المشفر") },
+            title = { Text(AppText.text(com.example.R.string.text_949fece4e9b3)) },
             text = {
                 Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                    Text("احفظ بياناتك المالية وأسرار الخزنة بكلمة مرور. احتفظ بالكلمة لاستعادة النسخة على أي جهاز. الصور والمرفقات غير مضمنة.")
+                    Text(AppText.text(com.example.R.string.text_8a0a96f7a552))
                     OutlinedTextField(
                         value = password, onValueChange = { password = it }, enabled = !busy,
-                        label = { Text("كلمة مرور النسخة") }, singleLine = true,
+                        label = { Text(AppText.text(com.example.R.string.text_5aa636210f67)) }, singleLine = true,
                         visualTransformation = PasswordVisualTransformation()
                     )
                     if (busy) LinearProgressIndicator(modifier = Modifier.fillMaxWidth())
@@ -169,10 +171,10 @@ fun LocalBackupDialog(viewModel: SmartVaultViewModel, onDismiss: () -> Unit) {
                             } catch (e: Exception) {
                                 encryptedExport = null
                                 busy = false
-                                message = e.message ?: "تعذر إنشاء النسخة"
+                                message = e.message ?: AppText.text(com.example.R.string.text_f29136956db6)
                             }
                         }
-                    }) { Text("حفظ نسخة") }
+                    }) { Text(AppText.text(com.example.R.string.text_1019d9dd0ede)) }
                     Button(enabled = !busy && password.isNotBlank(), onClick = {
                         busy = true
                         message = ""
@@ -180,12 +182,12 @@ fun LocalBackupDialog(viewModel: SmartVaultViewModel, onDismiss: () -> Unit) {
                             openFile.launch(arrayOf("*/*"))
                         } catch (e: Exception) {
                             busy = false
-                            message = e.message ?: "تعذر فتح مستعرض الملفات"
+                            message = e.message ?: AppText.text(com.example.R.string.text_0ba062d0f757)
                         }
-                    }) { Text("فتح نسخة للاستعادة") }
+                    }) { Text(AppText.text(com.example.R.string.text_90bab6e8c99d)) }
                 }
             },
-            confirmButton = { TextButton(enabled = !busy, onClick = onDismiss) { Text("إغلاق") } }
+            confirmButton = { TextButton(enabled = !busy, onClick = onDismiss) { Text(AppText.text(com.example.R.string.text_5bf826c5e57c)) } }
         )
     }
 }

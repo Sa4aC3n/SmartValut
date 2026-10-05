@@ -1,5 +1,9 @@
 package com.example.ui.screens
 
+import com.example.ui.utils.AppStrings
+
+import com.example.ui.utils.AppText
+
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -120,7 +124,7 @@ fun ExpensesAndSearchScreen(
     }
 
     // Combine transactions and transfers into unified list
-    val unifiedItems = remember(transactions, transfers, activeFilterType, searchQuery, selectedDateRange, selectedSortOrder, selectedCategory, filterVault) {
+    val unifiedItems = remember(AppText.language, transactions, transfers, activeFilterType, searchQuery, selectedDateRange, selectedSortOrder, selectedCategory, filterVault) {
         val now = System.currentTimeMillis()
         val minDate = when (selectedDateRange) {
             "7D" -> now - (7 * 86400000L)
@@ -197,14 +201,14 @@ fun ExpensesAndSearchScreen(
             ) {
                 Column {
                     Text(
-                        text = "العمليات والبحث",
+                        text = AppText.text(com.example.R.string.text_18e5596bb836),
                         fontWeight = FontWeight.ExtraBold,
                         fontSize = 24.sp,
                         color = MaterialTheme.colorScheme.onSurface
                     )
                     Spacer(modifier = Modifier.height(2.dp))
                     Text(
-                        text = "سجل الحركات المالية المتقدم",
+                        text = AppText.text(com.example.R.string.text_d4bd10df9899),
                         fontSize = 12.sp,
                         color = Color.Gray,
                         fontWeight = FontWeight.Medium
@@ -242,7 +246,7 @@ fun ExpensesAndSearchScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Settings,
-                            contentDescription = "الإعدادات",
+                            contentDescription = AppText.text(com.example.R.string.text_90b6c869a171),
                             tint = MaterialTheme.colorScheme.onSurface,
                             modifier = Modifier.size(18.dp)
                         )
@@ -268,10 +272,10 @@ fun ExpensesAndSearchScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     listOf(
-                        "ALL" to "الكل",
-                        "EXPENSE" to "مصروفات",
-                        "INCOME" to "دخل",
-                        "TRANSFER" to "تحويلات"
+                        "ALL" to AppText.text(com.example.R.string.text_11fdef2dc5f8),
+                        "EXPENSE" to AppText.text(com.example.R.string.text_dfee1ee1b524),
+                        "INCOME" to AppText.text(com.example.R.string.text_b321cd775e8e),
+                        "TRANSFER" to AppText.text(com.example.R.string.text_b2a8da21fa0d)
                     ).forEach { (typeKey, label) ->
                         val isSelected = activeFilterType == typeKey
                         Box(
@@ -333,7 +337,7 @@ fun ExpensesAndSearchScreen(
                             Box(contentAlignment = Alignment.CenterStart) {
                                 if (searchQuery.isEmpty()) {
                                     Text(
-                                        text = "بحث بالوصف، الخزنة، التصنيف، أو المبلغ...",
+                                        text = AppText.text(com.example.R.string.text_d076b6b87278),
                                         fontSize = 12.sp,
                                         color = Color.Gray.copy(alpha = 0.75f)
                                     )
@@ -356,7 +360,7 @@ fun ExpensesAndSearchScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.FilterList,
-                        contentDescription = "فلاتر متقدمة",
+                        contentDescription = AppText.text(com.example.R.string.text_fb8387b2d570),
                         tint = if (showAdvancedFilters) Color.White else MaterialTheme.colorScheme.onSurface,
                         modifier = Modifier.size(20.dp)
                     )
@@ -379,7 +383,7 @@ fun ExpensesAndSearchScreen(
                 ) {
                     Icon(
                         imageVector = Icons.Default.Add,
-                        contentDescription = "إضافة",
+                        contentDescription = AppText.text(com.example.R.string.text_5e3a3fdfce20),
                         tint = Color.White,
                         modifier = Modifier.size(22.dp)
                     )
@@ -397,17 +401,17 @@ fun ExpensesAndSearchScreen(
                     border = BorderStroke(1.dp, CardBorderColor)
                 ) {
                     Column(modifier = Modifier.padding(12.dp)) {
-                        Text("النطاق الزمني", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color.Gray)
+                        Text(AppText.text(com.example.R.string.text_8d23c3965527), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color.Gray)
                         Spacer(modifier = Modifier.height(4.dp))
                         FlowRow(
                             horizontalArrangement = Arrangement.spacedBy(6.dp),
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             listOf(
-                                "ALL" to "كل الأوقات",
-                                "THIS_MONTH" to "هذا الشهر",
-                                "7D" to "آخر 7 أيام",
-                                "30D" to "آخر 30 يوم"
+                                "ALL" to AppText.text(com.example.R.string.text_d38aa97bb96e),
+                                "THIS_MONTH" to AppText.text(com.example.R.string.text_b7523863599a),
+                                "7D" to AppText.text(com.example.R.string.text_349de9cf3c2d),
+                                "30D" to AppText.text(com.example.R.string.text_c94c6c1e0911)
                             ).forEach { (k, label) ->
                                 FilterChip(
                                     selected = selectedDateRange == k,
@@ -418,17 +422,17 @@ fun ExpensesAndSearchScreen(
                         }
 
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text("الترتيب حسب", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color.Gray)
+                        Text(AppText.text(com.example.R.string.text_cc23678b3cbc), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color.Gray)
                         Spacer(modifier = Modifier.height(4.dp))
                         FlowRow(
                             horizontalArrangement = Arrangement.spacedBy(6.dp),
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             listOf(
-                                "NEWEST" to "الأحدث",
-                                "OLDEST" to "الأقدم",
-                                "HIGHEST" to "الأعلى قيمة",
-                                "LOWEST" to "الأقل قيمة"
+                                "NEWEST" to AppText.text(com.example.R.string.text_36299595d69c),
+                                "OLDEST" to AppText.text(com.example.R.string.text_e69ddb8fafca),
+                                "HIGHEST" to AppText.text(com.example.R.string.text_42b76568a25e),
+                                "LOWEST" to AppText.text(com.example.R.string.text_81ae1f96d293)
                             ).forEach { (k, label) ->
                                 FilterChip(
                                     selected = selectedSortOrder == k,
@@ -440,7 +444,7 @@ fun ExpensesAndSearchScreen(
 
                         if (vaults.isNotEmpty()) {
                             Spacer(modifier = Modifier.height(8.dp))
-                            Text("الخزنة", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color.Gray)
+                            Text(AppText.text(com.example.R.string.text_9650779e9a22), fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color.Gray)
                             Spacer(modifier = Modifier.height(4.dp))
                             FlowRow(
                                 horizontalArrangement = Arrangement.spacedBy(6.dp),
@@ -449,7 +453,7 @@ fun ExpensesAndSearchScreen(
                                 FilterChip(
                                     selected = filterVault == null,
                                     onClick = { filterVault = null },
-                                    label = { Text("جميع الخزن", fontSize = 11.sp) }
+                                    label = { Text(AppText.text(com.example.R.string.text_5db167239353), fontSize = 11.sp) }
                                 )
                                 vaults.forEach { vault ->
                                     FilterChip(
@@ -483,7 +487,7 @@ fun ExpensesAndSearchScreen(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "لا توجد نتائج مطابقة لبحثك أو الفلاتر المحددة",
+                            text = AppText.text(com.example.R.string.text_93fe23db91f1),
                             fontSize = 13.sp,
                             color = Color.Gray,
                             fontWeight = FontWeight.Medium
@@ -531,7 +535,7 @@ private fun TransactionRowItemLocal(
     val icon = CategoryUtils.getCategoryIcon(tx.category)
     val iconColor = if (isIncome) IncomeGreen else ExpenseRed
 
-    val formattedDate = remember(tx.dateMillis) {
+    val formattedDate = remember(AppText.language, tx.dateMillis) {
         try {
             val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.US)
             sdf.format(Date(tx.dateMillis))
@@ -572,7 +576,7 @@ private fun TransactionRowItemLocal(
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = tx.description.ifEmpty { tx.category },
+                    text = tx.description.ifEmpty { AppStrings(AppText.language).translateCategory(tx.category) },
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp,
                     color = MaterialTheme.colorScheme.onSurface
@@ -580,7 +584,7 @@ private fun TransactionRowItemLocal(
                 Spacer(modifier = Modifier.height(2.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = tx.category,
+                        text = AppStrings(AppText.language).translateCategory(tx.category),
                         fontSize = 11.sp,
                         color = iconColor,
                         fontWeight = FontWeight.SemiBold
@@ -611,7 +615,7 @@ private fun TransactionRowItemLocal(
             }
 
             Text(
-                text = "${if (isIncome) "+" else "-"}${String.format(Locale.US, "%,.0f", tx.amount)} $currency",
+                text = "${if (isIncome) "+" else "-"}${String.format(Locale.US, "%,.0f", tx.amount)} ${AppText.currency(currency)}",
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 13.5.sp,
                 color = if (isIncome) IncomeGreen else ExpenseRed
@@ -625,7 +629,7 @@ private fun TransactionRowItemLocal(
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "حذف",
+                    contentDescription = AppText.text(com.example.R.string.text_2d2bbdc2d694),
                     tint = Color.Gray,
                     modifier = Modifier.size(16.dp)
                 )
@@ -641,7 +645,7 @@ private fun TransferRowItemLocal(
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val formattedDate = remember(transfer.dateMillis) {
+    val formattedDate = remember(AppText.language, transfer.dateMillis) {
         try {
             val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.US)
             sdf.format(Date(transfer.dateMillis))
@@ -672,7 +676,7 @@ private fun TransferRowItemLocal(
             ) {
                 Icon(
                     imageVector = Icons.Default.SwapHoriz,
-                    contentDescription = "تحويل",
+                    contentDescription = AppText.text(com.example.R.string.text_0326e4ed17db),
                     tint = EmeraldGreenPrimary,
                     modifier = Modifier.size(20.dp)
                 )
@@ -690,7 +694,7 @@ private fun TransferRowItemLocal(
                 Spacer(modifier = Modifier.height(2.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        text = "تحويل بين الخزن",
+                        text = AppText.text(com.example.R.string.text_2621b907b936),
                         fontSize = 11.sp,
                         color = EmeraldGreenPrimary,
                         fontWeight = FontWeight.SemiBold
@@ -715,7 +719,7 @@ private fun TransferRowItemLocal(
             }
 
             Text(
-                text = "${String.format(Locale.US, "%,.0f", transfer.amount)} $currency",
+                text = "${String.format(Locale.US, "%,.0f", transfer.amount)} ${AppText.currency(currency)}",
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 13.5.sp,
                 color = EmeraldGreenPrimary
@@ -729,7 +733,7 @@ private fun TransferRowItemLocal(
             ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = "حذف",
+                    contentDescription = AppText.text(com.example.R.string.text_2d2bbdc2d694),
                     tint = Color.Gray,
                     modifier = Modifier.size(16.dp)
                 )

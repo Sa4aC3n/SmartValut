@@ -1,5 +1,7 @@
 package com.example.ui.components
 
+import com.example.ui.utils.AppText
+
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -57,7 +59,7 @@ fun PieChartComposable(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "توزيع الإنفاق حسب التصنيف (Pie Chart)",
+                text = AppText.text(com.example.R.string.text_7a747c6bf88a),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -73,7 +75,7 @@ fun PieChartComposable(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "لا توجد مصروفات مسجلة هذا الشهر حتى الآن",
+                        text = AppText.text(com.example.R.string.text_eb859d766281),
                         style = MaterialTheme.typography.bodyMedium,
                         color = Color.Gray
                     )
@@ -110,7 +112,7 @@ fun PieChartComposable(
                         }
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             Text(
-                                text = "الإجمالي",
+                                text = AppText.text(com.example.R.string.text_413c51af19b5),
                                 fontSize = 11.sp,
                                 color = Color.Gray
                             )
@@ -184,7 +186,7 @@ fun BarChartComposable(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "الإنفاق لكل شهر (Bar Chart)",
+                text = AppText.text(com.example.R.string.text_8c69562811f0),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -252,7 +254,7 @@ fun LineChartComposable(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "تطور الرصيد مع الوقت (Line Chart)",
+                text = AppText.text(com.example.R.string.text_6eea66fc03a3),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -267,7 +269,7 @@ fun LineChartComposable(
                         .height(140.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(text = "سيظهر منحنى التطور مع زيادة العمليات", color = Color.Gray, fontSize = 12.sp)
+                    Text(text = AppText.text(com.example.R.string.text_aee9e778a590), color = Color.Gray, fontSize = 12.sp)
                 }
             } else {
                 val maxVal = (balanceHistory.maxOfOrNull { it.second } ?: 1.0).coerceAtLeast(1.0)

@@ -1,5 +1,7 @@
 package com.example.ui.dialogs
 
+import com.example.ui.utils.AppText
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -50,7 +52,7 @@ fun AllInsightsDialog(
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
-            Text("الرؤى والتحليلات الذكية المحلية", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+            Text(AppText.text(com.example.R.string.text_fec5262bafc9), fontWeight = FontWeight.Bold, fontSize = 18.sp)
         },
         text = {
             if (insights.isEmpty()) {
@@ -61,7 +63,7 @@ fun AllInsightsDialog(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        "لا توجد ملاحظات مالية مهمة حاليًا.",
+                        AppText.text(com.example.R.string.text_891924a91014),
                         color = Color.Gray,
                         fontSize = 14.sp
                     )
@@ -133,7 +135,7 @@ fun AllInsightsDialog(
                 onClick = onDismiss,
                 colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary)
             ) {
-                Text("إغلاق")
+                Text(AppText.text(com.example.R.string.text_5bf826c5e57c))
             }
         }
     )

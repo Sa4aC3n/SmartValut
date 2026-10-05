@@ -1,5 +1,7 @@
 package com.example.ui.components
 
+import com.example.ui.utils.AppText
+
 import android.graphics.Paint
 import android.graphics.Typeface
 import androidx.compose.animation.AnimatedVisibility
@@ -116,7 +118,7 @@ fun SavingsGrowthInteractiveCard(
     var selectedPointIndex by remember { mutableIntStateOf(-1) }
 
     // Generate monthly timeline points
-    val monthlyPoints = remember(goldAssets, cashSavings, goldPriceMap, selectedMonthsRange) {
+    val monthlyPoints = remember(AppText.language, goldAssets, cashSavings, goldPriceMap, selectedMonthsRange) {
         generateMonthlyDataPoints(goldAssets, cashSavings, goldPriceMap, selectedMonthsRange)
     }
 
@@ -173,7 +175,7 @@ fun SavingsGrowthInteractiveCard(
                     ) {
                         Icon(
                             imageVector = Icons.Default.TrendingUp,
-                            contentDescription = "النمو",
+                            contentDescription = AppText.text(com.example.R.string.text_959e6920e1ce),
                             tint = EmeraldGreenPrimary,
                             modifier = Modifier.size(22.dp)
                         )
@@ -181,13 +183,13 @@ fun SavingsGrowthInteractiveCard(
 
                     Column {
                         Text(
-                            text = "تطور نمو المدخرات والأصول",
+                            text = AppText.text(com.example.R.string.text_f5107f3d6f0d),
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp,
                             color = MaterialTheme.colorScheme.onSurface
                         )
                         Text(
-                            text = "تحليل بياني تفاعلي للذهب والنقدية",
+                            text = AppText.text(com.example.R.string.text_d4f5338e88bb),
                             fontSize = 11.5.sp,
                             color = Color.Gray
                         )
@@ -210,7 +212,7 @@ fun SavingsGrowthInteractiveCard(
                         modifier = Modifier.size(13.dp)
                     )
                     Text(
-                        text = "اسحب للمعاينة",
+                        text = AppText.text(com.example.R.string.text_33df7769cfd5),
                         fontSize = 10.5.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFFB8860B)
@@ -256,7 +258,7 @@ fun SavingsGrowthInteractiveCard(
                                 modifier = Modifier.size(14.dp)
                             )
                             Text(
-                                text = "تراكمي",
+                                text = AppText.text(com.example.R.string.text_165afb7ab809),
                                 fontSize = 11.5.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = if (selectedChartType == 0) Color.White else Color.Gray
@@ -286,7 +288,7 @@ fun SavingsGrowthInteractiveCard(
                                 modifier = Modifier.size(14.dp)
                             )
                             Text(
-                                text = "شهري",
+                                text = AppText.text(com.example.R.string.text_564ef2249a86),
                                 fontSize = 11.5.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = if (selectedChartType == 1) Color.White else Color.Gray
@@ -387,12 +389,12 @@ fun SavingsGrowthInteractiveCard(
                             // Total for Month
                             Column {
                                 Text(
-                                    text = if (selectedChartType == 0) "إجمالي الرصيد التراكمي" else "إجمالي إضافات الشهر",
+                                    text = if (selectedChartType == 0) AppText.text(com.example.R.string.text_5e67cfd23385) else AppText.text(com.example.R.string.text_adc0ff0e37cb),
                                     fontSize = 11.sp,
                                     color = Color.Gray
                                 )
                                 Text(
-                                    text = "${String.format(Locale.US, "%,.0f", if (selectedChartType == 0) activePoint.totalCumulativeValue else activePoint.totalMonthlyAddition)} $currency",
+                                    text = "${String.format(Locale.US, "%,.0f", if (selectedChartType == 0) activePoint.totalCumulativeValue else activePoint.totalMonthlyAddition)} ${AppText.currency(currency)}",
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.ExtraBold,
                                     color = MaterialTheme.colorScheme.onSurface
@@ -404,10 +406,10 @@ fun SavingsGrowthInteractiveCard(
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Box(modifier = Modifier.size(8.dp).clip(CircleShape).background(GoldAccent))
                                     Spacer(modifier = Modifier.width(4.dp))
-                                    Text("الذهب", fontSize = 11.sp, color = Color.Gray)
+                                    Text(AppText.text(com.example.R.string.text_c851efa80cad), fontSize = 11.sp, color = Color.Gray)
                                 }
                                 Text(
-                                    text = "${String.format(Locale.US, "%,.0f", if (selectedChartType == 0) activePoint.cumulativeGoldValue else activePoint.monthlyGoldAddition)} $currency",
+                                    text = "${String.format(Locale.US, "%,.0f", if (selectedChartType == 0) activePoint.cumulativeGoldValue else activePoint.monthlyGoldAddition)} ${AppText.currency(currency)}",
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = Color(0xFFB8860B)
@@ -419,10 +421,10 @@ fun SavingsGrowthInteractiveCard(
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Box(modifier = Modifier.size(8.dp).clip(CircleShape).background(EmeraldGreenPrimary))
                                     Spacer(modifier = Modifier.width(4.dp))
-                                    Text("النقدية", fontSize = 11.sp, color = Color.Gray)
+                                    Text(AppText.text(com.example.R.string.text_8e6f51524318), fontSize = 11.sp, color = Color.Gray)
                                 }
                                 Text(
-                                    text = "${String.format(Locale.US, "%,.0f", if (selectedChartType == 0) activePoint.cumulativeCashValue else activePoint.monthlyCashAddition)} $currency",
+                                    text = "${String.format(Locale.US, "%,.0f", if (selectedChartType == 0) activePoint.cumulativeCashValue else activePoint.monthlyCashAddition)} ${AppText.currency(currency)}",
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Bold,
                                     color = EmeraldGreenPrimary
@@ -471,7 +473,7 @@ fun SavingsGrowthInteractiveCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(modifier = Modifier.size(10.dp).clip(CircleShape).background(GoldAccent))
                     Spacer(modifier = Modifier.width(6.dp))
-                    Text("مدخرات الذهب والسبائك", fontSize = 11.5.sp, fontWeight = FontWeight.SemiBold)
+                    Text(AppText.text(com.example.R.string.text_6d7a99b071cc), fontSize = 11.5.sp, fontWeight = FontWeight.SemiBold)
                 }
 
                 Spacer(modifier = Modifier.width(18.dp))
@@ -479,7 +481,7 @@ fun SavingsGrowthInteractiveCard(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(modifier = Modifier.size(10.dp).clip(CircleShape).background(EmeraldGreenPrimary))
                     Spacer(modifier = Modifier.width(6.dp))
-                    Text("المدخرات والسيولة النقدية", fontSize = 11.5.sp, fontWeight = FontWeight.SemiBold)
+                    Text(AppText.text(com.example.R.string.text_0ec0549f1122), fontSize = 11.5.sp, fontWeight = FontWeight.SemiBold)
                 }
             }
 
@@ -492,16 +494,16 @@ fun SavingsGrowthInteractiveCard(
             ) {
                 // Growth Rate Card
                 GrowthMetricMiniCard(
-                    title = "معدل النمو للفترة",
+                    title = AppText.text(com.example.R.string.text_0b61348b434f),
                     value = "${if (totalPeriodGrowth >= 0) "+" else ""}${String.format(Locale.US, "%.1f", totalPeriodGrowth)}%",
-                    subtitle = if (totalPeriodGrowth >= 0) "نمو إيجابي مستمر" else "معدل مستقر",
+                    subtitle = if (totalPeriodGrowth >= 0) AppText.text(com.example.R.string.text_114c955de7c4) else AppText.text(com.example.R.string.text_a60a8f0e5530),
                     isPositive = totalPeriodGrowth >= 0,
                     modifier = Modifier.weight(1f)
                 )
 
                 // Avg Monthly Addition
                 GrowthMetricMiniCard(
-                    title = "متوسط الادخار الشهري",
+                    title = AppText.text(com.example.R.string.text_f9dc5d61b247),
                     value = "${String.format(Locale.US, "%,.0f", avgMonthlyInflow)}",
                     subtitle = currency,
                     isPositive = true,
@@ -510,9 +512,9 @@ fun SavingsGrowthInteractiveCard(
 
                 // Peak Month
                 GrowthMetricMiniCard(
-                    title = "الشهر الأعلى ادخاراً",
+                    title = AppText.text(com.example.R.string.text_97297cf83728),
                     value = bestMonth?.shortLabel ?: "-",
-                    subtitle = if (bestMonth != null) "${String.format(Locale.US, "%,.0f", bestMonth.totalMonthlyAddition)} $currency" else "-",
+                    subtitle = if (bestMonth != null) "${String.format(Locale.US, "%,.0f", bestMonth.totalMonthlyAddition)} ${AppText.currency(currency)}" else "-",
                     isPositive = true,
                     modifier = Modifier.weight(1f)
                 )
@@ -577,7 +579,7 @@ private fun CumulativeSavingsAreaChart(
 ) {
     if (points.isEmpty()) return
 
-    val maxValue = remember(points) {
+    val maxValue = remember(AppText.language, points) {
         val max = points.maxOfOrNull { it.totalCumulativeValue } ?: 100.0
         if (max <= 0.0) 100.0 else max * 1.15 // headroom
     }
@@ -797,7 +799,7 @@ private fun MonthlyAdditionsBarChart(
 ) {
     if (points.isEmpty()) return
 
-    val maxAddition = remember(points) {
+    val maxAddition = remember(AppText.language, points) {
         val max = points.maxOfOrNull { it.totalMonthlyAddition } ?: 100.0
         if (max <= 0.0) 100.0 else max * 1.2
     }
@@ -937,8 +939,8 @@ private fun generateMonthlyDataPoints(
     monthsCount: Int
 ): List<MonthlySavingsPoint> {
     val result = mutableListOf<MonthlySavingsPoint>()
-    val sdfMonth = SimpleDateFormat("MMMM yyyy", Locale("ar"))
-    val sdfShort = SimpleDateFormat("MMM", Locale("ar"))
+    val sdfMonth = SimpleDateFormat("MMMM yyyy", AppText.locale)
+    val sdfShort = SimpleDateFormat("MMM", AppText.locale)
 
     val cal = Calendar.getInstance()
 

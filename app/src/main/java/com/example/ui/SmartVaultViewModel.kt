@@ -561,12 +561,14 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
         return CryptoManager.decrypt(encryptedData)
     }
 
-    /**
-     * Exports an encrypted JSON backup string.
-     */
-    fun exportEncryptedBackupJson(): String {
-        val email = firebaseAuth.currentUser?.email ?: userProfile.value.email
-        return firestoreVaultRepo.exportEncryptedBackupJson(email, cloudVaultItems.value)
+    suspend fun createLocalBackup(userId: String, password: String): String {
+        check(activeUserId.value == userId) { "تغير الحساب؛ افتح النسخ الاحتياطي مجدداً" }
+        return LocalBackupManager.createEncryptedBackup(getApplication(), db, userId, password)
+    }
+
+    suspend fun restoreLocalBackup(userId: String, validatedJson: String): Boolean {
+        check(activeUserId.value == userId) { "تغير الحساب؛ افتح النسخ الاحتياطي مجدداً" }
+        return LocalBackupManager.applyRestore(db, userId, validatedJson)
     }
 
     fun loginWithEmail(email: String, name: String = "M. Keshka") {
@@ -1218,8 +1220,15 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun deleteTransaction(id: Int, tx: TransactionEntity? = null) {
+        val userId = activeUserId.value
         viewModelScope.launch {
-            repository.deleteTransaction(id, activeUserId.value)
+            try {
+                repository.deleteTransaction(id, userId)
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                android.widget.Toast.makeText(getApplication(), e.message ?: "تعذر حذف الحركة", android.widget.Toast.LENGTH_LONG).show()
+            }
         }
     }
 

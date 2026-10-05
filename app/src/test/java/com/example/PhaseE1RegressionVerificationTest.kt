@@ -489,7 +489,7 @@ class PhaseE1RegressionVerificationTest {
 
     // 15. BACKUP & RESTORE — Explicit Safe Merge Policy
     @Test
-    fun testRestore_safeMergePolicy_mergesWithoutDuplicatingExistingData() = runBlocking {
+    fun testRestore_unsafeMergeIsRejectedWithoutChangingExistingData() = runBlocking {
         val user = "user_safe_merge"
 
         // Existing local data
@@ -518,18 +518,18 @@ class PhaseE1RegressionVerificationTest {
 
         // Apply SAFE_MERGE restore
         val mergeSuccess = LocalBackupManager.applyRestore(db, user, validation.decryptedJson!!, policy = com.example.data.backup.RestorePolicy.SAFE_MERGE)
-        assertTrue(mergeSuccess)
+        assertFalse(mergeSuccess)
 
         // Local vault balance preserved without duplicate vault creation
         val vaults = repository.getVaults(user).first()
-        assertEquals(2, vaults.size) // "الخزنة المحلية" and "خزنة إضافية"
+        assertEquals(1, vaults.size)
         val localVault = vaults.find { it.name == "الخزنة المحلية" }
         assertNotNull(localVault)
         assertEquals(1000.0, localVault!!.balance, 0.001) // Preserved original
 
         // Duplicate transaction filtered out, only new transaction added
         val txs = repository.getTransactions(user).first()
-        assertEquals(2, txs.size) // Original + new income, not 3
+        assertEquals(1, txs.size)
     }
 
     // 16. ATOMIC OPERATIONS — Outing Expense Deducts from Vault Atomically

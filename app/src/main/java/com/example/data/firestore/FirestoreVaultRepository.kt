@@ -126,7 +126,7 @@ class FirestoreVaultRepository {
 
     /**
      * Uploads user's profile photo to Firebase Storage profile_photos/{uid}/photo.jpg
-     * and saves photoUrl in users/{uid} document in Firestore.
+     * and saves profileImageUrl in users/{uid} document in Firestore.
      */
     suspend fun uploadProfilePhoto(uid: String, imageUri: android.net.Uri): String {
         val storage = try {
@@ -153,14 +153,14 @@ class FirestoreVaultRepository {
         }
         val downloadUrl = downloadUri.toString()
 
-        // Update Firestore document users/{uid} with photoUrl
+        // Update Firestore document users/{uid} with profileImageUrl
         val fs = firestore
         if (fs != null) {
             kotlinx.coroutines.suspendCancellableCoroutine<Void?> { cont ->
                 fs.collection("users").document(uid)
                     .set(
                         mapOf(
-                            "photoUrl" to downloadUrl,
+                            "profileImageUrl" to downloadUrl,
                             "updatedAt" to FieldValue.serverTimestamp()
                         ),
                         SetOptions.merge()

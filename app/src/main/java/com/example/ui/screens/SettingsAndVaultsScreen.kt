@@ -628,21 +628,22 @@ fun SettingsAndVaultsScreen(
 
                             Spacer(modifier = Modifier.height(10.dp))
 
-                            // Two-Factor Authentication (2FA) Toggle
+                            // Two-Factor Authentication (2FA) - Unavailable until real Firebase MFA
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween,
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Switch(
-                                    checked = userProfile.isTwoFactorEnabled,
-                                    onCheckedChange = onToggleTwoFactor
+                                    checked = false,
+                                    onCheckedChange = null,
+                                    enabled = false
                                 )
                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                     Column(horizontalAlignment = Alignment.End) {
-                                        Text(text = AppText.text(com.example.R.string.text_e408bd278ef3), fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color(0xFF1B241E))
+                                        Text(text = AppText.text(com.example.R.string.text_e408bd278ef3), fontSize = 14.sp, fontWeight = FontWeight.SemiBold, color = Color.Gray)
                                         Text(
-                                            text = if (userProfile.isTwoFactorEnabled) AppText.text(com.example.R.string.text_92b90aa9b99f) else AppText.text(com.example.R.string.text_e17556ce6846),
+                                            text = "قيد التطوير عبر Firebase MFA (غير مفعل)",
                                             fontSize = 11.sp,
                                             color = Color.Gray
                                         )
@@ -651,7 +652,7 @@ fun SettingsAndVaultsScreen(
                                     Icon(
                                         imageVector = Icons.Default.Security,
                                         contentDescription = AppText.text(com.example.R.string.text_ca1e582768c3),
-                                        tint = if (userProfile.isTwoFactorEnabled) GoldAccent else Color.Gray
+                                        tint = Color.Gray
                                     )
                                 }
                             }

@@ -19,17 +19,10 @@ object ReminderScheduler {
 
     private fun getWorkManager(context: Context): WorkManager? {
         return try {
-            WorkManager.getInstance(context)
-        } catch (_: Exception) {
-            try {
-                WorkManager.initialize(
-                    context.applicationContext,
-                    androidx.work.Configuration.Builder().build()
-                )
-                WorkManager.getInstance(context)
-            } catch (_: Exception) {
-                null
-            }
+            WorkManager.getInstance(context.applicationContext)
+        } catch (e: Exception) {
+            android.util.Log.e("ReminderScheduler", "WorkManager unavailable: ${e.message}")
+            null
         }
     }
 

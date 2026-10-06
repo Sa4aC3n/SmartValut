@@ -23,7 +23,10 @@ fun AppLanguageProvider(language: String, content: @Composable () -> Unit) {
             })
         }
     }
-    val strings = remember(language) { AppStrings(language) }
+    val strings = remember(language) {
+        AppText.setLanguage(language)
+        AppStrings(language)
+    }
     CompositionLocalProvider(
         LocalContext provides localizedContext,
         LocalConfiguration provides localizedContext.resources.configuration,

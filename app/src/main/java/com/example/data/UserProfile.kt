@@ -7,6 +7,6 @@ data class UserProfile(
     val avatarId: Int = 1, // Avatar index (1..6)
     val photoUrl: String? = null,
     val isTwoFactorEnabled: Boolean = false,
-    val isLoggedIn: Boolean = true,
-    val loginMethod: String = "GOOGLE" // "EMAIL", "PHONE", "GOOGLE"
+    val isLoggedIn: Boolean = false,
+    val loginMethod: String = "EMAIL" // "EMAIL"
 )

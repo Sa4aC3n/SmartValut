@@ -116,9 +116,6 @@ fun AuthScreen(
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var successNotice by remember { mutableStateOf<String?>(null) }
 
-    // 2FA Dialog Code state
-    var twoFactorCodeInput by remember { mutableStateOf("") }
-
     // Resend Dialog state
     var showResendDialog by remember { mutableStateOf(false) }
     var resendPasswordInput by remember { mutableStateOf("") }
@@ -777,74 +774,6 @@ fun AuthScreen(
                 dismissButton = {
                     OutlinedButton(onClick = { showResendDialog = false }) {
                         Text(AppText.text(com.example.R.string.text_e776b0209b50))
-                    }
-                },
-                shape = RoundedCornerShape(20.dp)
-            )
-        }
-
-        // 2FA VERIFICATION STEP OVERLAY
-        if (pending2FA != null) {
-            AlertDialog(
-                onDismissRequest = onCancel2FA,
-                title = {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Default.Security,
-                            contentDescription = AppText.text(com.example.R.string.text_ca1e582768c3),
-                            tint = GoldAccent,
-                            modifier = Modifier.size(28.dp)
-                        )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(
-                            text = AppText.text(com.example.R.string.text_e408bd278ef3),
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp
-                        )
-                    }
-                },
-                text = {
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        Text(
-                            text = AppText.text(com.example.R.string.text_6b2387213f6b),
-                            fontSize = 13.sp,
-                            color = Color.Gray
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-
-                        OutlinedTextField(
-                            value = twoFactorCodeInput,
-                            onValueChange = { twoFactorCodeInput = it },
-                            label = { Text(AppText.text(com.example.R.string.text_79a84ac793d2)) },
-                            leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
-                            singleLine = true,
-                            modifier = Modifier.fillMaxWidth(),
-                            shape = RoundedCornerShape(12.dp)
-                        )
-                    }
-                },
-                confirmButton = {
-                    Button(
-                        onClick = {
-                            val success = onVerify2FA(twoFactorCodeInput)
-                            if (success) {
-                                Toast.makeText(context, AppText.text(com.example.R.string.text_5988003cc37a), Toast.LENGTH_SHORT).show()
-                            } else {
-                                Toast.makeText(context, AppText.text(com.example.R.string.text_123680f2a1b8), Toast.LENGTH_SHORT).show()
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary),
-                        shape = RoundedCornerShape(10.dp)
-                    ) {
-                        Text(AppText.text(com.example.R.string.text_c07631980d85), fontWeight = FontWeight.Bold)
-                    }
-                },
-                dismissButton = {
-                    OutlinedButton(
-                        onClick = onCancel2FA,
-                        shape = RoundedCornerShape(10.dp)
-                    ) {
-                        Text(AppText.text(com.example.R.string.text_ea4ec56dde86))
                     }
                 },
                 shape = RoundedCornerShape(20.dp)

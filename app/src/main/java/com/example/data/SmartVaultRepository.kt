@@ -454,7 +454,7 @@ class SmartVaultRepository(private val db: AppDatabase) {
         db.goldPriceDao().insertAllPrices(entities)
     }
 
-    suspend fun seedSampleDataIfEmpty() {
+    suspend fun seedDefaultGoldPricesIfMissing() {
         val currentPrices = db.goldPriceDao().getAllGoldPrices().first()
         if (currentPrices.isEmpty()) {
             val defaultPrices = listOf(
@@ -676,13 +676,6 @@ class SmartVaultRepository(private val db: AppDatabase) {
             db.debtDao().clearUserDebts(userId)
             db.debtPaymentDao().clearUserDebtPayments(userId)
             db.netWorthSnapshotDao().clearUserSnapshots(userId)
-        } catch (_: Exception) {}
-    }
-
-    suspend fun clearAllLocalUserData() {
-        try {
-            db.transactionDao().clearAll()
-            db.vaultDao().clearAll()
         } catch (_: Exception) {}
     }
 }

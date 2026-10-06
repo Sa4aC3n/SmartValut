@@ -2,35 +2,26 @@ package com.example
 
 import android.app.Application
 import android.util.Log
-import androidx.work.Configuration
 import com.example.ui.utils.AppText
+import com.google.firebase.FirebaseApp
 
-class SmartVaultApplication : Application(), Configuration.Provider {
-
-    override val workManagerConfiguration: Configuration
-        get() = Configuration.Builder()
-            .setMinimumLoggingLevel(Log.INFO)
-            .build()
+class SmartVaultApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
         AppText.initialize(this)
-        initFirebaseSafely()
+        validateFirebaseInDebug()
     }
 
-    private fun initFirebaseSafely() {
-        try {
-            if (com.google.firebase.FirebaseApp.getApps(this).isEmpty()) {
-                val options = com.google.firebase.FirebaseOptions.Builder()
-                    .setApplicationId("com.smartsafe.app")
-                    .setApiKey("AIzaSyFallbackKeyForSafeAppOperation000")
-                    .setProjectId("smartsafe-local")
-                    .build()
-                com.google.firebase.FirebaseApp.initializeApp(this, options)
+    private fun validateFirebaseInDebug() {
+        if (BuildConfig.DEBUG && FirebaseApp.getApps(this).isNotEmpty()) {
+            val options = FirebaseApp.getInstance().options
+            val projectId = options.projectId
+            if (projectId != "smartsafe-cd443") {
+                Log.e("SmartVaultApp", "[SECURITY] Invalid Firebase projectId in DEBUG: expected 'smartsafe-cd443', got '$projectId'")
             }
-        } catch (e: Exception) {
-            Log.w("SmartVaultApp", "Firebase safe init fallback: ${e.message}")
         }
     }
 }
+
 

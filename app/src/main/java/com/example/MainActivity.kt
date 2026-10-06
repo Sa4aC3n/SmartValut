@@ -218,9 +218,9 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
 
     val vaultNames = remember(allVaults) { allVaults.map { it.name } }
 
-    if (!userProfile.isLoggedIn || pending2FA != null) {
+    if (!userProfile.isLoggedIn) {
         AuthScreen(
-            pending2FA = pending2FA,
+            pending2FA = null,
             onRegisterFirebase = { email, password, name, onSent, onError ->
                 viewModel.registerWithFirebase(email, password, name, onSent, onError)
             },
@@ -230,15 +230,9 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
             onResendVerification = { email, password, onSuccess, onError ->
                 viewModel.resendVerificationEmail(email, password, onSuccess, onError)
             },
-            onLoginPhone = { phone, name -> viewModel.loginWithPhone(phone, name) },
-            onLoginGoogle = { email, name -> viewModel.loginWithGoogle(email, name) },
-            onLoginApple = { email, name -> viewModel.loginWithApple(email, name) },
-            onLoginMicrosoft = { email, name -> viewModel.loginWithMicrosoft(email, name) },
             onForgotPassword = { email, onSuccess, onError ->
                 viewModel.sendPasswordReset(email, onSuccess, onError)
-            },
-            onVerify2FA = { code -> viewModel.verify2FACode(code) },
-            onCancel2FA = { viewModel.cancel2FA() }
+            }
         )
         return
     }

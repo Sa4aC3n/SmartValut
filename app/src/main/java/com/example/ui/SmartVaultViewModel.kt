@@ -148,25 +148,21 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     private val db = AppDatabase.getInstance(application)
     private val repository = SmartVaultRepository(db)
     private val prefs = application.getSharedPreferences("smart_vault_user_prefs", Context.MODE_PRIVATE)
-    val firebaseAuth: FirebaseAuth = try {
-        FirebaseAuth.getInstance()
-    } catch (e: Exception) {
-        if (com.google.firebase.FirebaseApp.getApps(application).isEmpty()) {
-            val options = com.google.firebase.FirebaseOptions.Builder()
-                .setApplicationId("com.smartsafe.app")
-                .setApiKey("AIzaSyFallbackKeyForSafeAppOperation000")
-                .setProjectId("smartsafe-local")
-                .build()
-            com.google.firebase.FirebaseApp.initializeApp(application, options)
+    val firebaseAuth: FirebaseAuth? = if (com.google.firebase.FirebaseApp.getApps(application).isNotEmpty()) {
+        try {
+            FirebaseAuth.getInstance()
+        } catch (_: Exception) {
+            null
         }
-        FirebaseAuth.getInstance()
+    } else {
+        null
     }
 
     val userProfile = MutableStateFlow(loadUserProfileFromPrefs())
     val pending2FA = MutableStateFlow<UserProfile?>(null)
 
     val activeUserId = MutableStateFlow<String>(
-        firebaseAuth.currentUser?.takeIf { it.isEmailVerified }?.uid ?: "local_guest"
+        firebaseAuth?.currentUser?.takeIf { it.isEmailVerified }?.uid ?: "local_guest"
     )
     val selectedOutingId = MutableStateFlow<String?>(null)
     val isCloudSavingsLoaded = MutableStateFlow(true)
@@ -185,7 +181,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     private var lastUserInteractionTime = System.currentTimeMillis()
 
     private fun loadUserProfileFromPrefs(): UserProfile {
-        val currentUser = firebaseAuth.currentUser
+        val currentUser = firebaseAuth?.currentUser
         val name = prefs.getString("user_name", "M. Keshka") ?: "M. Keshka"
         val email = prefs.getString("user_email", "m.k3shka@gmail.com") ?: "m.k3shka@gmail.com"
         val phone = prefs.getString("user_phone", "+20 100 123 4567") ?: "+20 100 123 4567"
@@ -199,7 +195,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
                 true
             } else {
                 try {
-                    firebaseAuth.signOut()
+                    firebaseAuth?.signOut()
                 } catch (_: Exception) {}
                 false
             }
@@ -254,10 +250,16 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
             return
         }
 
-        firebaseAuth.createUserWithEmailAndPassword(trimmedEmail, password)
+        val auth = firebaseAuth
+        if (auth == null) {
+            onError("خدمة المصادقة السحابية غير متوفرة (تكوين Firebase غير موجود)")
+            return
+        }
+
+        auth.createUserWithEmailAndPassword(trimmedEmail, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val user = firebaseAuth.currentUser
+                    val user = auth.currentUser
                     if (user != null) {
                         if (name.isNotBlank()) {
                             val profileUpdates = UserProfileChangeRequest.Builder()
@@ -268,11 +270,11 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
                         user.sendEmailVerification()
                             .addOnCompleteListener { _ ->
                                 // Rule: Do NOT sign them in automatically - sign out immediately
-                                firebaseAuth.signOut()
+                                auth.signOut()
                                 onVerificationSent(trimmedEmail)
                             }
                     } else {
-                        firebaseAuth.signOut()
+                        auth.signOut()
                         onVerificationSent(trimmedEmail)
                     }
                 } else {
@@ -310,10 +312,16 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
             return
         }
 
-        firebaseAuth.signInWithEmailAndPassword(trimmedEmail, password)
+        val auth = firebaseAuth
+        if (auth == null) {
+            onError("خدمة المصادقة السحابية غير متوفرة (تكوين Firebase غير موجود)")
+            return
+        }
+
+        auth.signInWithEmailAndPassword(trimmedEmail, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val user = firebaseAuth.currentUser
+                    val user = auth.currentUser
                     if (user != null) {
                         // Reload user to ensure we have the freshest isEmailVerified state from Firebase
                         user.reload().addOnCompleteListener { _ ->
@@ -333,7 +341,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
                                 onSuccess(updated)
                             } else {
                                 // Block access!
-                                firebaseAuth.signOut()
+                                auth.signOut()
                                 onUnverified(user.email ?: trimmedEmail)
                             }
                         }
@@ -368,13 +376,18 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
         onError: (String) -> Unit
     ) {
         val trimmedEmail = email.trim()
+        val auth = firebaseAuth
+        if (auth == null) {
+            onError("خدمة المصادقة السحابية غير متوفرة")
+            return
+        }
         if (password.isNotBlank()) {
-            firebaseAuth.signInWithEmailAndPassword(trimmedEmail, password)
+            auth.signInWithEmailAndPassword(trimmedEmail, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        val user = firebaseAuth.currentUser
+                        val user = auth.currentUser
                         user?.sendEmailVerification()?.addOnCompleteListener { sendTask ->
-                            firebaseAuth.signOut()
+                            auth.signOut()
                             if (sendTask.isSuccessful) {
                                 onSuccess()
                             } else {
@@ -403,7 +416,12 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
             onError(AppText.text(com.example.R.string.text_83693d7ac448))
             return
         }
-        firebaseAuth.sendPasswordResetEmail(trimmed)
+        val auth = firebaseAuth
+        if (auth == null) {
+            onError("خدمة المصادقة السحابية غير متوفرة")
+            return
+        }
+        auth.sendPasswordResetEmail(trimmed)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     onSuccess()
@@ -585,96 +603,6 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
         return LocalBackupManager.applyRestore(db, userId, validatedJson)
     }
 
-    fun loginWithEmail(email: String, name: String = "M. Keshka") {
-        val newProfile = userProfile.value.copy(
-            email = email,
-            name = name.ifBlank { "M. Keshka" },
-            loginMethod = "EMAIL"
-        )
-        if (newProfile.isTwoFactorEnabled) {
-            pending2FA.value = newProfile
-        } else {
-            val loggedIn = newProfile.copy(isLoggedIn = true)
-            userProfile.value = loggedIn
-            saveUserProfileToPrefs(loggedIn)
-        }
-    }
-
-    fun loginWithPhone(phone: String, name: String = "M. Keshka") {
-        val newProfile = userProfile.value.copy(
-            phone = phone,
-            name = name.ifBlank { "M. Keshka" },
-            loginMethod = "PHONE"
-        )
-        if (newProfile.isTwoFactorEnabled) {
-            pending2FA.value = newProfile
-        } else {
-            val loggedIn = newProfile.copy(isLoggedIn = true)
-            userProfile.value = loggedIn
-            saveUserProfileToPrefs(loggedIn)
-        }
-    }
-
-    fun loginWithGoogle(email: String = "m.k3shka@gmail.com", name: String = "M. Keshka") {
-        val newProfile = userProfile.value.copy(
-            email = email,
-            name = name,
-            loginMethod = "GOOGLE"
-        )
-        if (newProfile.isTwoFactorEnabled) {
-            pending2FA.value = newProfile
-        } else {
-            val loggedIn = newProfile.copy(isLoggedIn = true)
-            userProfile.value = loggedIn
-            saveUserProfileToPrefs(loggedIn)
-        }
-    }
-
-    fun loginWithApple(email: String = "m.k3shka@icloud.com", name: String = "M. Keshka") {
-        val newProfile = userProfile.value.copy(
-            email = email,
-            name = name,
-            loginMethod = "APPLE"
-        )
-        if (newProfile.isTwoFactorEnabled) {
-            pending2FA.value = newProfile
-        } else {
-            val loggedIn = newProfile.copy(isLoggedIn = true)
-            userProfile.value = loggedIn
-            saveUserProfileToPrefs(loggedIn)
-        }
-    }
-
-    fun loginWithMicrosoft(email: String = "m.k3shka@outlook.com", name: String = "M. Keshka") {
-        val newProfile = userProfile.value.copy(
-            email = email,
-            name = name,
-            loginMethod = "MICROSOFT"
-        )
-        if (newProfile.isTwoFactorEnabled) {
-            pending2FA.value = newProfile
-        } else {
-            val loggedIn = newProfile.copy(isLoggedIn = true)
-            userProfile.value = loggedIn
-            saveUserProfileToPrefs(loggedIn)
-        }
-    }
-
-    fun verify2FACode(code: String): Boolean {
-        if (code.length == 6 || code == "123456" || code.isNotBlank()) {
-            val profile = pending2FA.value?.copy(isLoggedIn = true) ?: userProfile.value.copy(isLoggedIn = true)
-            userProfile.value = profile
-            saveUserProfileToPrefs(profile)
-            pending2FA.value = null
-            return true
-        }
-        return false
-    }
-
-    fun cancel2FA() {
-        pending2FA.value = null
-    }
-
     fun updateProfile(name: String, email: String, phone: String, avatarId: Int) {
         val updated = userProfile.value.copy(
             name = name,
@@ -687,7 +615,8 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     fun toggleTwoFactor(enabled: Boolean) {
-        val updated = userProfile.value.copy(isTwoFactorEnabled = enabled)
+        // Real Firebase MFA is under development - do not permit simulated 2FA
+        val updated = userProfile.value.copy(isTwoFactorEnabled = false)
         userProfile.value = updated
         saveUserProfileToPrefs(updated)
     }
@@ -699,7 +628,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
         activeUserId.value = "local_guest"
 
         try {
-            firebaseAuth.signOut()
+            firebaseAuth?.signOut()
         } catch (_: Exception) {}
     }
 
@@ -861,10 +790,9 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     val isDailyReminderEnabled = MutableStateFlow(true)
 
     init {
-        firebaseAuth.addAuthStateListener(authStateListener)
+        firebaseAuth?.addAuthStateListener(authStateListener)
         viewModelScope.launch {
-            repository.clearAllLocalUserData()
-            repository.seedSampleDataIfEmpty()
+            repository.seedDefaultGoldPricesIfMissing()
         }
         com.example.worker.ReminderScheduler.scheduleDailyReminder(application)
         if (isDailyGoldPriceUpdateEnabled.value) {
@@ -1659,7 +1587,9 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     override fun onCleared() {
-        firebaseAuth.removeAuthStateListener(authStateListener)
+        try {
+            firebaseAuth?.removeAuthStateListener(authStateListener)
+        } catch (_: Exception) {}
         super.onCleared()
     }
 }

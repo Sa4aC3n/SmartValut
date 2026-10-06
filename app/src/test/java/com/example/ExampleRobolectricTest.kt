@@ -29,6 +29,7 @@ class ExampleRobolectricTest {
 
   @Test
   fun `main activity launches without ActivityResultRegistryOwner crash`() {
+    androidx.work.testing.WorkManagerTestInitHelper.initializeTestWorkManager(ApplicationProvider.getApplicationContext())
     val controller = org.robolectric.Robolectric.buildActivity(MainActivity::class.java)
     controller.setup()
     org.junit.Assert.assertNotNull(controller.get())

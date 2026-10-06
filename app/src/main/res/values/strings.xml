@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="label_cloud_unavailable">"الخدمات السحابية غير متاحة في هذه النسخة. يمكنك استخدام البيانات المحلية."</string>
     <string name="app_name">"الخزنة الذكية"</string>
     <string name="text_5996de7ad383" formatted="false">"يرجى إدخال مفتاح API الخاص بـ GoldAPI.io / Please enter your GoldAPI key"</string>
     <string name="text_2262f8c02440" formatted="false">"مفتاح API غير صالح أو منتهي الصلاحية ({0}). يرجى التأكد من المفتاح في goldapi.io"</string>

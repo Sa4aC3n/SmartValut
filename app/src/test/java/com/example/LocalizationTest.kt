@@ -89,6 +89,15 @@ class LocalizationTest {
         assertEquals("سبيكة", AppText.goldType(storedGoldType))
     }
 
+    @Test fun missingResourcesAndArgumentsAreNotSilentlyHidden() {
+        assertThrows(android.content.res.Resources.NotFoundException::class.java) {
+            AppText.textFor("en", 0)
+        }
+        assertThrows(IllegalArgumentException::class.java) {
+            AppText.textFor("en", R.string.text_9e5ba8f6616f)
+        }
+    }
+
     @Test fun persistedLanguageIsRestoredAndArgumentsAreNotTranslated() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         context.getSharedPreferences("smart_vault_user_prefs", Context.MODE_PRIVATE)

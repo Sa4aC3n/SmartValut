@@ -148,25 +148,24 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     private val db = AppDatabase.getInstance(application)
     private val repository = SmartVaultRepository(db)
     private val prefs = application.getSharedPreferences("smart_vault_user_prefs", Context.MODE_PRIVATE)
-    val firebaseAuth: FirebaseAuth = try {
+    val firebaseAuth: FirebaseAuth? = try {
         FirebaseAuth.getInstance()
-    } catch (e: Exception) {
-        if (com.google.firebase.FirebaseApp.getApps(application).isEmpty()) {
-            val options = com.google.firebase.FirebaseOptions.Builder()
-                .setApplicationId("com.smartsafe.app")
-                .setApiKey("AIzaSyFallbackKeyForSafeAppOperation000")
-                .setProjectId("smartsafe-local")
-                .build()
-            com.google.firebase.FirebaseApp.initializeApp(application, options)
-        }
-        FirebaseAuth.getInstance()
+    } catch (e: IllegalStateException) {
+        Log.w("SmartVault", "Firebase unavailable; using local-only mode", e)
+        null
+    }
+
+    private fun requireFirebaseAuth(onError: (String) -> Unit): FirebaseAuth? {
+        val auth = firebaseAuth
+        if (auth == null) onError(AppText.text(com.example.R.string.label_cloud_unavailable))
+        return auth
     }
 
     val userProfile = MutableStateFlow(loadUserProfileFromPrefs())
     val pending2FA = MutableStateFlow<UserProfile?>(null)
 
     val activeUserId = MutableStateFlow<String>(
-        firebaseAuth.currentUser?.takeIf { it.isEmailVerified }?.uid ?: "local_guest"
+        firebaseAuth?.currentUser?.takeIf { it.isEmailVerified }?.uid ?: "local_guest"
     )
     val selectedOutingId = MutableStateFlow<String?>(null)
     val isCloudSavingsLoaded = MutableStateFlow(true)
@@ -178,14 +177,14 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     // Local-First Financial Privacy: Financial data is kept strictly on device
     val firestoreVaultRepo = FirestoreVaultRepository()
-    val cloudSyncStatus: StateFlow<CloudSyncStatus> = MutableStateFlow(CloudSyncStatus.CONNECTED).asStateFlow()
+    val cloudSyncStatus: StateFlow<CloudSyncStatus> = firestoreVaultRepo.syncStatus
 
     // Inactivity Auto-Lock (2 minutes = 120,000 ms) & Biometric Lock State
     val isCloudVaultLocked = MutableStateFlow(false)
     private var lastUserInteractionTime = System.currentTimeMillis()
 
     private fun loadUserProfileFromPrefs(): UserProfile {
-        val currentUser = firebaseAuth.currentUser
+        val currentUser = firebaseAuth?.currentUser
         val name = prefs.getString("user_name", "M. Keshka") ?: "M. Keshka"
         val email = prefs.getString("user_email", "m.k3shka@gmail.com") ?: "m.k3shka@gmail.com"
         val phone = prefs.getString("user_phone", "+20 100 123 4567") ?: "+20 100 123 4567"
@@ -199,7 +198,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
                 true
             } else {
                 try {
-                    firebaseAuth.signOut()
+                    firebaseAuth?.signOut()
                 } catch (_: Exception) {}
                 false
             }
@@ -244,6 +243,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
         onVerificationSent: (email: String) -> Unit,
         onError: (String) -> Unit
     ) {
+        val auth = requireFirebaseAuth(onError) ?: return
         val trimmedEmail = email.trim()
         if (trimmedEmail.isBlank() || password.isBlank()) {
             onError(AppText.text(com.example.R.string.text_b649d28445e1))
@@ -254,10 +254,10 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
             return
         }
 
-        firebaseAuth.createUserWithEmailAndPassword(trimmedEmail, password)
+        auth.createUserWithEmailAndPassword(trimmedEmail, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val user = firebaseAuth.currentUser
+                    val user = auth.currentUser
                     if (user != null) {
                         if (name.isNotBlank()) {
                             val profileUpdates = UserProfileChangeRequest.Builder()
@@ -268,11 +268,11 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
                         user.sendEmailVerification()
                             .addOnCompleteListener { _ ->
                                 // Rule: Do NOT sign them in automatically - sign out immediately
-                                firebaseAuth.signOut()
+                                auth.signOut()
                                 onVerificationSent(trimmedEmail)
                             }
                     } else {
-                        firebaseAuth.signOut()
+                        auth.signOut()
                         onVerificationSent(trimmedEmail)
                     }
                 } else {
@@ -304,16 +304,17 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
         onUnverified: (email: String) -> Unit,
         onError: (String) -> Unit
     ) {
+        val auth = requireFirebaseAuth(onError) ?: return
         val trimmedEmail = email.trim()
         if (trimmedEmail.isBlank() || password.isBlank()) {
             onError(AppText.text(com.example.R.string.text_b649d28445e1))
             return
         }
 
-        firebaseAuth.signInWithEmailAndPassword(trimmedEmail, password)
+        auth.signInWithEmailAndPassword(trimmedEmail, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val user = firebaseAuth.currentUser
+                    val user = auth.currentUser
                     if (user != null) {
                         // Reload user to ensure we have the freshest isEmailVerified state from Firebase
                         user.reload().addOnCompleteListener { _ ->
@@ -333,7 +334,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
                                 onSuccess(updated)
                             } else {
                                 // Block access!
-                                firebaseAuth.signOut()
+                                auth.signOut()
                                 onUnverified(user.email ?: trimmedEmail)
                             }
                         }
@@ -367,14 +368,15 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
+        val auth = requireFirebaseAuth(onError) ?: return
         val trimmedEmail = email.trim()
         if (password.isNotBlank()) {
-            firebaseAuth.signInWithEmailAndPassword(trimmedEmail, password)
+            auth.signInWithEmailAndPassword(trimmedEmail, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        val user = firebaseAuth.currentUser
+                        val user = auth.currentUser
                         user?.sendEmailVerification()?.addOnCompleteListener { sendTask ->
-                            firebaseAuth.signOut()
+                            auth.signOut()
                             if (sendTask.isSuccessful) {
                                 onSuccess()
                             } else {
@@ -398,12 +400,13 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
         onSuccess: () -> Unit,
         onError: (String) -> Unit
     ) {
+        val auth = requireFirebaseAuth(onError) ?: return
         val trimmed = email.trim()
         if (trimmed.isBlank()) {
             onError(AppText.text(com.example.R.string.text_83693d7ac448))
             return
         }
-        firebaseAuth.sendPasswordResetEmail(trimmed)
+        auth.sendPasswordResetEmail(trimmed)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     onSuccess()
@@ -422,6 +425,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     private val authStateListener = FirebaseAuth.AuthStateListener { auth ->
         val currentUser = auth.currentUser
         if (currentUser == null || !currentUser.isEmailVerified) {
+            firestoreVaultRepo.setSyncStatus(CloudSyncStatus.OFFLINE)
             userProfile.value = userProfile.value.copy(isLoggedIn = false)
             activeUserId.value = "local_guest"
             return@AuthStateListener
@@ -699,7 +703,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
         activeUserId.value = "local_guest"
 
         try {
-            firebaseAuth.signOut()
+            firebaseAuth?.signOut()
         } catch (_: Exception) {}
     }
 
@@ -861,7 +865,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     val isDailyReminderEnabled = MutableStateFlow(true)
 
     init {
-        firebaseAuth.addAuthStateListener(authStateListener)
+        firebaseAuth?.addAuthStateListener(authStateListener)
         viewModelScope.launch {
             repository.clearAllLocalUserData()
             repository.seedSampleDataIfEmpty()
@@ -1659,7 +1663,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     override fun onCleared() {
-        firebaseAuth.removeAuthStateListener(authStateListener)
+        firebaseAuth?.removeAuthStateListener(authStateListener)
         super.onCleared()
     }
 }

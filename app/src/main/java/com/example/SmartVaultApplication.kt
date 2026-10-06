@@ -20,16 +20,13 @@ class SmartVaultApplication : Application(), Configuration.Provider {
 
     private fun initFirebaseSafely() {
         try {
-            if (com.google.firebase.FirebaseApp.getApps(this).isEmpty()) {
-                val options = com.google.firebase.FirebaseOptions.Builder()
-                    .setApplicationId("com.smartsafe.app")
-                    .setApiKey("AIzaSyFallbackKeyForSafeAppOperation000")
-                    .setProjectId("smartsafe-local")
-                    .build()
-                com.google.firebase.FirebaseApp.initializeApp(this, options)
+            // Load only the real options generated from google-services.json.
+            // Missing configuration is supported as local-only mode, not a fake project.
+            if (com.google.firebase.FirebaseApp.initializeApp(this) == null) {
+                Log.w("SmartVaultApp", "Firebase configuration missing; cloud services disabled")
             }
         } catch (e: Exception) {
-            Log.w("SmartVaultApp", "Firebase safe init fallback: ${e.message}")
+            Log.w("SmartVaultApp", "Firebase initialization failed; cloud services disabled", e)
         }
     }
 }

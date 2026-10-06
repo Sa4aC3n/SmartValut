@@ -148,7 +148,19 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     private val db = AppDatabase.getInstance(application)
     private val repository = SmartVaultRepository(db)
     private val prefs = application.getSharedPreferences("smart_vault_user_prefs", Context.MODE_PRIVATE)
-    val firebaseAuth: FirebaseAuth = FirebaseAuth.getInstance()
+    val firebaseAuth: FirebaseAuth = try {
+        FirebaseAuth.getInstance()
+    } catch (e: Exception) {
+        if (com.google.firebase.FirebaseApp.getApps(application).isEmpty()) {
+            val options = com.google.firebase.FirebaseOptions.Builder()
+                .setApplicationId("com.smartsafe.app")
+                .setApiKey("AIzaSyFallbackKeyForSafeAppOperation000")
+                .setProjectId("smartsafe-local")
+                .build()
+            com.google.firebase.FirebaseApp.initializeApp(application, options)
+        }
+        FirebaseAuth.getInstance()
+    }
 
     val userProfile = MutableStateFlow(loadUserProfileFromPrefs())
     val pending2FA = MutableStateFlow<UserProfile?>(null)

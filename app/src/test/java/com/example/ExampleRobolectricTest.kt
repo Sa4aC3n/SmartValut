@@ -26,4 +26,11 @@ class ExampleRobolectricTest {
     val context = ApplicationProvider.getApplicationContext<Context>()
     assertEquals("Smart Vault", context.getString(R.string.app_name))
   }
+
+  @Test
+  fun `main activity launches without ActivityResultRegistryOwner crash`() {
+    val controller = org.robolectric.Robolectric.buildActivity(MainActivity::class.java)
+    controller.setup()
+    org.junit.Assert.assertNotNull(controller.get())
+  }
 }

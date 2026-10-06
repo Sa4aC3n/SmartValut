@@ -17,6 +17,22 @@ object ReminderScheduler {
     private const val WORK_NAME_GOLD_DAILY = "daily_gold_price_update_work"
     private const val WORK_NAME_GOLD_IMMEDIATE = "immediate_gold_price_update_work"
 
+    private fun getWorkManager(context: Context): WorkManager? {
+        return try {
+            WorkManager.getInstance(context)
+        } catch (_: Exception) {
+            try {
+                WorkManager.initialize(
+                    context.applicationContext,
+                    androidx.work.Configuration.Builder().build()
+                )
+                WorkManager.getInstance(context)
+            } catch (_: Exception) {
+                null
+            }
+        }
+    }
+
     fun scheduleDailyReminder(context: Context, hourOfDay: Int = 20, minute: Int = 0) {
         val currentDate = Calendar.getInstance()
         val dueDate = Calendar.getInstance().apply {
@@ -37,7 +53,7 @@ object ReminderScheduler {
             .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
             .build()
 
-        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+        getWorkManager(context)?.enqueueUniquePeriodicWork(
             WORK_NAME_DAILY,
             ExistingPeriodicWorkPolicy.UPDATE,
             dailyWorkRequest
@@ -45,14 +61,14 @@ object ReminderScheduler {
     }
 
     fun cancelDailyReminder(context: Context) {
-        WorkManager.getInstance(context).cancelUniqueWork(WORK_NAME_DAILY)
+        getWorkManager(context)?.cancelUniqueWork(WORK_NAME_DAILY)
     }
 
     fun triggerTestNotificationNow(context: Context) {
         val testWorkRequest = OneTimeWorkRequestBuilder<DailyExpenseReminderWorker>()
             .build()
 
-        WorkManager.getInstance(context).enqueueUniqueWork(
+        getWorkManager(context)?.enqueueUniqueWork(
             WORK_NAME_TEST,
             ExistingWorkPolicy.REPLACE,
             testWorkRequest
@@ -88,7 +104,7 @@ object ReminderScheduler {
             .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
             .build()
 
-        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+        getWorkManager(context)?.enqueueUniquePeriodicWork(
             WORK_NAME_GOLD_DAILY,
             ExistingPeriodicWorkPolicy.UPDATE,
             dailyGoldWorkRequest
@@ -96,7 +112,7 @@ object ReminderScheduler {
     }
 
     fun cancelDailyGoldPriceUpdate(context: Context) {
-        WorkManager.getInstance(context).cancelUniqueWork(WORK_NAME_GOLD_DAILY)
+        getWorkManager(context)?.cancelUniqueWork(WORK_NAME_GOLD_DAILY)
     }
 
     fun triggerImmediateGoldUpdate(context: Context) {
@@ -108,7 +124,7 @@ object ReminderScheduler {
             .setConstraints(constraints)
             .build()
 
-        WorkManager.getInstance(context).enqueueUniqueWork(
+        getWorkManager(context)?.enqueueUniqueWork(
             WORK_NAME_GOLD_IMMEDIATE,
             ExistingWorkPolicy.REPLACE,
             workRequest

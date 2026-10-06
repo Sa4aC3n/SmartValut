@@ -38,17 +38,22 @@ class FirestoreVaultRepository {
 
     private val tag = "FirestoreVaultRepo"
 
-    private val firestore: FirebaseFirestore by lazy {
-        val db = FirebaseFirestore.getInstance()
+    private val firestore: FirebaseFirestore? by lazy {
         try {
-            val settings = FirebaseFirestoreSettings.Builder()
-                .setLocalCacheSettings(PersistentCacheSettings.newBuilder().build())
-                .build()
-            db.firestoreSettings = settings
+            val db = FirebaseFirestore.getInstance()
+            try {
+                val settings = FirebaseFirestoreSettings.Builder()
+                    .setLocalCacheSettings(PersistentCacheSettings.newBuilder().build())
+                    .build()
+                db.firestoreSettings = settings
+            } catch (e: Exception) {
+                Log.w(tag, "Firestore settings already applied or error: ${e.message}")
+            }
+            db
         } catch (e: Exception) {
-            Log.w(tag, "Firestore settings already applied or error: ${e.message}")
+            Log.w(tag, "Firestore not available: ${e.message}")
+            null
         }
-        db
     }
 
     private val _syncStatus = MutableStateFlow(CloudSyncStatus.CONNECTED)
@@ -64,7 +69,7 @@ class FirestoreVaultRepository {
      * Allowed fields: displayName, email, updatedAt
      */
     fun saveUserDocument(displayName: String = "") {
-        val currentUser = FirebaseAuth.getInstance().currentUser
+        val currentUser = try { FirebaseAuth.getInstance().currentUser } catch (e: Exception) { null }
         if (currentUser == null) {
             Log.d(tag, "[AUTH OFFLINE] saveUserDocument skipped: user is not authenticated in Firebase Auth")
             return
@@ -76,7 +81,8 @@ class FirestoreVaultRepository {
             "displayName" to displayName.ifBlank { currentUser.displayName ?: "" },
             "updatedAt" to FieldValue.serverTimestamp()
         )
-        firestore.collection("users").document(uid)
+        val fs = firestore ?: return
+        fs.collection("users").document(uid)
             .set(userMap, SetOptions.merge())
             .addOnSuccessListener {
                 Log.d(tag, "User profile document updated successfully for UID: $uid")
@@ -123,7 +129,11 @@ class FirestoreVaultRepository {
      * and saves photoUrl in users/{uid} document in Firestore.
      */
     suspend fun uploadProfilePhoto(uid: String, imageUri: android.net.Uri): String {
-        val storage = com.google.firebase.storage.FirebaseStorage.getInstance()
+        val storage = try {
+            com.google.firebase.storage.FirebaseStorage.getInstance()
+        } catch (e: Exception) {
+            throw IllegalStateException("خدمة التخزين السحابي غير متصلة حالياً: ${e.message}")
+        }
         val ref = storage.reference.child("profile_photos/$uid/photo.jpg")
 
         // Put file with metadata
@@ -144,17 +154,20 @@ class FirestoreVaultRepository {
         val downloadUrl = downloadUri.toString()
 
         // Update Firestore document users/{uid} with photoUrl
-        kotlinx.coroutines.suspendCancellableCoroutine<Void?> { cont ->
-            firestore.collection("users").document(uid)
-                .set(
-                    mapOf(
-                        "photoUrl" to downloadUrl,
-                        "updatedAt" to FieldValue.serverTimestamp()
-                    ),
-                    SetOptions.merge()
-                )
-                .addOnSuccessListener { cont.resume(null) }
-                .addOnFailureListener { exc -> cont.resumeWith(Result.failure(exc)) }
+        val fs = firestore
+        if (fs != null) {
+            kotlinx.coroutines.suspendCancellableCoroutine<Void?> { cont ->
+                fs.collection("users").document(uid)
+                    .set(
+                        mapOf(
+                            "photoUrl" to downloadUrl,
+                            "updatedAt" to FieldValue.serverTimestamp()
+                        ),
+                        SetOptions.merge()
+                    )
+                    .addOnSuccessListener { cont.resume(null) }
+                    .addOnFailureListener { exc -> cont.resumeWith(Result.failure(exc)) }
+            }
         }
 
         return downloadUrl

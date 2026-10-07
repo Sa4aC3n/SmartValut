@@ -1,5 +1,10 @@
 [
   {
+    "id": "label_cloud_unavailable",
+    "ar": "الخدمات السحابية غير متاحة حاليًا. يمكنك استخدام البيانات المحلية.",
+    "en": "Cloud services are currently unavailable. You can use local data."
+  },
+  {
     "id": "text_5996de7ad383",
     "ar": "يرجى إدخال مفتاح API الخاص بـ GoldAPI.io / Please enter your GoldAPI key",
     "en": "Please enter your GoldAPI.io API key",

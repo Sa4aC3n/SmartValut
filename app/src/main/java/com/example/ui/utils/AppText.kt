@@ -62,20 +62,15 @@ object AppText {
         textFor(language, id, *arguments)
 
     fun textFor(code: String, @StringRes id: Int, vararg arguments: Any?): String {
-        val res = try {
-            if (code == "en") english else arabic
-        } catch (_: UninitializedPropertyAccessException) {
-            return ""
+        check(::arabic.isInitialized && ::english.isInitialized) {
+            "AppText must be initialized in Application.onCreate before reading strings"
         }
-        val template = try { res.getString(id) } catch (_: Exception) { "" }
+        val template = (if (code == "en") english else arabic).getString(id)
         // Never interpret or translate user-provided arguments.
         return argumentPattern.replace(template) { match ->
             val index = match.groupValues[1].toInt()
-            if (index < arguments.size) {
-                arguments[index]?.toString() ?: ""
-            } else {
-                match.value
-            }
+            require(index < arguments.size) { "Missing translation argument $index" }
+            arguments[index].toString()
         }
     }
 }

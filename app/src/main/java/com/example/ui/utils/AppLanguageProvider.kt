@@ -15,21 +15,22 @@ import java.util.Locale
 /**
  * Applies the in-app locale without breaking Activity-backed Compose owners.
  *
- * `rememberLauncherForActivityResult()` resolves its registry owner from
- * `LocalActivityResultRegistryOwner`, which can otherwise fall back to
- * `LocalContext`. Replacing `LocalContext` with a localized
- * `ContextThemeWrapper` can make that fallback fail on real devices even when
- * it happens to work in Robolectric. Capture the owner BEFORE replacing the
- * context and explicitly re-provide it to every child composable.
+ * rememberLauncherForActivityResult() resolves its registry owner from
+ * LocalActivityResultRegistryOwner, which can otherwise fall back to
+ * LocalContext. Replacing LocalContext with a localized ContextThemeWrapper
+ * can make that fallback fail on real devices. Capture and validate the owner
+ * before replacing the context, then explicitly re-provide it.
  */
 @Composable
 fun AppLanguageProvider(language: String, content: @Composable () -> Unit) {
     val baseContext = LocalContext.current
     val baseConfiguration = LocalConfiguration.current
 
-    // CRITICAL: resolve the ActivityResultRegistryOwner while LocalContext still
-    // points at the Activity-backed context, then preserve it across localization.
-    val activityResultRegistryOwner = LocalActivityResultRegistryOwner.current
+    // Must be resolved from the Activity-backed composition before LocalContext
+    // is replaced with the localized wrapper.
+    val activityResultRegistryOwner = requireNotNull(LocalActivityResultRegistryOwner.current) {
+        "AppLanguageProvider requires an ActivityResultRegistryOwner from the host Activity"
+    }
 
     val localizedContext = remember(baseContext, baseConfiguration, language) {
         ContextThemeWrapper(baseContext, 0).apply {

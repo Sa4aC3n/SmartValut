@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="label_cloud_unavailable">Cloud services are currently unavailable. You can use local data.</string>
     <string name="app_name">"Smart Vault"</string>
     <string name="text_5996de7ad383" formatted="false">"Please enter your GoldAPI.io API key"</string>
     <string name="text_2262f8c02440" formatted="false">"Invalid or expired API key ({0}). Check your key at goldapi.io."</string>

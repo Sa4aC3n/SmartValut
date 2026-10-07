@@ -174,7 +174,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     // Local-First Financial Privacy: Financial data is kept strictly on device
     val firestoreVaultRepo = FirestoreVaultRepository()
-    val cloudSyncStatus: StateFlow<CloudSyncStatus> = MutableStateFlow(CloudSyncStatus.CONNECTED).asStateFlow()
+    val cloudSyncStatus: StateFlow<CloudSyncStatus> = firestoreVaultRepo.syncStatus
 
     // Inactivity Auto-Lock (2 minutes = 120,000 ms) & Biometric Lock State
     val isCloudVaultLocked = MutableStateFlow(false)
@@ -252,7 +252,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
         val auth = firebaseAuth
         if (auth == null) {
-            onError("خدمة المصادقة السحابية غير متوفرة (تكوين Firebase غير موجود)")
+            onError(AppText.text(com.example.R.string.label_cloud_unavailable))
             return
         }
 
@@ -314,7 +314,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
         val auth = firebaseAuth
         if (auth == null) {
-            onError("خدمة المصادقة السحابية غير متوفرة (تكوين Firebase غير موجود)")
+            onError(AppText.text(com.example.R.string.label_cloud_unavailable))
             return
         }
 
@@ -378,7 +378,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
         val trimmedEmail = email.trim()
         val auth = firebaseAuth
         if (auth == null) {
-            onError("خدمة المصادقة السحابية غير متوفرة")
+            onError(AppText.text(com.example.R.string.label_cloud_unavailable))
             return
         }
         if (password.isNotBlank()) {
@@ -418,7 +418,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
         }
         val auth = firebaseAuth
         if (auth == null) {
-            onError("خدمة المصادقة السحابية غير متوفرة")
+            onError(AppText.text(com.example.R.string.label_cloud_unavailable))
             return
         }
         auth.sendPasswordResetEmail(trimmed)
@@ -440,6 +440,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     private val authStateListener = FirebaseAuth.AuthStateListener { auth ->
         val currentUser = auth.currentUser
         if (currentUser == null || !currentUser.isEmailVerified) {
+            firestoreVaultRepo.setSyncStatus(CloudSyncStatus.OFFLINE)
             userProfile.value = userProfile.value.copy(isLoggedIn = false)
             activeUserId.value = "local_guest"
             return@AuthStateListener

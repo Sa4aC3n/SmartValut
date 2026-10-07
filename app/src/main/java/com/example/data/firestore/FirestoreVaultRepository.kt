@@ -34,13 +34,18 @@ enum class CloudSyncStatus(private val labelId: Int, val iconEmoji: String) {
  * has been permanently removed from Cloud Firestore and is stored exclusively
  * in the local Room database (Local-First architecture).
  */
-class FirestoreVaultRepository {
+class FirestoreVaultRepository(
+    private val firestoreProvider: () -> FirebaseFirestore = { FirebaseFirestore.getInstance() }
+) {
 
     private val tag = "FirestoreVaultRepo"
 
-    private val firestore: FirebaseFirestore? by lazy {
-        try {
-            val db = FirebaseFirestore.getInstance()
+    private var cachedFirestore: FirebaseFirestore? = null
+
+    // Cache success only: a missing configuration must not permanently poison this repository.
+    private val firestore: FirebaseFirestore?
+        get() = cachedFirestore ?: try {
+            val db = firestoreProvider()
             try {
                 val settings = FirebaseFirestoreSettings.Builder()
                     .setLocalCacheSettings(PersistentCacheSettings.newBuilder().build())
@@ -49,14 +54,15 @@ class FirestoreVaultRepository {
             } catch (e: Exception) {
                 Log.w(tag, "Firestore settings already applied or error: ${e.message}")
             }
+            cachedFirestore = db
             db
-        } catch (e: Exception) {
-            Log.w(tag, "Firestore not available: ${e.message}")
+        } catch (e: IllegalStateException) {
+            Log.w(tag, "Firestore not available", e)
+            _syncStatus.value = CloudSyncStatus.OFFLINE
             null
         }
-    }
 
-    private val _syncStatus = MutableStateFlow(CloudSyncStatus.CONNECTED)
+    private val _syncStatus = MutableStateFlow(CloudSyncStatus.OFFLINE)
     val syncStatus: StateFlow<CloudSyncStatus> = _syncStatus.asStateFlow()
 
     fun setSyncStatus(status: CloudSyncStatus) {
@@ -71,6 +77,7 @@ class FirestoreVaultRepository {
     fun saveUserDocument(displayName: String = "") {
         val currentUser = try { FirebaseAuth.getInstance().currentUser } catch (e: Exception) { null }
         if (currentUser == null) {
+            _syncStatus.value = CloudSyncStatus.OFFLINE
             Log.d(tag, "[AUTH OFFLINE] saveUserDocument skipped: user is not authenticated in Firebase Auth")
             return
         }
@@ -82,12 +89,15 @@ class FirestoreVaultRepository {
             "updatedAt" to FieldValue.serverTimestamp()
         )
         val fs = firestore ?: return
+        _syncStatus.value = CloudSyncStatus.SYNCING
         fs.collection("users").document(uid)
             .set(userMap, SetOptions.merge())
             .addOnSuccessListener {
+                _syncStatus.value = CloudSyncStatus.CONNECTED
                 Log.d(tag, "User profile document updated successfully for UID: $uid")
             }
             .addOnFailureListener { e ->
+                _syncStatus.value = CloudSyncStatus.ERROR
                 if (e is FirebaseFirestoreException && e.code == FirebaseFirestoreException.Code.PERMISSION_DENIED) {
                     Log.e(tag, "[SECURITY/RULES ERROR] PERMISSION_DENIED on saveUserDocument for user $uid: ${e.message}")
                 } else {
@@ -129,10 +139,12 @@ class FirestoreVaultRepository {
      * and saves profileImageUrl in users/{uid} document in Firestore.
      */
     suspend fun uploadProfilePhoto(uid: String, imageUri: android.net.Uri): String {
+        // Resolve Firestore before uploading; success requires persisting the profile URL.
+        val fs = firestore ?: throw IllegalStateException(AppText.text(com.example.R.string.label_cloud_unavailable))
         val storage = try {
             com.google.firebase.storage.FirebaseStorage.getInstance()
         } catch (e: Exception) {
-            throw IllegalStateException("خدمة التخزين السحابي غير متصلة حالياً: ${e.message}")
+            throw IllegalStateException(AppText.text(com.example.R.string.label_cloud_unavailable), e)
         }
         val ref = storage.reference.child("profile_photos/$uid/photo.jpg")
 
@@ -153,21 +165,19 @@ class FirestoreVaultRepository {
         }
         val downloadUrl = downloadUri.toString()
 
-        // Update Firestore document users/{uid} with profileImageUrl
-        val fs = firestore
-        if (fs != null) {
-            kotlinx.coroutines.suspendCancellableCoroutine<Void?> { cont ->
-                fs.collection("users").document(uid)
-                    .set(
-                        mapOf(
-                            "profileImageUrl" to downloadUrl,
-                            "updatedAt" to FieldValue.serverTimestamp()
-                        ),
-                        SetOptions.merge()
-                    )
-                    .addOnSuccessListener { cont.resume(null) }
-                    .addOnFailureListener { exc -> cont.resumeWith(Result.failure(exc)) }
-            }
+        // Do not report upload success until the profile document has also been saved.
+        kotlinx.coroutines.suspendCancellableCoroutine<Void?> { cont ->
+            fs.collection("users").document(uid)
+                .set(
+                    mapOf(
+                        "profileImageUrl to downloadUrl,
+                        "updatedAt" to FieldValue.serverTimestamp()
+                    ),
+                    SetOptions.merge()
+                )
+                .addOnSuccessListener { cont.resume(null) }
+                .addOnFailureListener { exc -> cont.resumeWith(Result.failure(exc)) }
+                .addOnCanceledListener { cont.cancel() }
         }
 
         return downloadUrl

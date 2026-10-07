@@ -170,7 +170,7 @@ class FirestoreVaultRepository(
             fs.collection("users").document(uid)
                 .set(
                     mapOf(
-                        "profileImageUrl to downloadUrl,
+                        "profileImageUrl" to downloadUrl,
                         "updatedAt" to FieldValue.serverTimestamp()
                     ),
                     SetOptions.merge()

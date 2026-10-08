@@ -18,7 +18,7 @@
           "client_id": "906103556979-1f0aada82vbslj1r0fknualmgh50g8l4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.SmartSafe.app",
+            "package_name": "com.smartsafe.app",
             "certificate_hash": "b0faf1fa97982488b6c2fe3b3ed238f797d8245f"
           }
         },
@@ -26,7 +26,7 @@
           "client_id": "906103556979-jejf1nnhdqc4638mdm5rip2r1e8pmd5n.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.SmartSafe.app",
+            "package_name": "com.smartsafe.app",
             "certificate_hash": "21d312835d31c37775ddf6736580043b0716de29"
           }
         },
@@ -34,7 +34,7 @@
           "client_id": "906103556979-vmsdirm99jspu6cqh7pdfs4heg1lru4a.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.SmartSafe.app",
+            "package_name": "com.smartsafe.app",
             "certificate_hash": "a3a8137a9e5c08e8b4b485173a68bda6ddf22863"
           }
         },

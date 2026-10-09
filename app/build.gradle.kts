@@ -17,7 +17,7 @@ android {
     applicationId = "com.smartsafe.app"
     minSdk = 24
     targetSdk = 36
-    versionCode = 16
+    versionCode = 17
     versionName = "12.0.2"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

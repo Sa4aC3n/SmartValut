@@ -45,6 +45,7 @@ import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.TrendingDown
+import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.filled.Visibility
@@ -538,8 +539,17 @@ fun DashboardScreen(
             }
         }
 
-        // 2.2. MY FINANCIAL SITUATION TODAY (وضعي المالي اليوم - صافي الثروة)
+        // 2.2. MY FINANCIAL SITUATION TODAY
+        //
+        // The primary number intentionally represents what the user currently
+        // owns (cash/accounts + independent savings + gold + receivables).
+        // Confirmed liabilities stay visible but are NOT subtracted from this
+        // headline amount. The accounting position after liabilities remains
+        // available on the detailed financial-position screen.
         item {
+            val breakdown = financialSummary.netWorthBreakdown
+            val availableFunds = breakdown.vaultsTotal + breakdown.cashSavingsTotal
+
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -557,7 +567,8 @@ fun DashboardScreen(
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier.weight(1f)
                         ) {
                             Box(
                                 modifier = Modifier
@@ -573,7 +584,7 @@ fun DashboardScreen(
                                     modifier = Modifier.size(20.dp)
                                 )
                             }
-                            Column {
+                            Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = AppText.text(com.example.R.string.text_1b7441ca41de),
                                     fontWeight = FontWeight.Bold,
@@ -598,48 +609,82 @@ fun DashboardScreen(
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(EmeraldGreenPrimary.copy(alpha = 0.08f))
+                            .padding(horizontal = 14.dp, vertical = 12.dp)
                     ) {
-                        Column {
+                        Column(modifier = Modifier.fillMaxWidth()) {
                             Text(
-                                text = AppText.text(com.example.R.string.text_0b8ff6a5604b),
-                                fontSize = 11.sp,
+                                text = AppText.text(com.example.R.string.financial_overview_total_owned),
+                                fontSize = 11.5.sp,
                                 color = Color.Gray
                             )
+                            Spacer(modifier = Modifier.height(2.dp))
                             Text(
                                 text = if (isBalanceVisible)
-                                    "${String.format(Locale.US, "%,d", financialSummary.netWorthBreakdown.netWorth.toLong())} ${AppText.currency(state.currency)}"
+                                    "${String.format(Locale.US, "%,d", breakdown.totalAssets.toLong().coerceAtLeast(0L))} ${AppText.currency(state.currency)}"
                                 else
                                     "•••• ${AppText.currency(state.currency)}",
                                 fontWeight = FontWeight.ExtraBold,
-                                fontSize = 22.sp,
+                                fontSize = 26.sp,
                                 color = EmeraldGreenPrimary
                             )
                         }
+                    }
 
-                        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                            Column(horizontalAlignment = Alignment.End) {
-                                Text(AppText.text(com.example.R.string.text_3765938331a5), fontSize = 10.5.sp, color = Color.Gray)
-                                Text(
-                                    text = if (isBalanceVisible) "${String.format(Locale.US, "%,d", financialSummary.netWorthBreakdown.totalAssets.toLong())}" else "••••",
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 13.sp,
-                                    color = Color(0xFF22C55E)
-                                )
-                            }
-                            Column(horizontalAlignment = Alignment.End) {
-                                Text(AppText.text(com.example.R.string.text_693a3a889d03), fontSize = 10.5.sp, color = Color.Gray)
-                                Text(
-                                    text = if (isBalanceVisible) "${String.format(Locale.US, "%,d", financialSummary.netWorthBreakdown.totalLiabilities.toLong())}" else "••••",
-                                    fontWeight = FontWeight.Bold,
-                                    fontSize = 13.sp,
-                                    color = Color(0xFFEF4444)
-                                )
-                            }
-                        }
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        FinancialOverviewMetricCard(
+                            title = AppText.text(com.example.R.string.financial_overview_available_funds),
+                            amount = availableFunds,
+                            currency = state.currency,
+                            isBalanceVisible = isBalanceVisible,
+                            icon = Icons.Default.AccountBalanceWallet,
+                            accent = EmeraldGreenPrimary,
+                            modifier = Modifier.weight(1f)
+                        )
+                        FinancialOverviewMetricCard(
+                            title = AppText.text(com.example.R.string.financial_overview_gold_value),
+                            amount = breakdown.goldEstimatedValue,
+                            currency = state.currency,
+                            isBalanceVisible = isBalanceVisible,
+                            icon = Icons.Default.MonetizationOn,
+                            accent = GoldAccent,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        FinancialOverviewMetricCard(
+                            title = AppText.text(com.example.R.string.financial_overview_receivables),
+                            amount = breakdown.moneyOwedToMe,
+                            currency = state.currency,
+                            isBalanceVisible = isBalanceVisible,
+                            icon = Icons.Default.TrendingUp,
+                            accent = Color(0xFF2563EB),
+                            modifier = Modifier.weight(1f)
+                        )
+                        FinancialOverviewMetricCard(
+                            title = AppText.text(com.example.R.string.financial_overview_liabilities),
+                            amount = breakdown.totalLiabilities,
+                            currency = state.currency,
+                            isBalanceVisible = isBalanceVisible,
+                            icon = Icons.Default.ReceiptLong,
+                            accent = ExpenseRed,
+                            modifier = Modifier.weight(1f)
+                        )
                     }
                 }
             }
@@ -1512,6 +1557,52 @@ private fun QuickShortcutButton(
                 fontSize = 10.5.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1
+            )
+        }
+    }
+}
+
+@Composable
+private fun FinancialOverviewMetricCard(
+    title: String,
+    amount: Double,
+    currency: String,
+    isBalanceVisible: Boolean,
+    icon: ImageVector,
+    accent: Color,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(14.dp),
+        colors = CardDefaults.cardColors(containerColor = accent.copy(alpha = 0.07f)),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
+    ) {
+        Column(
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 9.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = title,
+                tint = accent,
+                modifier = Modifier.size(18.dp)
+            )
+            Text(
+                text = title,
+                fontSize = 10.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 1
+            )
+            Text(
+                text = if (isBalanceVisible)
+                    "${String.format(Locale.US, "%,d", amount.toLong().coerceAtLeast(0L))} ${AppText.currency(currency)}"
+                else
+                    "•••• ${AppText.currency(currency)}",
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Bold,
+                color = accent,
                 maxLines = 1
             )
         }

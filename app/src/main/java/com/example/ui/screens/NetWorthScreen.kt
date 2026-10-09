@@ -99,8 +99,14 @@ fun NetWorthScreen(
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // 1. Top Card: Net Worth Overview
+            // 1. Top Card: what the user currently owns.
+            //
+            // Do not present a negative accounting net worth as the headline.
+            // Liabilities are shown separately and the after-liabilities position
+            // is explained in plain language below.
             item {
+                val availableFunds = breakdown.vaultsTotal + breakdown.cashSavingsTotal
+
                 Card(
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(20.dp),
@@ -139,7 +145,7 @@ fun NetWorthScreen(
                             Spacer(modifier = Modifier.height(6.dp))
 
                             Text(
-                                text = "${String.format("%,d", breakdown.netWorth.toInt())} ${AppText.currency(currency)}",
+                                text = "${String.format(Locale.US, "%,d", breakdown.totalAssets.toLong().coerceAtLeast(0L))} ${AppText.currency(currency)}",
                                 color = Color.White,
                                 fontSize = 32.sp,
                                 fontWeight = FontWeight.Bold
@@ -159,12 +165,12 @@ fun NetWorthScreen(
                             ) {
                                 Column {
                                     Text(
-                                        text = AppText.text(com.example.R.string.text_3765938331a5),
+                                        text = AppText.text(com.example.R.string.financial_overview_available_funds),
                                         color = Color.White.copy(alpha = 0.8f),
                                         fontSize = 12.sp
                                     )
                                     Text(
-                                        text = "${String.format("%,d", breakdown.totalAssets.toInt())} ${AppText.currency(currency)}",
+                                        text = "${String.format(Locale.US, "%,d", availableFunds.toLong().coerceAtLeast(0L))} ${AppText.currency(currency)}",
                                         color = IncomeGreen,
                                         fontSize = 16.sp,
                                         fontWeight = FontWeight.Bold
@@ -172,12 +178,12 @@ fun NetWorthScreen(
                                 }
                                 Column(horizontalAlignment = Alignment.End) {
                                     Text(
-                                        text = AppText.text(com.example.R.string.text_693a3a889d03),
+                                        text = AppText.text(com.example.R.string.financial_overview_liabilities),
                                         color = Color.White.copy(alpha = 0.8f),
                                         fontSize = 12.sp
                                     )
                                     Text(
-                                        text = "${String.format("%,d", breakdown.totalLiabilities.toInt())} ${AppText.currency(currency)}",
+                                        text = "${String.format(Locale.US, "%,d", breakdown.totalLiabilities.toLong().coerceAtLeast(0L))} ${AppText.currency(currency)}",
                                         color = ExpenseRed,
                                         fontSize = 16.sp,
                                         fontWeight = FontWeight.Bold
@@ -185,6 +191,52 @@ fun NetWorthScreen(
                                 }
                             }
                         }
+                    }
+                }
+            }
+
+            // 1.5. Accounting position after confirmed liabilities.
+            // A deficit is described as a positive gap instead of rendering a
+            // misleading negative "net worth" headline.
+            item {
+                val accountingPosition = breakdown.netWorth
+                val positionAmount = kotlin.math.abs(accountingPosition)
+                val positionColor = if (accountingPosition >= 0.0) IncomeGreen else ExpenseRed
+                val positionText = if (accountingPosition >= 0.0) {
+                    AppText.text(
+                        com.example.R.string.financial_position_positive,
+                        String.format(Locale.US, "%,d", positionAmount.toLong()),
+                        AppText.currency(currency)
+                    )
+                } else {
+                    AppText.text(
+                        com.example.R.string.financial_position_negative,
+                        String.format(Locale.US, "%,d", positionAmount.toLong()),
+                        AppText.currency(currency)
+                    )
+                }
+
+                Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = CardDefaults.cardColors(
+                        containerColor = positionColor.copy(alpha = 0.08f)
+                    )
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = AppText.text(com.example.R.string.financial_position_after_liabilities),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 13.sp,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = positionText,
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = positionColor
+                        )
                     }
                 }
             }
@@ -365,7 +417,7 @@ fun NetWorthScreen(
                                             color = MaterialTheme.colorScheme.onSurfaceVariant
                                         )
                                         Text(
-                                            text = "${String.format("%,d", snap.netWorth.toInt())} ${AppText.currency(currency)}",
+                                            text = "${String.format(Locale.US, "%,d", snap.totalAssets.toLong().coerceAtLeast(0L))} ${AppText.currency(currency)}",
                                             fontWeight = FontWeight.Bold,
                                             fontSize = 13.sp,
                                             color = EmeraldGreenPrimary

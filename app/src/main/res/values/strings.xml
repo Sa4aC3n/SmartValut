@@ -243,8 +243,8 @@
     <string name="text_241c729c5948" formatted="false">"يمكنك إخفاء أو إظهار أقسام التطبيق حسب احتياجاتك اليومية. لن يتم حذف أي بيانات مسجلة عند إخفاء القسم."</string>
     <string name="text_ac5f8981223b" formatted="false">"الدخل والمصروفات"</string>
     <string name="text_9eabacadf3bd" formatted="false">"القسم الأساسي (مفعّل دائمًا)"</string>
-    <string name="text_0b8ff6a5604b" formatted="false">"صافي الثروة"</string>
-    <string name="text_5053d7bf195f" formatted="false">"حساب الأصول والالتزامات"</string>
+    <string name="text_0b8ff6a5604b" formatted="false">"الوضع المالي"</string>
+    <string name="text_5053d7bf195f" formatted="false">"الأموال والممتلكات والالتزامات"</string>
     <string name="text_3c7023c98558" formatted="false">"الديون (لي / عليّ)"</string>
     <string name="text_630aff3fd3d6" formatted="false">"إدارة الديون والأموال المستحقة"</string>
     <string name="text_3ac532621c03" formatted="false">"التقويم المالي"</string>
@@ -464,7 +464,7 @@
     <string name="text_f9fab4694b1f" formatted="false">"تم قفل الخزنة تلقائياً لحماية بياناتك المشفرة. اضغط على الزر أدناه لإلغاء القفل بالبصمة أو رمز المرور."</string>
     <string name="text_e2326a8899ce" formatted="false">"إلغاء القفل (البصمة / الرمز)"</string>
     <string name="text_5d344c201747" formatted="false">"إضافة جديد"</string>
-    <string name="text_693a3a889d03" formatted="false">"إجمالي الالتزامات"</string>
+    <string name="text_693a3a889d03" formatted="false">"التزامات عليّ"</string>
     <string name="text_3c9fcaf97c72" formatted="false">"تم دفعه"</string>
     <string name="text_557f737dff23" formatted="false">"المتبقي"</string>
     <string name="text_a7b009ea9d81" formatted="false">"لا توجد التزامات شهرية مسجلة. اضغط + لإضافة إيجار أو فواتير."</string>
@@ -499,10 +499,10 @@
     <string name="text_877e2ea5f33a" formatted="false">"إظهار/إخفاء الرصيد"</string>
     <string name="text_4654875cd068" formatted="false">"سهم للأعلى - دخل"</string>
     <string name="text_3e1877e91a6f" formatted="false">"سهم للأسفل - مصروفات"</string>
-    <string name="text_1b7441ca41de" formatted="false">"وضعي المالي اليوم (صافي الثروة) 🛡️"</string>
-    <string name="text_a738ad2e9389" formatted="false">"حساب محلي آمن لكافة الأصول والالتزامات"</string>
-    <string name="text_e11353146505" formatted="false">"تفاصيل الأصول ←"</string>
-    <string name="text_3765938331a5" formatted="false">"إجمالي الأصول"</string>
+    <string name="text_1b7441ca41de" formatted="false">"وضعي المالي اليوم 🛡️"</string>
+    <string name="text_a738ad2e9389" formatted="false">"ملخص أموالك ومدخراتك وممتلكاتك"</string>
+    <string name="text_e11353146505" formatted="false">"تفاصيل الوضع المالي ←"</string>
+    <string name="text_3765938331a5" formatted="false">"إجمالي ما أملك"</string>
     <string name="text_24d53def2103" formatted="false">"تحليلات ذكية"</string>
     <string name="text_d383c633feff" formatted="false">"الرؤى والتحليلات الذكية 💡"</string>
     <string name="text_0d4fdbffe901" formatted="false">"محرك ذكاء مالي محلي 100%"</string>
@@ -601,19 +601,19 @@
     <string name="text_56ea571722e0" formatted="false">"دين: {0} ({1})"</string>
     <string name="text_a79f76c2ab19" formatted="false">"لي"</string>
     <string name="text_36b11439ed12" formatted="false">"عليّ"</string>
-    <string name="text_d0e88faf7ac5" formatted="false">"صافي ثروتك"</string>
-    <string name="text_3e62f9aa2335" formatted="false">"إجمالي ما تملكه ناقص إجمالي ما عليك"</string>
+    <string name="text_d0e88faf7ac5" formatted="false">"إجمالي أموالي وممتلكاتي"</string>
+    <string name="text_3e62f9aa2335" formatted="false">"يشمل الأرصدة والمدخرات والذهب والأموال المستحقة لك"</string>
     <string name="text_f5b0b65c4672" formatted="false">"ما تملكه: {0}%"</string>
     <string name="text_2ca01d14a9cd" formatted="false">"ما عليك: {0}%"</string>
     <string name="text_a5cab93ddaa9" formatted="false">"أين توجد أموالك؟ (توزيع الأصول)"</string>
     <string name="text_6df2c1412f00" formatted="false">"الخزن النقدية"</string>
     <string name="text_f805f891c45a" formatted="false">"أموال لدى الآخرين (ديون لي)"</string>
-    <string name="text_75f44963519a" formatted="false">"سجل صافي الثروة عبر الزمن"</string>
+    <string name="text_75f44963519a" formatted="false">"إجمالي أموالك وممتلكاتك عبر الزمن"</string>
     <string name="text_17eb7e3e00d7" formatted="false">"7 أيام"</string>
     <string name="text_843bcefe4002" formatted="false">"30 يوم"</string>
     <string name="text_7e25a36b91db" formatted="false">"90 يوم"</string>
     <string name="text_f91a7c9817c8" formatted="false">"سنة"</string>
-    <string name="text_a07a7191ef8a" formatted="false">"يتم حفظ لقطات دورية لصافي الثروة لتتبع نمو أصولك عبر الزمن."</string>
+    <string name="text_a07a7191ef8a" formatted="false">"يتم حفظ لقطات دورية لإجمالي أموالك وممتلكاتك لتتبع نمو أصولك عبر الزمن."</string>
     <string name="text_ea8176c4a653" formatted="false">"{0}% من إجمالي الأصول"</string>
     <string name="text_336c34278460" formatted="false">"بدء خروجة جديدة؟"</string>
     <string name="text_c050a00c7360" formatted="false">"سيتم مسح جميع مصاريف الخروجة الحالية وتصفير الحساب للبدء من جديد. هل أنت متأكد؟"</string>
@@ -1070,4 +1070,12 @@
     <string name="label_updating_prices" formatted="false">"جاري جلب الأسعار اللحظية..."</string>
     <string name="label_prices_updated_success" formatted="false">"تم تحديث أسعار الذهب لحظياً بنجاح من GoldAPI.io!"</string>
     <string name="label_last_updated" formatted="false">"آخر تحديث: "</string>
+    <string name="financial_overview_total_owned" formatted="false">"إجمالي ما أملك حاليًا"</string>
+    <string name="financial_overview_available_funds" formatted="false">"أموال متاحة الآن"</string>
+    <string name="financial_overview_gold_value" formatted="false">"قيمة الذهب"</string>
+    <string name="financial_overview_receivables" formatted="false">"أموال لي عند الآخرين"</string>
+    <string name="financial_overview_liabilities" formatted="false">"التزامات عليّ"</string>
+    <string name="financial_position_after_liabilities" formatted="false">"المركز المالي بعد الالتزامات"</string>
+    <string name="financial_position_positive" formatted="false">"بعد الالتزامات يتبقى لك {0} {1}"</string>
+    <string name="financial_position_negative" formatted="false">"التزاماتك تزيد عن إجمالي ما تملكه بـ {0} {1}"</string>
 </resources>

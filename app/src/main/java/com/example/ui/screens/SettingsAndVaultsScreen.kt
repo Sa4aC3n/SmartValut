@@ -5,6 +5,9 @@ import com.example.ui.utils.AppStrings
 import com.example.ui.utils.AppText
 
 import android.widget.Toast
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -30,6 +33,12 @@ import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AttachMoney
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Gavel
+import androidx.compose.material.icons.filled.MenuBook
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.SystemUpdateAlt
 import androidx.compose.material.icons.filled.Backup
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Download
@@ -70,11 +79,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.data.entity.BudgetLimitEntity
 import com.example.data.entity.TransactionEntity
 import com.example.data.entity.VaultEntity
@@ -138,6 +149,9 @@ fun SettingsAndVaultsScreen(
     var currencyExpanded by remember { mutableStateOf(false) }
     var lastDriveSyncTime by remember { mutableStateOf(AppText.text(com.example.R.string.text_d1768f19993f)) }
     var vaultToDelete by remember { mutableStateOf<VaultEntity?>(null) }
+    var isAboutExpanded by remember { mutableStateOf(false) }
+    var showUpdateDialog by remember { mutableStateOf(false) }
+    var legalDialog by remember { mutableStateOf<String?>(null) }
     val currencies = listOf("ج.م", "ريال سعودي", "درهم إماراتي", "دولار أمريكي")
 
     if (vaultToDelete != null) {
@@ -172,6 +186,31 @@ fun SettingsAndVaultsScreen(
                     Text(AppText.text(com.example.R.string.text_98df46fbd83b))
                 }
             }
+        )
+    }
+
+    if (showUpdateDialog) {
+        UpdateStatusDialog(
+            versionName = com.example.BuildConfig.VERSION_NAME,
+            versionCode = com.example.BuildConfig.VERSION_CODE,
+            onDismiss = { showUpdateDialog = false }
+        )
+    }
+
+    legalDialog?.let { type ->
+        LegalInfoDialog(
+            title = if (type == "privacy") {
+                AppText.text(com.example.R.string.about_privacy_policy)
+            } else {
+                AppText.text(com.example.R.string.about_terms_of_use)
+            },
+            body = if (type == "privacy") {
+                AppText.text(com.example.R.string.about_privacy_body)
+            } else {
+                AppText.text(com.example.R.string.about_terms_body)
+            },
+            icon = if (type == "privacy") Icons.Default.Security else Icons.Default.Gavel,
+            onDismiss = { legalDialog = null }
         )
     }
 
@@ -823,147 +862,77 @@ fun SettingsAndVaultsScreen(
             }
         }
 
-        // ABOUT DEVELOPER / ABOUT APP SECTION
+        // ABOUT APP SECTION
         item {
-            var isAboutExpanded by remember { mutableStateOf(false) }
+            Text(
+                text = AppText.text(com.example.R.string.about_section_title),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.ExtraBold,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Start
+            )
+        }
 
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(28.dp))
-                    .clickable { isAboutExpanded = !isAboutExpanded },
-                shape = RoundedCornerShape(28.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFF9FBF9)),
-                border = BorderStroke(1.dp, Color(0xFFE2EBE4))
+        item {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                Column(
-                    modifier = Modifier.padding(horizontal = 20.dp, vertical = 18.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        // Title, Subtitle, and Info Badge on the Right (RTL)
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(48.dp)
-                                    .clip(CircleShape)
-                                    .background(Color(0xFFD6ECE0)),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Info,
-                                    contentDescription = AppText.text(com.example.R.string.text_9471d17ec31e),
-                                    tint = Color(0xFF133621),
-                                    modifier = Modifier.size(24.dp)
-                                )
-                            }
+                AboutActionCard(
+                    title = AppText.text(com.example.R.string.about_app_title),
+                    subtitle = AppText.text(
+                        com.example.R.string.about_app_version_subtitle,
+                        com.example.BuildConfig.VERSION_NAME
+                    ),
+                    icon = Icons.Default.Info,
+                    onClick = { isAboutExpanded = !isAboutExpanded },
+                    modifier = Modifier.weight(1f)
+                )
 
-                            Spacer(modifier = Modifier.width(12.dp))
+                AboutActionCard(
+                    title = AppText.text(com.example.R.string.about_update_title),
+                    subtitle = AppText.text(com.example.R.string.about_update_subtitle),
+                    icon = Icons.Default.SystemUpdateAlt,
+                    onClick = { showUpdateDialog = true },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        }
 
-                            Column(
-                                horizontalAlignment = Alignment.Start
-                            ) {
-                                Text(
-                                    text = AppText.text(com.example.R.string.text_9471d17ec31e),
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = Color(0xFF1B241E)
-                                )
-                                Spacer(modifier = Modifier.height(2.dp))
-                                Text(
-                                    text = AppText.text(com.example.R.string.text_2731e2bf2295),
-                                    fontSize = 12.sp,
-                                    fontWeight = FontWeight.Normal,
-                                    color = Color(0xFF6B7B70)
-                                )
-                            }
+        item {
+            AnimatedVisibility(visible = isAboutExpanded) {
+                AboutDetailsContent(
+                    versionName = com.example.BuildConfig.VERSION_NAME,
+                    versionCode = com.example.BuildConfig.VERSION_CODE,
+                    onShare = {
+                        val playUrl = "https://play.google.com/store/apps/details?id=${context.packageName}"
+                        val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                            type = "text/plain"
+                            putExtra(
+                                Intent.EXTRA_TEXT,
+                                AppText.text(com.example.R.string.about_share_text, playUrl)
+                            )
                         }
-
-                        // Arrow Left Icon on the Left (RTL)
-                        Icon(
-                            imageVector = Icons.Default.KeyboardArrowLeft,
-                            contentDescription = null,
-                            tint = Color(0xFF5A665E),
-                            modifier = Modifier.size(24.dp)
+                        context.startActivity(
+                            Intent.createChooser(
+                                shareIntent,
+                                AppText.text(com.example.R.string.about_share_app)
+                            )
                         )
-                    }
-
-                    // Expanded Details
-                    AnimatedVisibility(visible = isAboutExpanded) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 18.dp)
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(1.dp)
-                                    .background(Color(0xFFE2EBE4))
-                            )
-
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            // App Info
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(
-                                        Color.White,
-                                        RoundedCornerShape(16.dp)
-                                    )
-                                    .padding(14.dp)
-                            ) {
-                                Box(
-                                    modifier = Modifier
-                                        .size(42.dp)
-                                        .clip(CircleShape)
-                                        .background(Color(0xFFD6ECE0)),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Default.Shield,
-                                        contentDescription = null,
-                                        tint = EmeraldGreenPrimary,
-                                        modifier = Modifier.size(22.dp)
-                                    )
-                                }
-                                Spacer(modifier = Modifier.width(12.dp))
-                                Column {
-                                    Text(
-                                        text = AppText.text(com.example.R.string.text_cf185716b8b8),
-                                        fontWeight = FontWeight.ExtraBold,
-                                        fontSize = 15.sp,
-                                        color = MaterialTheme.colorScheme.onSurface
-                                    )
-                                    Spacer(modifier = Modifier.height(2.dp))
-                                    Text(
-                                        text = AppText.text(com.example.R.string.text_b0d1f789f55d, com.example.BuildConfig.VERSION_NAME),
-                                        fontSize = 12.sp,
-                                        color = Color.Gray
-                                    )
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.height(16.dp))
-
-                            Text(
-                                text = AppText.text(com.example.R.string.text_5d6809ca20b5),
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Medium,
-                                color = Color.Gray,
-                                textAlign = TextAlign.Center,
-                                modifier = Modifier.fillMaxWidth()
-                            )
+                    },
+                    onRate = {
+                        val marketUri = Uri.parse("market://details?id=${context.packageName}")
+                        val webUri = Uri.parse("https://play.google.com/store/apps/details?id=${context.packageName}")
+                        try {
+                            context.startActivity(Intent(Intent.ACTION_VIEW, marketUri))
+                        } catch (_: ActivityNotFoundException) {
+                            context.startActivity(Intent(Intent.ACTION_VIEW, webUri))
                         }
-                    }
-                }
+                    },
+                    onPrivacy = { legalDialog = "privacy" },
+                    onTerms = { legalDialog = "terms" }
+                )
             }
         }
 
@@ -972,3 +941,447 @@ fun SettingsAndVaultsScreen(
         }
     }
 }
+
+@Composable
+private fun AboutActionCard(
+    title: String,
+    subtitle: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier
+            .height(178.dp)
+            .clickable(onClick = onClick),
+        shape = RoundedCornerShape(26.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+        elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(18.dp),
+            verticalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(58.dp)
+                        .clip(RoundedCornerShape(18.dp))
+                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = title,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(28.dp)
+                    )
+                }
+                Icon(
+                    imageVector = Icons.Default.KeyboardArrowLeft,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.55f),
+                    modifier = Modifier.size(28.dp)
+                )
+            }
+
+            Column {
+                Text(
+                    text = title,
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 19.sp,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = subtitle,
+                    fontSize = 12.5.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    lineHeight = 18.sp
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun AboutDetailsContent(
+    versionName: String,
+    versionCode: Int,
+    onShare: () -> Unit,
+    onRate: () -> Unit,
+    onPrivacy: () -> Unit,
+    onTerms: () -> Unit
+) {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Text(
+            text = AppText.text(com.example.R.string.about_message_section),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.ExtraBold,
+            color = MaterialTheme.colorScheme.primary
+        )
+
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(26.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        ) {
+            Column(modifier = Modifier.padding(20.dp)) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(52.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.MenuBook,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                    Text(
+                        text = AppText.text(com.example.R.string.about_message_title),
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.ExtraBold
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = AppText.text(com.example.R.string.about_message_body_1),
+                    fontSize = 14.sp,
+                    lineHeight = 24.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = AppText.text(com.example.R.string.about_message_body_2),
+                    fontSize = 14.sp,
+                    lineHeight = 24.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(26.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.Transparent)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        Brush.horizontalGradient(
+                            listOf(
+                                MaterialTheme.colorScheme.primary,
+                                MaterialTheme.colorScheme.tertiary
+                            )
+                        )
+                    )
+                    .padding(20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = AppText.text(com.example.R.string.about_share_heading),
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 18.sp,
+                    color = Color.White,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = AppText.text(com.example.R.string.about_share_supporting),
+                    fontSize = 12.5.sp,
+                    lineHeight = 19.sp,
+                    color = Color.White.copy(alpha = 0.9f),
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(18.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    OutlinedButton(
+                        onClick = onShare,
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(16.dp),
+                        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.75f)),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
+                    ) {
+                        Icon(Icons.Default.Share, contentDescription = null, modifier = Modifier.size(18.dp))
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(AppText.text(com.example.R.string.about_share_app), fontWeight = FontWeight.Bold)
+                    }
+                    OutlinedButton(
+                        onClick = onRate,
+                        modifier = Modifier.weight(1f),
+                        shape = RoundedCornerShape(16.dp),
+                        border = BorderStroke(1.dp, Color.White.copy(alpha = 0.75f)),
+                        colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
+                    ) {
+                        Icon(Icons.Default.Star, contentDescription = null, modifier = Modifier.size(18.dp), tint = GoldAccent)
+                        Spacer(modifier = Modifier.width(6.dp))
+                        Text(AppText.text(com.example.R.string.about_rate_app), fontWeight = FontWeight.Bold)
+                    }
+                }
+            }
+        }
+
+        Text(
+            text = AppText.text(com.example.R.string.about_legal_section),
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.ExtraBold,
+            color = MaterialTheme.colorScheme.primary
+        )
+
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(26.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
+        ) {
+            Column {
+                LegalInfoRow(
+                    title = AppText.text(com.example.R.string.about_privacy_policy),
+                    subtitle = AppText.text(com.example.R.string.about_privacy_subtitle),
+                    icon = Icons.Default.Security,
+                    onClick = onPrivacy
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(1.dp)
+                        .background(MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.6f))
+                )
+                LegalInfoRow(
+                    title = AppText.text(com.example.R.string.about_terms_of_use),
+                    subtitle = AppText.text(com.example.R.string.about_terms_subtitle),
+                    icon = Icons.Default.Gavel,
+                    onClick = onTerms
+                )
+            }
+        }
+
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(20.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
+            )
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = AppText.text(com.example.R.string.about_app_name),
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 15.sp
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = AppText.text(
+                        com.example.R.string.about_version_full,
+                        versionName,
+                        versionCode
+                    ),
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = AppText.text(com.example.R.string.about_footer),
+                    fontSize = 11.5.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun LegalInfoRow(
+    title: String,
+    subtitle: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Row(
+            modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(RoundedCornerShape(15.dp))
+                    .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
+            }
+            Spacer(modifier = Modifier.width(12.dp))
+            Column(modifier = Modifier.weight(1f)) {
+                Text(title, fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    subtitle,
+                    fontSize = 11.5.sp,
+                    lineHeight = 16.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+        }
+        Icon(
+            imageVector = Icons.Default.KeyboardArrowLeft,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
+        )
+    }
+}
+
+@Composable
+private fun UpdateStatusDialog(
+    versionName: String,
+    versionCode: Int,
+    onDismiss: () -> Unit
+) {
+    Dialog(onDismissRequest = onDismiss) {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(32.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        ) {
+            Column(
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 28.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(92.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.CheckCircle,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(54.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(22.dp))
+                Text(
+                    text = AppText.text(com.example.R.string.about_latest_version_title),
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 22.sp,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = AppText.text(com.example.R.string.about_latest_version_body),
+                    fontSize = 14.sp,
+                    lineHeight = 22.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(18.dp))
+
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.55f))
+                        .padding(horizontal = 18.dp, vertical = 12.dp)
+                ) {
+                    Text(
+                        text = AppText.text(
+                            com.example.R.string.about_current_version,
+                            versionName,
+                            versionCode
+                        ),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(22.dp))
+                Button(
+                    onClick = onDismiss,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    shape = RoundedCornerShape(16.dp)
+                ) {
+                    Text(
+                        text = AppText.text(com.example.R.string.about_ok),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 15.sp
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun LegalInfoDialog(
+    title: String,
+    body: String,
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.primary
+            )
+        },
+        title = {
+            Text(title, fontWeight = FontWeight.ExtraBold)
+        },
+        text = {
+            Text(
+                text = body,
+                lineHeight = 22.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(AppText.text(com.example.R.string.about_ok))
+            }
+        }
+    )
+}
+

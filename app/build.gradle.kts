@@ -23,24 +23,44 @@ android {
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
 
+  // Release signing is optional in CI so we can still exercise the exact
+  // minified release pipeline and produce the R8 mapping file without exposing
+  // signing secrets. Local/production builds are signed when all credentials exist.
+  val releaseKeystorePath = System.getenv("KEYSTORE_PATH") ?: "${rootDir}/my-upload-key.jks"
+  val releaseSigningAvailable =
+    file(releaseKeystorePath).exists() &&
+      !System.getenv("STORE_PASSWORD").isNullOrBlank() &&
+      !System.getenv("KEY_PASSWORD").isNullOrBlank()
+
   signingConfigs {
-    create("release") {
-      val keystorePath = System.getenv("KEYSTORE_PATH") ?: "${rootDir}/my-upload-key.jks"
-      storeFile = file(keystorePath)
-      storePassword = System.getenv("STORE_PASSWORD")
-      keyAlias = "upload"
-      keyPassword = System.getenv("KEY_PASSWORD")
+    if (releaseSigningAvailable) {
+      create("release") {
+        storeFile = file(releaseKeystorePath)
+        storePassword = System.getenv("STORE_PASSWORD")
+        keyAlias = System.getenv("KEY_ALIAS") ?: "upload"
+        keyPassword = System.getenv("KEY_PASSWORD")
+      }
     }
   }
 
   buildTypes {
     release {
       isCrunchPngs = false
-      isMinifyEnabled = false
-      proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-      signingConfig = signingConfigs.getByName("release")
+
+      // Production hardening: R8 code shrinking, optimization and obfuscation.
+      // This also produces build/outputs/mapping/release/mapping.txt for retrace.
+      isMinifyEnabled = true
+      isShrinkResources = true
+      proguardFiles(
+        getDefaultProguardFile("proguard-android-optimize.txt"),
+        "proguard-rules.pro"
+      )
+
+      if (releaseSigningAvailable) {
+        signingConfig = signingConfigs.getByName("release")
+      }
     }
-    // Debug uses Android's automatically generated per-machine signing key.
+    // Debug stays readable and unminified for local development.
   }
   compileOptions {
     sourceCompatibility = JavaVersion.VERSION_11

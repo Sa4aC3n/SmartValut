@@ -1,21 +1,27 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
+# Smart Vault release R8 rules
 #
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Keep this file intentionally narrow. Broad rules such as
+# -keep class com.example.** { *; }
+# would defeat obfuscation and recreate the Google Play warning.
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# Preserve enough metadata for reliable crash deobfuscation / Retrace while
+# still allowing class, method and field names to be obfuscated.
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# Libraries that inspect generic signatures / annotations at runtime can rely
+# on these attributes. Keeping metadata does not disable name obfuscation.
+-keepattributes Signature,InnerClasses,EnclosingMethod
+-keepattributes RuntimeVisibleAnnotations,RuntimeInvisibleAnnotations,AnnotationDefault
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# WorkManager persists worker class names in its local database. Preserve our
+# worker class names so pending scheduled work survives app upgrades where the
+# R8 mapping can change between releases.
+-keepnames class com.example.worker.** extends androidx.work.ListenableWorker
+-keepclassmembers class com.example.worker.** extends androidx.work.ListenableWorker {
+    public <init>(android.content.Context, androidx.work.WorkerParameters);
+}
+
+# Room, Firebase, Retrofit, Moshi, Compose and AndroidX WorkManager ship their
+# own consumer ProGuard/R8 rules. Do not duplicate them with broad app-wide
+# keep rules unless a verified release-only failure requires it.

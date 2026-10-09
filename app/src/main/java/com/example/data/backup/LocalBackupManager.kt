@@ -98,6 +98,8 @@ object LocalBackupManager {
             o.put("dateMillis", tx.dateMillis)
             o.put("vaultName", tx.vaultName)
             if (tx.receiptImagePath != null) o.put("receiptImagePath", tx.receiptImagePath)
+            if (tx.referenceType != null) o.put("referenceType", tx.referenceType)
+            if (tx.referenceId != null) o.put("referenceId", tx.referenceId)
             txArray.put(o)
         }
         dataObj.put("transactions", txArray)
@@ -172,6 +174,9 @@ object LocalBackupManager {
             o.put("isRecurringMonthly", c.isRecurringMonthly)
             o.put("notes", c.notes)
             if (c.receiptImagePath != null) o.put("receiptImagePath", c.receiptImagePath)
+            if (c.paymentReferenceId != null) o.put("paymentReferenceId", c.paymentReferenceId)
+            if (c.paidFromVaultName != null) o.put("paidFromVaultName", c.paidFromVaultName)
+            if (c.paidAtMillis != null) o.put("paidAtMillis", c.paidAtMillis)
             commArray.put(o)
         }
         dataObj.put("commitments", commArray)
@@ -546,6 +551,8 @@ object LocalBackupManager {
                         val dateMillis = o.optLong("dateMillis", System.currentTimeMillis())
                         val vaultName = o.optString("vaultName", "الخزنة الرئيسية")
                         val receiptPath = o.optString("receiptImagePath", null)
+                        val referenceType = o.optString("referenceType", null)
+                        val referenceId = o.optString("referenceId", null)
 
                         if (policy == RestorePolicy.SAFE_MERGE) {
                             val isDuplicate = existingTxs.any {
@@ -563,7 +570,9 @@ object LocalBackupManager {
                                 description = description,
                                 dateMillis = dateMillis,
                                 vaultName = vaultName,
-                                receiptImagePath = receiptPath
+                                receiptImagePath = receiptPath,
+                                referenceType = referenceType,
+                                referenceId = referenceId
                             )
                         )
                     }
@@ -680,7 +689,10 @@ object LocalBackupManager {
                                 isPaid = o.optBoolean("isPaid", false),
                                 isRecurringMonthly = o.optBoolean("isRecurringMonthly", true),
                                 notes = o.optString("notes", ""),
-                                receiptImagePath = o.optString("receiptImagePath", null)
+                                receiptImagePath = o.optString("receiptImagePath", null),
+                                paymentReferenceId = o.optString("paymentReferenceId", null),
+                                paidFromVaultName = o.optString("paidFromVaultName", null),
+                                paidAtMillis = if (o.has("paidAtMillis")) o.optLong("paidAtMillis") else null
                             )
                         )
                     }

@@ -372,9 +372,146 @@ class SmartVaultRepository(private val db: AppDatabase) {
         db.commitmentDao().updateCommitment(commitment)
     }
 
+    /**
+     * Pays a commitment as one atomic ledger operation.
+     *
+     * The commitment state, expense transaction and vault balance are committed
+     * together. A stable UUID reference links the commitment to its expense so
+     * deletion can reverse the exact payment without guessing by title/amount.
+     */
+    suspend fun payCommitment(
+        commitmentId: Int,
+        vaultName: String,
+        userId: String = ""
+    ) {
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        require(vaultName.isNotBlank()) { "يجب اختيار خزنة للسداد" }
+
+        db.withTransaction {
+            val commitment = db.commitmentDao().getCommitmentByIdAndUser(commitmentId, effectiveUser)
+                ?: throw IllegalStateException("الالتزام غير موجود أو لا يخص المستخدم الحالي")
+
+            if (commitment.isPaid) return@withTransaction
+
+            val amount = commitment.amount
+            require(amount.isFinite() && amount > 0.0) { "قيمة الالتزام غير صالحة" }
+
+            val vault = db.vaultDao().getVaultByName(vaultName, effectiveUser)
+                ?: throw IllegalStateException("الخزنة المحددة غير موجودة")
+
+            val now = System.currentTimeMillis()
+            val paymentReferenceId = java.util.UUID.randomUUID().toString()
+
+            db.transactionDao().insertTransaction(
+                TransactionEntity(
+                    userId = effectiveUser,
+                    type = "EXPENSE",
+                    amount = amount,
+                    category = commitment.title,
+                    description = "دفع التزام: ${commitment.title}",
+                    dateMillis = now,
+                    vaultName = vault.name,
+                    receiptImagePath = commitment.receiptImagePath,
+                    referenceType = "COMMITMENT_PAYMENT",
+                    referenceId = paymentReferenceId
+                )
+            )
+
+            val updatedVaultRows = db.vaultDao().updateVaultBalance(
+                vault.id,
+                vault.balance - amount,
+                effectiveUser
+            )
+            check(updatedVaultRows == 1) { "تعذر تحديث رصيد الخزنة أثناء السداد" }
+
+            db.commitmentDao().updateCommitment(
+                commitment.copy(
+                    isPaid = true,
+                    paymentReferenceId = paymentReferenceId,
+                    paidFromVaultName = vault.name,
+                    paidAtMillis = now
+                )
+            )
+        }
+    }
+
+    /**
+     * Deletes a commitment and, when it has a recorded payment, reverses that
+     * payment atomically: the original vault is credited and the linked expense
+     * transaction is removed. The reversal is therefore not counted as income.
+     *
+     * Legacy paid commitments (created before stable references existed) are
+     * reversed only when exactly one historical expense is an exact match.
+     * Ambiguous matches fail closed rather than crediting the wrong vault.
+     */
     suspend fun deleteCommitment(id: Int, userId: String = "") {
         val effectiveUser = userId.ifBlank { "local_guest" }
-        db.commitmentDao().deleteCommitmentByIdAndUser(id, effectiveUser)
+
+        db.withTransaction {
+            val commitment = db.commitmentDao().getCommitmentByIdAndUser(id, effectiveUser)
+                ?: return@withTransaction
+
+            if (commitment.isPaid) {
+                val linkedTransaction = if (!commitment.paymentReferenceId.isNullOrBlank()) {
+                    db.transactionDao().getTransactionByReference(
+                        referenceType = "COMMITMENT_PAYMENT",
+                        referenceId = commitment.paymentReferenceId,
+                        userId = effectiveUser
+                    )
+                } else {
+                    val legacyDescription = "دفع التزام: ${commitment.title}"
+                    val candidates = db.transactionDao().findLegacyExpenseCandidates(
+                        amount = commitment.amount,
+                        category = commitment.title,
+                        description = legacyDescription,
+                        userId = effectiveUser
+                    )
+                    when {
+                        candidates.size == 1 -> candidates.single()
+                        candidates.size > 1 -> throw IllegalStateException(
+                            "تعذر تحديد عملية السداد القديمة بأمان لوجود أكثر من سجل مطابق"
+                        )
+                        else -> null
+                    }
+                }
+
+                if (linkedTransaction != null) {
+                    check(linkedTransaction.type == "EXPENSE") {
+                        "سجل السداد المرتبط ليس مصروفًا صالحًا للعكس"
+                    }
+                    check(linkedTransaction.amount.isFinite() && linkedTransaction.amount > 0.0) {
+                        "قيمة سجل السداد المرتبط غير صالحة"
+                    }
+
+                    val originalVault = db.vaultDao().getVaultByName(
+                        linkedTransaction.vaultName,
+                        effectiveUser
+                    ) ?: throw IllegalStateException(
+                        "لا يمكن إلغاء السداد لأن الخزنة الأصلية غير موجودة"
+                    )
+
+                    val updatedVaultRows = db.vaultDao().updateVaultBalance(
+                        originalVault.id,
+                        originalVault.balance + linkedTransaction.amount,
+                        effectiveUser
+                    )
+                    check(updatedVaultRows == 1) {
+                        "تعذر إعادة مبلغ السداد إلى الخزنة الأصلية"
+                    }
+
+                    val deletedTxRows = db.transactionDao().deleteTransactionByIdAndUser(
+                        linkedTransaction.id,
+                        effectiveUser
+                    )
+                    check(deletedTxRows == 1) {
+                        "تعذر حذف سجل المصروف المرتبط بالسداد"
+                    }
+                }
+            }
+
+            val deletedCommitmentRows = db.commitmentDao().deleteCommitmentByIdAndUser(id, effectiveUser)
+            check(deletedCommitmentRows == 1) { "تعذر حذف الالتزام" }
+        }
     }
 
     // 8. Child Lessons

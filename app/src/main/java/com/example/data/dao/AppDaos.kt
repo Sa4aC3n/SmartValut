@@ -40,6 +40,12 @@ interface TransactionDao {
     @Query("SELECT * FROM transactions WHERE id = :id AND (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL))) LIMIT 1")
     suspend fun getTransactionById(id: Int, userId: String): TransactionEntity?
 
+    @Query("SELECT * FROM transactions WHERE referenceType = :referenceType AND referenceId = :referenceId AND (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL))) LIMIT 1")
+    suspend fun getTransactionByReference(referenceType: String, referenceId: String, userId: String): TransactionEntity?
+
+    @Query("SELECT * FROM transactions WHERE type = 'EXPENSE' AND amount = :amount AND category = :category AND description = :description AND (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL))) ORDER BY dateMillis DESC")
+    suspend fun findLegacyExpenseCandidates(amount: Double, category: String, description: String, userId: String): List<TransactionEntity>
+
     @Query("DELETE FROM transactions WHERE id = :id AND (userId = :userId OR (:userId = 'local_guest' AND (userId = '' OR userId IS NULL)))")
     suspend fun deleteTransactionByIdAndUser(id: Int, userId: String): Int
 

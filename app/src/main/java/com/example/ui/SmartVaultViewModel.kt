@@ -1063,14 +1063,21 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     fun payCommitment(commitment: CommitmentEntity) {
         viewModelScope.launch {
-            repository.updateCommitment(commitment.copy(isPaid = true))
-            addExpense(
-                amount = commitment.amount,
-                category = commitment.title,
-                description = "دفع التزام: ${commitment.title}",
-                vaultName = selectedVaultName.value,
-                receiptPath = commitment.receiptImagePath
-            )
+            try {
+                repository.payCommitment(
+                    commitmentId = commitment.id,
+                    vaultName = selectedVaultName.value,
+                    userId = activeUserId.value
+                )
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                android.widget.Toast.makeText(
+                    getApplication(),
+                    e.message ?: AppText.text(com.example.R.string.text_1f4dfc40d5ed),
+                    android.widget.Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 
@@ -1180,7 +1187,17 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     fun deleteCommitment(id: Int, item: CommitmentEntity? = null) {
         viewModelScope.launch {
-            repository.deleteCommitment(id, activeUserId.value)
+            try {
+                repository.deleteCommitment(id, activeUserId.value)
+            } catch (e: kotlinx.coroutines.CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                android.widget.Toast.makeText(
+                    getApplication(),
+                    e.message ?: AppText.text(com.example.R.string.text_1f4dfc40d5ed),
+                    android.widget.Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 

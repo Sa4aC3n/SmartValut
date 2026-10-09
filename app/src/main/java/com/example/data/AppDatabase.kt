@@ -58,7 +58,7 @@ import com.example.data.entity.VaultItemEntity
         DebtPaymentEntity::class,
         NetWorthSnapshotEntity::class
     ],
-    version = 7,
+    version = 8,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -285,6 +285,17 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
+        val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                // Stable ledger linkage for commitment payment reversal.
+                db.execSQL("ALTER TABLE transactions ADD COLUMN referenceType TEXT")
+                db.execSQL("ALTER TABLE transactions ADD COLUMN referenceId TEXT")
+                db.execSQL("ALTER TABLE commitments ADD COLUMN paymentReferenceId TEXT")
+                db.execSQL("ALTER TABLE commitments ADD COLUMN paidFromVaultName TEXT")
+                db.execSQL("ALTER TABLE commitments ADD COLUMN paidAtMillis INTEGER")
+            }
+        }
+
         fun getInstance(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
@@ -292,7 +303,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "smart_vault_db"
                 )
-                    .addMigrations(MIGRATION_5_6, MIGRATION_6_7)
+                    .addMigrations(MIGRATION_5_6, MIGRATION_6_7, MIGRATION_7_8)
                     .build()
                 INSTANCE = instance
                 instance

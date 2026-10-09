@@ -14,5 +14,10 @@ data class CommitmentEntity(
     val isPaid: Boolean = false,
     val isRecurringMonthly: Boolean = true,
     val notes: String = "",
-    val receiptImagePath: String? = null
+    val receiptImagePath: String? = null,
+    // Stable reference to the expense transaction created when this commitment
+    // is paid. This survives backup/restore and allows an exact reversal on delete.
+    val paymentReferenceId: String? = null,
+    val paidFromVaultName: String? = null,
+    val paidAtMillis: Long? = null
 )

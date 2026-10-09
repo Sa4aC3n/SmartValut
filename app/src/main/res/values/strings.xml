@@ -1078,4 +1078,32 @@
     <string name="financial_position_after_liabilities" formatted="false">"المركز المالي بعد الالتزامات"</string>
     <string name="financial_position_positive" formatted="false">"بعد الالتزامات يتبقى لك {0} {1}"</string>
     <string name="financial_position_negative" formatted="false">"التزاماتك تزيد عن إجمالي ما تملكه بـ {0} {1}"</string>
+    <string name="about_section_title" formatted="false">"عن التطبيق"</string>
+    <string name="about_app_title" formatted="false">"عن التطبيق"</string>
+    <string name="about_app_version_subtitle" formatted="false">"الخزنة الذكية • {0}"</string>
+    <string name="about_update_title" formatted="false">"تحديث التطبيق"</string>
+    <string name="about_update_subtitle" formatted="false">"فحص أحدث نسخة"</string>
+    <string name="about_message_section" formatted="false">"رسالة التطبيق"</string>
+    <string name="about_message_title" formatted="false">"رسالة التطبيق"</string>
+    <string name="about_message_body_1" formatted="false">"الخزنة الذكية تطبيق يساعدك على إدارة أموالك بسهولة وخصوصية، من خلال متابعة الدخل والمصروفات والمدخرات والأصول مثل الذهب والنقدية، في واجهة عربية بسيطة وواضحة."</string>
+    <string name="about_message_body_2" formatted="false">"يعتمد التطبيق على مبدأ Local-First، فتظل بياناتك المالية على جهازك، مع أدوات للتقارير والنسخ الاحتياطي والتصدير وتحليل وضعك المالي بصورة منظمة تساعدك على اتخاذ قرارات أفضل."</string>
+    <string name="about_share_heading" formatted="false">"شارك تطبيق الخزنة الذكية"</string>
+    <string name="about_share_supporting" formatted="false">"إذا أعجبك التطبيق، ساعد غيرك في تنظيم أمواله وشاركه مع من تحب."</string>
+    <string name="about_share_app" formatted="false">"مشاركة التطبيق"</string>
+    <string name="about_rate_app" formatted="false">"تقييم التطبيق"</string>
+    <string name="about_share_text" formatted="false">"جرّب تطبيق الخزنة الذكية لإدارة المصروفات والمدخرات والأصول بسهولة وخصوصية.\n{0}"</string>
+    <string name="about_legal_section" formatted="false">"المعلومات القانونية والخصوصية"</string>
+    <string name="about_privacy_policy" formatted="false">"سياسة الخصوصية"</string>
+    <string name="about_privacy_subtitle" formatted="false">"تعرف كيف نحمي بياناتك وخصوصيتك"</string>
+    <string name="about_terms_of_use" formatted="false">"شروط الاستخدام"</string>
+    <string name="about_terms_subtitle" formatted="false">"اطلع على شروط استخدام التطبيق"</string>
+    <string name="about_privacy_body" formatted="false">"صُممت الخزنة الذكية وفق مبدأ الخصوصية أولًا. تُحفظ بياناتك المالية الأساسية محليًا على جهازك، ولا تُستخدم للإعلانات أو البيع. قد تُستخدم خدمات الحساب والنسخ الاحتياطي التي تختارها أنت بشكل منفصل وفق إعداداتك."</string>
+    <string name="about_terms_body" formatted="false">"الخزنة الذكية أداة شخصية لتنظيم وتسجيل المعلومات المالية ولا تقدم استشارة مالية أو استثمارية. أنت مسؤول عن مراجعة بياناتك ونسخك الاحتياطية واستخدام التطبيق بما يناسب احتياجاتك."</string>
+    <string name="about_app_name" formatted="false">"الخزنة الذكية"</string>
+    <string name="about_version_full" formatted="false">"الإصدار {0} ({1})"</string>
+    <string name="about_footer" formatted="false">"صُمم لمساعدتك على إدارة أموالك بخصوصية ووضوح"</string>
+    <string name="about_latest_version_title" formatted="false">"أنت تستخدم أحدث إصدار ✅"</string>
+    <string name="about_latest_version_body" formatted="false">"تطبيقك محدث بالكامل ويحتوي على أحدث الميزات والتحسينات المتاحة في هذه النسخة."</string>
+    <string name="about_current_version" formatted="false">"الإصدار الحالي: v{0} ({1})"</string>
+    <string name="about_ok" formatted="false">"حسنًا"</string>
 </resources>

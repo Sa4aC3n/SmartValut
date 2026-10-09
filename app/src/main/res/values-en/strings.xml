@@ -243,8 +243,8 @@
     <string name="text_241c729c5948" formatted="false">"Show or hide app sections to suit your needs. Hiding a section does not delete its data."</string>
     <string name="text_ac5f8981223b" formatted="false">"Income and expenses"</string>
     <string name="text_9eabacadf3bd" formatted="false">"Core section (always enabled)"</string>
-    <string name="text_0b8ff6a5604b" formatted="false">"Net worth"</string>
-    <string name="text_5053d7bf195f" formatted="false">"Assets and liabilities"</string>
+    <string name="text_0b8ff6a5604b" formatted="false">"Financial position"</string>
+    <string name="text_5053d7bf195f" formatted="false">"Money, assets and liabilities"</string>
     <string name="text_3c7023c98558" formatted="false">"Debts (owed to me / I owe)"</string>
     <string name="text_630aff3fd3d6" formatted="false">"Manage debts and money owed"</string>
     <string name="text_3ac532621c03" formatted="false">"Financial calendar"</string>
@@ -464,7 +464,7 @@
     <string name="text_f9fab4694b1f" formatted="false">"The vault was locked automatically to protect your encrypted data. Unlock it with your fingerprint or passcode."</string>
     <string name="text_e2326a8899ce" formatted="false">"Unlock (fingerprint / Passcode)"</string>
     <string name="text_5d344c201747" formatted="false">"Add new"</string>
-    <string name="text_693a3a889d03" formatted="false">"Total commitments"</string>
+    <string name="text_693a3a889d03" formatted="false">"Liabilities I owe"</string>
     <string name="text_3c9fcaf97c72" formatted="false">"Paid"</string>
     <string name="text_557f737dff23" formatted="false">"Remaining"</string>
     <string name="text_a7b009ea9d81" formatted="false">"No monthly commitments recorded. Select + to add rent or bills."</string>
@@ -499,10 +499,10 @@
     <string name="text_877e2ea5f33a" formatted="false">"Show / Hide balance"</string>
     <string name="text_4654875cd068" formatted="false">"Up arrow - Income"</string>
     <string name="text_3e1877e91a6f" formatted="false">"Down arrow - Expenses"</string>
-    <string name="text_1b7441ca41de" formatted="false">"My finances today (net worth) 🛡️"</string>
-    <string name="text_a738ad2e9389" formatted="false">"Local calculation of assets and liabilities"</string>
-    <string name="text_e11353146505" formatted="false">"Asset details →"</string>
-    <string name="text_3765938331a5" formatted="false">"Total assets"</string>
+    <string name="text_1b7441ca41de" formatted="false">"My finances today 🛡️"</string>
+    <string name="text_a738ad2e9389" formatted="false">"A summary of your money, savings and assets"</string>
+    <string name="text_e11353146505" formatted="false">"Financial details →"</string>
+    <string name="text_3765938331a5" formatted="false">"Total I own"</string>
     <string name="text_24d53def2103" formatted="false">"Smart analytics"</string>
     <string name="text_d383c633feff" formatted="false">"Financial insights 💡"</string>
     <string name="text_0d4fdbffe901" formatted="false">"100% local financial insights engine"</string>
@@ -601,19 +601,19 @@
     <string name="text_56ea571722e0" formatted="false">"Debt: {0} ({1})"</string>
     <string name="text_a79f76c2ab19" formatted="false">"Owed to me"</string>
     <string name="text_36b11439ed12" formatted="false">"I owe"</string>
-    <string name="text_d0e88faf7ac5" formatted="false">"Your net worth"</string>
-    <string name="text_3e62f9aa2335" formatted="false">"Everything you own minus everything you owe"</string>
+    <string name="text_d0e88faf7ac5" formatted="false">"My total money and assets"</string>
+    <string name="text_3e62f9aa2335" formatted="false">"Includes balances, savings, gold and money owed to you"</string>
     <string name="text_f5b0b65c4672" formatted="false">"Assets: {0}%"</string>
     <string name="text_2ca01d14a9cd" formatted="false">"Liabilities: {0}%"</string>
     <string name="text_a5cab93ddaa9" formatted="false">"Where is your money? (asset allocation)"</string>
     <string name="text_6df2c1412f00" formatted="false">"Cash vaults"</string>
     <string name="text_f805f891c45a" formatted="false">"Money owed to you"</string>
-    <string name="text_75f44963519a" formatted="false">"Net worth over time"</string>
+    <string name="text_75f44963519a" formatted="false">"Your money and assets over time"</string>
     <string name="text_17eb7e3e00d7" formatted="false">"7 days"</string>
     <string name="text_843bcefe4002" formatted="false">"30 days"</string>
     <string name="text_7e25a36b91db" formatted="false">"90 days"</string>
     <string name="text_f91a7c9817c8" formatted="false">"Year"</string>
-    <string name="text_a07a7191ef8a" formatted="false">"Periodic net worth snapshots track your asset growth over time."</string>
+    <string name="text_a07a7191ef8a" formatted="false">"Periodic snapshots track the growth of your money and assets over time."</string>
     <string name="text_ea8176c4a653" formatted="false">"{0}% of total assets"</string>
     <string name="text_336c34278460" formatted="false">"Start a new outing?"</string>
     <string name="text_c050a00c7360" formatted="false">"This clears all expenses for the current outing and resets the total. Continue?"</string>
@@ -1070,4 +1070,12 @@
     <string name="label_updating_prices" formatted="false">"Fetching live rates..."</string>
     <string name="label_prices_updated_success" formatted="false">"Gold prices updated successfully from GoldAPI.io!"</string>
     <string name="label_last_updated" formatted="false">"Last updated: "</string>
+    <string name="financial_overview_total_owned" formatted="false">"Total I own now"</string>
+    <string name="financial_overview_available_funds" formatted="false">"Available funds"</string>
+    <string name="financial_overview_gold_value" formatted="false">"Gold value"</string>
+    <string name="financial_overview_receivables" formatted="false">"Money owed to me"</string>
+    <string name="financial_overview_liabilities" formatted="false">"Liabilities I owe"</string>
+    <string name="financial_position_after_liabilities" formatted="false">"Financial position after liabilities"</string>
+    <string name="financial_position_positive" formatted="false">"After liabilities, {0} {1} remains"</string>
+    <string name="financial_position_negative" formatted="false">"Your liabilities exceed what you own by {0} {1}"</string>
 </resources>

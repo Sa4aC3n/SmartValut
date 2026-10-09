@@ -1078,4 +1078,32 @@
     <string name="financial_position_after_liabilities" formatted="false">"Financial position after liabilities"</string>
     <string name="financial_position_positive" formatted="false">"After liabilities, {0} {1} remains"</string>
     <string name="financial_position_negative" formatted="false">"Your liabilities exceed what you own by {0} {1}"</string>
+    <string name="about_section_title" formatted="false">"About"</string>
+    <string name="about_app_title" formatted="false">"About the app"</string>
+    <string name="about_app_version_subtitle" formatted="false">"Smart Vault • {0}"</string>
+    <string name="about_update_title" formatted="false">"Update app"</string>
+    <string name="about_update_subtitle" formatted="false">"Check the latest version"</string>
+    <string name="about_message_section" formatted="false">"Our mission"</string>
+    <string name="about_message_title" formatted="false">"Our mission"</string>
+    <string name="about_message_body_1" formatted="false">"Smart Vault helps you manage money with clarity and privacy by tracking income, expenses, savings, and assets such as gold and cash in a simple, focused experience."</string>
+    <string name="about_message_body_2" formatted="false">"The app follows a Local-First approach so your core financial data stays on your device, with tools for reports, backups, exports, and clear financial analysis."</string>
+    <string name="about_share_heading" formatted="false">"Share Smart Vault"</string>
+    <string name="about_share_supporting" formatted="false">"If the app helps you, share it with someone who may benefit from organizing their money."</string>
+    <string name="about_share_app" formatted="false">"Share app"</string>
+    <string name="about_rate_app" formatted="false">"Rate app"</string>
+    <string name="about_share_text" formatted="false">"Try Smart Vault to manage expenses, savings, and assets with clarity and privacy.\n{0}"</string>
+    <string name="about_legal_section" formatted="false">"Legal and privacy"</string>
+    <string name="about_privacy_policy" formatted="false">"Privacy policy"</string>
+    <string name="about_privacy_subtitle" formatted="false">"Learn how your data and privacy are protected"</string>
+    <string name="about_terms_of_use" formatted="false">"Terms of use"</string>
+    <string name="about_terms_subtitle" formatted="false">"Review the terms for using the app"</string>
+    <string name="about_privacy_body" formatted="false">"Smart Vault is designed with privacy first. Core financial data is stored locally on your device and is not used for advertising or sold. Account and backup services that you choose may operate separately according to your settings."</string>
+    <string name="about_terms_body" formatted="false">"Smart Vault is a personal organization tool for financial records and does not provide financial or investment advice. You are responsible for reviewing your data, backups, and how you use the app."</string>
+    <string name="about_app_name" formatted="false">"Smart Vault"</string>
+    <string name="about_version_full" formatted="false">"Version {0} ({1})"</string>
+    <string name="about_footer" formatted="false">"Designed to help you manage money with privacy and clarity"</string>
+    <string name="about_latest_version_title" formatted="false">"You are using the latest version ✅"</string>
+    <string name="about_latest_version_body" formatted="false">"Your app is fully up to date and includes the latest features and improvements available in this version."</string>
+    <string name="about_current_version" formatted="false">"Current version: v{0} ({1})"</string>
+    <string name="about_ok" formatted="false">"OK"</string>
 </resources>

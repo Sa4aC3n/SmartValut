@@ -17,7 +17,7 @@ android {
     applicationId = "com.smartsafe.app"
     minSdk = 24
     targetSdk = 36
-    versionCode = 12
+    versionCode = 16
     versionName = "12.0.2"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -85,7 +85,7 @@ secrets {
   ignoreList.add("FIREBASE_APPCHECK_DEBUG_TOKEN")
 }
 
-googleServices { missingGoogleServicesStrategy = MissingGoogleServicesStrategy.WARN }
+googleServices { missingGoogleServicesStrategy = MissingGoogleServicesStrategy.ERROR }
 
 // Some unused dependencies are commented out below instead of being removed.
 // This makes it easy to add them back in the future if needed.

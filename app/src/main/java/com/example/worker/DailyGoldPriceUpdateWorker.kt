@@ -23,11 +23,11 @@ class DailyGoldPriceUpdateWorker(
 ) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
-        val prefs = context.getSharedPreferences("smart_vault_prefs", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("smart_vault_user_prefs", Context.MODE_PRIVATE)
         val apiKey = prefs.getString("gold_api_key", GoldApiClient.DEFAULT_API_KEY)
             ?.ifBlank { GoldApiClient.DEFAULT_API_KEY } ?: GoldApiClient.DEFAULT_API_KEY
 
-        val rawCurrency = prefs.getString("currency", "EGP") ?: "EGP"
+        val rawCurrency = prefs.getString("selected_currency", prefs.getString("currency", "EGP")) ?: "EGP"
         val mappedCurrency = when (rawCurrency.trim()) {
             "ج.م", "EGP", "جنيه", "LE" -> "EGP"
             "$", "USD", "دولار" -> "USD"

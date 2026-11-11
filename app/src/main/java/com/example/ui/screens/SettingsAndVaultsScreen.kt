@@ -12,15 +12,17 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -83,6 +85,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -92,6 +95,7 @@ import com.example.data.entity.VaultEntity
 import com.example.ui.theme.EmeraldGreenPrimary
 import com.example.ui.theme.ExpenseRed
 import com.example.ui.theme.GoldAccent
+import java.util.Calendar
 import java.util.Locale
 
 import androidx.compose.material.icons.filled.Delete
@@ -110,7 +114,6 @@ import com.example.data.entity.ChildLessonEntity
 import com.example.data.entity.CommitmentEntity
 import androidx.compose.material.icons.filled.Language
 import com.example.ui.utils.LocalStrings
-import com.example.ui.utils.GoogleDriveBackupHelper
 import com.example.ui.utils.PdfExporter
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -217,6 +220,7 @@ fun SettingsAndVaultsScreen(
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
@@ -444,7 +448,14 @@ fun SettingsAndVaultsScreen(
                         Text(text = AppText.text(com.example.R.string.text_3372c9d2ab39), color = Color.Gray, fontSize = 12.sp)
                     } else {
                         budgetLimits.forEach { limit ->
-                            val spent = transactions.filter { it.type == "EXPENSE" && it.category == limit.category }.sumOf { it.amount }
+                            val curCal = Calendar.getInstance()
+                            val curM = curCal.get(Calendar.MONTH)
+                            val curY = curCal.get(Calendar.YEAR)
+                            val spent = transactions.filter { tx ->
+                                if (tx.type != "EXPENSE" || tx.category != limit.category) return@filter false
+                                val txCal = Calendar.getInstance().apply { timeInMillis = tx.dateMillis }
+                                txCal.get(Calendar.MONTH) == curM && txCal.get(Calendar.YEAR) == curY
+                            }.sumOf { it.amount }
                             val pct = if (limit.monthlyLimit > 0) (spent / limit.monthlyLimit).toFloat().coerceIn(0f, 1f) else 0f
 
                             Column(
@@ -578,7 +589,7 @@ fun SettingsAndVaultsScreen(
 
                         // Arrow Left Icon on the Left (RTL)
                         Icon(
-                            imageVector = Icons.Default.KeyboardArrowLeft,
+                            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                             contentDescription = null,
                             tint = Color(0xFF5A665E),
                             modifier = Modifier.size(24.dp)
@@ -825,7 +836,8 @@ fun SettingsAndVaultsScreen(
                             },
                             modifier = Modifier
                                 .weight(1f)
-                                .height(46.dp),
+                                .heightIn(min = 46.dp),
+                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 6.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFC62828)), // PDF Red
                             shape = RoundedCornerShape(14.dp)
                         ) {
@@ -833,29 +845,48 @@ fun SettingsAndVaultsScreen(
                                 imageVector = Icons.Default.Description,
                                 contentDescription = AppText.text(com.example.R.string.text_770c11e048d1),
                                 tint = Color.White,
-                                modifier = Modifier.size(18.dp)
+                                modifier = Modifier.size(17.dp)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text(text = AppText.text(com.example.R.string.text_0f7b9bca13a1), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            Text(
+                                text = AppText.text(com.example.R.string.text_0f7b9bca13a1),
+                                fontSize = 11.5.sp,
+                                fontWeight = FontWeight.Bold,
+                                maxLines = 1,
+                                softWrap = false,
+                                overflow = TextOverflow.Ellipsis
+                            )
                         }
 
                         // Excel Export Button
                         OutlinedButton(
                             onClick = {
-                                Toast.makeText(context, AppText.text(com.example.R.string.text_99f67b516741), Toast.LENGTH_LONG).show()
+                                com.example.ui.utils.PdfExporter.exportFinancialExcelCsv(
+                                    context = context,
+                                    transactions = transactions,
+                                    vaults = vaults
+                                )
                             },
                             modifier = Modifier
                                 .weight(1f)
-                                .height(46.dp),
+                                .heightIn(min = 46.dp),
+                            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 6.dp),
                             shape = RoundedCornerShape(14.dp)
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Download,
                                 contentDescription = AppText.text(com.example.R.string.text_692e087830e9),
-                                modifier = Modifier.size(18.dp)
+                                modifier = Modifier.size(17.dp)
                             )
                             Spacer(modifier = Modifier.width(4.dp))
-                            Text(text = AppText.text(com.example.R.string.text_692e087830e9), fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            Text(
+                                text = AppText.text(com.example.R.string.text_692e087830e9),
+                                fontSize = 11.5.sp,
+                                fontWeight = FontWeight.Bold,
+                                maxLines = 1,
+                                softWrap = false,
+                                overflow = TextOverflow.Ellipsis
+                            )
                         }
                     }
                 }
@@ -866,8 +897,8 @@ fun SettingsAndVaultsScreen(
         item {
             Text(
                 text = AppText.text(com.example.R.string.about_section_title),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.ExtraBold,
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Start
@@ -877,7 +908,7 @@ fun SettingsAndVaultsScreen(
         item {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 AboutActionCard(
                     title = AppText.text(com.example.R.string.about_app_title),
@@ -952,28 +983,29 @@ private fun AboutActionCard(
 ) {
     Card(
         modifier = modifier
-            .height(178.dp)
+            .heightIn(min = 96.dp)
+            .clip(RoundedCornerShape(18.dp))
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(26.dp),
+        shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.dp)
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(18.dp),
-            verticalArrangement = Arrangement.SpaceBetween
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 11.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Top
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(
                     modifier = Modifier
-                        .size(58.dp)
-                        .clip(RoundedCornerShape(18.dp))
+                        .size(34.dp)
+                        .clip(RoundedCornerShape(10.dp))
                         .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)),
                     contentAlignment = Alignment.Center
                 ) {
@@ -981,30 +1013,34 @@ private fun AboutActionCard(
                         imageVector = icon,
                         contentDescription = title,
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(28.dp)
+                        modifier = Modifier.size(18.dp)
                     )
                 }
                 Icon(
-                    imageVector = Icons.Default.KeyboardArrowLeft,
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.55f),
-                    modifier = Modifier.size(28.dp)
+                    modifier = Modifier.size(18.dp)
                 )
             }
 
             Column {
                 Text(
                     text = title,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 19.sp,
-                    color = MaterialTheme.colorScheme.onSurface
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
-                Spacer(modifier = Modifier.height(4.dp))
+                Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = subtitle,
-                    fontSize = 12.5.sp,
+                    fontSize = 11.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    lineHeight = 18.sp
+                    lineHeight = 14.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
         }
@@ -1260,7 +1296,7 @@ private fun LegalInfoRow(
             }
         }
         Icon(
-            imageVector = Icons.Default.KeyboardArrowLeft,
+            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
             contentDescription = null,
             tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
         )

@@ -59,7 +59,7 @@ object LocalBackupManager {
     const val MAGIC_HEADER_V2 = "SMARTVAULT_ENC_V2"
     const val MAGIC_HEADER_V3 = "SMARTVAULT_ENC_V3"
     private const val CURRENT_BACKUP_VERSION = 3
-    private const val CURRENT_SCHEMA_VERSION = 7
+    private const val CURRENT_SCHEMA_VERSION = 8
     private const val DEFAULT_BACKUP_SECRET = "SmartVault_Secure_Local_Key_2026"
 
     /**

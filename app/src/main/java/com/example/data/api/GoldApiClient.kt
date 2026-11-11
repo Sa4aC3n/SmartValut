@@ -35,7 +35,7 @@ data class LiveGoldPrices(
 }
 
 object GoldApiClient {
-    const val DEFAULT_API_KEY = "goldapi-a5ec4bacb3a44f8746e621896ece2554-io"
+    const val DEFAULT_API_KEY = ""
     private const val BASE_URL = "https://www.goldapi.io/api"
     private const val TROY_OUNCE_TO_GRAMS = 31.1034768
 

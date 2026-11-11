@@ -2,6 +2,8 @@
 .gradle
 .kotlin
 /local.properties
+keystore.properties
+*.pem
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
@@ -14,6 +16,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+keystore.properties
+*.pem
 .env
 debug.keystore
 *.jks

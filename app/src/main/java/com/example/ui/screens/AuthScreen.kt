@@ -93,7 +93,8 @@ fun AuthScreen(
     onLoginMicrosoft: (email: String, name: String) -> Unit = { _, _ -> },
     onForgotPassword: (email: String, onSuccess: () -> Unit, onError: (String) -> Unit) -> Unit = { _, _, _ -> },
     onVerify2FA: (code: String) -> Boolean = { true },
-    onCancel2FA: () -> Unit = {}
+    onCancel2FA: () -> Unit = {},
+    onContinueOffline: () -> Unit = {}
 ) {
     val context = LocalContext.current
     var currentMode by remember { mutableStateOf(AuthMode.LOGIN) }
@@ -542,6 +543,52 @@ fun AuthScreen(
                                         errorMessage = null
                                         currentMode = AuthMode.REGISTER
                                     }
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(16.dp))
+
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                androidx.compose.material3.HorizontalDivider(
+                                    modifier = Modifier.weight(1f),
+                                    color = Color.LightGray.copy(alpha = 0.4f)
+                                )
+                                Text(
+                                    text = "  أو  ",
+                                    fontSize = 12.sp,
+                                    color = Color.Gray,
+                                    fontWeight = FontWeight.Medium
+                                )
+                                androidx.compose.material3.HorizontalDivider(
+                                    modifier = Modifier.weight(1f),
+                                    color = Color.LightGray.copy(alpha = 0.4f)
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.height(14.dp))
+
+                            OutlinedButton(
+                                onClick = onContinueOffline,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(48.dp),
+                                shape = RoundedCornerShape(14.dp),
+                                border = androidx.compose.foundation.BorderStroke(1.5.dp, EmeraldGreenPrimary.copy(alpha = 0.5f)),
+                                colors = ButtonDefaults.outlinedButtonColors(contentColor = EmeraldGreenPrimary)
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Shield,
+                                    contentDescription = null,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text(
+                                    text = "المتابعة كاستخدام محلي (دون إنترنت)",
+                                    fontSize = 13.sp,
+                                    fontWeight = FontWeight.Bold
                                 )
                             }
                         }

@@ -84,6 +84,8 @@ data class DashboardUiState(
     val selectedVaultName: String = "الخزنة الرئيسية",
     val totalIncomeThisMonth: Double = 0.0,
     val totalExpenseThisMonth: Double = 0.0,
+    val totalIncomeLastMonth: Double = 0.0,
+    val totalExpenseLastMonth: Double = 0.0,
     val remainingSalary: Double = 0.0,
     val dueBillsCount: Int = 0,
     val salarySpentPercentage: Float = 0f,
@@ -182,12 +184,13 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     private fun loadUserProfileFromPrefs(): UserProfile {
         val currentUser = firebaseAuth?.currentUser
-        val name = prefs.getString("user_name", "M. Keshka") ?: "M. Keshka"
-        val email = prefs.getString("user_email", "m.k3shka@gmail.com") ?: "m.k3shka@gmail.com"
-        val phone = prefs.getString("user_phone", "+20 100 123 4567") ?: "+20 100 123 4567"
+        val name = prefs.getString("user_name", "") ?: ""
+        val email = prefs.getString("user_email", "") ?: ""
+        val phone = prefs.getString("user_phone", "") ?: ""
         val avatarId = prefs.getInt("user_avatar_id", 1)
         val isTwoFactor = prefs.getBoolean("user_2fa", false)
         val loginMethod = prefs.getString("user_login_method", "EMAIL") ?: "EMAIL"
+        val isOfflineLoggedIn = prefs.getBoolean("user_logged_in", false) && loginMethod == "LOCAL"
 
         // Strictly verify using Firebase Auth: user is only logged in if currentUser != null AND currentUser.isEmailVerified
         val isUserVerifiedAndLogged = if (currentUser != null) {
@@ -200,11 +203,11 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
                 false
             }
         } else {
-            false
+            isOfflineLoggedIn
         }
 
         return UserProfile(
-            name = currentUser?.displayName?.takeIf { it.isNotBlank() } ?: name,
+            name = currentUser?.displayName?.takeIf { it.isNotBlank() } ?: name.ifBlank { if (isOfflineLoggedIn) "مستخدم محلي" else "" },
             email = currentUser?.email?.takeIf { it.isNotBlank() } ?: email,
             phone = phone,
             avatarId = avatarId,
@@ -438,6 +441,9 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     }
 
     private val authStateListener = FirebaseAuth.AuthStateListener { auth ->
+        if (userProfile.value.loginMethod == "LOCAL" && userProfile.value.isLoggedIn) {
+            return@AuthStateListener
+        }
         val currentUser = auth.currentUser
         if (currentUser == null || !currentUser.isEmailVerified) {
             firestoreVaultRepo.setSyncStatus(CloudSyncStatus.OFFLINE)
@@ -487,6 +493,34 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     fun lockCloudVault() {
         isCloudVaultLocked.value = true
+    }
+
+    fun isVaultPinSet(): Boolean {
+        return !prefs.getString("vault_security_pin_hash", "").isNullOrBlank()
+    }
+
+    fun verifyVaultPin(enteredPin: String): Boolean {
+        val storedHash = prefs.getString("vault_security_pin_hash", "") ?: ""
+        if (storedHash.isBlank()) {
+            if (enteredPin.length == 4) {
+                setVaultPin(enteredPin)
+                return true
+            }
+            return false
+        }
+        val enteredHash = hashPin(enteredPin)
+        return storedHash == enteredHash
+    }
+
+    fun setVaultPin(pin: String) {
+        val hash = hashPin(pin)
+        prefs.edit().putString("vault_security_pin_hash", hash).apply()
+    }
+
+    private fun hashPin(pin: String): String {
+        val md = java.security.MessageDigest.getInstance("SHA-256")
+        val digest = md.digest(("SmartVaultSalt:$pin").toByteArray(Charsets.UTF_8))
+        return digest.joinToString("") { "%02x".format(it) }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -622,6 +656,21 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
         saveUserProfileToPrefs(updated)
     }
 
+    fun loginAsLocalGuest() {
+        val localUser = UserProfile(
+            name = "مستخدم محلي",
+            email = "",
+            phone = "",
+            avatarId = 1,
+            isTwoFactorEnabled = false,
+            isLoggedIn = true,
+            loginMethod = "LOCAL"
+        )
+        userProfile.value = localUser
+        saveUserProfileToPrefs(localUser)
+        activeUserId.value = "local_guest"
+    }
+
     fun logout() {
         val loggedOut = userProfile.value.copy(isLoggedIn = false)
         userProfile.value = loggedOut
@@ -743,8 +792,18 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
     val searchQuery = MutableStateFlow("")
     val selectedFilterCategory = MutableStateFlow<String?>(null)
     val selectedFilterType = MutableStateFlow<String?>(null)
-    val selectedCurrency = MutableStateFlow("ج.م")
-    val isDarkMode = MutableStateFlow(false)
+    val selectedCurrency = MutableStateFlow(prefs.getString("selected_currency", "ج.م") ?: "ج.م")
+    val isDarkMode = MutableStateFlow(prefs.getBoolean("is_dark_mode", false))
+
+    fun setSelectedCurrency(currency: String) {
+        selectedCurrency.value = currency
+        prefs.edit().putString("selected_currency", currency).apply()
+    }
+
+    fun setDarkMode(enabled: Boolean) {
+        isDarkMode.value = enabled
+        prefs.edit().putBoolean("is_dark_mode", enabled).apply()
+    }
 
     fun setLanguage(lang: String) {
         com.example.ui.utils.AppText.setLanguage(lang)
@@ -787,8 +846,13 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     fun clearLiveGoldPriceMessages() = clearGoldPriceMessages()
 
-    val isPinEnabled = MutableStateFlow(false)
-    val isDailyReminderEnabled = MutableStateFlow(true)
+    val isPinEnabled = MutableStateFlow(prefs.getBoolean("is_pin_enabled", false))
+    val isDailyReminderEnabled = MutableStateFlow(prefs.getBoolean("is_daily_reminder_enabled", true))
+
+    fun setPinEnabled(enabled: Boolean) {
+        isPinEnabled.value = enabled
+        prefs.edit().putBoolean("is_pin_enabled", enabled).apply()
+    }
 
     init {
         firebaseAuth?.addAuthStateListener(authStateListener)
@@ -803,6 +867,7 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     fun toggleDailyReminder(enabled: Boolean) {
         isDailyReminderEnabled.value = enabled
+        prefs.edit().putBoolean("is_daily_reminder_enabled", enabled).apply()
         if (enabled) {
             com.example.worker.ReminderScheduler.scheduleDailyReminder(getApplication())
         } else {
@@ -978,14 +1043,39 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
         }
 
         val totalIncome = monthTxs.filter { it.type == "INCOME" }.sumOf { it.amount }
-        val unpaidCommitmentsSum = commitments.filter { !it.isPaid }.sumOf { it.amount }
-        val unpaidLessonsSum = lessons.filter { !it.isPaid }.sumOf { it.amount }
+
+        val pastCal = Calendar.getInstance().apply { add(Calendar.MONTH, -1) }
+        val lastMonth = pastCal.get(Calendar.MONTH)
+        val lastMonthYear = pastCal.get(Calendar.YEAR)
+        val lastMonthTxs = txs.filter { tx ->
+            val txCal = Calendar.getInstance().apply { timeInMillis = tx.dateMillis }
+            txCal.get(Calendar.MONTH) == lastMonth && txCal.get(Calendar.YEAR) == lastMonthYear
+        }
+        val totalIncomeLastMonth = lastMonthTxs.filter { it.type == "INCOME" }.sumOf { it.amount }
+        val totalExpenseLastMonth = lastMonthTxs.filter { it.type == "EXPENSE" }.sumOf { it.amount }
+
+        val unpaidCommitmentsThisMonth = commitments.filter { commitment ->
+            if (commitment.isPaid) return@filter false
+            val dueCal = Calendar.getInstance().apply { timeInMillis = commitment.dueDateMillis }
+            val dueYear = dueCal.get(Calendar.YEAR)
+            val dueMonth = dueCal.get(Calendar.MONTH)
+            (dueYear < currentYear) || (dueYear == currentYear && dueMonth <= currentMonth)
+        }
+        val unpaidCommitmentsSum = unpaidCommitmentsThisMonth.sumOf { it.amount }
+
+        val unpaidLessonsThisMonth = lessons.filter { lesson ->
+            if (lesson.isPaid) return@filter false
+            val dueCal = Calendar.getInstance().apply { timeInMillis = lesson.dueDateMillis }
+            val dueYear = dueCal.get(Calendar.YEAR)
+            val dueMonth = dueCal.get(Calendar.MONTH)
+            (dueYear < currentYear) || (dueYear == currentYear && dueMonth <= currentMonth)
+        }
+        val unpaidLessonsSum = unpaidLessonsThisMonth.sumOf { it.amount }
+
         val totalExpense = monthTxs.filter { it.type == "EXPENSE" }.sumOf { it.amount } + unpaidCommitmentsSum + unpaidLessonsSum
         val remaining = (totalIncome - totalExpense).coerceAtLeast(0.0)
 
-        val unpaidCommitments = commitments.count { !it.isPaid }
-        val unpaidLessons = lessons.count { !it.isPaid }
-        val dueCount = unpaidCommitments + unpaidLessons
+        val dueCount = unpaidCommitmentsThisMonth.size + unpaidLessonsThisMonth.size
 
         val spentPct = if (totalIncome > 0) ((totalExpense / totalIncome) * 100.0).toFloat().coerceIn(0f, 100f) else 0f
 
@@ -994,6 +1084,8 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
             selectedVaultName = currentVault?.name ?: vaultName,
             totalIncomeThisMonth = totalIncome,
             totalExpenseThisMonth = totalExpense,
+            totalIncomeLastMonth = totalIncomeLastMonth,
+            totalExpenseLastMonth = totalExpenseLastMonth,
             remainingSalary = remaining,
             dueBillsCount = dueCount,
             salarySpentPercentage = spentPct,
@@ -1083,14 +1175,20 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     fun payChildLesson(lesson: ChildLessonEntity) {
         viewModelScope.launch {
-            repository.updateChildLesson(lesson.copy(isPaid = true))
-            addExpense(
-                amount = lesson.amount,
-                category = AppText.text(com.example.R.string.text_ba7d226884f5),
-                description = "دفع درس: ${lesson.childName} - ${lesson.subject}",
-                vaultName = selectedVaultName.value,
-                receiptPath = lesson.receiptImagePath
-            )
+            try {
+                repository.payChildLesson(
+                    lessonId = lesson.id,
+                    vaultName = selectedVaultName.value,
+                    userId = activeUserId.value
+                )
+            } catch (e: Exception) {
+                Log.e("SmartVault", "Error paying child lesson", e)
+                android.widget.Toast.makeText(
+                    getApplication(),
+                    e.message ?: "تعذر سداد الدرس",
+                    android.widget.Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 
@@ -1203,7 +1301,16 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
 
     fun deleteChildLesson(id: Int, item: ChildLessonEntity? = null) {
         viewModelScope.launch {
-            repository.deleteChildLesson(id, activeUserId.value)
+            try {
+                repository.deleteChildLesson(id, activeUserId.value)
+            } catch (e: Exception) {
+                Log.e("SmartVault", "Error deleting child lesson", e)
+                android.widget.Toast.makeText(
+                    getApplication(),
+                    e.message ?: "تعذر حذف الدرس",
+                    android.widget.Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 
@@ -1502,10 +1609,12 @@ class SmartVaultViewModel(application: Application) : AndroidViewModel(applicati
         }
     }
 
-    fun deleteTransfer(transfer: TransferEntity) {
-        viewModelScope.launch {
-            repository.deleteTransfer(transfer.id, activeUserId.value)
-        }
+    fun deleteTransfer(
+        transfer: TransferEntity,
+        onSuccess: () -> Unit = {},
+        onError: (String) -> Unit = {}
+    ) {
+        reverseTransfer(transfer.id, onSuccess, onError)
     }
 
     fun reverseTransfer(

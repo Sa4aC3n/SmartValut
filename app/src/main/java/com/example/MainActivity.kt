@@ -23,6 +23,14 @@ import androidx.compose.animation.SizeTransform
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.height
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -42,7 +50,6 @@ import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Shield
 import androidx.compose.material.icons.filled.Attractions
-import androidx.compose.material.icons.filled.EventNote
 import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -60,6 +67,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import com.example.ui.screens.CloudVaultScreen
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -98,8 +106,8 @@ import com.example.ui.dialogs.EditProfileDialog
 import com.example.ui.dialogs.EditVaultDialog
 import com.example.ui.dialogs.SetBudgetDialog
 import com.example.ui.screens.AuthScreen
-import com.example.ui.screens.CommitmentsAndLessonsScreen
 import com.example.ui.screens.DashboardScreen
+import com.example.ui.screens.ExpenseSubTabs
 import com.example.ui.screens.ExpensesAndSearchScreen
 import com.example.ui.screens.OutingsScreen
 import com.example.ui.screens.ReportsAndChartsScreen
@@ -123,6 +131,19 @@ class MainActivity : ComponentActivity() {
         setContent {
             val isDarkMode by viewModel.isDarkMode.collectAsStateWithLifecycle()
             val selectedLanguage by viewModel.selectedLanguage.collectAsStateWithLifecycle()
+            val isPinEnabled by viewModel.isPinEnabled.collectAsStateWithLifecycle()
+
+            DisposableEffect(isPinEnabled) {
+                if (isPinEnabled) {
+                    window.setFlags(
+                        android.view.WindowManager.LayoutParams.FLAG_SECURE,
+                        android.view.WindowManager.LayoutParams.FLAG_SECURE
+                    )
+                } else {
+                    window.clearFlags(android.view.WindowManager.LayoutParams.FLAG_SECURE)
+                }
+                onDispose { }
+            }
 
             SmartVaultTheme(darkTheme = isDarkMode) {
                 com.example.ui.utils.AppLanguageProvider(selectedLanguage) {
@@ -137,6 +158,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainAppContent(viewModel: SmartVaultViewModel) {
     var selectedTab by remember { mutableIntStateOf(0) }
+    var expensesSubTab by remember { mutableStateOf(ExpenseSubTabs.EXPENSES_LOG) }
     var showLocalBackup by remember { mutableStateOf(false) }
 
     if (showLocalBackup) {
@@ -232,6 +254,9 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
             },
             onForgotPassword = { email, onSuccess, onError ->
                 viewModel.sendPasswordReset(email, onSuccess, onError)
+            },
+            onContinueOffline = {
+                viewModel.loginAsLocalGuest()
             }
         )
         return
@@ -316,162 +341,15 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
         return
     }
 
-    Scaffold(
-        topBar = {
-            if (selectedTab != 0 && selectedTab != 1 && selectedTab != 3 && selectedTab != 4) {
-                Surface(
-                    color = MaterialTheme.colorScheme.surface,
-                    tonalElevation = 3.dp,
-                    shadowElevation = 2.dp
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .statusBarsPadding()
-                            .padding(horizontal = 16.dp, vertical = 8.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        // Right Side (RTL Start): App Shield Icon & Section Title
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Box(
-                                modifier = Modifier
-                                    .size(34.dp)
-                                    .clip(CircleShape)
-                                    .background(EmeraldGreenPrimary),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Shield,
-                                    contentDescription = null,
-                                    tint = GoldAccent,
-                                    modifier = Modifier.size(18.dp)
-                                )
-                            }
-                            Spacer(modifier = Modifier.width(10.dp))
-                            Text(
-                                text = when (selectedTab) {
-                                    0 -> appStrings.titleHome
-                                    1 -> appStrings.titleTransactions
-                                    2 -> appStrings.titleCommitments
-                                    3 -> appStrings.titleReports
-                                    4 -> appStrings.titleSavings
-                                    5 -> appStrings.titleOutings
-                                    6 -> appStrings.titleSettings
-                                    else -> appStrings.titleHome
-                                },
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
+    val navItems = listOf(
+        Triple(appStrings.navHome, Icons.Default.Home, 0),
+        Triple(appStrings.navTransactions, Icons.Default.ReceiptLong, 1),
+        Triple(appStrings.navReports, Icons.Default.PieChart, 2),
+        Triple(appStrings.navSavings, Icons.Default.AccountBalanceWallet, 3),
+        Triple(appStrings.navOutings, Icons.Default.Attractions, 4)
+    )
 
-                        // Left Side (RTL End): Cloud Vault, Language & Settings Buttons
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            IconButton(
-                                onClick = { showCloudVaultScreen = true },
-                                modifier = Modifier
-                                    .size(38.dp)
-                                    .clip(CircleShape)
-                                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Security,
-                                    contentDescription = AppText.text(com.example.R.string.text_cd0cf75e27fe),
-                                    tint = EmeraldGreenPrimary,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                            }
-                            Spacer(modifier = Modifier.width(8.dp))
-                            IconButton(
-                                onClick = { viewModel.setLanguage(if (selectedLanguage == "ar") "en" else "ar") },
-                                modifier = Modifier
-                                    .size(38.dp)
-                                    .clip(CircleShape)
-                                    .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Language,
-                                    contentDescription = "Language",
-                                    tint = EmeraldGreenPrimary,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                            }
-                            Spacer(modifier = Modifier.width(8.dp))
-                            IconButton(
-                                onClick = { selectedTab = 6 },
-                                modifier = Modifier
-                                    .size(38.dp)
-                                    .clip(CircleShape)
-                                    .background(
-                                        if (selectedTab == 6) EmeraldGreenPrimary.copy(alpha = 0.2f)
-                                        else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
-                                    )
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.Settings,
-                                    contentDescription = appStrings.titleSettings,
-                                    tint = if (selectedTab == 6) EmeraldGreenPrimary else Color.Gray,
-                                    modifier = Modifier.size(20.dp)
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        bottomBar = {
-            NavigationBar(
-                containerColor = MaterialTheme.colorScheme.surface,
-                tonalElevation = 8.dp
-            ) {
-                val navItems = listOf(
-                    Triple(appStrings.navHome, Icons.Default.Home, 0),
-                    Triple(appStrings.navTransactions, Icons.Default.ReceiptLong, 1),
-                    Triple(appStrings.navCommitments, Icons.Default.EventNote, 2),
-                    Triple(appStrings.navReports, Icons.Default.PieChart, 3),
-                    Triple(appStrings.navSavings, Icons.Default.AccountBalanceWallet, 4),
-                    Triple(appStrings.navOutings, Icons.Default.Attractions, 5)
-                )
-
-                navItems.forEach { (label, icon, index) ->
-                    val isSelected = selectedTab == index
-                    NavigationBarItem(
-                        selected = isSelected,
-                        onClick = { selectedTab = index },
-                        icon = {
-                            Icon(
-                                imageVector = icon,
-                                contentDescription = label,
-                                tint = if (isSelected) EmeraldGreenPrimary else Color.Gray
-                            )
-                        },
-                        label = {
-                            Text(
-                                text = label,
-                                fontSize = 9.5.sp,
-                                fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
-                                color = if (isSelected) EmeraldGreenPrimary else Color.Gray,
-                                maxLines = 1
-                            )
-                        },
-                        colors = NavigationBarItemDefaults.colors(
-                            indicatorColor = EmeraldGreenPrimary.copy(alpha = 0.12f)
-                        )
-                    )
-                }
-            }
-        },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = { showQuickAddSheet = true },
-                containerColor = EmeraldGreenPrimary,
-                contentColor = Color.White
-            ) {
-                Icon(Icons.Default.Add, contentDescription = AppText.text(com.example.R.string.text_b48ae0941d3d))
-            }
-        }
-    ) { paddingValues ->
+    val contentBlock: @Composable (PaddingValues) -> Unit = { paddingValues ->
         AnimatedContent(
             targetState = selectedTab,
             transitionSpec = {
@@ -529,40 +407,52 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
                         budgetTargetLimit = limit
                         showSetBudgetDialog = true
                     },
-                    onOpenSettings = { selectedTab = 6 },
+                    onOpenSettings = { selectedTab = 5 },
                     onToggleLanguage = { viewModel.setLanguage(if (selectedLanguage == "ar") "en" else "ar") },
-                    onNavigateTab = { index -> selectedTab = index }
+                    onNavigateTab = { index ->
+                        if (index == 1) {
+                            viewModel.selectedFilterType.value = null
+                            expensesSubTab = ExpenseSubTabs.EXPENSES_LOG
+                        }
+                        selectedTab = index
+                    },
+                    onOpenCommitments = {
+                        viewModel.selectedFilterType.value = "EXPENSE"
+                        expensesSubTab = ExpenseSubTabs.COMMITMENTS
+                        selectedTab = 1
+                    }
                 )
                 1 -> ExpensesAndSearchScreen(
                     transactions = allTransactions,
                     transfers = allTransfers,
                     vaults = allVaults,
+                    commitments = allCommitments,
+                    lessons = allChildLessons,
+                    config = moduleConfig,
                     searchQuery = searchQuery,
                     selectedCategory = selectedFilterCategory,
                     selectedType = selectedFilterType,
+                    selectedExpenseSubTab = expensesSubTab,
                     currency = dashboardState.currency,
                     onSearchQueryChange = { q -> viewModel.searchQuery.value = q },
                     onSelectCategory = { cat -> viewModel.selectedFilterCategory.value = cat },
                     onSelectType = { type -> viewModel.selectedFilterType.value = type },
+                    onSelectExpenseSubTab = { subTab -> expensesSubTab = subTab },
                     onDeleteTransaction = { tx -> viewModel.deleteTransaction(tx.id, tx) },
                     onDeleteTransfer = { tr -> viewModel.deleteTransfer(tr) },
-                    onOpenAddExpense = { showAddExpenseDialog = true },
-                    onOpenAddIncome = { showAddIncomeDialog = true },
-                    onOpenSettings = { selectedTab = 6 },
-                    onToggleLanguage = { viewModel.setLanguage(if (selectedLanguage == "ar") "en" else "ar") }
-                )
-                2 -> CommitmentsAndLessonsScreen(
-                    commitments = allCommitments,
-                    lessons = allChildLessons,
-                    currency = dashboardState.currency,
                     onPayCommitment = { item -> viewModel.payCommitment(item) },
                     onPayLesson = { lesson -> viewModel.payChildLesson(lesson) },
                     onDeleteCommitment = { id -> viewModel.deleteCommitment(id) },
                     onDeleteLesson = { id -> viewModel.deleteChildLesson(id) },
+                    onOpenAddExpense = { showAddExpenseDialog = true },
+                    onOpenAddIncome = { showAddIncomeDialog = true },
+                    onOpenTransfer = { showTransferDialog = true },
                     onOpenAddCommitment = { showAddCommitmentDialog = true },
-                    onOpenAddLesson = { showAddLessonDialog = true }
+                    onOpenAddLesson = { showAddLessonDialog = true },
+                    onOpenSettings = { selectedTab = 5 },
+                    onToggleLanguage = { viewModel.setLanguage(if (selectedLanguage == "ar") "en" else "ar") }
                 )
-                3 -> ReportsAndChartsScreen(
+                2 -> ReportsAndChartsScreen(
                     transactions = allTransactions,
                     currency = dashboardState.currency,
                     userProfile = userProfile,
@@ -578,10 +468,10 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
                     onOpenNetWorth = { showNetWorthScreen = true },
                     onOpenDebts = { showDebtsScreen = true },
                     onOpenCalendar = { showCalendarScreen = true },
-                    onOpenSettings = { selectedTab = 6 },
+                    onOpenSettings = { selectedTab = 5 },
                     onToggleLanguage = { viewModel.setLanguage(if (selectedLanguage == "ar") "en" else "ar") }
                 )
-                4 -> SavingsScreen(
+                3 -> SavingsScreen(
                     savingsState = savingsSummaryState,
                     goldAssets = allGoldAssets,
                     cashSavings = allCashSavings,
@@ -617,7 +507,7 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
                     onDeleteCashSaving = { id -> viewModel.deleteCashSaving(id) },
                     onUpdateGoldPrices = { prices -> viewModel.updateAllGoldPrices(prices) }
                 )
-                5 -> OutingsScreen(
+                4 -> OutingsScreen(
                     outingExpenses = allOutingExpenses,
                     participantsCount = outingParticipantsCount,
                     currency = dashboardState.currency,
@@ -630,7 +520,7 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
                         viewModel.setOutingParticipantsCount(count)
                     }
                 )
-                6 -> SettingsAndVaultsScreen(
+                5 -> SettingsAndVaultsScreen(
                     userProfile = userProfile,
                     vaults = allVaults,
                     budgetLimits = allBudgetLimits,
@@ -642,10 +532,10 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
                     isDarkMode = dashboardState.isDarkMode,
                     isPinEnabled = isPinEnabled,
                     isDailyReminderEnabled = isDailyReminderEnabled,
-                    onSelectCurrency = { cur -> viewModel.selectedCurrency.value = cur },
+                    onSelectCurrency = { cur -> viewModel.setSelectedCurrency(cur) },
                     onSelectLanguage = { lang -> viewModel.setLanguage(lang) },
-                    onToggleDarkMode = { dark -> viewModel.isDarkMode.value = dark },
-                    onTogglePin = { pin -> viewModel.isPinEnabled.value = pin },
+                    onToggleDarkMode = { dark -> viewModel.setDarkMode(dark) },
+                    onTogglePin = { pin -> viewModel.setPinEnabled(pin) },
                     onToggleDailyReminder = { enabled ->
                         if (enabled && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                             permissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
@@ -668,6 +558,257 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
                     onOpenCloudVault = { showCloudVaultScreen = true },
                     onOpenBackup = { showLocalBackup = true }
                 )
+            }
+        }
+    }
+
+    BoxWithConstraints(modifier = Modifier.fillMaxSize()) {
+        val isWideScreen = maxWidth >= 600.dp
+
+        if (isWideScreen) {
+            Row(modifier = Modifier.fillMaxSize()) {
+                NavigationRail(
+                    modifier = Modifier.fillMaxHeight(),
+                    containerColor = MaterialTheme.colorScheme.surface,
+                    header = {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            modifier = Modifier.padding(vertical = 12.dp)
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(38.dp)
+                                    .clip(CircleShape)
+                                    .background(EmeraldGreenPrimary),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Shield,
+                                    contentDescription = null,
+                                    tint = GoldAccent,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            }
+                            Spacer(modifier = Modifier.height(12.dp))
+                            FloatingActionButton(
+                                onClick = { showQuickAddSheet = true },
+                                containerColor = EmeraldGreenPrimary,
+                                contentColor = Color.White,
+                                modifier = Modifier.size(44.dp)
+                            ) {
+                                Icon(Icons.Default.Add, contentDescription = AppText.text(com.example.R.string.text_b48ae0941d3d))
+                            }
+                        }
+                    }
+                ) {
+                    val railItems = navItems + listOf(Triple(appStrings.titleSettings, Icons.Default.Settings, 5))
+                    railItems.forEach { (label, icon, index) ->
+                        val isSelected = selectedTab == index
+                        NavigationRailItem(
+                            selected = isSelected,
+                            onClick = { selectedTab = index },
+                            icon = {
+                                Icon(
+                                    imageVector = icon,
+                                    contentDescription = label,
+                                    tint = if (isSelected) EmeraldGreenPrimary else Color.Gray
+                                )
+                            },
+                            label = {
+                                Text(
+                                    text = label,
+                                    fontSize = 10.sp,
+                                    fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                                    color = if (isSelected) EmeraldGreenPrimary else Color.Gray,
+                                    maxLines = 1
+                                )
+                            },
+                            colors = NavigationRailItemDefaults.colors(
+                                indicatorColor = EmeraldGreenPrimary.copy(alpha = 0.12f)
+                            )
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    IconButton(
+                        onClick = { showCloudVaultScreen = true },
+                        modifier = Modifier.padding(bottom = 6.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Security,
+                            contentDescription = AppText.text(com.example.R.string.text_cd0cf75e27fe),
+                            tint = EmeraldGreenPrimary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    IconButton(
+                        onClick = { viewModel.setLanguage(if (selectedLanguage == "ar") "en" else "ar") },
+                        modifier = Modifier.padding(bottom = 12.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Language,
+                            contentDescription = "Language",
+                            tint = EmeraldGreenPrimary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                }
+
+                Scaffold(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                ) { paddingValues ->
+                    contentBlock(paddingValues)
+                }
+            }
+        } else {
+            Scaffold(
+                topBar = {
+                    if (selectedTab != 0 && selectedTab != 1 && selectedTab != 2 && selectedTab != 3) {
+                        Surface(
+                            color = MaterialTheme.colorScheme.surface,
+                            tonalElevation = 3.dp,
+                            shadowElevation = 2.dp
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .statusBarsPadding()
+                                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(34.dp)
+                                            .clip(CircleShape)
+                                            .background(EmeraldGreenPrimary),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Shield,
+                                            contentDescription = null,
+                                            tint = GoldAccent,
+                                            modifier = Modifier.size(18.dp)
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.width(10.dp))
+                                    Text(
+                                        text = when (selectedTab) {
+                                            0 -> appStrings.titleHome
+                                            1 -> appStrings.titleTransactions
+                                            2 -> appStrings.titleReports
+                                            3 -> appStrings.titleSavings
+                                            4 -> appStrings.titleOutings
+                                            5 -> appStrings.titleSettings
+                                            else -> appStrings.titleHome
+                                        },
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 16.sp,
+                                        color = MaterialTheme.colorScheme.onSurface
+                                    )
+                                }
+
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    IconButton(
+                                        onClick = { showCloudVaultScreen = true },
+                                        modifier = Modifier
+                                            .size(38.dp)
+                                            .clip(CircleShape)
+                                            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Security,
+                                            contentDescription = AppText.text(com.example.R.string.text_cd0cf75e27fe),
+                                            tint = EmeraldGreenPrimary,
+                                            modifier = Modifier.size(20.dp)
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    IconButton(
+                                        onClick = { viewModel.setLanguage(if (selectedLanguage == "ar") "en" else "ar") },
+                                        modifier = Modifier
+                                            .size(38.dp)
+                                            .clip(CircleShape)
+                                            .background(MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f))
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Language,
+                                            contentDescription = "Language",
+                                            tint = EmeraldGreenPrimary,
+                                            modifier = Modifier.size(20.dp)
+                                        )
+                                    }
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    IconButton(
+                                        onClick = { selectedTab = 5 },
+                                        modifier = Modifier
+                                            .size(38.dp)
+                                            .clip(CircleShape)
+                                            .background(
+                                                if (selectedTab == 5) EmeraldGreenPrimary.copy(alpha = 0.2f)
+                                                else MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.5f)
+                                            )
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Settings,
+                                            contentDescription = appStrings.titleSettings,
+                                            tint = if (selectedTab == 5) EmeraldGreenPrimary else Color.Gray,
+                                            modifier = Modifier.size(20.dp)
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                bottomBar = {
+                    NavigationBar(
+                        containerColor = MaterialTheme.colorScheme.surface,
+                        tonalElevation = 8.dp
+                    ) {
+                        navItems.forEach { (label, icon, index) ->
+                            val isSelected = selectedTab == index
+                            NavigationBarItem(
+                                selected = isSelected,
+                                onClick = { selectedTab = index },
+                                icon = {
+                                    Icon(
+                                        imageVector = icon,
+                                        contentDescription = label,
+                                        tint = if (isSelected) EmeraldGreenPrimary else Color.Gray
+                                    )
+                                },
+                                label = {
+                                    Text(
+                                        text = label,
+                                        fontSize = 9.5.sp,
+                                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Normal,
+                                        color = if (isSelected) EmeraldGreenPrimary else Color.Gray,
+                                        maxLines = 1
+                                    )
+                                },
+                                colors = NavigationBarItemDefaults.colors(
+                                    indicatorColor = EmeraldGreenPrimary.copy(alpha = 0.12f)
+                                )
+                            )
+                        }
+                    }
+                },
+                floatingActionButton = {
+                    FloatingActionButton(
+                        onClick = { showQuickAddSheet = true },
+                        containerColor = EmeraldGreenPrimary,
+                        contentColor = Color.White
+                    ) {
+                        Icon(Icons.Default.Add, contentDescription = AppText.text(com.example.R.string.text_b48ae0941d3d))
+                    }
+                }
+            ) { paddingValues ->
+                contentBlock(paddingValues)
             }
         }
     }
@@ -809,11 +950,11 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
             },
             onOpenAddCashSaving = {
                 showQuickAddSheet = false
-                selectedTab = 4
+                selectedTab = 3
             },
             onOpenAddGold = {
                 showQuickAddSheet = false
-                selectedTab = 4
+                selectedTab = 3
             },
             onOpenAddDebt = {
                 showQuickAddSheet = false
@@ -829,7 +970,7 @@ fun MainAppContent(viewModel: SmartVaultViewModel) {
             },
             onOpenAddOuting = {
                 showQuickAddSheet = false
-                selectedTab = 5
+                selectedTab = 4
             }
         )
     }

@@ -3,6 +3,9 @@ package com.example.ui.screens
 import com.example.ui.utils.AppText
 
 import android.content.ClipData
+import android.content.ClipDescription
+import android.os.Build
+import android.os.PersistableBundle
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
@@ -149,6 +152,18 @@ fun CloudVaultScreen(
     // Map of revealed plaintexts for security (item.id -> decrypted string)
     val revealedDataMap = remember { mutableStateMapOf<String, String>() }
 
+    // Clear sensitive plaintext secrets from memory when vault locks or screen is dismissed
+    LaunchedEffect(isLocked) {
+        if (isLocked) {
+            revealedDataMap.clear()
+        }
+    }
+    DisposableEffect(Unit) {
+        onDispose {
+            revealedDataMap.clear()
+        }
+    }
+
     // Notify activity whenever user touches the screen
     val onTouchActivity = {
         viewModel.onUserInteracted()
@@ -157,6 +172,7 @@ fun CloudVaultScreen(
     if (isLocked) {
         // Biometric / PIN Lock Screen
         VaultLockScreen(
+            viewModel = viewModel,
             onUnlock = {
                 viewModel.unlockCloudVault()
             }
@@ -484,7 +500,13 @@ fun CloudVaultScreen(
                             onCopy = { text ->
                                 onTouchActivity()
                                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                                val clip = ClipData.newPlainText("VaultData", text)
+                                val clip = ClipData.newPlainText("VaultData", text).apply {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                        description.extras = PersistableBundle().apply {
+                                            putBoolean(ClipDescription.EXTRA_IS_SENSITIVE, true)
+                                        }
+                                    }
+                                }
                                 clipboard.setPrimaryClip(clip)
                                 Toast.makeText(context, AppText.text(com.example.R.string.text_1f7d44005382), Toast.LENGTH_SHORT).show()
                             },
@@ -568,7 +590,13 @@ fun CloudVaultScreen(
             onDismiss = { showPasswordGenDialog = false },
             onCopy = { pwd ->
                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val clip = ClipData.newPlainText("GeneratedPassword", pwd)
+                val clip = ClipData.newPlainText("GeneratedPassword", pwd).apply {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        description.extras = PersistableBundle().apply {
+                            putBoolean(ClipDescription.EXTRA_IS_SENSITIVE, true)
+                        }
+                    }
+                }
                 clipboard.setPrimaryClip(clip)
                 Toast.makeText(context, AppText.text(com.example.R.string.text_e532d79c9402), Toast.LENGTH_SHORT).show()
             }
@@ -1311,10 +1339,40 @@ fun EncryptedBackupDialog(
 
 @Composable
 fun VaultLockScreen(
+    viewModel: SmartVaultViewModel,
     onUnlock: () -> Unit
 ) {
     var pinInput by remember { mutableStateOf("") }
     var isPinError by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
+    val isPinConfigured = remember { viewModel.isVaultPinSet() }
+
+    fun onDigitPress(digit: String) {
+        if (pinInput.length < 4) {
+            isPinError = false
+            errorMessage = ""
+            val nextPin = pinInput + digit
+            pinInput = nextPin
+            if (nextPin.length == 4) {
+                val success = viewModel.verifyVaultPin(nextPin)
+                if (success) {
+                    onUnlock()
+                } else {
+                    isPinError = true
+                    errorMessage = "رمز PIN غير صحيح، حاول مرة أخرى"
+                    pinInput = ""
+                }
+            }
+        }
+    }
+
+    fun onBackspace() {
+        if (pinInput.isNotEmpty()) {
+            isPinError = false
+            errorMessage = ""
+            pinInput = pinInput.dropLast(1)
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -1328,11 +1386,13 @@ fun VaultLockScreen(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(24.dp)
+            modifier = Modifier
+                .padding(24.dp)
+                .verticalScroll(rememberScrollState())
         ) {
             Box(
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(76.dp)
                     .clip(CircleShape)
                     .background(EmeraldGreenPrimary.copy(alpha = 0.2f)),
                 contentAlignment = Alignment.Center
@@ -1341,11 +1401,11 @@ fun VaultLockScreen(
                     imageVector = Icons.Default.Lock,
                     contentDescription = null,
                     tint = EmeraldGreenPrimary,
-                    modifier = Modifier.size(42.dp)
+                    modifier = Modifier.size(38.dp)
                 )
             }
 
-            Spacer(modifier = Modifier.height(18.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = AppText.text(com.example.R.string.text_8a7c72902813),
@@ -1357,30 +1417,117 @@ fun VaultLockScreen(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = AppText.text(com.example.R.string.text_f9fab4694b1f),
+                text = if (isPinConfigured) {
+                    "أدخل رمز PIN المكون من 4 أرقام لفتح الخزنة"
+                } else {
+                    "عيّن رمز PIN جديداً (4 أرقام) لحماية وقفل الخزنة السحابية"
+                },
                 fontSize = 13.sp,
                 color = Color(0xFFA0B5AA),
                 textAlign = TextAlign.Center,
                 lineHeight = 18.sp
             )
 
+            Spacer(modifier = Modifier.height(24.dp))
+
+            // 4 PIN Dots
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                repeat(4) { index ->
+                    val isFilled = index < pinInput.length
+                    Box(
+                        modifier = Modifier
+                            .size(16.dp)
+                            .clip(CircleShape)
+                            .background(
+                                when {
+                                    isPinError -> Color(0xFFEF5350)
+                                    isFilled -> EmeraldGreenPrimary
+                                    else -> Color.White.copy(alpha = 0.2f)
+                                }
+                            )
+                            .border(
+                                width = 1.5.dp,
+                                color = if (isPinError) Color(0xFFEF5350) else EmeraldGreenPrimary.copy(alpha = 0.5f),
+                                shape = CircleShape
+                            )
+                    )
+                }
+            }
+
+            if (isPinError && errorMessage.isNotBlank()) {
+                Spacer(modifier = Modifier.height(10.dp))
+                Text(
+                    text = errorMessage,
+                    color = Color(0xFFEF5350),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.SemiBold
+                )
+            }
+
             Spacer(modifier = Modifier.height(28.dp))
 
-            Button(
-                onClick = onUnlock,
-                colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary),
-                shape = RoundedCornerShape(14.dp),
-                modifier = Modifier
-                    .fillMaxWidth(0.8f)
-                    .height(52.dp)
+            // Numeric Keypad
+            val rows = listOf(
+                listOf("1", "2", "3"),
+                listOf("4", "5", "6"),
+                listOf("7", "8", "9"),
+                listOf("", "0", "DEL")
+            )
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Icon(Icons.Default.Fingerprint, contentDescription = null, modifier = Modifier.size(24.dp))
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    text = AppText.text(com.example.R.string.text_e2326a8899ce),
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                rows.forEach { row ->
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(20.dp)
+                    ) {
+                        row.forEach { key ->
+                            when (key) {
+                                "" -> {
+                                    Spacer(modifier = Modifier.size(64.dp))
+                                }
+                                "DEL" -> {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(64.dp)
+                                            .clip(CircleShape)
+                                            .background(Color.White.copy(alpha = 0.08f))
+                                            .clickable { onBackspace() },
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Default.Clear,
+                                            contentDescription = "Delete",
+                                            tint = Color.White.copy(alpha = 0.8f),
+                                            modifier = Modifier.size(22.dp)
+                                        )
+                                    }
+                                }
+                                else -> {
+                                    Box(
+                                        modifier = Modifier
+                                            .size(64.dp)
+                                            .clip(CircleShape)
+                                            .background(Color.White.copy(alpha = 0.08f))
+                                            .clickable { onDigitPress(key) },
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text(
+                                            text = key,
+                                            fontSize = 22.sp,
+                                            fontWeight = FontWeight.Bold,
+                                            color = Color.White
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

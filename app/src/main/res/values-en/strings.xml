@@ -1106,4 +1106,62 @@
     <string name="about_latest_version_body" formatted="false">"Your app is fully up to date and includes the latest features and improvements available in this version."</string>
     <string name="about_current_version" formatted="false">"Current version: v{0} ({1})"</string>
     <string name="about_ok" formatted="false">"OK"</string>
+    <string name="label_dashboard_vault_envelopes_title" formatted="false">"Family vaults &amp; envelopes"</string>
+    <string name="label_dashboard_new_vault_action" formatted="false">"+ New vault"</string>
+    <string name="label_dashboard_budget_status_safe" formatted="false">"Safe &amp; stable 🌟"</string>
+    <string name="label_dashboard_budget_status_balanced" formatted="false">"Balanced ⚖️"</string>
+    <string name="label_dashboard_budget_status_near_limit" formatted="false">"Near limit ⚠️"</string>
+    <string name="label_dashboard_budget_status_over_budget" formatted="false">"Over budget 🚨"</string>
+    <string name="label_dashboard_budget_advice_safe" formatted="false">"Great! Your spending is on track, with surplus ready for savings or gold."</string>
+    <string name="label_dashboard_budget_advice_balanced" formatted="false">"Your budget is balanced. Stick to the daily limit to finish with a surplus."</string>
+    <string name="label_dashboard_budget_advice_near_limit" formatted="false">"Warning! Budget is nearly spent. Pause extras and focus on essentials."</string>
+    <string name="label_dashboard_budget_advice_over_budget" formatted="false">"Alert: Expenses have exceeded your total monthly income this month!"</string>
+    <string name="label_dashboard_budget_health_title" formatted="false">"Household budget health"</string>
+    <string name="label_dashboard_budget_health_subtitle" formatted="false">"Track spending and safe daily limit"</string>
+    <string name="label_dashboard_income_spent_ratio" formatted="false">"Income spent ratio"</string>
+    <string name="label_dashboard_remaining_this_month" formatted="false">"Left this month"</string>
+    <string name="label_dashboard_daily_spend_limit" formatted="false">"Daily spend limit"</string>
+    <string name="label_dashboard_days_remaining" formatted="false">"Days remaining"</string>
+    <string name="label_dashboard_days_count" formatted="false">"{0} days"</string>
+    <string name="label_dashboard_urgent_commitments_title" formatted="false">"Due commitments &amp; lessons"</string>
+    <string name="label_dashboard_due_amount" formatted="false">"Due: {0} {1}"</string>
+    <string name="label_dashboard_all_commitments_paid" formatted="false">"All commitments are paid"</string>
+    <string name="label_dashboard_no_urgent_commitments" formatted="false">"👍 Great! No unpaid commitments or lessons right now"</string>
+    <string name="label_dashboard_pay_action" formatted="false">"Pay ✓"</string>
+    <string name="label_ops_screen_title" formatted="false">"Operations"</string>
+    <string name="label_ops_screen_subtitle" formatted="false">"Expenses, commitments &amp; lessons"</string>
+    <string name="label_ops_tab_all" formatted="false">"All"</string>
+    <string name="label_ops_tab_expenses" formatted="false">"Expenses"</string>
+    <string name="label_ops_tab_income" formatted="false">"Income"</string>
+    <string name="label_ops_tab_transfers" formatted="false">"Transfers"</string>
+    <string name="label_ops_subtab_expenses" formatted="false">"Expenses"</string>
+    <string name="label_ops_subtab_commitments" formatted="false">"Commitments"</string>
+    <string name="label_ops_subtab_lessons" formatted="false">"Lessons"</string>
+    <string name="label_ops_add_expense" formatted="false">"Expense"</string>
+    <string name="label_ops_add_income" formatted="false">"Income"</string>
+    <string name="label_ops_add_transfer" formatted="false">"Transfer"</string>
+    <string name="label_ops_add_commitment" formatted="false">"Bill"</string>
+    <string name="label_ops_add_lesson" formatted="false">"Lesson"</string>
+    <string name="label_ops_search_expenses" formatted="false">"Search description, vault, amount..."</string>
+    <string name="label_ops_search_commitments" formatted="false">"Search bills or amount..."</string>
+    <string name="label_ops_search_lessons" formatted="false">"Search child, subject, teacher..."</string>
+    <string name="label_ops_monthly_expenses_summary" formatted="false">"Monthly Expenses Summary"</string>
+    <string name="label_ops_recorded_expenses" formatted="false">"Recorded"</string>
+    <string name="label_ops_due_commitments" formatted="false">"Due Bills"</string>
+    <string name="label_ops_due_lessons" formatted="false">"Due Lessons"</string>
+    <string name="label_ops_unpaid_banner" formatted="false">"{0} unpaid commitments &amp; lessons ({1} {2})"</string>
+    <string name="label_ops_view_action" formatted="false">"View"</string>
+    <string name="label_ops_commitments_summary" formatted="false">"Monthly Commitments Summary"</string>
+    <string name="label_ops_lessons_summary" formatted="false">"Children&apos;s Lessons Summary"</string>
+    <string name="label_ops_summary_total" formatted="false">"Total"</string>
+    <string name="label_ops_summary_paid" formatted="false">"Paid"</string>
+    <string name="label_ops_summary_remaining" formatted="false">"Remaining"</string>
+    <string name="label_ops_filter_all_count" formatted="false">"All ({0})"</string>
+    <string name="label_ops_filter_unpaid_count" formatted="false">"Unpaid ({0})"</string>
+    <string name="label_ops_filter_paid_count" formatted="false">"Paid ({0})"</string>
+    <string name="label_ops_recurring_monthly" formatted="false">"Monthly"</string>
+    <string name="label_ops_receipt_short" formatted="false">"Receipt"</string>
+    <string name="label_ops_pay_action" formatted="false">"Pay ✓"</string>
+    <string name="label_ops_no_commitments" formatted="false">"No matching commitments"</string>
+    <string name="label_ops_no_lessons" formatted="false">"No matching lessons"</string>
 </resources>

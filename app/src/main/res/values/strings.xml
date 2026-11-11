@@ -1106,4 +1106,62 @@
     <string name="about_latest_version_body" formatted="false">"تطبيقك محدث بالكامل ويحتوي على أحدث الميزات والتحسينات المتاحة في هذه النسخة."</string>
     <string name="about_current_version" formatted="false">"الإصدار الحالي: v{0} ({1})"</string>
     <string name="about_ok" formatted="false">"حسنًا"</string>
+    <string name="label_dashboard_vault_envelopes_title" formatted="false">"أظرف وخزائن الأسرة"</string>
+    <string name="label_dashboard_new_vault_action" formatted="false">"+ ظرف جديد"</string>
+    <string name="label_dashboard_budget_status_safe" formatted="false">"آمن ومستقر 🌟"</string>
+    <string name="label_dashboard_budget_status_balanced" formatted="false">"متوازن ⚖️"</string>
+    <string name="label_dashboard_budget_status_near_limit" formatted="false">"اقتراب الحد ⚠️"</string>
+    <string name="label_dashboard_budget_status_over_budget" formatted="false">"عجز بالميزانية 🚨"</string>
+    <string name="label_dashboard_budget_advice_safe" formatted="false">"ممتاز! استهلاكك منضبط، والفائض مناسب للتوجيه نحو المدخرات أو الذهب."</string>
+    <string name="label_dashboard_budget_advice_balanced" formatted="false">"ميزانيتك في النطاق السليم، التزم بالحد اليومي لإنهاء الشهر بفائض."</string>
+    <string name="label_dashboard_budget_advice_near_limit" formatted="false">"تنبيه! قاربت الميزانية على النفاد، ننصح بوقف الكماليات والتركيز على الضروريات."</string>
+    <string name="label_dashboard_budget_advice_over_budget" formatted="false">"تحذير: تجاوزت المصروفات إجمالي الدخل الشهري لهذا الشهر!"</string>
+    <string name="label_dashboard_budget_health_title" formatted="false">"صحة ميزانية الأسرة"</string>
+    <string name="label_dashboard_budget_health_subtitle" formatted="false">"متابعة الاستهلاك والحد اليومي الآمن"</string>
+    <string name="label_dashboard_income_spent_ratio" formatted="false">"نسبة الاستهلاك من الدخل"</string>
+    <string name="label_dashboard_remaining_this_month" formatted="false">"المتبقي للشهر"</string>
+    <string name="label_dashboard_daily_spend_limit" formatted="false">"حد الصرف اليومي"</string>
+    <string name="label_dashboard_days_remaining" formatted="false">"الأيام المتبقية"</string>
+    <string name="label_dashboard_days_count" formatted="false">"{0} يوم"</string>
+    <string name="label_dashboard_urgent_commitments_title" formatted="false">"التزامات ودروس الأسرة المستحقة"</string>
+    <string name="label_dashboard_due_amount" formatted="false">"المستحق: {0} {1}"</string>
+    <string name="label_dashboard_all_commitments_paid" formatted="false">"جميع الالتزامات مسددة بالكامل"</string>
+    <string name="label_dashboard_no_urgent_commitments" formatted="false">"👍 رائع! لا توجد التزامات أو مصاريف دروس مستحقة حالياً"</string>
+    <string name="label_dashboard_pay_action" formatted="false">"سداد ✓"</string>
+    <string name="label_ops_screen_title" formatted="false">"العمليات والمصاريف"</string>
+    <string name="label_ops_screen_subtitle" formatted="false">"السجل المالي والالتزامات ودروس الأطفال"</string>
+    <string name="label_ops_tab_all" formatted="false">"الكل"</string>
+    <string name="label_ops_tab_expenses" formatted="false">"مصاريف"</string>
+    <string name="label_ops_tab_income" formatted="false">"دخل"</string>
+    <string name="label_ops_tab_transfers" formatted="false">"تحويلات"</string>
+    <string name="label_ops_subtab_expenses" formatted="false">"سجل المصاريف"</string>
+    <string name="label_ops_subtab_commitments" formatted="false">"الالتزامات"</string>
+    <string name="label_ops_subtab_lessons" formatted="false">"دروس الأطفال"</string>
+    <string name="label_ops_add_expense" formatted="false">"مصروف"</string>
+    <string name="label_ops_add_income" formatted="false">"دخل"</string>
+    <string name="label_ops_add_transfer" formatted="false">"تحويل"</string>
+    <string name="label_ops_add_commitment" formatted="false">"التزام"</string>
+    <string name="label_ops_add_lesson" formatted="false">"درس"</string>
+    <string name="label_ops_search_expenses" formatted="false">"ابحث بالوصف أو الخزنة أو المبلغ..."</string>
+    <string name="label_ops_search_commitments" formatted="false">"ابحث في الالتزامات أو المبلغ..."</string>
+    <string name="label_ops_search_lessons" formatted="false">"ابحث باسم الطفل أو المادة..."</string>
+    <string name="label_ops_monthly_expenses_summary" formatted="false">"ملخص مصاريف الشهر"</string>
+    <string name="label_ops_recorded_expenses" formatted="false">"مصاريف مسجلة"</string>
+    <string name="label_ops_due_commitments" formatted="false">"التزامات متبقية"</string>
+    <string name="label_ops_due_lessons" formatted="false">"دروس متبقية"</string>
+    <string name="label_ops_unpaid_banner" formatted="false">"يوجد {0} التزامات ودروس غير مسددة ({1} {2})"</string>
+    <string name="label_ops_view_action" formatted="false">"عرض"</string>
+    <string name="label_ops_commitments_summary" formatted="false">"ملخص الالتزامات الشهرية"</string>
+    <string name="label_ops_lessons_summary" formatted="false">"ملخص دروس الأطفال"</string>
+    <string name="label_ops_summary_total" formatted="false">"الإجمالي"</string>
+    <string name="label_ops_summary_paid" formatted="false">"تم سداده"</string>
+    <string name="label_ops_summary_remaining" formatted="false">"المتبقي"</string>
+    <string name="label_ops_filter_all_count" formatted="false">"الكل ({0})"</string>
+    <string name="label_ops_filter_unpaid_count" formatted="false">"غير مسدد ({0})"</string>
+    <string name="label_ops_filter_paid_count" formatted="false">"تم السداد ({0})"</string>
+    <string name="label_ops_recurring_monthly" formatted="false">"شهري"</string>
+    <string name="label_ops_receipt_short" formatted="false">"إيصال"</string>
+    <string name="label_ops_pay_action" formatted="false">"سداد ✓"</string>
+    <string name="label_ops_no_commitments" formatted="false">"لا توجد التزامات مطابقة"</string>
+    <string name="label_ops_no_lessons" formatted="false">"لا توجد دروس مطابقة"</string>
 </resources>

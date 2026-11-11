@@ -9,9 +9,15 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.lazy.LazyRow
+import java.util.Calendar
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -80,6 +86,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.material.icons.filled.MonetizationOn
@@ -138,6 +145,7 @@ fun DashboardScreen(
     onOpenSettings: () -> Unit = {},
     onToggleLanguage: () -> Unit = {},
     onNavigateTab: (Int) -> Unit = {},
+    onOpenCommitments: () -> Unit = { onNavigateTab(1) },
     modifier: Modifier = Modifier
 ) {
     val appStrings = LocalStrings.current
@@ -178,9 +186,8 @@ fun DashboardScreen(
     }
 
     LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp, vertical = 8.dp),
+        modifier = modifier.fillMaxSize(),
+        contentPadding = PaddingValues(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 64.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         // 1. TOP HEADER (الخزنة الذكية + أغسطس 2026 + زر الإعدادات)
@@ -193,20 +200,26 @@ fun DashboardScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 // Title & Subtitle (Right in RTL)
-                Column {
+                Column(modifier = Modifier.weight(1f)) {
                     Text(
                         text = appStrings.titleHome,
                         fontWeight = FontWeight.ExtraBold,
                         fontSize = 24.sp,
-                        color = MaterialTheme.colorScheme.onSurface
+                        color = MaterialTheme.colorScheme.onSurface,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Text(
                         text = formattedCurrentMonth,
                         fontSize = 13.sp,
                         color = Color.Gray,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
+
+                Spacer(modifier = Modifier.width(8.dp))
 
                 // Top Action Buttons: Language, Savings Toggle & Settings Gear (Left in RTL)
                 Row(
@@ -276,6 +289,18 @@ fun DashboardScreen(
                     }
                 }
             }
+        }
+
+        // 1.2. VAULT ENVELOPES SELECTOR (أظرف وخزائن الأسرة)
+        item {
+            VaultEnvelopesSelector(
+                vaults = vaults,
+                selectedVaultName = state.selectedVaultName,
+                onSelectVault = onSelectVault,
+                onOpenAddVault = onOpenAddVault,
+                currency = state.currency,
+                isBalanceVisible = isBalanceVisible
+            )
         }
 
         // 1.5. QUICK SHORTCUTS ROW (صافي الثروة | الديون | التقويم | تحويل | تخصيص)
@@ -366,8 +391,13 @@ fun DashboardScreen(
                                 text = appStrings.currentBalance,
                                 fontSize = 13.sp,
                                 color = Color.White.copy(alpha = 0.85f),
-                                fontWeight = FontWeight.Medium
+                                fontWeight = FontWeight.Medium,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                modifier = Modifier.weight(1f)
                             )
+
+                            Spacer(modifier = Modifier.width(8.dp))
 
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -394,7 +424,9 @@ fun DashboardScreen(
                                         text = AppText.text(com.example.R.string.text_b5ddb3447714, state.dueBillsCount),
                                         fontSize = 12.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = Color.White
+                                        color = Color.White,
+                                        maxLines = 1,
+                                        softWrap = false
                                     )
                                 }
 
@@ -423,28 +455,34 @@ fun DashboardScreen(
                             text = if (isBalanceVisible)
                                 "${String.format(Locale.US, "%,.0f", state.currentVaultBalance)} ${AppText.currency(state.currency)}"
                             else
-                                "•••••• ${AppText.currency(state.currency)}",
+                                "\u2022\u2022\u2022\u2022\u2022\u2022 ${AppText.currency(state.currency)}",
                             fontSize = 32.sp,
                             fontWeight = FontWeight.ExtraBold,
-                            color = Color.White
+                            color = Color.White,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
 
                         Spacer(modifier = Modifier.height(20.dp))
 
                         // Sub-Pills Row: دخل الشهر & مصروفات الشهر
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(IntrinsicSize.Max),
                             horizontalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
                             // Monthly Income Pill (Right)
                             Card(
-                                modifier = Modifier.weight(1f),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight(),
                                 shape = RoundedCornerShape(16.dp),
                                 colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.18f))
                             ) {
                                 Column(
                                     modifier = Modifier
-                                        .fillMaxWidth()
+                                        .fillMaxSize()
                                         .padding(12.dp)
                                 ) {
                                     Row(
@@ -469,7 +507,9 @@ fun DashboardScreen(
                                             text = appStrings.monthlyIncome,
                                             fontSize = 12.sp,
                                             color = Color.White.copy(alpha = 0.9f),
-                                            fontWeight = FontWeight.Medium
+                                            fontWeight = FontWeight.Medium,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
                                         )
                                     }
                                     Spacer(modifier = Modifier.height(4.dp))
@@ -477,23 +517,27 @@ fun DashboardScreen(
                                         text = if (isBalanceVisible)
                                             "${String.format(Locale.US, "%,.0f", state.totalIncomeThisMonth)} ${AppText.currency(state.currency)}"
                                         else
-                                            "•••• ${AppText.currency(state.currency)}",
+                                            "\u2022\u2022\u2022\u2022 ${AppText.currency(state.currency)}",
                                         fontSize = 15.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = Color.White
+                                        color = Color.White,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
                                     )
                                 }
                             }
 
                             // Monthly Expense Pill (Left)
                             Card(
-                                modifier = Modifier.weight(1f),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight(),
                                 shape = RoundedCornerShape(16.dp),
                                 colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.18f))
                             ) {
                                 Column(
                                     modifier = Modifier
-                                        .fillMaxWidth()
+                                        .fillMaxSize()
                                         .padding(12.dp)
                                 ) {
                                     Row(
@@ -518,7 +562,9 @@ fun DashboardScreen(
                                             text = appStrings.monthlyExpenses,
                                             fontSize = 12.sp,
                                             color = Color.White.copy(alpha = 0.9f),
-                                            fontWeight = FontWeight.Medium
+                                            fontWeight = FontWeight.Medium,
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
                                         )
                                     }
                                     Spacer(modifier = Modifier.height(4.dp))
@@ -526,10 +572,12 @@ fun DashboardScreen(
                                         text = if (isBalanceVisible)
                                             "${String.format(Locale.US, "%,.0f", state.totalExpenseThisMonth)} ${AppText.currency(state.currency)}"
                                         else
-                                            "•••• ${AppText.currency(state.currency)}",
+                                            "\u2022\u2022\u2022\u2022 ${AppText.currency(state.currency)}",
                                         fontSize = 15.sp,
                                         fontWeight = FontWeight.Bold,
-                                        color = Color.White
+                                        color = Color.White,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
                                     )
                                 }
                             }
@@ -537,6 +585,29 @@ fun DashboardScreen(
                     }
                 }
             }
+        }
+
+        // 2.1. HOUSEHOLD BUDGET HEALTH CARD (صحة ميزانية الأسرة وضبط الإنفاق)
+        item {
+            HouseholdBudgetHealthCard(
+                remainingSalary = state.remainingSalary,
+                totalIncome = state.totalIncomeThisMonth,
+                totalExpense = state.totalExpenseThisMonth,
+                currency = state.currency,
+                isBalanceVisible = isBalanceVisible
+            )
+        }
+
+        // 2.15. URGENT FAMILY COMMITMENTS & KIDS LESSONS (التزامات ودروس الأسرة المستحقة)
+        item {
+            UrgentFamilyCommitmentsCard(
+                commitments = commitments,
+                lessons = lessons,
+                currency = state.currency,
+                onPayCommitment = onPayCommitment,
+                onPayLesson = onPayLesson,
+                onOpenCommitmentsTab = onOpenCommitments
+            )
         }
 
         // 2.2. MY FINANCIAL SITUATION TODAY
@@ -589,21 +660,29 @@ fun DashboardScreen(
                                     text = AppText.text(com.example.R.string.text_1b7441ca41de),
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 15.sp,
-                                    color = MaterialTheme.colorScheme.onSurface
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                                 Text(
                                     text = AppText.text(com.example.R.string.text_a738ad2e9389),
                                     fontSize = 11.sp,
-                                    color = Color.Gray
+                                    color = Color.Gray,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
                         }
+
+                        Spacer(modifier = Modifier.width(8.dp))
 
                         Text(
                             text = AppText.text(com.example.R.string.text_e11353146505),
                             fontSize = 11.5.sp,
                             fontWeight = FontWeight.Bold,
-                            color = EmeraldGreenPrimary
+                            color = EmeraldGreenPrimary,
+                            maxLines = 1,
+                            softWrap = false
                         )
                     }
 
@@ -620,17 +699,21 @@ fun DashboardScreen(
                             Text(
                                 text = AppText.text(com.example.R.string.financial_overview_total_owned),
                                 fontSize = 11.5.sp,
-                                color = Color.Gray
+                                color = Color.Gray,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                             Spacer(modifier = Modifier.height(2.dp))
                             Text(
                                 text = if (isBalanceVisible)
                                     "${String.format(Locale.US, "%,d", breakdown.totalAssets.toLong().coerceAtLeast(0L))} ${AppText.currency(state.currency)}"
                                 else
-                                    "•••• ${AppText.currency(state.currency)}",
+                                    "\u2022\u2022\u2022\u2022 ${AppText.currency(state.currency)}",
                                 fontWeight = FontWeight.ExtraBold,
                                 fontSize = 26.sp,
-                                color = EmeraldGreenPrimary
+                                color = EmeraldGreenPrimary,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
                     }
@@ -638,7 +721,9 @@ fun DashboardScreen(
                     Spacer(modifier = Modifier.height(10.dp))
 
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(IntrinsicSize.Max),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         FinancialOverviewMetricCard(
@@ -648,7 +733,9 @@ fun DashboardScreen(
                             isBalanceVisible = isBalanceVisible,
                             icon = Icons.Default.AccountBalanceWallet,
                             accent = EmeraldGreenPrimary,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
                         )
                         FinancialOverviewMetricCard(
                             title = AppText.text(com.example.R.string.financial_overview_gold_value),
@@ -657,14 +744,18 @@ fun DashboardScreen(
                             isBalanceVisible = isBalanceVisible,
                             icon = Icons.Default.MonetizationOn,
                             accent = GoldAccent,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
                         )
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(IntrinsicSize.Max),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         FinancialOverviewMetricCard(
@@ -674,7 +765,9 @@ fun DashboardScreen(
                             isBalanceVisible = isBalanceVisible,
                             icon = Icons.Default.TrendingUp,
                             accent = Color(0xFF2563EB),
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
                         )
                         FinancialOverviewMetricCard(
                             title = AppText.text(com.example.R.string.financial_overview_liabilities),
@@ -683,7 +776,9 @@ fun DashboardScreen(
                             isBalanceVisible = isBalanceVisible,
                             icon = Icons.Default.ReceiptLong,
                             accent = ExpenseRed,
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight()
                         )
                     }
                 }
@@ -707,6 +802,7 @@ fun DashboardScreen(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Row(
+                                modifier = Modifier.weight(1f),
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.spacedBy(8.dp)
                             ) {
@@ -724,27 +820,38 @@ fun DashboardScreen(
                                         modifier = Modifier.size(20.dp)
                                     )
                                 }
-                                Column {
+                                Column(modifier = Modifier.weight(1f)) {
                                     Text(
                                         text = AppText.text(com.example.R.string.text_d383c633feff),
                                         fontWeight = FontWeight.Bold,
                                         fontSize = 15.sp,
-                                        color = MaterialTheme.colorScheme.onSurface
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis
                                     )
                                     Text(
                                         text = AppText.text(com.example.R.string.text_0d4fdbffe901),
                                         fontSize = 11.sp,
-                                        color = Color.Gray
+                                        color = Color.Gray,
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis
                                     )
                                 }
                             }
+
+                            Spacer(modifier = Modifier.width(8.dp))
 
                             Text(
                                 text = AppText.text(com.example.R.string.text_6e8c46e9d70b, insights.size),
                                 fontSize = 11.5.sp,
                                 fontWeight = FontWeight.Bold,
                                 color = EmeraldGreenPrimary,
-                                modifier = Modifier.clickable { showAllInsightsDialog = true }
+                                maxLines = 1,
+                                softWrap = false,
+                                modifier = Modifier
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .clickable { showAllInsightsDialog = true }
+                                    .padding(horizontal = 4.dp, vertical = 2.dp)
                             )
                         }
 
@@ -775,7 +882,7 @@ fun DashboardScreen(
                             ) {
                                 Icon(icon, contentDescription = null, tint = tint, modifier = Modifier.size(18.dp))
                                 Spacer(modifier = Modifier.width(8.dp))
-                                Column {
+                                Column(modifier = Modifier.weight(1f)) {
                                     Text(insight.title, fontWeight = FontWeight.Bold, fontSize = 12.sp, color = tint)
                                     Text(insight.message, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurface)
                                 }
@@ -792,7 +899,7 @@ fun DashboardScreen(
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { onNavigateTab(4) },
+                        .clickable { onNavigateTab(3) },
                     shape = RoundedCornerShape(22.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
@@ -806,6 +913,7 @@ fun DashboardScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Row(
+                            modifier = Modifier.weight(1f),
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
@@ -824,26 +932,34 @@ fun DashboardScreen(
                                 )
                             }
 
-                            Column {
+                            Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = AppText.text(com.example.R.string.text_74885d00713f),
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 15.sp,
-                                    color = MaterialTheme.colorScheme.onSurface
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                                 Text(
                                     text = AppText.text(com.example.R.string.text_5814373b6d2e),
                                     fontSize = 11.sp,
-                                    color = Color.Gray
+                                    color = Color.Gray,
+                                    maxLines = 2,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
                         }
+
+                        Spacer(modifier = Modifier.width(8.dp))
 
                         Text(
                             text = AppText.text(com.example.R.string.text_f7d9ae166049),
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
-                            color = EmeraldGreenPrimary
+                            color = EmeraldGreenPrimary,
+                            maxLines = 1,
+                            softWrap = false
                         )
                     }
 
@@ -862,19 +978,30 @@ fun DashboardScreen(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            Column {
-                                Text(AppText.text(com.example.R.string.text_f3ac2e6da42a), fontSize = 11.5.sp, color = EmeraldGreenDark, fontWeight = FontWeight.Medium)
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = AppText.text(com.example.R.string.text_f3ac2e6da42a),
+                                    fontSize = 11.5.sp,
+                                    color = EmeraldGreenDark,
+                                    fontWeight = FontWeight.Medium,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
                                     text = if (isBalanceVisible)
                                         "${String.format(Locale.US, "%,.0f", state.totalSavings)} ${AppText.currency(state.currency)}"
                                     else
-                                        "•••• ${AppText.currency(state.currency)}",
+                                        "\u2022\u2022\u2022\u2022 ${AppText.currency(state.currency)}",
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.ExtraBold,
-                                    color = EmeraldGreenDark
+                                    color = EmeraldGreenDark,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
+
+                            Spacer(modifier = Modifier.width(8.dp))
 
                             Box(
                                 modifier = Modifier
@@ -886,7 +1013,9 @@ fun DashboardScreen(
                                     text = AppText.text(com.example.R.string.text_a35683da616b),
                                     fontSize = 11.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = Color.White
+                                    color = Color.White,
+                                    maxLines = 1,
+                                    softWrap = false
                                 )
                             }
                         }
@@ -896,81 +1025,135 @@ fun DashboardScreen(
 
                     // 4 Mini stats row
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(IntrinsicSize.Max),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         // Gold Value
                         Card(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight(),
                             shape = RoundedCornerShape(12.dp),
                             colors = CardDefaults.cardColors(containerColor = LightBackground),
                             border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
                         ) {
-                            Column(modifier = Modifier.padding(8.dp)) {
-                                Text(AppText.text(com.example.R.string.text_a468321f66f1), fontSize = 10.sp, color = Color.Gray, maxLines = 1)
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(8.dp)
+                            ) {
+                                Text(
+                                    text = AppText.text(com.example.R.string.text_a468321f66f1),
+                                    fontSize = 10.sp,
+                                    color = Color.Gray,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
-                                    text = if (isBalanceVisible) "${String.format(Locale.US, "%,.0f", state.totalGoldValue)}" else "••••",
+                                    text = if (isBalanceVisible) "${String.format(Locale.US, "%,.0f", state.totalGoldValue)}" else "\u2022\u2022\u2022\u2022",
                                     fontSize = 12.5.sp,
                                     fontWeight = FontWeight.Bold,
-                                    maxLines = 1
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
                         }
 
                         // Cash Savings
                         Card(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight(),
                             shape = RoundedCornerShape(12.dp),
                             colors = CardDefaults.cardColors(containerColor = LightBackground),
                             border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
                         ) {
-                            Column(modifier = Modifier.padding(8.dp)) {
-                                Text(AppText.text(com.example.R.string.text_c4321b7e4fed), fontSize = 10.sp, color = Color.Gray, maxLines = 1)
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(8.dp)
+                            ) {
+                                Text(
+                                    text = AppText.text(com.example.R.string.text_c4321b7e4fed),
+                                    fontSize = 10.sp,
+                                    color = Color.Gray,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
-                                    text = if (isBalanceVisible) "${String.format(Locale.US, "%,.0f", state.totalCashSavings)}" else "••••",
+                                    text = if (isBalanceVisible) "${String.format(Locale.US, "%,.0f", state.totalCashSavings)}" else "\u2022\u2022\u2022\u2022",
                                     fontSize = 12.5.sp,
                                     fontWeight = FontWeight.Bold,
-                                    maxLines = 1
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
                         }
 
                         // Gold Weight
                         Card(
-                            modifier = Modifier.weight(1f),
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight(),
                             shape = RoundedCornerShape(12.dp),
                             colors = CardDefaults.cardColors(containerColor = LightBackground),
                             border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
                         ) {
-                            Column(modifier = Modifier.padding(8.dp)) {
-                                Text(AppText.text(com.example.R.string.text_35dc88643736), fontSize = 10.sp, color = Color.Gray, maxLines = 1)
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(8.dp)
+                            ) {
+                                Text(
+                                    text = AppText.text(com.example.R.string.text_35dc88643736),
+                                    fontSize = 10.sp,
+                                    color = Color.Gray,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
                                     text = "${String.format(Locale.US, "%.1f", state.totalGoldWeightGrams)}g",
                                     fontSize = 12.5.sp,
                                     fontWeight = FontWeight.Bold,
-                                    maxLines = 1
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
                         }
 
                         // Pieces Count
                         Card(
-                            modifier = Modifier.weight(0.85f),
+                            modifier = Modifier
+                                .weight(1f)
+                                .fillMaxHeight(),
                             shape = RoundedCornerShape(12.dp),
                             colors = CardDefaults.cardColors(containerColor = LightBackground),
                             border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
                         ) {
-                            Column(modifier = Modifier.padding(8.dp)) {
-                                Text(AppText.text(com.example.R.string.text_23e643d03dde), fontSize = 10.sp, color = Color.Gray, maxLines = 1)
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(8.dp)
+                            ) {
+                                Text(
+                                    text = AppText.text(com.example.R.string.text_23e643d03dde),
+                                    fontSize = 10.sp,
+                                    color = Color.Gray,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
                                 Spacer(modifier = Modifier.height(2.dp))
                                 Text(
                                     text = AppText.text(com.example.R.string.text_fd835aa43312, state.totalGoldPiecesCount),
                                     fontSize = 12.5.sp,
                                     fontWeight = FontWeight.Bold,
-                                    maxLines = 1
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
                         }
@@ -1014,7 +1197,10 @@ fun DashboardScreen(
                             text = appStrings.smartAnalytics,
                             fontWeight = FontWeight.Bold,
                             fontSize = 16.sp,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSurface,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.weight(1f)
                         )
                     }
 
@@ -1040,76 +1226,158 @@ fun DashboardScreen(
 
                     // 2x2 Grid of Metrics Cards
                     Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
-                        // Row 1: مصروفات الشهر الماضي / دخل الشهر الماضي
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(10.dp),
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(IntrinsicSize.Max)
                         ) {
-                            // Right Pill: مصروفات الشهر الماضي
                             Card(
-                                modifier = Modifier.weight(1f),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight(),
                                 shape = RoundedCornerShape(14.dp),
                                 colors = CardDefaults.cardColors(containerColor = LightBackground),
                                 border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
                             ) {
-                                Column(modifier = Modifier.padding(12.dp)) {
-                                    Text(AppText.text(com.example.R.string.text_2bccc4bbf0d9), fontSize = 11.sp, color = Color.Gray)
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(12.dp)
+                                ) {
+                                    Text(
+                                        text = AppText.text(com.example.R.string.text_2bccc4bbf0d9),
+                                        fontSize = 11.sp,
+                                        color = Color.Gray,
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
                                     Spacer(modifier = Modifier.height(4.dp))
-                                    Text("0 ${AppText.currency(state.currency)}", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                                    Text(
+                                        text = "${String.format(Locale.US, "%,.0f", state.totalExpenseLastMonth)} ${AppText.currency(state.currency)}",
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
                                     Spacer(modifier = Modifier.height(2.dp))
-                                    Text(AppText.text(com.example.R.string.text_a39d9e5bcc98), fontSize = 10.sp, color = Color.Gray)
+                                    Text(
+                                        text = AppText.text(com.example.R.string.text_a39d9e5bcc98),
+                                        fontSize = 10.sp,
+                                        color = Color.Gray,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
                                 }
                             }
 
-                            // Left Pill: دخل الشهر الماضي
                             Card(
-                                modifier = Modifier.weight(1f),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight(),
                                 shape = RoundedCornerShape(14.dp),
                                 colors = CardDefaults.cardColors(containerColor = LightBackground),
                                 border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
                             ) {
-                                Column(modifier = Modifier.padding(12.dp)) {
-                                    Text(AppText.text(com.example.R.string.text_4757b3b88509), fontSize = 11.sp, color = Color.Gray)
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(12.dp)
+                                ) {
+                                    Text(
+                                        text = AppText.text(com.example.R.string.text_4757b3b88509),
+                                        fontSize = 11.sp,
+                                        color = Color.Gray,
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
                                     Spacer(modifier = Modifier.height(4.dp))
-                                    Text("0 ${AppText.currency(state.currency)}", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                                    Text(
+                                        text = "${String.format(Locale.US, "%,.0f", state.totalIncomeLastMonth)} ${AppText.currency(state.currency)}",
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
                                     Spacer(modifier = Modifier.height(2.dp))
-                                    Text(AppText.text(com.example.R.string.text_a39d9e5bcc98), fontSize = 10.sp, color = Color.Gray)
+                                    Text(
+                                        text = AppText.text(com.example.R.string.text_a39d9e5bcc98),
+                                        fontSize = 10.sp,
+                                        color = Color.Gray,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
                                 }
                             }
                         }
 
-                        // Row 2: متوسط الصرف اليومي / حد الصرف الآمن يومياً
                         Row(
                             horizontalArrangement = Arrangement.spacedBy(10.dp),
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(IntrinsicSize.Max)
                         ) {
-                            // Right Pill: متوسط الصرف اليومي
                             Card(
-                                modifier = Modifier.weight(1f),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight(),
                                 shape = RoundedCornerShape(14.dp),
                                 colors = CardDefaults.cardColors(containerColor = LightBackground),
                                 border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
                             ) {
-                                Column(modifier = Modifier.padding(12.dp)) {
-                                    Text(AppText.text(com.example.R.string.text_3431c146da7c), fontSize = 11.sp, color = Color.Gray)
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(12.dp)
+                                ) {
+                                    Text(
+                                        text = AppText.text(com.example.R.string.text_3431c146da7c),
+                                        fontSize = 11.sp,
+                                        color = Color.Gray,
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
                                     Spacer(modifier = Modifier.height(4.dp))
                                     val dailyAvg = state.totalExpenseThisMonth / 30.0
-                                    Text("${String.format(Locale.US, "%,.0f", dailyAvg)} ${AppText.currency(state.currency)}", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                                    Text(
+                                        text = "${String.format(Locale.US, "%,.0f", dailyAvg)} ${AppText.currency(state.currency)}",
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
                                 }
                             }
 
-                            // Left Pill: حد الصرف الآمن يومياً
                             Card(
-                                modifier = Modifier.weight(1f),
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .fillMaxHeight(),
                                 shape = RoundedCornerShape(14.dp),
                                 colors = CardDefaults.cardColors(containerColor = LightBackground),
                                 border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
                             ) {
-                                Column(modifier = Modifier.padding(12.dp)) {
-                                    Text(AppText.text(com.example.R.string.text_9aa255f3885d), fontSize = 11.sp, color = Color.Gray)
+                                Column(
+                                    modifier = Modifier
+                                        .fillMaxSize()
+                                        .padding(12.dp)
+                                ) {
+                                    Text(
+                                        text = AppText.text(com.example.R.string.text_9aa255f3885d),
+                                        fontSize = 11.sp,
+                                        color = Color.Gray,
+                                        maxLines = 2,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
                                     Spacer(modifier = Modifier.height(4.dp))
                                     val safeDaily = (state.remainingSalary / 23.0).coerceAtLeast(0.0)
-                                    Text("${String.format(Locale.US, "%,.0f", safeDaily)} ${AppText.currency(state.currency)}", fontSize = 14.sp, fontWeight = FontWeight.Bold)
+                                    Text(
+                                        text = "${String.format(Locale.US, "%,.0f", safeDaily)} ${AppText.currency(state.currency)}",
+                                        fontSize = 14.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
                                 }
                             }
                         }
@@ -1117,17 +1385,16 @@ fun DashboardScreen(
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // ACTION BUTTONS ROW ("+ إضافة دخل" & "+ إضافة مصروف")
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        // Add Income Button (Solid Green Container - Right RTL)
                         Button(
                             onClick = onOpenAddIncome,
                             modifier = Modifier
                                 .weight(1f)
                                 .height(48.dp),
+                            contentPadding = PaddingValues(horizontal = 10.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary),
                             shape = RoundedCornerShape(24.dp)
                         ) {
@@ -1138,15 +1405,22 @@ fun DashboardScreen(
                                 modifier = Modifier.size(20.dp)
                             )
                             Spacer(modifier = Modifier.width(6.dp))
-                            Text(appStrings.addIncome, fontWeight = FontWeight.Bold, fontSize = 14.sp, color = Color.White)
+                            Text(
+                                text = appStrings.addIncome,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp,
+                                color = Color.White,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
                         }
 
-                        // Add Expense Button (Soft Mint Tint Container - Left RTL)
                         Button(
                             onClick = onOpenAddExpense,
                             modifier = Modifier
                                 .weight(1f)
                                 .height(48.dp),
+                            contentPadding = PaddingValues(horizontal = 10.dp),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MintBackground,
                                 contentColor = EmeraldGreenPrimary
@@ -1160,13 +1434,19 @@ fun DashboardScreen(
                                 modifier = Modifier.size(20.dp)
                             )
                             Spacer(modifier = Modifier.width(6.dp))
-                            Text(appStrings.addExpense, fontWeight = FontWeight.Bold, fontSize = 14.sp, color = EmeraldGreenPrimary)
+                            Text(
+                                text = appStrings.addExpense,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 14.sp,
+                                color = EmeraldGreenPrimary,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
                         }
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    // Card 1: نسبة المستهلك من الراتب
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(18.dp),
@@ -1177,7 +1457,6 @@ fun DashboardScreen(
                         Column(
                             modifier = Modifier.padding(16.dp)
                         ) {
-                            // Header Row
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -1187,19 +1466,25 @@ fun DashboardScreen(
                                     text = "${state.salarySpentPercentage.toInt()}%",
                                     fontSize = 18.sp,
                                     fontWeight = FontWeight.ExtraBold,
-                                    color = EmeraldGreenDark
+                                    color = EmeraldGreenDark,
+                                    maxLines = 1,
+                                    softWrap = false
                                 )
+                                Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     text = AppText.text(com.example.R.string.text_150293b7792d),
                                     fontSize = 15.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = MaterialTheme.colorScheme.onSurface
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    textAlign = TextAlign.End,
+                                    modifier = Modifier.weight(1f)
                                 )
                             }
 
                             Spacer(modifier = Modifier.height(12.dp))
 
-                            // Progress Bar
                             LinearProgressIndicator(
                                 progress = { (state.salarySpentPercentage / 100f).coerceIn(0f, 1f) },
                                 modifier = Modifier
@@ -1212,7 +1497,6 @@ fun DashboardScreen(
 
                             Spacer(modifier = Modifier.height(12.dp))
 
-                            // Bottom Metrics Row
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -1222,21 +1506,27 @@ fun DashboardScreen(
                                     text = AppText.text(com.example.R.string.text_be1e41cbff16, String.format(Locale.US, "%,.0f", state.remainingSalary), AppText.currency(state.currency)),
                                     fontSize = 12.5.sp,
                                     fontWeight = FontWeight.Bold,
-                                    color = EmeraldGreenDark
+                                    color = EmeraldGreenDark,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    modifier = Modifier.weight(1f)
                                 )
+                                Spacer(modifier = Modifier.width(8.dp))
                                 Text(
                                     text = AppText.text(com.example.R.string.text_501aabb98ee5, String.format(Locale.US, "%,.0f", state.totalExpenseThisMonth), AppText.currency(state.currency)),
                                     fontSize = 12.5.sp,
                                     color = Color.Gray,
-                                    fontWeight = FontWeight.Medium
+                                    fontWeight = FontWeight.Medium,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    textAlign = TextAlign.End,
+                                    modifier = Modifier.weight(1f)
                                 )
                             }
                         }
                     }
 
                     Spacer(modifier = Modifier.height(12.dp))
-
-                    // Card 2: أين ذهب راتبي هذا الشهر؟
                     Card(
                         modifier = Modifier.fillMaxWidth(),
                         shape = RoundedCornerShape(18.dp),
@@ -1308,7 +1598,10 @@ fun DashboardScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                        Row(
+                            modifier = Modifier.weight(1f),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
                             Box(
                                 modifier = Modifier
                                     .size(36.dp)
@@ -1328,15 +1621,21 @@ fun DashboardScreen(
                                 text = AppText.text(com.example.R.string.text_d6ed50d80f68),
                                 fontWeight = FontWeight.Bold,
                                 fontSize = 16.sp,
-                                color = MaterialTheme.colorScheme.onSurface
+                                color = MaterialTheme.colorScheme.onSurface,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
                             )
                         }
+
+                        Spacer(modifier = Modifier.width(8.dp))
 
                         Text(
                             text = "${badgesList.count { it.isUnlocked }} / 6",
                             fontWeight = FontWeight.Bold,
                             fontSize = 14.sp,
-                            color = Color.Gray
+                            color = Color.Gray,
+                            maxLines = 1,
+                            softWrap = false
                         )
                     }
 
@@ -1389,14 +1688,21 @@ fun DashboardScreen(
                     Text(
                         text = AppText.text(com.example.R.string.text_e50acc511afa),
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
                     )
+
+                    Spacer(modifier = Modifier.width(8.dp))
 
                     Text(
                         text = AppText.text(com.example.R.string.text_d36294e5abb3),
                         fontSize = 13.sp,
                         fontWeight = FontWeight.Bold,
                         color = EmeraldGreenPrimary,
+                        maxLines = 1,
+                        softWrap = false,
                         modifier = Modifier.clickable { onNavigateTab(1) }
                     )
                 }
@@ -1445,7 +1751,7 @@ fun DashboardScreen(
                     modifier = Modifier
                         .weight(1f)
                         .height(52.dp)
-                        .clickable { onNavigateTab(2) },
+                        .clickable { onOpenCommitments() },
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
@@ -1468,7 +1774,9 @@ fun DashboardScreen(
                             text = AppText.text(com.example.R.string.text_cecfe96db0ad),
                             fontSize = 12.5.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSurface,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }
@@ -1478,7 +1786,7 @@ fun DashboardScreen(
                     modifier = Modifier
                         .weight(1f)
                         .height(52.dp)
-                        .clickable { onNavigateTab(3) },
+                        .clickable { onNavigateTab(2) },
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
                     border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
@@ -1501,7 +1809,9 @@ fun DashboardScreen(
                             text = AppText.text(com.example.R.string.text_2dffd674f9b7),
                             fontSize = 12.5.sp,
                             fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onSurface
+                            color = MaterialTheme.colorScheme.onSurface,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }
@@ -1557,7 +1867,9 @@ private fun QuickShortcutButton(
                 fontSize = 10.5.sp,
                 fontWeight = FontWeight.SemiBold,
                 color = MaterialTheme.colorScheme.onSurface,
-                maxLines = 1
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                textAlign = TextAlign.Center
             )
         }
     }
@@ -1580,7 +1892,9 @@ private fun FinancialOverviewMetricCard(
         elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 9.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 10.dp, vertical = 9.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Icon(
@@ -1593,17 +1907,19 @@ private fun FinancialOverviewMetricCard(
                 text = title,
                 fontSize = 10.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             Text(
                 text = if (isBalanceVisible)
                     "${String.format(Locale.US, "%,d", amount.toLong().coerceAtLeast(0L))} ${AppText.currency(currency)}"
                 else
-                    "•••• ${AppText.currency(currency)}",
+                    "\u2022\u2022\u2022\u2022 ${AppText.currency(currency)}",
                 fontSize = 13.sp,
                 fontWeight = FontWeight.Bold,
                 color = accent,
-                maxLines = 1
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }
@@ -1639,12 +1955,16 @@ fun BadgeCardItem(
                     modifier = Modifier.size(20.dp)
                 )
 
+                Spacer(modifier = Modifier.width(6.dp))
+
                 Text(
                     text = badge.title,
                     fontWeight = FontWeight.Bold,
                     fontSize = 12.5.sp,
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.End,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f)
                 )
             }
@@ -1654,6 +1974,8 @@ fun BadgeCardItem(
                 fontSize = 10.sp,
                 color = Color.Gray,
                 lineHeight = 14.sp,
+                maxLines = 4,
+                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(top = 4.dp)
             )
         }
@@ -1703,7 +2025,9 @@ fun TransactionRowItem(tx: TransactionEntity, currency: String) {
                     text = tx.description,
                     fontWeight = FontWeight.Bold,
                     fontSize = 13.sp,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -1711,30 +2035,683 @@ fun TransactionRowItem(tx: TransactionEntity, currency: String) {
                         text = AppStrings(AppText.language).translateCategory(tx.category),
                         fontSize = 11.sp,
                         color = iconColor,
-                        fontWeight = FontWeight.SemiBold
+                        fontWeight = FontWeight.SemiBold,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
-                    Text(text = " • ", fontSize = 11.sp, color = Color.Gray)
+                    Text(text = " \u2022 ", fontSize = 11.sp, color = Color.Gray)
                     Text(
                         text = tx.vaultName,
                         fontSize = 11.sp,
-                        color = Color.Gray
+                        color = Color.Gray,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f, fill = false)
                     )
-                    Text(text = " • ", fontSize = 11.sp, color = Color.Gray)
+                    Text(text = " \u2022 ", fontSize = 11.sp, color = Color.Gray)
                     Text(
                         text = formattedDate,
                         fontSize = 10.sp,
-                        color = Color.Gray
+                        color = Color.Gray,
+                        maxLines = 1,
+                        softWrap = false
                     )
                 }
             }
+
+            Spacer(modifier = Modifier.width(8.dp))
 
             Text(
                 text = "${if (isIncome) "+" else "-"}${String.format(Locale.US, "%,.0f", tx.amount)} ${AppText.currency(currency)}",
                 fontWeight = FontWeight.ExtraBold,
                 fontSize = 13.sp,
-                color = if (isIncome) IncomeGreen else ExpenseRed
+                color = if (isIncome) IncomeGreen else ExpenseRed,
+                maxLines = 1,
+                softWrap = false
             )
         }
     }
 }
 
+@Composable
+fun VaultEnvelopesSelector(
+    vaults: List<VaultEntity>,
+    selectedVaultName: String,
+    onSelectVault: (String) -> Unit,
+    onOpenAddVault: () -> Unit,
+    currency: String,
+    isBalanceVisible: Boolean,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 2.dp, vertical = 2.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                modifier = Modifier.weight(1f),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(28.dp)
+                        .clip(CircleShape)
+                        .background(EmeraldGreenPrimary.copy(alpha = 0.12f)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.AccountBalanceWallet,
+                        contentDescription = null,
+                        tint = EmeraldGreenPrimary,
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+                Text(
+                    text = AppText.text(com.example.R.string.label_dashboard_vault_envelopes_title),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = AppText.text(com.example.R.string.label_dashboard_new_vault_action),
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Bold,
+                color = EmeraldGreenPrimary,
+                maxLines = 1,
+                softWrap = false,
+                modifier = Modifier
+                    .clip(RoundedCornerShape(8.dp))
+                    .clickable { onOpenAddVault() }
+                    .padding(horizontal = 6.dp, vertical = 4.dp)
+            )
+        }
+
+        if (vaults.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(6.dp))
+
+            LazyRow(
+                horizontalArrangement = Arrangement.spacedBy(10.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                items(vaults) { vault ->
+                    val isSelected = vault.name == selectedVaultName
+                    Card(
+                        modifier = Modifier
+                            .width(150.dp)
+                            .clickable { onSelectVault(vault.name) },
+                        shape = RoundedCornerShape(16.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = if (isSelected) MintBackground else MaterialTheme.colorScheme.surface
+                        ),
+                        border = androidx.compose.foundation.BorderStroke(
+                            width = if (isSelected) 1.5.dp else 1.dp,
+                            color = if (isSelected) EmeraldGreenPrimary else CardBorderColor
+                        ),
+                        elevation = CardDefaults.cardElevation(defaultElevation = if (isSelected) 2.dp else 0.dp)
+                    ) {
+                        Column(
+                            modifier = Modifier.padding(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(4.dp)
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    text = vault.name,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 12.5.sp,
+                                    color = if (isSelected) EmeraldGreenDark else MaterialTheme.colorScheme.onSurface,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                    modifier = Modifier.weight(1f)
+                                )
+                                if (isSelected) {
+                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Icon(
+                                        imageVector = Icons.Default.CheckCircle,
+                                        contentDescription = null,
+                                        tint = EmeraldGreenPrimary,
+                                        modifier = Modifier.size(15.dp)
+                                    )
+                                }
+                            }
+                            Text(
+                                text = if (isBalanceVisible)
+                                    "${String.format(Locale.US, "%,.0f", vault.balance)} ${AppText.currency(currency)}"
+                                else
+                                    "\u2022\u2022\u2022\u2022 ${AppText.currency(currency)}",
+                                fontWeight = FontWeight.ExtraBold,
+                                fontSize = 13.5.sp,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                                color = if (isSelected) EmeraldGreenDark else MaterialTheme.colorScheme.onSurface
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun HouseholdBudgetHealthCard(
+    remainingSalary: Double,
+    totalIncome: Double,
+    totalExpense: Double,
+    currency: String,
+    isBalanceVisible: Boolean,
+    modifier: Modifier = Modifier
+) {
+    val calendar = Calendar.getInstance()
+    val maxDays = calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
+    val currentDay = calendar.get(Calendar.DAY_OF_MONTH)
+    val remainingDays = (maxDays - currentDay + 1).coerceAtLeast(1)
+
+    val safeDailyLimit = (remainingSalary / remainingDays).coerceAtLeast(0.0)
+    val spentPercentage = if (totalIncome > 0) (totalExpense / totalIncome) * 100.0 else if (totalExpense > 0) 100.0 else 0.0
+
+    val statusColor = when {
+        spentPercentage < 60.0 -> Color(0xFF10B981)
+        spentPercentage <= 85.0 -> Color(0xFF0284C7)
+        spentPercentage <= 100.0 -> Color(0xFFF59E0B)
+        else -> Color(0xFFEF4444)
+    }
+
+    val statusBadgeText = when {
+        spentPercentage < 60.0 -> AppText.text(com.example.R.string.label_dashboard_budget_status_safe)
+        spentPercentage <= 85.0 -> AppText.text(com.example.R.string.label_dashboard_budget_status_balanced)
+        spentPercentage <= 100.0 -> AppText.text(com.example.R.string.label_dashboard_budget_status_near_limit)
+        else -> AppText.text(com.example.R.string.label_dashboard_budget_status_over_budget)
+    }
+
+    val adviceText = when {
+        spentPercentage < 60.0 -> AppText.text(com.example.R.string.label_dashboard_budget_advice_safe)
+        spentPercentage <= 85.0 -> AppText.text(com.example.R.string.label_dashboard_budget_advice_balanced)
+        spentPercentage <= 100.0 -> AppText.text(com.example.R.string.label_dashboard_budget_advice_near_limit)
+        else -> AppText.text(com.example.R.string.label_dashboard_budget_advice_over_budget)
+    }
+
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(22.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    modifier = Modifier.weight(1f),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .clip(CircleShape)
+                            .background(statusColor.copy(alpha = 0.15f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Security,
+                            contentDescription = null,
+                            tint = statusColor,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = AppText.text(com.example.R.string.label_dashboard_budget_health_title),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 15.sp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Text(
+                            text = AppText.text(com.example.R.string.label_dashboard_budget_health_subtitle),
+                            fontSize = 11.sp,
+                            color = Color.Gray,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Box(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(statusColor.copy(alpha = 0.15f))
+                        .padding(horizontal = 10.dp, vertical = 5.dp)
+                ) {
+                    Text(
+                        text = statusBadgeText,
+                        fontSize = 11.5.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = statusColor,
+                        maxLines = 1,
+                        softWrap = false
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.height(14.dp))
+
+            Column(verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = AppText.text(com.example.R.string.label_dashboard_income_spent_ratio),
+                        fontSize = 12.sp,
+                        color = Color.Gray,
+                        fontWeight = FontWeight.Medium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "${spentPercentage.toInt()}%",
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = statusColor,
+                        maxLines = 1,
+                        softWrap = false
+                    )
+                }
+
+                LinearProgressIndicator(
+                    progress = { (spentPercentage / 100.0).coerceIn(0.0, 1.0).toFloat() },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(10.dp)
+                        .clip(RoundedCornerShape(5.dp)),
+                    color = statusColor,
+                    trackColor = MaterialTheme.colorScheme.surfaceVariant
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(12.dp))
+                    .background(statusColor.copy(alpha = 0.08f))
+                    .padding(horizontal = 12.dp, vertical = 10.dp)
+            ) {
+                Text(
+                    text = adviceText,
+                    fontSize = 11.5.sp,
+                    color = statusColor,
+                    fontWeight = FontWeight.Medium,
+                    lineHeight = 16.sp
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(IntrinsicSize.Max),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Card(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = CardDefaults.cardColors(containerColor = LightBackground),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(10.dp),
+                        verticalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = AppText.text(com.example.R.string.label_dashboard_remaining_this_month),
+                            fontSize = 10.5.sp,
+                            color = Color.Gray,
+                            lineHeight = 14.sp,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = if (isBalanceVisible)
+                                "${String.format(Locale.US, "%,.0f", remainingSalary)} ${AppText.currency(currency)}"
+                            else "\u2022\u2022\u2022\u2022",
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = if (remainingSalary >= 0) EmeraldGreenDark else ExpenseRed
+                        )
+                    }
+                }
+
+                Card(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = CardDefaults.cardColors(containerColor = LightBackground),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(10.dp),
+                        verticalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = AppText.text(com.example.R.string.label_dashboard_daily_spend_limit),
+                            fontSize = 10.5.sp,
+                            color = Color.Gray,
+                            lineHeight = 14.sp,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = if (isBalanceVisible)
+                                "${String.format(Locale.US, "%,.0f", safeDailyLimit)} ${AppText.currency(currency)}"
+                            else "\u2022\u2022\u2022\u2022",
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = statusColor
+                        )
+                    }
+                }
+
+                Card(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    shape = RoundedCornerShape(14.dp),
+                    colors = CardDefaults.cardColors(containerColor = LightBackground),
+                    border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(10.dp),
+                        verticalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text(
+                            text = AppText.text(com.example.R.string.label_dashboard_days_remaining),
+                            fontSize = 10.5.sp,
+                            color = Color.Gray,
+                            lineHeight = 14.sp,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = AppText.text(com.example.R.string.label_dashboard_days_count, remainingDays),
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun UrgentFamilyCommitmentsCard(
+    commitments: List<CommitmentEntity>,
+    lessons: List<ChildLessonEntity>,
+    currency: String,
+    onPayCommitment: (CommitmentEntity) -> Unit,
+    onPayLesson: (ChildLessonEntity) -> Unit,
+    onOpenCommitmentsTab: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val unpaidCommitments = remember(commitments) { commitments.filter { !it.isPaid } }
+    val unpaidLessons = remember(lessons) { lessons.filter { !it.isPaid } }
+    val totalUnpaid = remember(unpaidCommitments, unpaidLessons) {
+        unpaidCommitments.sumOf { it.amount } + unpaidLessons.sumOf { it.amount }
+    }
+    val dateFormat = remember(AppText.language) { SimpleDateFormat("dd MMM", AppText.locale) }
+
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(22.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    modifier = Modifier.weight(1f),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(36.dp)
+                            .clip(CircleShape)
+                            .background(if (totalUnpaid > 0) Color(0xFFEF4444).copy(alpha = 0.12f) else EmeraldGreenPrimary.copy(alpha = 0.12f)),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(
+                            imageVector = if (totalUnpaid > 0) Icons.Default.Alarm else Icons.Default.CheckCircle,
+                            contentDescription = null,
+                            tint = if (totalUnpaid > 0) Color(0xFFEF4444) else EmeraldGreenPrimary,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(
+                            text = AppText.text(com.example.R.string.label_dashboard_urgent_commitments_title),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 15.sp,
+                            color = MaterialTheme.colorScheme.onSurface,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        Text(
+                            text = if (totalUnpaid > 0)
+                                AppText.text(
+                                    com.example.R.string.label_dashboard_due_amount,
+                                    String.format(Locale.US, "%,.0f", totalUnpaid),
+                                    AppText.currency(currency)
+                                )
+                            else AppText.text(com.example.R.string.label_dashboard_all_commitments_paid),
+                            fontSize = 11.5.sp,
+                            color = if (totalUnpaid > 0) ExpenseRed else EmeraldGreenPrimary,
+                            fontWeight = FontWeight.SemiBold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                }
+
+                Spacer(modifier = Modifier.width(8.dp))
+
+                Text(
+                    text = AppText.text(com.example.R.string.text_d36294e5abb3),
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = EmeraldGreenPrimary,
+                    maxLines = 1,
+                    softWrap = false,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(8.dp))
+                        .clickable { onOpenCommitmentsTab() }
+                        .padding(horizontal = 6.dp, vertical = 4.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.height(12.dp))
+
+            if (unpaidCommitments.isEmpty() && unpaidLessons.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(MintBackground)
+                        .padding(14.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = AppText.text(com.example.R.string.label_dashboard_no_urgent_commitments),
+                        fontSize = 12.5.sp,
+                        fontWeight = FontWeight.Medium,
+                        color = EmeraldGreenDark,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            } else {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    unpaidCommitments.take(2).forEach { item ->
+                        val dateStr = remember(item.dueDateMillis, AppText.language) { dateFormat.format(Date(item.dueDateMillis)) }
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(containerColor = LightBackground),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = item.title,
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 13.sp,
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                    Text(
+                                        text = "${String.format(Locale.US, "%,.0f", item.amount)} ${AppText.currency(currency)} \u2022 $dateStr",
+                                        fontSize = 11.sp,
+                                        color = ExpenseRed,
+                                        fontWeight = FontWeight.Medium,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.width(8.dp))
+
+                                Button(
+                                    onClick = { onPayCommitment(item) },
+                                    colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary),
+                                    shape = RoundedCornerShape(10.dp),
+                                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+                                    modifier = Modifier.height(34.dp)
+                                ) {
+                                    Text(
+                                        text = AppText.text(com.example.R.string.label_dashboard_pay_action),
+                                        fontSize = 11.5.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White,
+                                        maxLines = 1,
+                                        softWrap = false
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    unpaidLessons.take(2).forEach { lesson ->
+                        val dateStr = remember(lesson.dueDateMillis, AppText.language) { dateFormat.format(Date(lesson.dueDateMillis)) }
+                        Card(
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = CardDefaults.cardColors(containerColor = LightBackground),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, CardBorderColor)
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = "${lesson.subject} (${lesson.childName})",
+                                        fontWeight = FontWeight.Bold,
+                                        fontSize = 13.sp,
+                                        color = MaterialTheme.colorScheme.onSurface,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                    Text(
+                                        text = "${String.format(Locale.US, "%,.0f", lesson.amount)} ${AppText.currency(currency)} \u2022 $dateStr",
+                                        fontSize = 11.sp,
+                                        color = ExpenseRed,
+                                        fontWeight = FontWeight.Medium,
+                                        maxLines = 1,
+                                        overflow = TextOverflow.Ellipsis
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.width(8.dp))
+
+                                Button(
+                                    onClick = { onPayLesson(lesson) },
+                                    colors = ButtonDefaults.buttonColors(containerColor = EmeraldGreenPrimary),
+                                    shape = RoundedCornerShape(10.dp),
+                                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+                                    modifier = Modifier.height(34.dp)
+                                ) {
+                                    Text(
+                                        text = AppText.text(com.example.R.string.label_dashboard_pay_action),
+                                        fontSize = 11.5.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color.White,
+                                        maxLines = 1,
+                                        softWrap = false
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

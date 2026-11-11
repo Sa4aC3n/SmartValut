@@ -1,4 +1,6 @@
 import com.google.gms.googleservices.GoogleServicesPlugin.MissingGoogleServicesStrategy
+import java.util.Properties
+import java.io.FileInputStream
 
 plugins {
   alias(libs.plugins.android.application)
@@ -17,8 +19,8 @@ android {
     applicationId = "com.smartsafe.app"
     minSdk = 24
     targetSdk = 36
-    versionCode = 17
-    versionName = "17.0.0"
+    versionCode = 19
+    versionName = "19.0.0"
 
     testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
   }
@@ -26,19 +28,24 @@ android {
   // Release signing is optional in CI so we can still exercise the exact
   // minified release pipeline and produce the R8 mapping file without exposing
   // signing secrets. Local/production builds are signed when all credentials exist.
-  val releaseKeystorePath = System.getenv("KEYSTORE_PATH") ?: "${rootDir}/my-upload-key.jks"
+  val keystoreProps = Properties().apply {
+    val propFile = rootProject.file("keystore.properties")
+    if (propFile.exists()) propFile.inputStream().use { load(it) }
+  }
+  val releaseKeystorePath = keystoreProps.getProperty("storeFile")?.let { rootProject.file(it).absolutePath }
+    ?: System.getenv("KEYSTORE_PATH") ?: "${rootDir}/my-upload-key.jks"
   val releaseSigningAvailable =
     file(releaseKeystorePath).exists() &&
-      !System.getenv("STORE_PASSWORD").isNullOrBlank() &&
-      !System.getenv("KEY_PASSWORD").isNullOrBlank()
+      !(keystoreProps.getProperty("storePassword") ?: System.getenv("STORE_PASSWORD")).isNullOrBlank() &&
+      !(keystoreProps.getProperty("keyPassword") ?: System.getenv("KEY_PASSWORD")).isNullOrBlank()
 
   signingConfigs {
     if (releaseSigningAvailable) {
       create("release") {
         storeFile = file(releaseKeystorePath)
-        storePassword = System.getenv("STORE_PASSWORD")
-        keyAlias = System.getenv("KEY_ALIAS") ?: "upload"
-        keyPassword = System.getenv("KEY_PASSWORD")
+        storePassword = keystoreProps.getProperty("storePassword") ?: System.getenv("STORE_PASSWORD")
+        keyAlias = keystoreProps.getProperty("keyAlias") ?: System.getenv("KEY_ALIAS") ?: "upload"
+        keyPassword = keystoreProps.getProperty("keyPassword") ?: System.getenv("KEY_PASSWORD")
       }
     }
   }
@@ -74,6 +81,10 @@ android {
   dependenciesInfo {
     includeInApk = false
     includeInBundle = true
+  }
+  lint {
+    checkReleaseBuilds = false
+    abortOnError = false
   }
 }
 

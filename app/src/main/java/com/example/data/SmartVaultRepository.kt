@@ -544,9 +544,84 @@ class SmartVaultRepository(private val db: AppDatabase) {
         db.childLessonDao().updateChildLesson(lesson)
     }
 
+    suspend fun payChildLesson(
+        lessonId: Int,
+        vaultName: String,
+        userId: String = ""
+    ) {
+        val effectiveUser = userId.ifBlank { "local_guest" }
+        require(vaultName.isNotBlank()) { "يجب اختيار خزنة للسداد" }
+
+        db.withTransaction {
+            val lesson = db.childLessonDao().getChildLessonByIdAndUser(lessonId, effectiveUser)
+                ?: throw IllegalStateException("الدرس غير موجود أو لا يخص المستخدم الحالي")
+
+            if (lesson.isPaid) return@withTransaction
+
+            val amount = lesson.amount
+            require(amount.isFinite() && amount > 0.0) { "قيمة الدرس غير صالحة" }
+
+            val vault = db.vaultDao().getVaultByName(vaultName, effectiveUser)
+                ?: throw IllegalStateException("الخزنة المحددة غير موجودة")
+
+            val now = System.currentTimeMillis()
+            val paymentRef = "LESSON_$lessonId"
+
+            db.transactionDao().insertTransaction(
+                TransactionEntity(
+                    userId = effectiveUser,
+                    type = "EXPENSE",
+                    amount = amount,
+                    category = "دروس الأطفال",
+                    description = "دفع درس: ${lesson.childName} - ${lesson.subject}",
+                    dateMillis = now,
+                    vaultName = vault.name,
+                    receiptImagePath = lesson.receiptImagePath,
+                    referenceType = "CHILD_LESSON_PAYMENT",
+                    referenceId = paymentRef
+                )
+            )
+
+            val updatedVaultRows = db.vaultDao().updateVaultBalance(
+                vault.id,
+                vault.balance - amount,
+                effectiveUser
+            )
+            check(updatedVaultRows == 1) { "تعذر تحديث رصيد الخزنة أثناء سداد الدرس" }
+
+            db.childLessonDao().updateChildLesson(
+                lesson.copy(isPaid = true)
+            )
+        }
+    }
+
     suspend fun deleteChildLesson(id: Int, userId: String = "") {
         val effectiveUser = userId.ifBlank { "local_guest" }
-        db.childLessonDao().deleteChildLessonByIdAndUser(id, effectiveUser)
+        db.withTransaction {
+            val lesson = db.childLessonDao().getChildLessonByIdAndUser(id, effectiveUser)
+            if (lesson != null && lesson.isPaid) {
+                val paymentRef = "LESSON_$id"
+                val linkedTx = db.transactionDao().getTransactionByReference(
+                    referenceType = "CHILD_LESSON_PAYMENT",
+                    referenceId = paymentRef,
+                    userId = effectiveUser
+                ) ?: db.transactionDao().findLegacyExpenseCandidates(
+                    amount = lesson.amount,
+                    category = "دروس الأطفال",
+                    description = "دفع درس: ${lesson.childName} - ${lesson.subject}",
+                    userId = effectiveUser
+                ).firstOrNull()
+
+                if (linkedTx != null) {
+                    val vault = db.vaultDao().getVaultByName(linkedTx.vaultName, effectiveUser)
+                    if (vault != null) {
+                        db.vaultDao().updateVaultBalance(vault.id, vault.balance + linkedTx.amount, effectiveUser)
+                    }
+                    db.transactionDao().deleteTransactionByIdAndUser(linkedTx.id, effectiveUser)
+                }
+            }
+            db.childLessonDao().deleteChildLessonByIdAndUser(id, effectiveUser)
+        }
     }
 
     // 9. Local Vault Items (Encrypted client-side)
@@ -682,9 +757,8 @@ class SmartVaultRepository(private val db: AppDatabase) {
         }
     }
 
-    suspend fun deleteTransfer(id: Int, userId: String = "") {
-        val effectiveUser = userId.ifBlank { "local_guest" }
-        db.transferDao().deleteTransferByIdAndUser(id, effectiveUser)
+    suspend fun deleteTransfer(id: Int, userId: String = ""): Result<Unit> {
+        return reverseTransfer(id, userId)
     }
 
     // 13. Debts (Owed to me / I owe)
